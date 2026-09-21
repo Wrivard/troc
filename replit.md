@@ -1,45 +1,59 @@
-# [Project name]
+# TROC
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+TROC is Canada’s trading card marketplace. This milestone establishes its visual
+identity and reusable design system only; no marketplace application is authorized.
 
-## Run & Operate
+## Current scope
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Review the living guide at `/style-guide` in the TROC Design System artifact.
+- The first review covers the foundations and exactly five component families:
+  Button, Input, Textarea, Select, and Combobox.
+- Ask for visual approval before implementing later inventory chunks. Stop after
+  the complete style guide for final approval before any marketplace development.
+- Do not add authentication, databases, catalog APIs, payments, checkout,
+  seller/dashboard backends, orders, shipping APIs, scanners, or Smart Cart
+  optimization. Future marketplace examples are reusable visual components only.
+- Existing API and mockup-sandbox scaffolds are unrelated to this milestone and
+  remain untouched.
 
-## Stack
+## Run & maintain
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Managed workflow: `artifacts/troc-design-system: web`.
+- Package: `@workspace/troc-design-system`; artifact at `artifacts/troc-design-system`.
+- `pnpm --filter @workspace/troc-design-system run tokens` regenerates tokens/styles.
+- `pnpm --filter @workspace/troc-design-system run typecheck` checks this package.
+- The managed workflow supplies `PORT` and `BASE_PATH`; do not hardcode them.
+- No secrets, integrations, or database are needed for this milestone.
 
-## Where things live
+## Source of truth
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- Read `artifacts/troc-design-system/docs/AGENTS.md` and `SKILL.md` before extending
+  the library.
+- `docs/references/specifications/` retains the supplied written requirements.
+  Written specifications take priority over images. The longer milestone brief
+  supplies the current “TROC Dark / TROC Light” names.
+- `docs/references/component-inventory.md` records all requested families and
+  their sequential, dependency-safe approval boundaries.
+- `tokens.json` defines shared values; generated styles and token exports must
+  not be hand-edited. Primitive styles and preview-only styles have separate inputs.
+- Source modules are `.tsx`, use package-safe relative imports, and every
+  implemented family has one lazy-loaded story.
 
-## Architecture decisions
+## Brand and review decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Preserve the supplied italic wordmark and custom leaf; no redraw, generic leaf,
+  flag, emoji, or UI-font substitute. Raster assets remain replaceable by final vectors.
+- Only charcoal, white/off-white, greys, and TROC red are in scope.
+- Exact accent `#FF2D3D` is retained. Action red `#DE1E30` supports white text at
+  4.85:1; small white text on the original accent does not meet AA.
+- Plus Jakarta Sans is bundled under the Open Font License.
+- TROC Dark is the default. Explicit theme and EN/FR choices persist locally;
+  browser language determines only the initial locale.
+- Clear space, minimum logo size, selected typography, contrast adjustment, and
+  French messaging remain visual/content decisions for user approval.
 
-## Product
+## Future consumption
 
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+Read `docs/consuming-web.md` before using the package. Import shared tokens, styles,
+and available components rather than copying or restyling them. Only implemented
+families are available; remaining inventory entries are not working exports yet.

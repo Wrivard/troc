@@ -1,0 +1,70 @@
+/* Brand primitives use semantic values only. Included by the token generator. */
+html { color-scheme: light; scroll-behavior: smooth; }
+html.dark { color-scheme: dark; }
+body { margin: 0; }
+button, input, textarea { font: inherit; }
+button, a, input, textarea, [tabindex] { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.troc-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--control-default); padding: 10px var(--space-4);
+  border: 1px solid transparent; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em;
+  text-decoration: none; cursor: pointer; vertical-align: middle;
+  transition: background var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast);
+}
+.troc-button svg { width: 16px; height: 16px; flex-shrink: 0; }
+.troc-button--primary { background: var(--color-primary); color: var(--color-primary-foreground); }
+.troc-button--primary:hover, .troc-button--primary[data-preview="hover"] { background: var(--accent-hover); }
+.troc-button--primary:active, .troc-button--primary[data-preview="pressed"] { background: var(--accent-pressed); }
+.troc-button--secondary { background: var(--color-secondary); color: var(--color-secondary-foreground); border-color: var(--color-border); }
+.troc-button--outline { color: var(--text-primary); background: transparent; border-color: var(--border-strong); }
+.troc-button--ghost { background: transparent; color: var(--text-primary); }
+.troc-button--secondary:hover, .troc-button--outline:hover, .troc-button--ghost:hover,
+.troc-button--secondary[data-preview="hover"], .troc-button--outline[data-preview="hover"], .troc-button--ghost[data-preview="hover"] { background: var(--surface-hover); }
+.troc-button--destructive { color: var(--danger); background: transparent; border-color: var(--danger); }
+.troc-button--destructive:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); }
+.troc-button:active:not(:disabled) { transform: translateY(1px); }
+.troc-button:disabled, .troc-button[aria-disabled="true"] { cursor: not-allowed; opacity: .46; pointer-events: none; }
+.troc-button[aria-busy="true"] { opacity: .8; }
+.troc-button--small { min-height: var(--control-small); padding: 7px var(--space-3); font-size: 12px; }
+.troc-button--large { min-height: var(--control-large); padding: 12px var(--space-6); font-size: 14px; }
+.troc-button--icon { width: var(--control-default); padding: 0; flex-shrink: 0; }
+.troc-button[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 4px; }
+.troc-field {
+  display: block; width: 100%; min-width: 0; min-height: var(--control-default);
+  box-sizing: border-box; border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text-primary); padding: 10px var(--space-3);
+  font-size: 14px; line-height: 1.5; transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.troc-field::placeholder, .troc-field[data-placeholder] { color: var(--text-muted); }
+.troc-field:hover:not(:disabled) { border-color: var(--text-muted); }
+.troc-field:focus-visible, .troc-field[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 3px; }
+.troc-field[aria-invalid="true"] { border-color: var(--danger); }
+.troc-field:disabled { opacity: .5; cursor: not-allowed; background: var(--surface-hover); }
+.troc-field[readonly] { background: var(--surface-hover); }
+.troc-textarea { min-height: 112px; resize: vertical; }
+.troc-select-trigger { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); text-align: left; cursor: pointer; }
+.troc-select-trigger > span:first-child { white-space: normal; }
+.troc-select-content { position: relative; z-index: var(--z-dropdown); min-width: 160px; max-width: calc(100vw - 24px); max-height: var(--radix-select-content-available-height); overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface-elevated); color: var(--text-primary); box-shadow: var(--shadow-md); }
+.troc-select-item { min-height: var(--control-default); }
+.troc-select-item[data-highlighted] { background: var(--surface-hover); outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-select-item[data-state="checked"] { color: var(--text-primary); font-weight: 600; }
+.troc-combobox { position: relative; min-width: 0; }
+.troc-combobox-control { position: relative; }
+.troc-combobox-control > .troc-field { padding-right: var(--space-12); }
+.troc-combobox-control > .troc-button { position: absolute; top: 0; right: 1px; border: 0; color: var(--text-muted); }
+.troc-combobox-popup { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: var(--z-dropdown); padding: var(--space-1); background: var(--surface-elevated); border: 1px solid var(--border-strong); border-radius: var(--radius-md); box-shadow: var(--shadow-md); max-height: 260px; overflow: auto; }
+.troc-combobox-popup ul { padding: 0; margin: 0; list-style: none; }
+.troc-combobox-option { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); min-height: var(--control-default); padding: var(--space-2) var(--space-3); font-size: 14px; border-radius: var(--radius-sm); cursor: pointer; }
+.troc-combobox-option[data-active="true"] { background: var(--surface-hover); outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-combobox-option[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.troc-combobox-option[aria-selected="true"] { font-weight: 600; }
+.troc-combobox-message { padding: var(--space-3); margin: 0; font-size: 13px; color: var(--text-muted); }
+.troc-loading { animation: troc-spin .85s linear infinite; }
+@keyframes troc-spin { to { transform: rotate(360deg); } }
+@media (pointer: coarse) { .troc-button--small { min-height: var(--control-default); } }
+@media (max-width: 768px) { .troc-field { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

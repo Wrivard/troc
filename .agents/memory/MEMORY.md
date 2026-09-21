@@ -1,0 +1,1 @@
+- [Nested theme aliases](nested-theme-aliases.md) — root-defined Tailwind color aliases can remain in the outer theme inside comparison panels.

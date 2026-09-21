@@ -1,0 +1,19 @@
+kind = "design-system"
+previewPath = "/"
+title = "TROC Design System"
+description = "The reusable visual foundation for TROC, Canada’s trading card marketplace. A living /style-guide for the locked charcoal, off-white and red brand, accessible React components, dark and light themes, and English/French foundations. Visual component demos only; no marketplace business logic."
+version = "1.0.0"
+id = "artifacts/troc-design-system"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21977
+
+[services.development]
+run = "pnpm --filter @workspace/troc-design-system run dev"
+
+[services.env]
+PORT = "21977"
+BASE_PATH = "/"

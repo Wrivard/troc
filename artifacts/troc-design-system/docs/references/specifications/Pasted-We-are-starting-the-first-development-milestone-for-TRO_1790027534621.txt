@@ -1,0 +1,712 @@
+We are starting the first development milestone for TROC.
+
+TROC is a Canada-first trading card marketplace. The eventual platform will support Pokémon, Magic: The Gathering, Yu-Gi-Oh!, One Piece, Riftbound, sellers, collections, Smart Cart, low-value singles, seller storefronts, and more.
+
+DO NOT BUILD THE MARKETPLACE YET.
+
+For this milestone, your only objective is to establish the complete TROC visual identity and reusable design system that the rest of the platform will be built from.
+
+==================================================
+1. READ THE PROVIDED FILES FIRST
+==================================================
+
+Before writing code:
+
+1. Read EVERY file included in the supplied TROC style-guide folder.
+2. Inspect EVERY supplied brand/reference image.
+3. Treat the written specifications as authoritative.
+4. Treat the supplied TROC logo as the brand direction.
+5. Do not independently redesign the TROC brand.
+6. Do not start building marketplace pages, authentication, databases, checkout, seller dashboards, or backend functionality.
+
+Before implementation, briefly summarize:
+- your understanding of the TROC brand;
+- the design-system architecture you will use;
+- the component structure you plan to create;
+- the theme/i18n approach;
+- the files/routes you intend to create.
+
+Then proceed with implementation.
+
+==================================================
+2. BRAND
+==================================================
+
+Brand:
+TROC
+
+Positioning:
+Canada’s Trading Card Marketplace
+
+Primary messaging:
+Built here. For collectors here.
+
+Supporting messaging:
+Collect. Trade. Belong.
+More cards. Less shipping.
+Sell cards. Keep more.
+One search. Every seller.
+
+TROC should feel:
+
+- premium
+- modern
+- minimalist
+- technology-focused
+- fast
+- confident
+- trustworthy
+- collector-focused
+- distinctly Canadian
+- marketplace-first
+
+The design should NOT feel like:
+
+- a childish Pokémon website
+- a comic/card store website
+- a generic gaming website
+- a rainbow TCG interface
+- a generic Shopify theme
+- a generic SaaS template
+- an excessively patriotic souvenir brand
+
+Canadian identity should be strong but sophisticated.
+
+==================================================
+3. LOCKED VISUAL DIRECTION
+==================================================
+
+The initial/default visual identity is:
+
+BLACK / CHARCOAL
+WHITE / OFF-WHITE
+GREY
+TROC RED
+
+No green, blue, purple, or other accent themes in this milestone.
+
+Cards themselves will eventually provide much of the colour on marketplace pages.
+
+Red should be used intentionally for:
+- major CTAs
+- selected states
+- active navigation
+- important highlights
+- key brand moments
+- subtle branded details
+
+Do NOT make the entire interface red.
+
+The overall feeling should be closer to a premium modern technology/marketplace company than a traditional collectible-card store.
+
+Use generous whitespace and strong hierarchy.
+
+==================================================
+4. LOGO
+==================================================
+
+Use the supplied TROC logo/reference files.
+
+The selected direction is:
+
+- strong italic / forward-moving TROC wordmark
+- white on dark by default
+- black version for light backgrounds
+- custom red maple-leaf symbol beside the wordmark
+
+IMPORTANT:
+
+The custom maple leaf is a TROC brand symbol.
+
+Do NOT replace it with:
+- an emoji
+- the Canadian flag emoji
+- a generic icon-library maple leaf
+- a randomly generated leaf
+- the official Canadian flag leaf
+
+If the supplied logo is raster/reference quality rather than a final vector asset, use it faithfully for this milestone and structure the Logo component so the final SVG can be swapped later without changing layouts.
+
+Do not recreate the TROC wordmark using a normal font.
+
+==================================================
+5. TECHNOLOGY / CODE QUALITY
+==================================================
+
+Use a scalable production-oriented React/TypeScript architecture suitable for Replit.
+
+Prefer the existing project stack if one already exists.
+
+If starting fresh, use an appropriate modern React/Next.js architecture.
+
+Requirements:
+
+- TypeScript
+- reusable components
+- semantic design tokens
+- clean component composition
+- responsive design
+- accessible primitives
+- maintainable CSS/Tailwind architecture
+- no giant single-page component
+- no duplicated component styles
+- no raw hex colours scattered through the app
+
+Create semantic variables such as:
+
+background
+surface
+surface-elevated
+border
+border-strong
+text-primary
+text-secondary
+text-muted
+accent
+accent-hover
+accent-foreground
+success
+warning
+danger
+focus
+
+Also create consistent systems for:
+
+spacing
+radii
+shadows
+type scale
+container widths
+breakpoints
+motion
+z-index
+
+==================================================
+6. THEMES
+==================================================
+
+Build the architecture for themes now.
+
+Initial themes:
+
+1. TROC Dark — DEFAULT
+2. TROC Light
+
+The theme system should be extensible so users can eventually choose other themes from Settings.
+
+Do NOT design additional colour themes now.
+
+Theme preference should persist locally for this milestone.
+
+Components must use semantic tokens so future themes can change colours without rewriting components.
+
+==================================================
+7. TYPOGRAPHY
+==================================================
+
+Choose a legally usable modern sans-serif typeface suitable for a premium technology marketplace.
+
+Typography should be:
+
+- extremely readable
+- modern
+- restrained
+- excellent with prices/numbers
+- suitable for dense marketplace information
+- strong at large display sizes
+
+Build styles for:
+
+Display
+H1
+H2
+H3
+H4
+Body Large
+Body
+Body Small
+Label
+Caption
+Marketplace metadata
+Price Large
+Price Small
+Tabular/numerical data
+
+Do not try to reproduce the TROC logo with the UI font.
+
+==================================================
+8. BILINGUAL FOUNDATION
+==================================================
+
+TROC launches in English and French.
+
+Build i18n structure from the beginning.
+
+Requirements:
+
+- EN / FR switcher
+- browser language can define initial preference
+- user selection overrides it
+- preference persists
+- visible UI strings should be translation-ready
+- do not bury translatable copy directly throughout components
+
+The style guide can display mostly English, but demonstrate several components in both English and French.
+
+==================================================
+9. BUILD /STYLE-GUIDE
+==================================================
+
+Create a polished route:
+
+/style-guide
+
+This should NOT simply describe the brand.
+
+It should render the actual reusable components and tokens that will later be used throughout TROC.
+
+Organize it into clear sections.
+
+--------------------------------------------------
+BRAND
+--------------------------------------------------
+
+Show:
+
+- primary logo
+- dark-background logo
+- light-background logo
+- monochrome version
+- compact logo/icon
+- clear-space example
+- minimum-size example
+- primary tagline
+- supporting messaging
+
+--------------------------------------------------
+COLOURS
+--------------------------------------------------
+
+Show:
+
+- semantic colour tokens
+- TROC red
+- charcoal/backgrounds
+- surfaces
+- greys
+- white/off-white
+- dark theme
+- light theme
+- accessible contrast examples
+
+--------------------------------------------------
+TYPOGRAPHY
+--------------------------------------------------
+
+Show the complete hierarchy and realistic marketplace examples.
+
+--------------------------------------------------
+LAYOUT SYSTEM
+--------------------------------------------------
+
+Show:
+
+- spacing scale
+- container widths
+- responsive grid
+- radius scale
+- borders
+- shadows
+- section spacing
+- desktop/tablet/mobile behaviour
+
+--------------------------------------------------
+BUTTONS
+--------------------------------------------------
+
+Create:
+
+- Primary
+- Secondary
+- Ghost
+- Outline
+- Destructive
+- Icon button
+
+Show:
+
+default
+hover
+pressed
+focus
+disabled
+loading
+
+--------------------------------------------------
+FORM CONTROLS
+--------------------------------------------------
+
+Create:
+
+- text input
+- search input
+- password
+- textarea
+- select
+- autocomplete/combobox
+- checkbox
+- radio
+- toggle
+- quantity control
+
+Show:
+
+normal
+focus
+filled
+error
+disabled
+helper text
+
+--------------------------------------------------
+MARKETPLACE COMPONENTS
+--------------------------------------------------
+
+These are extremely important.
+
+Create realistic reusable examples for:
+
+Product/card tile
+Product row
+Card image container
+Card title
+Set/card-number metadata
+Reference Price
+Lowest Available
+Seller Count
+Available Quantity
+Condition badge
+Language badge
+Game badge
+Set badge
+Variant badge
+
+Seller offer row containing:
+
+Seller
+Seller verification
+Rating
+Condition
+Price
+Quantity
+Shipping
+Promotion
+Add to Cart
+
+Create:
+
+Verified Seller badge
+Verified Hobby Shop badge
+Top Seller badge
+Founding Seller badge
+Sponsored badge
+
+Also create:
+
+seller minimum-order progress
+
+Example:
+
+$1.42 / $5 minimum
+Add $3.58 more from this seller
+
+free-shipping progress
+
+promotion progress
+
+Example:
+
+Add 3 more cards to unlock 10% off
+
+--------------------------------------------------
+SMART CART
+--------------------------------------------------
+
+Create a visual Smart Cart example.
+
+Example:
+
+Original
+8 sellers
+$22.41 cards
+$19.82 shipping
+$42.23 total
+
+TROC Smart Cart
+3 sellers
+$24.87 cards
+$7.44 shipping
+$32.31 total
+
+You save $9.92
+
+Also demonstrate an explanation:
+
+“This card costs $0.06 more from this seller but saves $1.24 in shipping.”
+
+This is only a visual component for now.
+
+Do NOT build the optimization algorithm.
+
+--------------------------------------------------
+SELLER COMPONENTS
+--------------------------------------------------
+
+Create visual components for:
+
+Seller storefront header
+Seller logo/avatar
+Seller banner
+Seller rating
+Seller stats
+Seller level
+Seller plan
+Seller badges
+Promotion card
+Inventory table
+Order-status indicator
+
+--------------------------------------------------
+CART COMPONENTS
+--------------------------------------------------
+
+Demonstrate:
+
+Seller-grouped cart
+Cheap card items
+Seller minimum progress
+Promotion progress
+Combined shipping
+Order totals
+
+The design must clearly accommodate cards priced below $1.
+
+Low-value cards are one of TROC’s core product principles.
+
+--------------------------------------------------
+FEEDBACK / OVERLAYS
+--------------------------------------------------
+
+Create:
+
+Toast
+Alert
+Dialog
+Drawer
+Dropdown
+Popover
+Tooltip
+Loading skeleton
+Empty state
+Error state
+Success state
+
+--------------------------------------------------
+DATA
+--------------------------------------------------
+
+Create:
+
+Responsive table
+KPI block
+Progress bar
+Simple chart treatment
+Pagination
+Tabs
+Filters
+Sort control
+
+--------------------------------------------------
+NAVIGATION
+--------------------------------------------------
+
+Create a realistic future TROC header.
+
+Desktop:
+
+TROC logo
+Shop
+Sell
+Collect
+Search
+EN / FR
+Theme
+Sign in/account
+Cart
+
+Mobile:
+
+TROC logo
+Search
+Cart/account
+Bottom navigation or appropriate mobile navigation concept
+
+Do not overpopulate the navigation.
+
+--------------------------------------------------
+MOBILE
+--------------------------------------------------
+
+Show representative components at mobile sizes.
+
+Mobile quality is CRITICAL to TROC.
+
+The eventual marketplace will be used heavily on phones.
+
+==================================================
+10. UX PRINCIPLES
+==================================================
+
+TROC should prioritize clarity over decoration.
+
+Do not overuse:
+
+- cards inside cards
+- huge rounded corners
+- excessive shadows
+- gradients
+- animations
+- decorative illustrations
+- giant empty hero sections
+- glass effects
+
+The design must eventually handle a very information-dense marketplace without feeling cluttered.
+
+Default toward:
+
+clean
+compact
+structured
+fast
+easy to scan
+
+while still feeling premium.
+
+==================================================
+11. ACCESSIBILITY
+==================================================
+
+Target WCAG AA where practical.
+
+Implement:
+
+- keyboard navigation
+- visible focus states
+- semantic HTML
+- form labels
+- accessible errors
+- sufficient contrast
+- accessible dialogs/dropdowns
+- reduced-motion support
+- non-colour-dependent status indicators
+
+==================================================
+12. RESPONSIVENESS
+==================================================
+
+Test at minimum:
+
+Mobile
+Tablet
+Desktop
+Large desktop
+
+Do not allow:
+
+- horizontal overflow
+- unusable tables on mobile
+- tiny tap targets
+- clipped dialogs
+- desktop-only interactions
+
+Dense tables may transform into cards/drawers on mobile if necessary.
+
+==================================================
+13. DEMO CONTENT
+==================================================
+
+Use realistic DEMO marketplace data only to demonstrate components.
+
+Example games:
+
+Pokémon
+Magic: The Gathering
+Yu-Gi-Oh!
+One Piece
+Riftbound
+
+Use prices in CAD.
+
+The style guide should make TROC feel like a real Canadian card marketplace.
+
+However, do not imply demo metrics are actual business traction.
+
+==================================================
+14. DO NOT BUILD YET
+==================================================
+
+Do NOT implement:
+
+- authentication backend
+- Supabase database
+- marketplace database
+- card catalog APIs
+- payments
+- Stripe
+- seller onboarding backend
+- checkout backend
+- Smart Cart optimization
+- collection backend
+- seller dashboard backend
+- admin backend
+- order processing
+- shipping API
+- Canada Post integration
+- marketplace API
+- scanner
+
+Those are future milestones.
+
+Only create their reusable VISUAL components when needed to demonstrate the design system.
+
+==================================================
+15. ACCEPTANCE CRITERIA
+==================================================
+
+Before completing this milestone:
+
+1. Re-read all supplied style-guide files.
+2. Compare the implementation against their requirements.
+3. Check dark mode.
+4. Check light mode.
+5. Check mobile.
+6. Check desktop.
+7. Check keyboard/focus states.
+8. Check EN/FR architecture.
+9. Check that marketplace components use reusable primitives.
+10. Check that no backend/product scope has been unnecessarily built.
+11. Check that the supplied TROC logo direction has not been redesigned.
+
+The `/style-guide` page should be good enough that we can review and approve the entire visual language of TROC before building a single actual marketplace page.
+
+At completion, tell me:
+
+- what you created;
+- the main component/file structure;
+- what tokens/themes were established;
+- which decisions you made that were not explicitly specified;
+- anything you believe needs visual approval before we proceed.
+
+DO NOT move on to marketplace development automatically.
+
+STOP after the style guide is complete and wait for my approval.

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-CA" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0E0E0E" />
+    <title>TROC — Design System</title>
+    <meta name="description" content="The TROC visual foundation. Brand, colour, typography and accessible components for Canada’s trading card marketplace." />
+    <meta property="og:title" content="TROC — Design System" />
+    <meta property="og:description" content="Built here. For collectors here. Explore the TROC visual foundation." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="%BASE_URL%brand/troc-leaf.png" />
+    <script>
+      try {
+        const linked = new URLSearchParams(window.location.search).get("theme");
+        const t = linked === "dark" || linked === "light" ? linked : localStorage.getItem("troc.theme");
+        document.documentElement.className = t === "light" ? "light" : "dark";
+        document.documentElement.style.colorScheme = t === "light" ? "light" : "dark";
+      } catch { document.documentElement.style.colorScheme = "dark"; }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
