@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { Locale } from "@workspace/catalog";
 import { SiteHeader } from "@workspace/troc-design-system/components/ui/site-navigation";
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { readCart } from "../commerce/cart-storage";
+
+const CartDrawer = lazy(() => import("../commerce/CartDrawer"));
 
 export type ChromeProps = {
   locale: Locale;
@@ -11,6 +13,7 @@ export type ChromeProps = {
   onTheme?: (theme: "dark" | "light") => void;
   base?: string;
   searchDisabled?: boolean;
+  cartBehavior?: "drawer" | "route";
 };
 
 export function MarketplaceHeader({
@@ -20,8 +23,14 @@ export function MarketplaceHeader({
   onTheme,
   base = "",
   searchDisabled = false,
+  cartBehavior = "drawer",
 }: ChromeProps) {
   const fr = locale === "fr";
+  const [cartOpen, setCartOpen] = useState(false);
+  const cartReturnFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!cartOpen && cartReturnFocus.current) cartReturnFocus.current.focus();
+  }, [cartOpen]);
   const [query, setQuery] = useState("");
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -96,11 +105,33 @@ export function MarketplaceHeader({
         }}
         cartLabel={fr ? "Panier" : "Cart"}
         cartCount={count}
-        onCart={() => go("/cart")}
+        onCart={() => {
+          if (cartBehavior === "route" || base) return go("/cart");
+          cartReturnFocus.current =
+            document.activeElement instanceof HTMLElement
+              ? document.activeElement
+              : null;
+          setCartOpen(true);
+        }}
         accountLabel={fr ? "Compte" : "Account"}
         signInLabel={fr ? "Connexion" : "Sign in"}
         onSignIn={() => go("/sign-in")}
       />
+      {cartOpen && (
+        <Suspense
+          fallback={
+            <p role="status" className="sr-only">
+              {fr ? "Ouverture du panier…" : "Opening cart…"}
+            </p>
+          }
+        >
+          <CartDrawer
+            locale={locale}
+            onClose={() => setCartOpen(false)}
+            returnFocus={cartReturnFocus.current}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

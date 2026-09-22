@@ -1,0 +1,13 @@
+# Cart drawer author handoff
+
+2026-09-22. Drawer shell is a separate candidate after DCD02 5991b22 and DCD01 f2e2834. B engineering and UX40 independent review required. No push/deployment or release claim.
+
+Primary cart action opens the existing design-system Drawer on root-hosted browse/account pages. Commerce pages explicitly retain route navigation, preventing nested controllers; deployments with a nonempty base path retain their existing correctly prefixed cart route. One existing CommerceApp controller mounts while open, unmounts on close and reads local intent afresh on reopen. Embedded cart removes duplicate main/nav/header/footer. Existing per-seller minimum/free-shipping calculations, coupons, totals, demo notice and explicit Smart Cart comparison/apply are reused unchanged. Full-cart and Smart Cart links remain available.
+
+Tests: tests/cart-drawer-preview.mjs PASS at390/1440 EN/FR light/dark plus320FRlight (9cells), reduced motion. Browse->empty drawer->Escape/focus return->add Piko card->populated drawer->24Tab/ShiftTab focus-trap actions, hidden accessibility background, close remains in viewport when scrolled, no horizontal overflow, close button/focus/URL preserved, desktop backdrop, reopen, full-cart route, route-only Commerce header. Commerce cart identity/events intercepted as anonymous/no-op; catalog and quote calculations use local demo API5313 without database. Full authenticated workflows and screen-reader speech not verified.
+
+Latest types/lint/client+SSR build PASS. tests/cart-quote-freshness-preview.mjs route and --drawer PASS for quantity503/retry, exact request payload, one held then failedPUT, separate mutation error retention, stale coupon200/503, province race, reopen and late Smart proposal. These are synthetic intercepted responses, not hosted persistence/authorization proof. Bootstrap tests already passed in f2e2834; B retest remains pending.
+
+Captured9drawer images. Actually inspected this turn: verification/drawer-320-fr-light.png, drawer-1440-fr-dark.png, drawer-summary-320-fr-light.png. Summary screenshot shows actual canonical1.60CAD total vs2.00 seller minimum with1.90remaining; checkout disabled. Other captured cells have behavioral assertions but are not claimed visually inspected. Earlier320sample also inspected in preceding continuation. Independent UX must inspect broader representative renders and browse->drawer->SmartCart->checkout journeys, background scroll/context and error recovery.
+
+UI4313 process97928; API5313 process66488 with NODE_ENV development,CATALOG_MODE demo,no DATABASE_URL. These are Design-owned and shared read-only with auditor. Preserve user's hero backdrop correction. Stats/About is next independently owned presentation lot; real aggregate data belongs A.

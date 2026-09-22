@@ -1508,3 +1508,118 @@ main {
   padding: var(--space-6);
   border: 0;
 }
+
+/* Existing commerce controller, presented in the existing accessible drawer. */
+.troc-cart-drawer[data-side="right"] {
+  width: min(640px, 100vw);
+  max-width: 100vw;
+  padding: var(--space-6);
+}
+.troc-cart-drawer .troc-commerce-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+.troc-cart-drawer #cart-summary {
+  position: static;
+}
+.troc-cart-drawer .troc-cart-group-seller {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.troc-cart-drawer .troc-cart-item {
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-areas: "image info remove" "image price total" "image qty qty";
+}
+.troc-cart-drawer .troc-cart-item-image {
+  grid-area: image;
+  align-self: start;
+}
+.troc-cart-drawer .troc-cart-item-info {
+  grid-area: info;
+}
+.troc-cart-drawer .troc-cart-item-remove {
+  grid-area: remove;
+  align-self: start;
+}
+.troc-cart-drawer .troc-cart-item-price {
+  grid-area: price;
+  text-align: left;
+}
+.troc-cart-drawer .troc-cart-item-total {
+  grid-area: total;
+}
+.troc-cart-drawer .troc-cart-item-qty {
+  grid-area: qty;
+  justify-content: flex-start;
+}
+.troc-cart-drawer .troc-cart-item-title {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.troc-cart-drawer .troc-premium-empty {
+  grid-template-columns: 1fr;
+}
+@media (max-width: 640px) {
+  .troc-cart-drawer[data-side="right"] {
+    border-radius: 0;
+    padding: var(--space-4);
+  }
+}
+
+.troc-cart-smart-invitation {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface);
+  border-left: 2px solid var(--color-accent);
+  font-size: var(--text-sm);
+}
+.troc-cart-smart-invitation p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.troc-cart-smart-invitation a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+.troc-cart-smart-invitation a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Vaul extends a decorative drag-fill pseudo-element beyond the right edge;
+   the full-height cart sheet needs no offscreen fill or horizontal scroll area. */
+.troc-cart-drawer::after {
+  display: none;
+}
+
+.troc-cart-smart-invitation summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.troc-cart-smart-invitation[open] p {
+  margin-block: var(--space-3);
+}
+.troc-cart-drawer-header {
+  position: sticky;
+  top: calc(-1 * var(--space-6));
+  z-index: 2;
+  background: var(--surface-elevated);
+  margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) 0;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+.troc-cart-drawer-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+@media (max-width: 640px) {
+  .troc-cart-drawer-header {
+    top: calc(-1 * var(--space-4));
+    margin-inline: calc(-1 * var(--space-4));
+    margin-top: calc(-1 * var(--space-4));
+    padding-inline: var(--space-4);
+  }
+}

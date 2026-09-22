@@ -23,7 +23,15 @@ import { CartGroups } from "./CartGroups";
 import { SmartChanges } from "./SmartChanges";
 import { OrderPages } from "./OrderPages";
 import { commerceMessages, type CommerceMessage } from "./messages";
-export function CommerceApp({ path }: { path: string }) {
+export function CommerceApp({
+  path,
+  embedded = false,
+}: {
+  path: string;
+  embedded?: boolean;
+}) {
+  const embeddedCart = embedded && path === "/cart";
+  const Container = embeddedCart ? "div" : "main";
   const { locale, setLocale, theme, setTheme } = usePreferences();
   const t = (key: CommerceMessage) =>
     commerceMessages[key][locale === "en" ? 0 : 1];
@@ -288,40 +296,55 @@ export function CommerceApp({ path }: { path: string }) {
   const beforeTaxLabel =
     locale === "fr" ? "Total avant taxes" : "Total before taxes";
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <MarketplaceHeader
-        locale={locale}
-        theme={theme}
-        onLocale={setLocale}
-        onTheme={setTheme}
-      />
+    <div
+      className={
+        embeddedCart
+          ? "troc-cart-embedded"
+          : "min-h-screen bg-background text-foreground"
+      }
+    >
+      {!embeddedCart && (
+        <MarketplaceHeader
+          cartBehavior="route"
+          locale={locale}
+          theme={theme}
+          onLocale={setLocale}
+          onTheme={setTheme}
+        />
+      )}
 
-      <main
-        id="main-content"
-        className="mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-6 px-4 py-8 md:px-8 md:py-12"
+      <Container
+        id={embeddedCart ? undefined : "main-content"}
+        className={
+          embeddedCart
+            ? "troc-cart-drawer-body grid content-start gap-5"
+            : "mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-6 px-4 py-8 md:px-8 md:py-12"
+        }
       >
-        <nav
-          className="flex flex-wrap gap-4 border-b border-border pb-4 text-sm"
-          aria-label={
-            locale === "fr" ? "Navigation des commandes" : "Order navigation"
-          }
-        >
-          {[
-            ["/cart", "cart"],
-            ["/smart-cart", "smart"],
-            ["/account/orders", "orders"],
-            ["/seller/orders", "fulfillment"],
-          ].map(([url, key]) => (
-            <a
-              key={url}
-              href={link(url)}
-              className="underline"
-              aria-current={path === url ? "page" : undefined}
-            >
-              {t(key as CommerceMessage)}
-            </a>
-          ))}
-        </nav>
+        {!embeddedCart && (
+          <nav
+            className="flex flex-wrap gap-4 border-b border-border pb-4 text-sm"
+            aria-label={
+              locale === "fr" ? "Navigation des commandes" : "Order navigation"
+            }
+          >
+            {[
+              ["/cart", "cart"],
+              ["/smart-cart", "smart"],
+              ["/account/orders", "orders"],
+              ["/seller/orders", "fulfillment"],
+            ].map(([url, key]) => (
+              <a
+                key={url}
+                href={link(url)}
+                className="underline"
+                aria-current={path === url ? "page" : undefined}
+              >
+                {t(key as CommerceMessage)}
+              </a>
+            ))}
+          </nav>
+        )}
         <p className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground">
           {t("demo")}
         </p>
@@ -329,26 +352,28 @@ export function CommerceApp({ path }: { path: string }) {
           <OrderPages path={path} locale={locale} />
         ) : (
           <>
-            <EditorialIntro
-              level={1}
-              compact
-              className="troc-page-opening"
-              eyebrow="TROC · CANADA"
-              title={t(checkout ? "checkout" : smartPage ? "smart" : "cart")}
-              description={
-                locale === "fr"
-                  ? checkout
-                    ? "Vérifiez votre adresse et le détail de chaque vendeur. Ce paiement est simulé : aucun montant ne sera prélevé."
-                    : smartPage
-                      ? "Comparez le coût total, livraison comprise. Vérifiez chaque changement avant de l’appliquer à votre panier."
-                      : "Vos cartes, regroupées par vendeur. Vérifiez les minimums et la livraison avant de poursuivre."
-                  : checkout
-                    ? "Review your address and each seller’s order. This checkout is simulated: no money will be charged."
-                    : smartPage
-                      ? "Compare the complete cost, including shipping. Review every change before applying it to your cart."
-                      : "Your cards, grouped by seller. Check minimums and shipping before you continue."
-              }
-            />
+            {!embeddedCart && (
+              <EditorialIntro
+                level={1}
+                compact
+                className="troc-page-opening"
+                eyebrow="TROC · CANADA"
+                title={t(checkout ? "checkout" : smartPage ? "smart" : "cart")}
+                description={
+                  locale === "fr"
+                    ? checkout
+                      ? "Vérifiez votre adresse et le détail de chaque vendeur. Ce paiement est simulé : aucun montant ne sera prélevé."
+                      : smartPage
+                        ? "Comparez le coût total, livraison comprise. Vérifiez chaque changement avant de l’appliquer à votre panier."
+                        : "Vos cartes, regroupées par vendeur. Vérifiez les minimums et la livraison avant de poursuivre."
+                    : checkout
+                      ? "Review your address and each seller’s order. This checkout is simulated: no money will be charged."
+                      : smartPage
+                        ? "Compare the complete cost, including shipping. Review every change before applying it to your cart."
+                        : "Your cards, grouped by seller. Check minimums and shipping before you continue."
+                }
+              />
+            )}
             {!!lines.length && quote && !checkout && (
               <a className="troc-editorial-text-link" href="#cart-summary">
                 {locale === "fr"
@@ -527,12 +552,12 @@ export function CommerceApp({ path }: { path: string }) {
                       )}
                     </>
                   )}
-                  <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+                  <div className="troc-commerce-layout grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
                     <CartGroups
                       quote={quote}
                       locale={locale}
                       change={change}
-                      readOnly={!quoteFresh}
+                      readOnly={!quoteFresh || (embeddedCart && busy)}
                     />
                     <aside
                       id="cart-summary"
@@ -771,8 +796,8 @@ export function CommerceApp({ path }: { path: string }) {
             )}
           </>
         )}
-      </main>
-      <MarketplaceFooter locale={locale} />
+      </Container>
+      {!embeddedCart && <MarketplaceFooter locale={locale} />}
     </div>
   );
 }
