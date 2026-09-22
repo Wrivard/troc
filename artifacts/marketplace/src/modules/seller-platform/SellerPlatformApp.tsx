@@ -4,13 +4,23 @@ import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { api } from "../../api";
+import { formatCad } from "./money";
 import "./seller-platform.css";
 type Application = {
   id: string;
   contact_name: string;
   status: string;
   province: string;
-  profile: { displayName?: string; inventorySize?: number };
+  seller_type?: string;
+  profile: {
+    displayName?: string;
+    inventorySize?: number;
+    channels?: string[];
+    games?: string[];
+    platforms?: string[];
+    salesRange?: string;
+    taxRegistered?: boolean;
+  };
   review_note: string | null;
 };
 type Seller = {
@@ -48,18 +58,17 @@ export function SellerPlatformApp({
     [dashboard, setDashboard] = useState<Dashboard | null>(null),
     [team, setTeam] = useState<Member[]>([]),
     [error, setError] = useState(""),
+    [loadError, setLoadError] = useState(false),
+    [adminPage, setAdminPage] = useState(0),
     [busy, setBusy] = useState(false),
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
-  const money = (v: string) =>
-    new Intl.NumberFormat(fr ? "fr-CA" : "en-CA", {
-      style: "currency",
-      currency: "CAD",
-    }).format(Number(v) / 100);
+  const money = (v: string) => formatCad(v, locale);
   useEffect(() => {
     let cancelled = false;
     setLoaded(false);
     setError("");
+    setLoadError(false);
     setApplications([]);
     setSellers([]);
     const load = async () => {
@@ -67,7 +76,7 @@ export function SellerPlatformApp({
         if (view === "apply" || view === "admin") {
           const data = await api<Application[]>(
             view === "admin"
-              ? "/admin/seller-applications"
+              ? `/admin/seller-applications?page=${adminPage}`
               : "/seller/applications",
           );
           if (!cancelled) setApplications(data);
@@ -83,6 +92,7 @@ export function SellerPlatformApp({
           }
         }
       } catch {
+        if (!cancelled) setLoadError(true);
         if (!cancelled)
           setError(
             t(
@@ -98,7 +108,7 @@ export function SellerPlatformApp({
     return () => {
       cancelled = true;
     };
-  }, [view, revision, locale]);
+  }, [view, revision, locale, adminPage]);
   useEffect(() => {
     let cancelled = false;
     setDashboard(null);
@@ -114,6 +124,7 @@ export function SellerPlatformApp({
           else setDashboard(data as Dashboard);
         }
       } catch {
+        if (!cancelled) setLoadError(true);
         if (!cancelled)
           setError(
             t(
@@ -210,7 +221,7 @@ export function SellerPlatformApp({
         </nav>
         {error && <p role="alert">{error}</p>}
         {!loaded && <p role="status">{t("Loading…", "Chargement…")}</p>}
-        {view === "apply" && loaded && !error && (
+        {view === "apply" && loaded && !loadError && (
           <>
             <p>
               {t(
@@ -347,17 +358,41 @@ export function SellerPlatformApp({
             )}
           </>
         )}
-        {view === "admin" && loaded && !error && (
+        {view === "admin" && loaded && !loadError && (
           <>
             <p>
               {t(
-                "Latest 50 applications. Each decision requires a review note visible to the applicant.",
-                "Les 50 dernières demandes. Chaque décision exige une note visible au demandeur.",
+                "Applications are shown 50 per page. Each decision requires a review note visible to the applicant.",
+                "Les demandes sont affichées par pages de 50. Chaque décision exige une note visible au demandeur.",
               )}
             </p>
+            <nav aria-label={t("Application pages", "Pages de demandes")}>
+              <Button
+                variant="secondary"
+                disabled={busy || adminPage === 0}
+                onClick={() => setAdminPage((page) => page - 1)}
+              >
+                {t("Previous page", "Page précédente")}
+              </Button>
+              <span>
+                {t("Page", "Page")} {adminPage + 1}
+              </span>
+              <Button
+                variant="secondary"
+                disabled={
+                  busy || applications.length < 50 || adminPage >= 10000
+                }
+                onClick={() => setAdminPage((page) => page + 1)}
+              >
+                {t("Next page", "Page suivante")}
+              </Button>
+            </nav>
             {!applications.length && (
               <p>
-                {t("No applications yet.", "Aucune demande pour le moment.")}
+                {t(
+                  "No applications on this page.",
+                  "Aucune demande sur cette page.",
+                )}
               </p>
             )}
             {applications.map((a) => (
@@ -366,6 +401,67 @@ export function SellerPlatformApp({
                 <p>
                   {a.contact_name} · {a.province} · {status(a.status, fr)}
                 </p>
+                <dl className="seller-application-details">
+                  {[
+                    [
+                      t("Requested seller type", "Type de vendeur demandé"),
+                      a.seller_type
+                        ? (
+                            {
+                              individual: t("Individual", "Particulier"),
+                              professional: t("Professional", "Professionnel"),
+                              verified_online: t(
+                                "Online seller (review required)",
+                                "Vendeur en ligne (examen requis)",
+                              ),
+                              verified_hobby_shop: t(
+                                "Hobby shop (review required)",
+                                "Boutique (examen requis)",
+                              ),
+                            } as Record<string, string>
+                          )[a.seller_type]
+                        : undefined,
+                    ],
+                    [
+                      t("Store URLs", "URL de boutiques"),
+                      a.profile.channels?.join(", "),
+                    ],
+                    [t("Games", "Jeux"), a.profile.games?.join(", ")],
+                    [
+                      t("Inventory tools", "Outils d’inventaire"),
+                      a.profile.platforms?.join(", "),
+                    ],
+                    [
+                      t(
+                        "Approximate inventory units",
+                        "Quantité approximative en inventaire",
+                      ),
+                      a.profile.inventorySize?.toLocaleString(
+                        fr ? "fr-CA" : "en-CA",
+                      ),
+                    ],
+                    [
+                      t("Sales range", "Volume de ventes"),
+                      a.profile.salesRange,
+                    ],
+                    [
+                      t(
+                        "Sales-tax registration declared",
+                        "Inscription aux taxes déclarée",
+                      ),
+                      a.profile.taxRegistered === undefined
+                        ? undefined
+                        : a.profile.taxRegistered
+                          ? t("Yes", "Oui")
+                          : t("No", "Non"),
+                    ],
+                  ].map(([label, value]) => (
+                    <div key={label}>
+                      <dt>{label}</dt>
+                      <dd>{value || t("Not provided", "Non fourni")}</dd>
+                    </div>
+                  ))}
+                </dl>
                 {a.status === "submitted" && (
                   <form
                     onSubmit={(e) => {
@@ -411,7 +507,7 @@ export function SellerPlatformApp({
             ))}
           </>
         )}
-        {["dashboard", "team"].includes(view) && loaded && !error && (
+        {["dashboard", "team"].includes(view) && loaded && !loadError && (
           <>
             <label>
               {t("Seller", "Vendeur")}
@@ -444,7 +540,7 @@ export function SellerPlatformApp({
             )}
           </>
         )}
-        {view === "dashboard" && dashboard && !error && (
+        {view === "dashboard" && dashboard && !loadError && (
           <>
             <h2>{dashboard.account.display_name}</h2>
             <dl>
@@ -496,7 +592,7 @@ export function SellerPlatformApp({
             </p>
           </>
         )}
-        {view === "team" && seller && !error && (
+        {view === "team" && seller && !loadError && (
           <>
             <p>
               {t(

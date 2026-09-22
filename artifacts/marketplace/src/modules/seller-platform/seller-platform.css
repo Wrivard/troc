@@ -116,3 +116,16 @@
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
+.seller-platform .seller-application-details {
+  display: block;
+}
+.seller-platform .seller-application-details > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 1rem;
+  margin-block: 0.75rem;
+}
+.seller-platform .seller-application-details dd {
+  overflow-wrap: anywhere;
+  font-weight: 400;
+}
