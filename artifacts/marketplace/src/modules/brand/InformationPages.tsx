@@ -96,10 +96,10 @@ const pages: Record<string, Content> = {
     ],
     sections: [
       {
-        title: ["250 founding sellers", "250 vendeurs fondateurs"],
+        title: ["Build with TROC", "Bâtissez avec TROC"],
         body: [
-          "The first 250 approved founding sellers receive Pro free forever. Approval is required; viewing this page or creating a buyer account does not reserve a place.",
-          "Les 250 premiers vendeurs fondateurs approuvés recevront Pro gratuitement à vie. Une approbation est requise; consulter cette page ou créer un compte acheteur ne réserve pas de place.",
+          "Help shape the seller experience from the start. Seller approval requires a review; creating a buyer account does not approve you as a seller or grant program benefits.",
+          "Contribuez à façonner l’expérience vendeur dès le départ. Une candidature doit être examinée; créer un compte acheteur ne vous approuve pas comme vendeur et ne donne aucun avantage du programme.",
         ],
       },
       {
@@ -381,13 +381,14 @@ export function InformationPage({ path }: { path: string }) {
         {path === "/founding-sellers" && (
           <aside className="troc-founder-callout">
             <strong>
-              250 <span>{pair(["spots.", "places."])}</span>
+              {pair(["Build", "Bâtir"])}{" "}
+              <span>{pair(["together.", "ensemble."])}</span>
             </strong>
-            <h2>{pair(["Pro forever.", "Pro à vie."])}</h2>
+            <h2>{pair(["Shape what comes next.", "Façonnez la suite."])}</h2>
             <p>
               {pair([
-                "Founding sellers. Pro free forever, with approval.",
-                "Vendeurs fondateurs. Pro gratuit à vie, sur approbation.",
+                "An invitation to help shape TROC’s seller experience. Program terms and any benefits remain to be confirmed.",
+                "Une invitation à façonner l’expérience vendeur TROC. Les modalités du programme et les avantages éventuels restent à confirmer.",
               ])}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -422,8 +423,8 @@ export function InformationPage({ path }: { path: string }) {
                 ],
                 [
                   "03",
-                  "Approved founding sellers get Pro forever",
-                  "Les vendeurs fondateurs approuvés reçoivent Pro à vie",
+                  "Seller access follows approval",
+                  "L’accès vendeur suit l’approbation",
                 ],
               ].map(([n, en, fr]) => (
                 <div key={n}>
