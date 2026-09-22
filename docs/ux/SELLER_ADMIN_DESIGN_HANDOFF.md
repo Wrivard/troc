@@ -11,3 +11,7 @@ Author validation: marketplace TypeScript PASS; repository lint PASS; marketplac
 Preview: http://127.0.0.1:4313/admin/seller-applications?lang=fr . API responses must be mocked as in the test; this preview alone does not provide an admin identity. All test POSTs intercepted; no real decisions saved. These checks do not establish hosted authorization, database persistence or production readiness.
 
 Independent UX retest and A integration remain pending. A owns pushes/deployments under the current serialized release gate. Prelaunch belongs C and orders belong A; Design made no changes to either. Unrelated generated inventory timing output and dependency log excluded.
+
+## Independent review result
+
+UX auditor independently passed AD01–AD03 on exact application commit bdca5bf and preview 4313. See build-pack UX-AUDIT/25-ADMIN-REVALIDATION-bdca5bf.md and evidence 120: existing note, required empty decision with zero POST before choice, both decision values, hidden short-page pager and 50→1→50 navigation; EN/FR 390/1440 without overflow. Source and HEAD unchanged during review. All admin responses mocked, no real decision saved. Ready for A integration; hosted persistence/Auth and release readiness remain separate gates. This supersedes the pending independent review statement above.
