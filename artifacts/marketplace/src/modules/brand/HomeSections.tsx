@@ -184,7 +184,7 @@ export function HomeSections({
           </p>
         </div>
       </section>
-      <div className="troc-value-rail light">
+      <div className="troc-value-rail">
         {(
           [
             [

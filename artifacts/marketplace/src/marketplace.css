@@ -1466,11 +1466,11 @@ main {
   }
 }
 
-/* Homepage vision: a white opening in light mode, quiet surfaces in dark mode. */
+/* User correction: hero and values inherit the actual page background in both themes. */
 .troc-home-hero {
-  background: var(--surface);
+  background: transparent;
   padding: clamp(1.5rem, 4vw, 3.5rem);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
 }
 .troc-home-hero::before {
   content: none;
@@ -1503,7 +1503,7 @@ main {
 }
 
 .troc-home-editorial .troc-value-rail {
-  background: var(--surface);
+  background: transparent;
   color: var(--text-primary);
   padding: var(--space-6);
   border: 0;
