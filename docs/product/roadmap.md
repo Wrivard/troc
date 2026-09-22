@@ -9,7 +9,7 @@ Milestones 1–3 are complete for sequencing per the user. Existing hosted activ
 | 2 | Catalog + Public Marketplace | Existing implementation and approved bounded sample |
 | 2.5 | Marketplace polish | Existing completed polish |
 | 3 | Low-Value Commerce | Existing local cart/Smart Cart/checkout; hosted authenticated activation blocked |
-| **3.5** | **Frictionless Seller Inventory & Integration-Ready Architecture** | **In development — current authorized milestone** |
+| **3.5** | **Frictionless Seller Inventory & Integration-Ready Architecture** | **Implemented/audited and application deployed; hosted activation In development** |
 | 4 | Seller Platform | In development in a separate task: bounded applications/manual approval/teams/dashboard. Reuse 3.5 inventory; broader scope remains planned |
 | 4.5 | Seller API & Live-Sync Foundation | Planned; public credentials, signed webhooks, delivery/retry workers and sync health |
 | 5 | Collector + Trust | Planned |

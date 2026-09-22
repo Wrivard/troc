@@ -1,6 +1,8 @@
 # Milestone 3.5 audit
 
-Date: 2026-09-22. Status: **In development for hosted activation — local implementation, audit and combined design integration verified; hosted deployment verification pending**.
+Date: 2026-09-22. Status: **Implementation and audit complete; application deployed and verified. Hosted inventory activation remains In development** because database/authentication prerequisites are unavailable.
+
+Release code: `e8b8b9209a5bd576376ba8f5c3331a62d6c3a574`, including final design code `9f4f58e` and design evidence `e236c29`. Vercel reported successful deployment. **20 live page checks passed** across homepage, search, cart, Smart Cart and seller inventory at 390/1280 widths in EN/FR. The inventory page fails closed with an honest unavailable/access state; no hosted authenticated inventory write is claimed. Evidence: `verification/inventory-live.json`.
 
 ## Architectural result
 

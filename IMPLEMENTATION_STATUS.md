@@ -6,7 +6,7 @@ Status: **In development** for hosted activation; local implementation and audit
 
 - Added source/external identifiers, versioned stock edits, canonical-only manual listings, generic CSV mapping/preview/publish, seller inventory search/filters/bulk actions and durable inventory state events.
 - Preserved canonical catalog/listing separation and all existing commerce flows. Existing inventory identifiers are unchanged.
-- Combined validation after merging design code `9f4f58e` and evidence `e236c29`: 70 tests pass, including 100/1,000/10,001-row imports and prior commerce regressions; 13 inventory browser cases, type checking, lint, full production builds and bundled SSR smoke checks pass. Hosted verification remains pending. See [the audit](docs/MILESTONE_3_5_AUDIT.md).
+- Combined validation after merging design code `9f4f58e` and evidence `e236c29`: 70 tests pass, including 100/1,000/10,001-row imports and prior commerce regressions; 13 inventory browser cases, type checking, lint, full production builds and bundled SSR smoke checks pass. Release `e8b8b92` deployed successfully on Vercel; 20 live checks passed with inventory correctly unavailable until hosted activation. See [the audit](docs/MILESTONE_3_5_AUDIT.md).
 - Hosted activation still requires the existing Supabase/database configuration plus migration 0008. Source names do not imply live integrations. Graded-card creation and real integration delivery remain outside this bounded workflow.
 - Master roadmap: [docs/product/roadmap.md](docs/product/roadmap.md). Internal docs: [docs/README.md](docs/README.md).
 
@@ -21,7 +21,7 @@ Implementation and activation statuses are distinguished below.
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
 | 2.5 — Marketplace polish | implemented | Approved bounded sample: 159 products, 324 local responsive renditions; real-art/browser audit passed; production catalog remains unapproved |
 | 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
-| 3.5 — Seller Inventory | implemented locally; hosted activation blocked | Versioned inventory, raw-single listings, reviewed CSV import and events; deployment verification pending |
+| 3.5 — Seller Inventory | implemented/audited; application deployed; hosted activation blocked | Versioned inventory, raw-single listings, reviewed CSV import and events; 20 live page checks passed |
 | Design / UX / brand polish | implemented | Bilingual marketplace composition, shared navigation/footer, existing commerce polish, explicit roadmap states; no new product milestone |
 | 4 — Seller Platform | In development in separate worktree | Bounded application/manual approval/team/dashboard scope; not integrated; broader milestone remains planned |
 | 4.5 — Seller API + Live Sync | Planned | Credentials, signed delivery/retries and live synchronization |
