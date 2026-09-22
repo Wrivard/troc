@@ -57,6 +57,7 @@ export function PublicClient({ path }: { path: string }) {
           {error ? (
             <div role="alert">
               <PremiumEmptyState
+                level={1}
                 title={
                   locale === "fr"
                     ? error === "notFound"

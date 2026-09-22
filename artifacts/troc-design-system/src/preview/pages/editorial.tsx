@@ -205,6 +205,21 @@ export default function EditorialPage() {
           cards={pieces.slice(0, 1)}
         />
       </Section>
+      <Section
+        title={fr ? "GameHero · sans visuel" : "GameHero · without artwork"}
+      >
+        <GameHero
+          level={2}
+          title="Riftbound"
+          eyebrow="TROC · DEMO"
+          description={
+            fr
+              ? "La navigation reste accessible sans réserver une zone d’image vide."
+              : "Navigation stays available without reserving an empty artwork area."
+          }
+          cards={[]}
+        />
+      </Section>
       <Section title="SmartCartComparison">
         <SmartCartComparison
           before={{ cards: 675, shipping: 750, sellers: 3 }}

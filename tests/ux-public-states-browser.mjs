@@ -16,6 +16,7 @@ try {
         );
         await p.goto(`http://localhost:4313/search?lang=${lang}`);
         await expect(p.getByRole("alert")).toBeVisible();
+        await expect(p.locator("main h1")).toBeVisible();
         await expect(p.locator("header")).toBeVisible();
         await expect(p.locator("footer")).toBeVisible();
         const home = p.getByRole("alert").locator("a");

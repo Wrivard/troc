@@ -1855,6 +1855,7 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
   transform: rotate(9deg);
   background: var(--surface);
 }
+.troc-premium-empty h1,
 .troc-premium-empty h2 {
   font-size: clamp(1.5rem, 2.8vw, 2rem);
   font-weight: 600;
@@ -2066,6 +2067,8 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
 .troc-purchase-summary-note { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5; }
 .troc-purchase-summary-action .troc-button { min-height: 44px; white-space: normal; text-align: center; }
 @media (max-width: 420px) { .troc-purchase-summary-row { gap: var(--space-3); } .troc-purchase-summary-action { max-width: 52%; } }
+
+.troc-game-hero[data-has-art="false"] { grid-template-columns: minmax(0, 1fr); min-height: 0; }
 
 /* marketplace-progress.css */
 /* Seller & shipping progress — thin wrappers over the shared Progress bar. */
