@@ -1,6 +1,8 @@
 import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import assert from "node:assert/strict";
+import process from "node:process";
+const origin = process.env.PRELAUNCH_ORIGIN || "http://127.0.0.1:5312";
 const browser = await chromium.launch({ headless: true, channel: "chrome" });
 let cases = 0;
 try {
@@ -31,7 +33,7 @@ try {
           "/withdraw",
           "/admin",
         ]) {
-          await page.goto("http://127.0.0.1:5312/early-access" + path);
+          await page.goto(origin + "/early-access" + path);
           await page.locator("h1").waitFor();
           await page.waitForTimeout(350); // Let the existing persisted-theme transition settle.
           assert.equal(
@@ -76,7 +78,7 @@ try {
             await page.locator("[role=status] code").waitFor();
             const code = await page.locator("[role=status] code").textContent();
             assert.equal(code.length, 43);
-            await page.goto("http://127.0.0.1:5312/early-access/withdraw");
+            await page.goto(origin + "/early-access/withdraw");
             await page.locator("[name=kind]").selectOption(path.slice(1));
             await page.locator("[name=withdrawal]").fill(code);
             await page.locator("form button").click();

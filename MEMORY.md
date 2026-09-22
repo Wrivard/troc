@@ -2,6 +2,10 @@
 
 Updated: 2026-09-22. This note preserves context across conversations using this project. Update it when scope, decisions, or verified progress changes. Do not record credentials here.
 
+## Current combined candidate — local review only
+
+Seller fixes1be237f and growth fixesb85c786 are now combined in A's isolated checkout. Growth is wired behind explicit default-off PRELAUNCH_ENABLED/PRELAUNCH_SCHEMA_READY and existing server auth/database/signing prerequisites.97combined tests,lint,typecheck,fullbuild and bundledSSR pass; 40integrated growth responsive/axe cases,16capture/withdrawflows and EN/FR consent-journey checks pass. Independent reviews closed seller C01–C04 and growth B01–B04 locally; C05 seller/team pagination remains B-owned and must pass C retest. A's verified identity/transaction adapter is shared without changing its behavior. No production activation or release; main remains512a37e. Review evidence lives in parent MILESTONE-REVIEWS.
+
 ## Mandatory review gate and current integration — 2026-09-22
 
 The user now requires deep reciprocal milestone reviews, fixes, independent retests, realistic stress/recovery evidence and all readiness criteria before release or any next milestone. A holds B/C releases. B reviews C and A's integration; C reviews B including integration fixes; A reviews combined contracts/migrations/3.5 compatibility. Reports live in the build-pack MILESTONE-REVIEWS/{A,B,C}/. Read the latest docs/COORDINATION.md or live parent copy before acting.
@@ -57,4 +61,6 @@ This conversation added memory and discovery pointers only. It has not implement
 ## Resuming in another conversation
 
 Read this file, `AGENTS.md`, `IMPLEMENTATION_STATUS.md`, and the source specifications. Recheck the working tree and current evidence before acting; this note is context, not proof that pending work has been completed. Keep the stop-after-3.5 boundary unless the user changes it.
+
+
 

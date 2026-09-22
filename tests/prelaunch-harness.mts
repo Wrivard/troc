@@ -7,6 +7,8 @@ import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { prelaunchRouter } from "../artifacts/api-server/src/routes/prelaunch";
 import type { Sql } from "../artifacts/api-server/src/modules/commerce/data";
+const apiPort = Number(process.env.PRELAUNCH_API_PORT || 4312);
+const uiPort = Number(process.env.PRELAUNCH_UI_PORT || 5312);
 const db = new PGlite({ extensions: { pg_trgm } }),
   dir = new URL("../lib/db/migrations/", import.meta.url);
 for (const f of (await readdir(dir)).filter((f) => f.endsWith(".sql")).sort())
@@ -37,12 +39,12 @@ app.use(
     {
       enabled: true,
       databaseReady: true,
-      appOrigin: "http://127.0.0.1:5312",
+      appOrigin: `http://127.0.0.1:${uiPort}`,
       signingKey: "local-harness-only-not-a-production-secret",
     },
   ),
 );
-const server = app.listen(4312, "127.0.0.1");
+const server = app.listen(apiPort, "127.0.0.1");
 const entry = fileURLToPath(
   new URL(
     "../artifacts/marketplace/src/modules/prelaunch/harness-entry.tsx",
@@ -53,30 +55,35 @@ const vite = await createServer({
   root: fileURLToPath(new URL("../artifacts/marketplace/", import.meta.url)),
   server: {
     host: "127.0.0.1",
-    port: 5312,
+    port: uiPort,
     strictPort: true,
-    proxy: { "/api": "http://127.0.0.1:4312" },
+    proxy: { "/api": `http://127.0.0.1:${apiPort}` },
   },
-  plugins: [
-    {
-      name: "prelaunch-isolated-harness",
-      configureServer(server) {
-        server.middlewares.use(async (req, res, next) => {
-          if (!req.url?.startsWith("/early-access")) return next();
-          res.setHeader("Content-Type", "text/html");
-          res.end(
-            await server.transformIndexHtml(
-              req.url,
-              `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>TROC early access test</title></head><body><div id="root"></div><script type="module" src="/@fs/${entry}"></script></body></html>`,
-            ),
-          );
-        });
-      },
-    },
-  ],
+  plugins:
+    process.env.PRELAUNCH_INTEGRATED === "1"
+      ? []
+      : [
+          {
+            name: "prelaunch-isolated-harness",
+            configureServer(server) {
+              server.middlewares.use(async (req, res, next) => {
+                if (!req.url?.startsWith("/early-access")) return next();
+                res.setHeader("Content-Type", "text/html");
+                res.end(
+                  await server.transformIndexHtml(
+                    req.url,
+                    `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>TROC early access test</title></head><body><div id="root"></div><script type="module" src="/@fs/${entry}"></script></body></html>`,
+                  ),
+                );
+              });
+            },
+          },
+        ],
 });
 await vite.listen();
-console.log("Prelaunch local-only harness: http://127.0.0.1:5312/early-access");
+console.log(
+  `Prelaunch local-only preview: http://127.0.0.1:${uiPort}/early-access`,
+);
 for (const signal of ["SIGTERM", "SIGINT"] as const)
   process.on(signal, async () => {
     await vite.close();

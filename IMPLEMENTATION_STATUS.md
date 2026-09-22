@@ -32,7 +32,7 @@ Implementation and activation statuses are distinguished below.
 | 5 — Collector + Trust | deferred | Not started |
 | 5.5 — Founding Seller + Referrals | Planned | Qualified contribution and configurable benefits |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
-| 6.5 — Prelaunch Growth | In development in separate worktree | Isolated waitlists/private leads/consent/cohorts; not integrated |
+| 6.5 — Prelaunch Growth | In development in separate worktree | Waitlists/private leads/consent/cohorts locally integrated behind default-off gates; independent final integration review pending |
 | 7.5 — Wishlist + Demand | Planned | Demand matching and privacy-safe alerts |
 | 8.5 — Smart Cart Expansion | Planned | Extend the existing Milestone 3 optimizer |
 | 9.5 — Canadian Market Data | Planned | Legitimate transaction-derived data |
@@ -168,4 +168,5 @@ Implemented: shared depth-aware card stack; whole-card marketplace links; larger
 Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.
 
 Release gate: 59 domain tests, typecheck, lint, full workspace build, Vercel build, 400 responsive route cases, 96 artwork cases, 12 local commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Touch, avatar bounds, keyboard card navigation and mobile heading order also passed. Production verification: 40 route cases plus 3 guest cart/Smart Cart cases passed; hosted authenticated checkout remains explicitly unavailable. See `verification/design-quality-live.json` and `DESIGN_QUALITY_REVIEW.md`.
+
 

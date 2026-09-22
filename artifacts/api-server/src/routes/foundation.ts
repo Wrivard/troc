@@ -14,6 +14,7 @@ import { DomainError } from "../modules/shared/domain";
 import { pool } from "@workspace/db";
 import { commerceRouter, commerceQuoteRouter } from "./commerce";
 import { inventoryRouter } from "./inventory";
+import { principal, transactionStore } from "../modules/auth/runtime";
 const router = Router();
 router.use((_req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
@@ -100,35 +101,12 @@ router.get("/auth/callback", async (req, res) => {
   if (error) throw new DomainError("auth_failed");
   res.redirect(`${process.env.APP_ORIGIN}/account`);
 });
-async function principal(req: Request, res: Response) {
-  const { data, error } = await authClient(req, res).auth.getUser();
-  if (error || !data.user) throw new DomainError("unauthorized", 401);
-  return ensureBuyer(data.user);
-}
 router.get("/account", async (req, res) =>
   res.json(await account(await principal(req, res))),
 );
 router.patch("/account/preferences", async (req, res) =>
   res.json(await savePreferences(await principal(req, res), req.body)),
 );
-const transactionStore = {
-  transaction: async <T>(
-    work: (db: import("../modules/commerce/data").Sql) => Promise<T>,
-  ): Promise<T> => {
-    const client = await pool.connect();
-    try {
-      await client.query("BEGIN");
-      const result = await work(client);
-      await client.query("COMMIT");
-      return result;
-    } catch (error) {
-      await client.query("ROLLBACK");
-      throw error;
-    } finally {
-      client.release();
-    }
-  },
-};
 const sellerPlatform = new SellerPlatformService(pool, transactionStore);
 // Run the shared seller rate limiter before the existing application POST handler.
 router.use(sellerPlatformRouter(pool, transactionStore, principal));

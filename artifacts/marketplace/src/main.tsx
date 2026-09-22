@@ -25,12 +25,37 @@ const SellerPlatformApp = lazy(() =>
     default: m.SellerPlatformApp,
   })),
 );
+const PrelaunchApp = lazy(() =>
+  import("./modules/prelaunch/PrelaunchApp").then((m) => ({
+    default: m.PrelaunchApp,
+  })),
+);
+const prelaunchTitles = {
+  "/early-access": ["Early access", "Accès anticipé"],
+  "/early-access/collector": [
+    "Collector interest",
+    "Intérêt des collectionneurs",
+  ],
+  "/early-access/seller": ["Seller interest", "Intérêt des vendeurs"],
+  "/early-access/withdraw": ["Withdraw consent", "Retirer le consentement"],
+  "/early-access/admin": ["Prelaunch lead review", "Examen des inscriptions"],
+};
+function PrelaunchPage({ path }: { path: keyof typeof prelaunchTitles }) {
+  const { locale } = usePreferences();
+  useEffect(() => {
+    document.title = `${prelaunchTitles[path][locale === "fr" ? 1 : 0]} · TROC`;
+  }, [path, locale]);
+  return <PrelaunchApp path={path} />;
+}
 const Guide = lazy(async () => {
   await import("./style-guide.css");
   return import("@workspace/troc-design-system/preview");
 });
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = window.location.pathname.slice(base.length);
+const prelaunchPath = Object.hasOwn(prelaunchTitles, path)
+  ? (path as keyof typeof prelaunchTitles)
+  : null;
 function SellerPageMetadata({
   view,
 }: {
@@ -74,6 +99,10 @@ createRoot(document.getElementById("root")!).render(
         <Suspense>
           <SellerPageMetadata view={sellerView} />
           <SellerPlatformApp view={sellerView} />
+        </Suspense>
+      ) : prelaunchPath ? (
+        <Suspense>
+          <PrelaunchPage path={prelaunchPath} />
         </Suspense>
       ) : isInformationPage(path) ? (
         <InformationPage path={path} />

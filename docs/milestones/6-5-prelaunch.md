@@ -198,8 +198,11 @@ were restored; no shared source, dependency or configuration changes.
 - Independent B audit found B01 invalid opaque origin, B02 withdrawal sharing
   signup quota, B03 parser errors reported as outage, and B04 missing landing/CTA
   instrumentation plus consent-toggle event inflation. Author fixes cover all
-  four with regression tests. B's independent retest is still required against
-  the new stable commit; these author results alone do not clear the gate.
+  four with regression tests in `b85c786b3115f83dae55bea4b6140d7ba3841c55`.
+  B independently retested that exact SHA and closed B01–B04 locally: 20 adverse/
+  workload checks plus real EN/FR journey/toggle/no-backfill checks passed.
+  Evidence is in build-pack `MILESTONE-REVIEWS/B/REVIEW.md` and its fixed-result
+  JSON/scripts. This does not clear final integration or hosted readiness gates.
 - The new mandatory reciprocal review/release gate applies. Representative
   PostgreSQL capacity/concurrency, hosted auth/database activation, privacy
   operations and final integrated deployment verification remain **BLOCKED** or
@@ -208,3 +211,25 @@ were restored; no shared source, dependency or configuration changes.
 UX audit feedback also led to explicit optional group labels, contact/activity/
 consent sections, grouped age/Canada confirmation, and withdrawal-list/code help.
 The input rules and seller qualification boundary are unchanged.
+
+Independent visual audit rechecked `b85c786` in FR dark mobile (390px) and EN
+desktop (1440px): optional labels, sections, grouped confirmations and withdrawal
+help passed; consent remained unchecked, empty submit focused email, no mobile
+overflow. This targeted review did not submit a valid lead or inspect admin.
+Evidence: build-pack `UX-AUDIT/07-C-REVALIDATION-b85c786.md`.
+
+A now owns integration-only parameterization of `tests/prelaunch-harness.mts`,
+`tests/prelaunch-browser.mjs` and `tests/prelaunch-journey-browser.mjs`, explicitly
+transferred after the stable fix handoff. Production prelaunch modules remain C's
+fix ownership. Shared wiring and final integrated-candidate review are pending.
+
+## A local integration (release held)
+
+The API is mounted at /api/prelaunch after cookies and before the global JSON parser/foundation router. Existing verified principal and transaction adapter moved unchanged into modules/auth/runtime.ts and are reused by foundation and prelaunch. No harness identity enters production. Activation requires PRELAUNCH_ENABLED=true, PRELAUNCH_SCHEMA_READY=true, DATABASE_URL, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, valid APP_ORIGIN and PRELAUNCH_SIGNING_KEY. Schema-ready is an operator assertion after migration verification, not an automatic migration or substitute for the actual DB checks. All flags default off. Never set them solely to make a preview work.
+
+Five exact early-access routes lazy-load under PreferencesProvider; admin/withdrawal shells receive noindex/noarchive, private/no-store and no-referrer hosting policy. API remains authoritative for availability and authorization; a visible client shell does not enable capture. Route titles are bilingual. No homepage/navigation integration or production capture has been enabled.
+
+Independent B retest reports B01–B04 fixed locally atb85c786. Final combined A integration/security/browser checks and independent integration review are pending. Hosted authentication/database, representative PostgreSQL stress, retention/abuse policies and operational recovery remain mandatory BLOCKED gates. No production migration, push, deployment or next milestone.
+
+
+A integration checks:97combinedtests,lint,typecheck,fullproductionbuilds,bundledSSR smoke pass. Actualmain routing passes40responsive EN/FR/theme/axe cases,16capture/withdrawflows and realEN/FR journey/consent-toggle/no-retroactiveevent regressions. Testidentities remain confined to the localharness. Independent combined integration review and all hosted/representativePostgres/operational readiness gates remain pending orblocked.

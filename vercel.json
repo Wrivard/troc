@@ -14,10 +14,11 @@
   },
   "routes": [
     {
-      "src": "^/(?:seller/(?:apply|dashboard|team)|admin/seller-applications)/?$",
+      "src": "^/(?:seller/(?:apply|dashboard|team)|admin/seller-applications|early-access/(?:admin|withdraw))/?$",
       "headers": {
         "Cache-Control": "private, no-store",
-        "X-Robots-Tag": "noindex, noarchive"
+        "X-Robots-Tag": "noindex, noarchive",
+        "Referrer-Policy": "no-referrer"
       },
       "continue": true
     },

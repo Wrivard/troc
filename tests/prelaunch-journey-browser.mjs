@@ -1,7 +1,8 @@
 import { chromium } from "@playwright/test";
 import assert from "node:assert/strict";
 const browser = await chromium.launch({ headless: true, channel: "chrome" });
-const origin = "http://127.0.0.1:5312";
+import process from "node:process";
+const origin = process.env.PRELAUNCH_ORIGIN || "http://127.0.0.1:5312";
 try {
   for (const locale of ["en", "fr"]) {
     const context = await browser.newContext({

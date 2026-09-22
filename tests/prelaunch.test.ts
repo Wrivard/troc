@@ -465,28 +465,22 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
             appOrigin: "file:///tmp/prelaunch",
           }),
         );
-        const server = app.listen(4312, "127.0.0.1");
+        const server = app.listen(0, "127.0.0.1");
         await new Promise<void>((resolve) => server.once("listening", resolve));
+        const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
         try {
           assert.equal(
-            (
-              await fetch(
-                "http://127.0.0.1:4312/off/admin/leads?kind=collector",
-              )
-            ).status,
+            (await fetch(base + "/off/admin/leads?kind=collector")).status,
             503,
           );
           assert.equal(
-            (
-              await fetch(
-                "http://127.0.0.1:4312/api/prelaunch/admin/leads?kind=collector",
-              )
-            ).status,
+            (await fetch(base + "/api/prelaunch/admin/leads?kind=collector"))
+              .status,
             403,
           );
           assert.equal(
             (
-              await fetch("http://127.0.0.1:4312/api/prelaunch/sessions", {
+              await fetch(base + "/api/prelaunch/sessions", {
                 method: "POST",
                 headers: {
                   Origin: "https://evil.test",
@@ -497,20 +491,17 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
             ).status,
             403,
           );
-          const response = await fetch(
-            "http://127.0.0.1:4312/api/prelaunch/sessions",
-            {
-              method: "POST",
-              headers: {
-                Origin: config.appOrigin,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                kind: "collector",
-                analyticsConsent: false,
-              }),
+          const response = await fetch(base + "/api/prelaunch/sessions", {
+            method: "POST",
+            headers: {
+              Origin: config.appOrigin,
+              "Content-Type": "application/json",
             },
-          );
+            body: JSON.stringify({
+              kind: "collector",
+              analyticsConsent: false,
+            }),
+          });
           assert.equal(response.status, 201);
           assert.equal(response.headers.get("cache-control"), "no-store");
           const post = (
@@ -518,7 +509,7 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
             body: string,
             origin = config.appOrigin,
           ) =>
-            fetch("http://127.0.0.1:4312" + path, {
+            fetch(base + path, {
               method: "POST",
               headers: { Origin: origin, "Content-Type": "application/json" },
               body,
