@@ -1,6 +1,17 @@
 import type { CartLine } from "@workspace/commerce";
 import { trackCommerce } from "./analytics";
 const key = "troc.cart.v1";
+/** Hydrate only a genuinely new local cart. Explicit [] is an intentional cart.
+ * Existing malformed data and denied storage never authorize overwriting local intent.
+ * Check at response time so edits made while the account GET is pending win.
+ */
+export function canHydrateCart(): boolean {
+  try {
+    return localStorage.getItem(key) === null;
+  } catch {
+    return false;
+  }
+}
 export function readCart(): CartLine[] {
   try {
     const value: unknown = JSON.parse(localStorage.getItem(key) ?? "[]");

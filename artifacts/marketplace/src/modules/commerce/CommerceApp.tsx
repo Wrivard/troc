@@ -17,7 +17,7 @@ import {
 import { OrderTotals } from "@workspace/troc-design-system/components/ui/order-totals";
 import { SmartCartComparison } from "@workspace/troc-design-system/components/ui/smart-cart";
 import { api } from "../../api";
-import { readCart, writeCart } from "./cart-storage";
+import { canHydrateCart, readCart, writeCart } from "./cart-storage";
 import { trackCommerce } from "./analytics";
 import { CartGroups } from "./CartGroups";
 import { SmartChanges } from "./SmartChanges";
@@ -65,7 +65,7 @@ export function CommerceApp({ path }: { path: string }) {
         if (!active) return;
         setAuthenticated(true);
         setAvailable(data.creditCents);
-        if (!readCart().length && data.lines.length) {
+        if (canHydrateCart() && data.lines.length) {
           setLines(data.lines);
           writeCart(data.lines);
         }
