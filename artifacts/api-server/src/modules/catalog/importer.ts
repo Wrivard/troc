@@ -1,3 +1,4 @@
+import { importImages, validateImages } from "./image-import";
 import { randomUUID } from "node:crypto";
 import type { CatalogImportProvider, ImportRecord } from "@workspace/catalog";
 import { authorize, type Principal } from "../auth/permissions";
@@ -75,6 +76,24 @@ export function validateImport(value: unknown): ImportRecord {
       throw new DomainError("invalid_image_source");
     }
   }
+  if (
+    r.imageScopes !== undefined &&
+    (!Array.isArray(r.imageScopes) ||
+      !r.imageScopes.length ||
+      r.imageScopes.length > 2 ||
+      new Set(r.imageScopes).size !== r.imageScopes.length ||
+      r.imageScopes.some((scope) => !["product", "variant"].includes(scope)) ||
+      r.images === undefined)
+  )
+    throw new DomainError("invalid_image_scopes");
+  if (r.images !== undefined) {
+    validateImages(r.images);
+    if (
+      r.imageScopes &&
+      r.images.some((image) => !r.imageScopes!.includes(image.scope))
+    )
+      throw new DomainError("invalid_image_scopes");
+  }
   return r;
 }
 export interface CatalogSqlClient {
@@ -128,7 +147,7 @@ async function importRecord(
   imagesApproved: boolean,
   demo: boolean,
 ) {
-  if (r.image && !imagesApproved)
+  if ((r.image || r.images?.length) && !imagesApproved)
     throw new DomainError("image_license_unapproved");
   const game = await mapped(db, provider, "game", r.game.key, async () =>
     String(
@@ -258,6 +277,8 @@ async function importRecord(
       [source, variant, r.image.url],
     );
   }
+  if (r.images !== undefined)
+    await importImages(db, provider, product, variant, r.images, r.imageScopes);
   const variants = (
     await db.query(
       `SELECT v.id,p.id AS "printingId",p.language,v.variant_key AS key,v.attributes,COALESCE(p.collector_number,'') AS number,COALESCE(p.rarity,'') AS rarity,COALESCE(p.artist,'') AS artist FROM troc.variants v JOIN troc.printings p ON p.id=v.printing_id WHERE p.product_id=$1 ORDER BY p.language,v.variant_key,v.id`,

@@ -19,3 +19,7 @@
 ## Scope guardrail
 
 This record specifies a reusable visual component only. It does not authorize marketplace pages, business logic, APIs, persistence, optimization, checkout, authentication, or backend work.
+
+## Milestone 2.5 extension
+
+CardImage accepts responsive srcSet/sizes, verified width/height and eager loading. Default grids remain lazy. Cached loads, loading skeletons and failures preserve the approved 63:88 contained frame. The family story includes responsive, loading and missing states; browser tests exercise failures without embedding broken URLs into the guide. No tokens or visual styling changed.

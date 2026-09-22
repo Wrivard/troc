@@ -123,6 +123,7 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
       "0002_backend_access",
       "0003_catalog",
       "0005_catalog_images",
+      "0006_catalog_image_integrity",
     ])
       await db.exec(
         await readFile(

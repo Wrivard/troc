@@ -1,6 +1,6 @@
 # TROC implementation status
 
-Milestones 1 and 2 are approved. **Stop before Milestone 3.** The approved style guide
+Milestones 1 and 2 are approved. Milestone 3 is authorized **after the Milestone 2.5 audit passes**. **Stop before Milestone 4.** The approved style guide
 is locked. Implementation and activation statuses are distinguished below.
 
 | Milestone | Status | Scope |
@@ -9,7 +9,7 @@ is locked. Implementation and activation statuses are distinguished below.
 | 1 — Foundation | implemented | Code/local regression coverage; hosted activation remains blocked |
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
 | 2.5 — Marketplace polish | in progress | Home-logo navigation, image schema/resolver/gallery and price/footer polish implemented; representative live artwork awaits provider approval |
-| 3 — Low-Value Commerce | deferred | Not started; requires explicit approval |
+| 3 — Low-Value Commerce | blocked | Authorized, not started: Phase A requires representative live artwork before its gate can pass |
 | 4 — Seller Platform | deferred | Not started |
 | 5 — Collector + Trust | deferred | Not started |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
@@ -80,3 +80,17 @@ uncaught page errors, plus eight pixel-identical guide comparisons.
 See docs/CATALOG_IMAGES.md for asset contracts, approval boundaries and remaining work.
 
 Additional polish validation: lint passed; 96 public-route accessibility/responsive checks passed; eight standalone/integrated guide comparisons remain pixel-identical.
+
+## Phase A audit — Milestone 2.5
+
+Gate: **blocked**, not complete. The live demo still has 15 fictional products with missing art. Source approval for bounded TCGdex/Scryfall/YGOPRODeck samples is pending. No live-art acceptance is claimed, and Phase B/C commerce implementation/audit has not started.
+
+Fixed after reviewing 900fd18...016dfc7:
+- Responsive image manifests now pass through the authorized, transactional importer into canonical images/renditions. IDs survive reruns/reordering; rejected imports retain prior data. Explicit imageScopes permit safe product/variant removal; a second language cannot erase shared product art.
+- Migration 0006 validates image/product/variant/provenance relationships and prevents rebinding referenced provenance. The read adapter also rejects mismatches. It preserves live-approved legacy imports while never trusting cached imageUrl.
+- Rendition input permits first-party /catalog-art paths or explicitly configured CDN origins; there is no server-side arbitrary-URL fetch. Image-count/rendition-count/dimension/identity validation is bounded.
+- Batched image assembly now uses indexed maps instead of repeatedly scanning every image per variant.
+- CardImage handles cached completion when clearing its loading skeleton. Component family records document the added contracts.
+- New SQL integration tests cover manifest lifecycle, source revocation, provenance mismatch and cross-language shared-image retention. Browser fixtures prove responsive selection, loading stability, sealed containment and variant changes in 12 viewport/locale/theme combinations. These synthetic tests do not replace real-art verification.
+
+Supabase MCP: public/troc contain no application tables; security/performance advisors return no findings. Sentry has no configured project. No hosted migrations or credentials were changed. See docs/MILESTONE_2_5_AUDIT.md.

@@ -2,7 +2,7 @@
 
 - Preserve the approved style guide. Use the numbered product specifications and
   IMPLEMENTATION_STATUS.md to work one approved milestone at a time.
-- The user approved Milestone 2 after reviewing Milestone 1. Stop before Milestone 3.
+- The user authorizes auditing/completing Milestone 2.5, then implementing and auditing Milestone 3. Proceed to Milestone 3 only when Milestone 2.5 passes its gate. Stop before Milestone 4.
 - Push completed, verified changes to https://github.com/Wrivard/troc on `main`.
   This is the user's standing instruction. Never force-push or overwrite unrelated work.
 - The user will connect the repository to Vercel. Keep root deployment configuration

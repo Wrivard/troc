@@ -19,8 +19,9 @@ export interface CatalogImage {
   side: "front" | "back" | "detail";
   url: string;
   sources: { url: string; width: number }[];
-  width: number;
-  height: number;
+  /** Legacy single-URL imports may not provide verified dimensions. */
+  width?: number;
+  height?: number;
   provenance: {
     provider: string;
     externalId: string;
@@ -156,7 +157,21 @@ export interface PublicPage {
   selectedVariantId?: string;
 }
 // Provider payload describes relationships, never supplies canonical primary IDs.
+export interface ImportImage {
+  externalId: string;
+  side: "front" | "back" | "detail";
+  scope: "product" | "variant";
+  sourceUrl: string;
+  license: string;
+  width: number;
+  height: number;
+  sources: { url: string; width: number }[];
+}
 export interface ImportRecord {
+  /** Explicitly clear/replace these scopes; otherwise only supplied scopes (or empty variant) change. */
+  imageScopes?: ("product" | "variant")[];
+  /** Ordered replacement within each targeted provider-owned scope. */
+  images?: ImportImage[];
   externalId: string;
   game: { key: string; name: Text };
   set: { key: string; name: Text; releasedOn: string | null };

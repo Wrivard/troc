@@ -26,3 +26,11 @@ Riftbound requires Riot-authorized API assets. No unofficial art is used. One Pi
 ## Verification
 
 Tests cover ordered rendition retrieval, variant precedence, source revocation, bounded batch reads and fallback behavior. tests/catalog-images-browser.mjs injects existing local reference artwork into isolated Playwright responses only, checks all six public routes in both languages/themes at mobile/tablet/desktop sizes, and exercises gallery controls, broken images and homepage logo links. Its evidence must not be described as live provider imagery.
+
+## Phase A audit corrections
+
+ImportRecord.images now supplies a bounded manifest (up to twelve images per scope and four renditions each). The row-transaction importer checks existing source approval, persists canonical images and rendition URLs, and retains image UUIDs across reruns. By default only scopes represented in the manifest change; an empty manifest clears the variant scope. Explicit imageScopes can clear product scope. Thus importing another language never implicitly deletes shared art. A failed row preserves the previous manifest.
+
+Renditions must be first-party catalog-art paths or HTTPS on an operator-configured CATALOG_ASSET_ALLOWED_ORIGINS origin. This does not grant source/artwork rights and does not fetch remote URLs. Legacy single-URL imports remain readable through live approval checks and retain unknown dimensions rather than inventing them; new manifests must supply verified dimensions.
+
+Migration 0006 adds a legacy-display marker to distinguish old image URLs from removed responsive manifests, validates product/variant/provenance linkage at write time, and disallows rebinding referenced provenance. The resolver repeats identity checks defensively and builds indexed in-memory groups in one pass. Apply migrations 0005 and 0006 before enabling PostgreSQL image responses.

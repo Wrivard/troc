@@ -35,9 +35,12 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
     // we never point <img> at a placeholder/broken URL ourselves.
     const [failed, setFailed] = React.useState(false)
     const [loaded, setLoaded] = React.useState(false)
+    const imageRef = React.useRef<HTMLImageElement>(null)
     React.useEffect(() => {
       setFailed(false)
-      setLoaded(false)
+      // A cached eager image can finish before passive effects run.
+      const image = imageRef.current
+      setLoaded(Boolean(image?.complete && image.naturalWidth > 0))
     }, [src, srcSet])
 
     if (loading) {
@@ -69,7 +72,7 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
     return (
       <span ref={ref} className={cn("troc-card-image", className)} {...props}>
         {!loaded && <Skeleton shape="card" className="troc-card-image-skeleton" />}
-        <img src={src as string} srcSet={srcSet} sizes={sizes} width={width} height={height} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} />
+        <img ref={imageRef} key={`${src}|${srcSet ?? ""}`} src={src as string} srcSet={srcSet} sizes={sizes} width={width} height={height} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} />
       </span>
     )
   }
