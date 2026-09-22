@@ -118,6 +118,17 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
     `,
     },
   });
+  // Bundle the HTTP app without opening a port; keep workspace bundler semantics.
+  await esbuild({
+    entryPoints: [path.resolve(artifactDir, "src/app.ts")],
+    outfile: path.join(distDir, "serverless.cjs"),
+    platform: "node",
+    bundle: true,
+    format: "cjs",
+    external: ["pg-native"],
+    logLevel: "info",
+  });
+
 }
 
 buildAll().catch((err) => {

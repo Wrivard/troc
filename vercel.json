@@ -4,12 +4,12 @@
   "env": {
     "CATALOG_MODE": "demo"
   },
-  "installCommand": "pnpm install --frozen-lockfile --ignore-scripts",
-  "buildCommand": "pnpm --filter @workspace/marketplace build",
+  "installCommand": "corepack pnpm install --frozen-lockfile --ignore-scripts",
+  "buildCommand": "corepack pnpm --filter @workspace/api-server build && corepack pnpm --filter @workspace/marketplace build",
   "outputDirectory": "artifacts/marketplace/dist",
   "functions": {
-    "api/index.ts": {
-      "includeFiles": "artifacts/marketplace/{dist,dist-server}/**"
+    "api/index.js": {
+      "includeFiles": "artifacts/{api-server/dist/serverless.cjs,marketplace/{dist,dist-server}/**}"
     }
   },
   "rewrites": [

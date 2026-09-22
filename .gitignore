@@ -52,3 +52,5 @@ Thumbs.db
 .env.*
 !.env.example
 /verification/*.png
+
+.vercel

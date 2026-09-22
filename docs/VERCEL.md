@@ -2,7 +2,7 @@
 
 Import `Wrivard/troc`, branch `main`, with the **repository root** as Root Directory.
 The root `vercel.json` supplies installation, frontend build, output and API routing.
-Use Node 24. No separate frontend/API Vercel projects are needed.
+Use Node 24 and the pinned pnpm 10.34.5 via Corepack. No separate frontend/API Vercel projects are needed.
 
 The approved `/style-guide` and account routes can render without credentials.
 Account authentication requires the server variables from `.env.example`:
@@ -10,7 +10,7 @@ Account authentication requires the server variables from `.env.example`:
 Set `APP_ORIGIN` to the final HTTPS site origin and register its auth callback in
 Supabase. Never use migration-owner credentials as the runtime database connection.
 
-Vercel runs the existing Express app through `api/index.ts`. Database provisioning
+Vercel runs the existing Express app through `api/index.js`. Database provisioning
 is a separate operator step; builds never run migrations or seed a production database.
 
 This configuration has not yet been deployed to or verified on a live Vercel URL.
@@ -26,3 +26,10 @@ Set PUBLIC_SITE_URL to the canonical HTTPS origin; absent an explicit value, the
 server uses Vercel's production/project URL. APP_ORIGIN must match the account origin.
 Check /, /style-guide, /product/pokemon-northern-spark?lang=fr and /robots.txt after
 connecting Vercel. Domain/database integration is not exercised by the frontend build.
+
+Do not set Root Directory to artifacts/api-server. The existing project was corrected
+to repository root with the Vite preset. Clear dashboard install/build/output overrides;
+use the committed vercel.json. See DEPLOYMENT_REPAIR.md for the frozen-install repair.
+
+Set ENABLE_EXPERIMENTAL_COREPACK=1 in Vercel environments so function tracing also
+uses pinned pnpm. This setting is enabled on the existing project.
