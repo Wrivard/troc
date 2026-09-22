@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import { QuantityControl } from "./quantity-control"
-import { SellerRating } from "./seller-reputation"
+import { cn } from "../../lib/utils";
+import { Button } from "./button";
+import { QuantityControl } from "./quantity-control";
+import { SellerRating } from "./seller-reputation";
 
 /**
  * One seller's offer for a card. Composes seller identity + verification badge,
@@ -15,67 +15,71 @@ import { SellerRating } from "./seller-reputation"
  * never hard-depends on the marketplace/seller badge families. `onAddToCart` is
  * a demo callback only — no real cart, checkout, or persistence.
  */
-export interface SellerOfferRowProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
+export interface SellerOfferRowProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "onChange"
+> {
   /** Translated seller name. */
-  sellerName: string
+  sellerName: string;
+  sellerHref?: string;
+  location?: string;
   /** Seller verification / badge slot (e.g. a SellerBadge). */
-  verification?: React.ReactNode
+  verification?: React.ReactNode;
   /** Rating score; `null` renders the unrated state. */
-  ratingValue: number | null
+  ratingValue: number | null;
   /** Number of reviews backing the score. */
-  ratingCount?: number
+  ratingCount?: number;
   /** Translated accessible name for the rating. */
-  ratingLabel: string
+  ratingLabel: string;
   /** Locale for rating number formatting. */
-  locale?: "en" | "fr"
+  locale?: "en" | "fr";
   /** Condition badge slot (e.g. a ConditionBadge). */
-  condition?: React.ReactNode
+  condition?: React.ReactNode;
   /** Price slot (e.g. a PriceBlock). */
-  price: React.ReactNode
+  price: React.ReactNode;
   /** Translated shipping line. */
-  shipping?: React.ReactNode
+  shipping?: React.ReactNode;
   /** Optional promotion badge slot (e.g. a PromotionBadge). */
-  promotion?: React.ReactNode
+  promotion?: React.ReactNode;
 
   /** Controlled quantity value. */
-  quantity?: number
+  quantity?: number;
   /** Uncontrolled initial quantity. */
-  defaultQuantity?: number
-  onQuantityChange?: (value: number) => void
-  maxQuantity?: number
+  defaultQuantity?: number;
+  onQuantityChange?: (value: number) => void;
+  maxQuantity?: number;
   /** Translated accessible name for the quantity field. */
-  quantityLabel: string
-  quantityDecrementLabel: string
-  quantityIncrementLabel: string
+  quantityLabel: string;
+  quantityDecrementLabel: string;
+  quantityIncrementLabel: string;
 
   /** Translated Add-to-Cart label. */
-  addToCartLabel: string
+  addToCartLabel: string;
   /** Demo-only callback fired when Add to Cart is pressed. */
-  onAddToCart?: () => void
+  onAddToCart?: () => void;
 
   /** Selected/active row state. */
-  selected?: boolean
+  selected?: boolean;
   /** Out-of-stock: hides quantity/cart and shows an unavailable message. */
-  unavailable?: boolean
+  unavailable?: boolean;
   /** Translated unavailable message shown when `unavailable`. */
-  unavailableLabel?: string
+  unavailableLabel?: string;
   /** Disable the offer's interactive controls. */
-  disabled?: boolean
+  disabled?: boolean;
   /**
    * Pending Add-to-Cart state: shows the button's spinner, disables the
    * quantity + action, and marks the row `aria-busy`. Visual/demo only — never
    * a real transaction.
    */
-  loading?: boolean
+  loading?: boolean;
   /**
    * Translated status message announced while `loading` (e.g. "Adding to
    * cart…"). Required whenever `loading` is used so the busy state has a
    * meaningful accessible name; no English default is assumed.
    */
-  loadingLabel?: string
+  loadingLabel?: string;
   /** Force a static preview state for the style guide. */
-  previewState?: "hover" | "focus"
+  previewState?: "hover" | "focus";
 }
 
 const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
@@ -83,6 +87,8 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
     {
       className,
       sellerName,
+      sellerHref,
+      location,
       verification,
       ratingValue,
       ratingCount,
@@ -110,9 +116,9 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
       previewState,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const controlsDisabled = disabled || unavailable || loading
+    const controlsDisabled = disabled || unavailable || loading;
 
     return (
       <article
@@ -128,9 +134,14 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
       >
         <div className="troc-offer-seller">
           <div className="troc-offer-seller-head">
-            <span className="troc-offer-seller-name">{sellerName}</span>
-            {verification ? <span className="troc-offer-badges">{verification}</span> : null}
+            <span className="troc-offer-seller-name">
+              {sellerHref ? <a href={sellerHref}>{sellerName}</a> : sellerName}
+            </span>
+            {verification ? (
+              <span className="troc-offer-badges">{verification}</span>
+            ) : null}
           </div>
+          {location && <p className="troc-offer-location">{location}</p>}
           <div className="troc-offer-seller-meta">
             <SellerRating
               value={ratingValue}
@@ -139,14 +150,20 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
               locale={locale}
               format="compact"
             />
-            {condition ? <span className="troc-offer-badges">{condition}</span> : null}
+            {condition ? (
+              <span className="troc-offer-badges">{condition}</span>
+            ) : null}
           </div>
-          {shipping ? <span className="troc-offer-shipping">{shipping}</span> : null}
+          {shipping ? (
+            <span className="troc-offer-shipping">{shipping}</span>
+          ) : null}
         </div>
 
         <div className="troc-offer-detail">
           {price}
-          {promotion ? <span className="troc-offer-promotion">{promotion}</span> : null}
+          {promotion ? (
+            <span className="troc-offer-promotion">{promotion}</span>
+          ) : null}
           {unavailable && unavailableLabel ? (
             <span className="troc-offer-unavailable" role="status">
               {unavailableLabel}
@@ -183,9 +200,9 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
           </div>
         )}
       </article>
-    )
-  }
-)
-SellerOfferRow.displayName = "SellerOfferRow"
+    );
+  },
+);
+SellerOfferRow.displayName = "SellerOfferRow";
 
-export { SellerOfferRow }
+export { SellerOfferRow };

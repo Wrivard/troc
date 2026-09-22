@@ -135,3 +135,11 @@ The earlier demo-source blocker is resolved by explicit user approval (attachmen
 Actual art passed 96 Playwright cases over eight routes, three widths, EN/FR and dark/light. File-level tests verify every rendition's actual width and aspect ratio. Seller-card mobile spacing was corrected in the reusable style-guide component without changing visual tokens. Both frozen installs, 51 tests, typecheck, lint, production build and Vercel build pass. One Piece/Riftbound retain permitted fallbacks; selected providers do not cleanly supply sealed samples, so those remain fictional fixtures. No production catalog, real pricing feed or payment integration is approved.
 
 See docs/DEMO_CATALOG_APPROVAL.md and verification/real-art-browser.json. Earlier Phase A blockers below/above are historical; this approval supersedes the representative-demo artwork blocker only.
+
+## Design quality pass — 2026-09-22
+
+Status: **implemented**, release verification in progress. See [DESIGN_QUALITY_REVIEW.md](DESIGN_QUALITY_REVIEW.md) for critical route review, iterations and evidence.
+
+Implemented: shared depth-aware card stack; whole-card marketplace links; larger game destinations; realistic labelled how-it-works examples; Smart Cart price/shipping comparison; seller previews; compact game heroes; sticky product decisions and compact reference history; unclipped storefront identity; seller/binder/auth/empty-state compositions; desktop/mobile filter hierarchy. Original logo, palette, type, Canadian story and footer preserved. EN/FR and theme preference retained. No new marketplace milestone business scope.
+
+Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.

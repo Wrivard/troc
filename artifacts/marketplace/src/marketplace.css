@@ -808,3 +808,481 @@ main {
     transform: none;
   }
 }
+/* Quality pass: composition-specific placement; reusable visual patterns live in the guide. */
+.troc-marketplace-width {
+  max-width: 1440px;
+}
+.troc-home-hero {
+  min-height: 640px;
+}
+.troc-value-rail {
+  border-block: 1px solid var(--border);
+  padding-block: var(--space-6);
+  gap: var(--space-6);
+}
+.troc-value-rail > div {
+  align-items: center;
+}
+.troc-value-rail p {
+  display: none;
+}
+.troc-game-edit {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.troc-how-edit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+.troc-how-edit > .troc-editorial-intro {
+  max-width: 48rem;
+}
+.troc-how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+.troc-how-steps > div {
+  padding-top: 0;
+  display: grid;
+  grid-template-columns: 20px 20px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+.troc-product-example {
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
+}
+.troc-product-example .troc-field {
+  min-width: 0;
+  font-size: var(--text-sm);
+}
+.troc-example-result {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+.troc-example-result > .troc-card-image {
+  width: 62px;
+  flex-shrink: 0;
+}
+.troc-example-result small,
+.troc-example-seller small {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  margin-top: var(--space-1);
+}
+.troc-example-seller {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+.troc-example-seller > span:last-child {
+  margin-left: auto;
+  white-space: nowrap;
+}
+.troc-example-seller .troc-seller-avatar {
+  width: 28px;
+  height: 28px;
+  font-size: var(--text-xs);
+}
+.troc-example-order {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+.troc-example-order span {
+  color: var(--text-secondary);
+}
+.troc-product-example .troc-art-note {
+  font-size: var(--text-xs);
+}
+.troc-product-decision {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.35fr);
+  gap: var(--space-12);
+  align-items: start;
+}
+.troc-product-sticky {
+  position: sticky;
+  top: var(--space-6);
+}
+.troc-product-sticky .troc-artwork-panel {
+  padding: var(--space-6);
+}
+.troc-product-sticky [data-catalog-artwork] {
+  max-width: 440px;
+  margin-inline: auto;
+}
+.troc-product-decision-details {
+  display: grid;
+  gap: var(--space-8);
+  container-type: inline-size;
+}
+.troc-product-prices {
+  padding: var(--space-5) 0;
+  background: transparent;
+  border-left: 0;
+  border-block: 1px solid var(--border);
+  gap: var(--space-6);
+}
+.troc-product-prices .troc-price-value {
+  font-size: 1.75rem;
+}
+.troc-product-prices > :first-child .troc-price-value {
+  font-size: 2.25rem;
+}
+.troc-store-cover-cards {
+  display: flex;
+  position: absolute;
+  right: var(--space-8);
+  top: -15%;
+  gap: var(--space-6);
+  width: 48%;
+  transform: rotate(10deg);
+  opacity: 0.65;
+}
+.troc-store-cover-cards > div {
+  width: 33%;
+  flex-shrink: 0;
+}
+.troc-store-cover-cards .troc-card-image {
+  background: transparent;
+}
+.troc-store-tabs {
+  gap: var(--space-6);
+  padding-bottom: 0;
+}
+.troc-store-tabs .troc-button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 0;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  padding-inline: var(--space-2);
+}
+.troc-store-tabs .troc-button[aria-pressed="true"] {
+  color: var(--text-primary);
+  border-bottom-color: var(--color-accent);
+}
+.troc-store-tabs .troc-button:hover {
+  background: var(--surface);
+}
+.troc-final-edit {
+  padding: var(--space-12) var(--space-8);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+.troc-final-mark {
+  opacity: 0.045;
+}
+.troc-quality-filter {
+  border: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0 0 var(--space-6) !important;
+}
+.troc-quality-filter > summary {
+  font-size: var(--text-sm);
+}
+.troc-auth-layout {
+  max-width: 1120px;
+  margin: var(--space-12) auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  padding: var(--space-6);
+}
+.troc-auth-form {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 440px;
+  width: 100%;
+  justify-self: center;
+}
+.troc-auth-aside {
+  position: relative;
+  display: grid;
+  gap: var(--space-6);
+  align-content: center;
+  min-height: 480px;
+  padding: var(--space-8);
+}
+.troc-auth-aside h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  max-width: 20rem;
+}
+.troc-auth-aside > p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.troc-auth-art {
+  height: 220px;
+  position: relative;
+}
+.troc-auth-art .troc-card-back {
+  position: absolute;
+  left: 12%;
+  top: 0;
+  width: 140px;
+  transform: rotate(-12deg);
+}
+.troc-auth-art .troc-card-back:nth-child(2) {
+  left: 35%;
+  top: 10px;
+  transform: rotate(8deg);
+}
+.troc-auth-art .troc-card-back:nth-child(3) {
+  left: 56%;
+  top: 30px;
+  transform: rotate(20deg);
+}
+.troc-preview-binder {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--space-10);
+  align-items: center;
+  padding: var(--space-8);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+.troc-preview-binder-copy {
+  display: grid;
+  gap: var(--space-4);
+}
+.troc-preview-binder-copy h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.troc-preview-binder-copy strong {
+  font-size: 2rem;
+}
+.troc-preview-binder-copy p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.troc-preview-binder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.troc-preview-binder-grid .troc-card-image {
+  background: transparent;
+}
+.troc-preview-binder-grid > .troc-card-back {
+  border-style: dashed;
+}
+.troc-preview-binder progress {
+  width: 100%;
+  height: 6px;
+  accent-color: var(--color-accent);
+}
+.troc-seller-landing-preview {
+  max-width: 820px;
+  margin: auto;
+  width: 100%;
+}
+.troc-seller-landing-preview .troc-store-cover {
+  height: 200px;
+}
+.troc-seller-landing-preview .troc-store-profile-copy h1 {
+  font-size: 1.5rem;
+}
+@media (min-width: 1440px) {
+  .troc-editorial-catalog {
+    gap: var(--space-8);
+  }
+}
+@media (max-width: 1023px) {
+  .troc-game-edit {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .troc-how-steps {
+    grid-template-columns: 1fr;
+  }
+  .troc-how-steps > div {
+    max-width: 38rem;
+    width: 100%;
+  }
+  .troc-product-decision {
+    grid-template-columns: minmax(250px, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--space-6);
+  }
+  .troc-auth-layout {
+    gap: var(--space-6);
+  }
+  .troc-auth-aside {
+    padding: var(--space-4);
+  }
+  .troc-auth-art .troc-card-back {
+    width: 110px;
+  }
+  .troc-preview-binder {
+    gap: var(--space-6);
+  }
+}
+@media (max-width: 767px) {
+  .troc-home-hero {
+    min-height: 0;
+  }
+  .troc-game-edit {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .troc-game-edit > :first-child {
+    grid-column: span 2;
+    min-height: 280px;
+  }
+  .troc-game-edit > :first-child .troc-destination-art {
+    width: 140px;
+    right: 8%;
+    top: 5%;
+  }
+  .troc-game-edit > :first-child .troc-destination-copy {
+    max-width: 60%;
+  }
+  .troc-product-decision {
+    grid-template-columns: 1fr;
+  }
+  .troc-product-sticky {
+    position: static;
+  }
+  .troc-product-sticky .troc-artwork-panel {
+    max-width: 440px;
+    margin: auto;
+  }
+  .troc-value-rail {
+    gap: var(--space-5) var(--space-4);
+  }
+  .troc-value-rail strong {
+    font-size: var(--text-sm);
+  }
+  .troc-auth-layout {
+    grid-template-columns: 1fr;
+    margin-block: var(--space-8);
+  }
+  .troc-auth-aside {
+    display: none;
+  }
+  .troc-preview-binder {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+  }
+  .troc-final-edit {
+    padding: var(--space-8) var(--space-5);
+  }
+  .troc-store-cover-cards {
+    width: 65%;
+    right: -6%;
+    top: 24%;
+    opacity: 0.45;
+  }
+}
+.troc-history-compact {
+  max-width: 880px;
+  display: grid;
+  gap: var(--space-4);
+}
+.troc-history-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.troc-history-summary p {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.troc-history-summary strong {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.troc-history-summary [role="group"] {
+  display: flex;
+  gap: var(--space-1);
+}
+.troc-history-compact .troc-chart {
+  background: transparent;
+  border: 0;
+}
+.troc-founder-callout {
+  grid-template-columns: 1.3fr 1fr;
+  align-items: end;
+  gap: var(--space-4) var(--space-8);
+}
+.troc-founder-callout strong span {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+.troc-founder-callout h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+.troc-founder-process {
+  display: grid;
+  gap: var(--space-6);
+}
+.troc-founder-process > h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.troc-founder-process > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+.troc-founder-process > div > div {
+  display: grid;
+  gap: var(--space-4);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-5);
+}
+.troc-founder-process h3 {
+  font-size: var(--text-base);
+  line-height: 1.5;
+  max-width: 22rem;
+}
+.troc-store-profile-copy h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+@media (max-width: 767px) {
+  .troc-founder-callout,
+  .troc-founder-process > div {
+    grid-template-columns: 1fr;
+  }
+  .troc-founder-callout {
+    padding: var(--space-6);
+  }
+}
+
+/* Follow-up screenshot review: compact filters and name-first mobile decisions. */
+.troc-catalog-filters { border-block: 1px solid var(--border); padding-block: var(--space-4); }
+.troc-catalog-filters > summary { cursor: pointer; font-weight: 600; }
+.troc-preview-binder progress { accent-color: var(--color-primary); }
+@media (max-width: 767px) {
+  .troc-product-decision-details { display: contents; }
+  .troc-product-decision-details > .troc-editorial-intro { order: -1; }
+  .troc-quality-filter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .troc-quality-filter > label:first-of-type, .troc-quality-filter > details { grid-column: 1 / -1; }
+}

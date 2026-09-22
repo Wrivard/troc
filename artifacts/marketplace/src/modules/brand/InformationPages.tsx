@@ -1,7 +1,5 @@
-import {
-  EditorialIntro,
-  EditorialIcon,
-} from "@workspace/troc-design-system/components/ui/editorial";
+import { CatalogPreview } from "./CatalogPreview";
+import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { useEffect } from "react";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -382,7 +380,10 @@ export function InformationPage({ path }: { path: string }) {
         />
         {path === "/founding-sellers" && (
           <aside className="troc-founder-callout">
-            <strong>250</strong>
+            <strong>
+              250 <span>{pair(["spots.", "places."])}</span>
+            </strong>
+            <h2>{pair(["Pro forever.", "Pro à vie."])}</h2>
             <p>
               {pair([
                 "Founding sellers. Pro free forever, with approval.",
@@ -397,22 +398,41 @@ export function InformationPage({ path }: { path: string }) {
             </p>
           </aside>
         )}
-        {collector && (
-          <div className="troc-roadmap-visual">
-            <div className="troc-binder-preview" aria-hidden="true">
-              {Array.from({ length: 6 }, (_, i) => (
-                <span key={i}>
-                  <EditorialIcon name="layers" />
-                </span>
+        {collector && <CatalogPreview locale={locale} kind="binder" />}
+        {path === "/sell" && <CatalogPreview locale={locale} kind="store" />}
+        {path === "/founding-sellers" && (
+          <section className="troc-founder-process">
+            <h2>
+              {pair([
+                "A considered start. A lasting place.",
+                "Un départ réfléchi. Une place durable.",
+              ])}
+            </h2>
+            <div>
+              {[
+                [
+                  "01",
+                  "Apply when applications open",
+                  "Postulez à l’ouverture des candidatures",
+                ],
+                [
+                  "02",
+                  "TROC reviews your application",
+                  "TROC examine votre candidature",
+                ],
+                [
+                  "03",
+                  "Approved founding sellers get Pro forever",
+                  "Les vendeurs fondateurs approuvés reçoivent Pro à vie",
+                ],
+              ].map(([n, en, fr]) => (
+                <div key={n}>
+                  <span className="troc-editorial-eyebrow">{n}</span>
+                  <h3>{pair([en, fr])}</h3>
+                </div>
               ))}
             </div>
-            <p className="text-center text-sm text-muted-foreground">
-              {pair([
-                "A place for every find. Collection tools are planned.",
-                "Une place pour chaque trouvaille. Outils de collection à venir.",
-              ])}
-            </p>
-          </div>
+          </section>
         )}
         <div className="troc-info-layout">
           {content.sections.map((section, i) => (

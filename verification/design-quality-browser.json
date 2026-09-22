@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "width": 375,
+      "lang": "fr",
+      "theme": "dark",
+      "touch": true,
+      "avatarUnclipped": true,
+      "noResults": true
+    },
+    {
+      "width": 430,
+      "lang": "en",
+      "theme": "light",
+      "touch": true,
+      "avatarUnclipped": true,
+      "noResults": true
+    },
+    {
+      "width": 1024,
+      "lang": "fr",
+      "theme": "light",
+      "touch": false,
+      "avatarUnclipped": true,
+      "noResults": true
+    },
+    {
+      "width": 1600,
+      "lang": "en",
+      "theme": "dark",
+      "touch": false,
+      "avatarUnclipped": true,
+      "noResults": true
+    }
+  ],
+  "keyboardWholeCard": true,
+  "mobileTitleFirst": true
+}
