@@ -3,7 +3,7 @@ import type { Principal } from "../auth/permissions";
 import type { Sql } from "../commerce/data";
 import type { TransactionStore } from "../commerce/checkout";
 import { DomainError } from "../shared/domain";
-import { application, roles, text, uuid } from "./domain";
+import { application, pageOffset, roles, text, uuid } from "./domain";
 export class SellerPlatformService {
   constructor(
     private db: Sql,
@@ -191,21 +191,23 @@ export class SellerPlatformService {
       return { id, status: decision, sellerId };
     });
   }
-  async sellers(p: Principal) {
+  async sellers(p: Principal, page = 0) {
+    const offset = pageOffset(page);
     await this.actor(this.db, p);
     return (
       await this.db.query(
-        "SELECT s.id,s.display_name,s.status,m.role FROM troc.seller_accounts s JOIN troc.seller_members m ON m.seller_id=s.id WHERE m.user_id=$1 ORDER BY s.display_name,s.id",
-        [p.userId],
+        "SELECT s.id,s.display_name,s.status,m.role FROM troc.seller_accounts s JOIN troc.seller_members m ON m.seller_id=s.id WHERE m.user_id=$1 ORDER BY s.display_name,s.id LIMIT 50 OFFSET $2",
+        [p.userId, offset],
       )
     ).rows;
   }
-  async team(p: Principal, seller: string) {
+  async team(p: Principal, seller: string, page = 0) {
+    const offset = pageOffset(page);
     await this.access(this.db, p, seller, true);
     return (
       await this.db.query(
-        "SELECT m.user_id,m.role,u.email,u.status FROM troc.seller_members m JOIN troc.users u ON u.id=m.user_id WHERE seller_id=$1 ORDER BY m.created_at,m.user_id",
-        [seller],
+        "SELECT m.user_id,m.role,u.email,u.status FROM troc.seller_members m JOIN troc.users u ON u.id=m.user_id WHERE seller_id=$1 ORDER BY m.created_at,m.user_id LIMIT 50 OFFSET $2",
+        [seller, offset],
       )
     ).rows;
   }

@@ -41,7 +41,7 @@ Use direct node executables if pnpm exec wrappers fail on Windows:
 
 Database tests apply all migrations fresh and execute writes as troc_backend. Cover input compatibility/bounds, unauthorized/support/admin boundaries, duplicate applications/approval retries, self-review, missing/inactive users, owner-only changes, stale claims, cross-seller access, last-owner protection, revoked access, append-only transition audit, empty dashboard and exclusion of simulated/demo/refunded/other-seller orders.
 
-Remaining broader Milestone 4 scope: full promotions engine, invitations/acceptance, payout/KYC providers, advanced analytics/reputation/levels, full onboarding recovery and membership pagination. Milestone 5.5 owns configurable rewards. Hosted authentication/database activation remains subject to existing project prerequisites. This bounded slice is not the entire milestone.
+Remaining broader Milestone 4 scope: full promotions engine, invitations/acceptance, payout/KYC providers, advanced analytics/reputation/levels, full onboarding recovery. Milestone 5.5 owns configurable rewards. Hosted authentication/database activation remains subject to existing project prerequisites. This bounded slice is not the entire milestone.
 
 ## Verified handoff — 2026-09-22
 
@@ -72,3 +72,9 @@ A01 local follow-up: configured route-scoped hosting headers and EN/FR titles fo
 ## Reciprocal review fixes C01–C04
 
 Admin review now exposes all submitted profile fields with explicit missing values and previous/next pages using the existing paged endpoint. Mutation errors retain correction controls, while failed data loads remain fail-closed. CAD formatting uses BigInt integer-cent decomposition and locale format parts, retaining the cent in 9007199254740993 without Number rounding. No service, permission or database contract changed. Focused regressions: seller-platform-money.test.ts and seller-platform-review-browser.mjs (explicit UI API fixtures; eight EN/FR × theme × viewport combinations), alongside actual-database seller and integrated-route tests. C independently retests the stable fix commit; local author checks do not close production readiness gates.
+
+## Reciprocal review fix C05 — display-list pagination
+
+GET /seller/platform/sellers and GET /seller/platform/:seller/team accept optional zero-based `page` (default0, integer0..10000); each returns the existing array shape bounded to50 rows. Stable order is display_name/id for sellers and created_at/user_id for members. Previous/next controls expose every page; changing seller pages selects within that page and resets team paging. Empty-page copy is explicitly page-scoped. No authorization query, principal membership resolution or full last-owner count is truncated. No shared auth/migration change.
+
+Author validation:14focused domain/database/runtime-role/router/money tests passed;102seller choices and252members traversed with no duplicates/omissions, repeated order stable, malformed/boundary pages rejected, tenant isolation retained, and off-page owner authorization/last-owner safeguards passed. C05pagination UI, C01–C04regressions and realAPI seller browser suite each passed8EN/FR×viewport×theme cases. API/marketplace typecheck,scoped lint and seller production bundle passed. C owns independent final-patch retest; hosted/representativePostgreSQL readiness remains BLOCKED.

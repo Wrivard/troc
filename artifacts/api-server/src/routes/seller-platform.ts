@@ -48,7 +48,12 @@ export function sellerPlatformRouter(
     ),
   );
   router.get("/seller/platform/sellers", async (req, res) =>
-    res.json(await service.sellers(await principal(req, res))),
+    res.json(
+      await service.sellers(
+        await principal(req, res),
+        Number(req.query.page ?? 0),
+      ),
+    ),
   );
   router.get("/seller/platform/:seller/dashboard", async (req, res) =>
     res.json(
@@ -56,7 +61,13 @@ export function sellerPlatformRouter(
     ),
   );
   router.get("/seller/platform/:seller/team", async (req, res) =>
-    res.json(await service.team(await principal(req, res), req.params.seller)),
+    res.json(
+      await service.team(
+        await principal(req, res),
+        req.params.seller,
+        Number(req.query.page ?? 0),
+      ),
+    ),
   );
   router.post("/seller/platform/:seller/team", async (req, res) =>
     res.json(

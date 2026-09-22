@@ -20,6 +20,11 @@ export const roles = [
   "fulfillment",
   "customer_service",
 ] as const;
+export function pageOffset(page: number): number {
+  if (!Number.isSafeInteger(page) || page < 0 || page > 10000)
+    throw new DomainError("invalid_page");
+  return page * 50;
+}
 export function application(value: unknown) {
   const base = applicationInput(value),
     v = value as Record<string, unknown>;
