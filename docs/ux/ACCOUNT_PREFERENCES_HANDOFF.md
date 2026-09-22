@@ -1,0 +1,9 @@
+# Account presentation handoff — DA01 / DA02
+
+Based on UX-AUDIT/32-ACCOUNT-DEEP-BRIEF.md and A's exact AccountApp presentation grant. Existing orders route is now prominent and retains locale; account/settings navigation stays available. Existing locale/theme switchers sit with an explanatory preferences heading and save action. Email/readonly selectable UUID/sign-out have a secondary account-details group. No new destinations, role actions, auth, persistence or API behavior.
+
+Author checks: marketplace TypeScript and repository lint PASS; client/SSR build PASS. Read and visually inspected before images146-account-390-fr-light.png and146-account-1440-en-dark.png. After renders inspected in in-app browser: synthetic account ENdark desktop at default viewport, FRlight390x844 preferences+account details, FRlight390x844 settings. Orders navigation completion confirmed at /account/orders?lang=fr. Initial immediate URL read preceded navigation; completed wait established the correct destination.
+
+Run node tests/account-preferences-preview.mjs after building marketplace to reproduce an isolated ephemeral loopback-only visual fixture. It serves built assets, supplies one synthetic account, returns503 for first preference PATCH and200 thereafter, and returns503 for all other API routes. It never contacts auth/application APIs. Author fixture log: save1 locale=fr theme=light status503; save2 same values status200. UI retained selected values after failure and showed saved confirmation after200. Synthetic email/id only; no credentials, accounts, email or real writes. This harness does not validate authorization or database persistence.
+
+Independent matrix/keyboard/preferences-priority retest requested on stable source; pending. Existing fetch/save/auth/signOut handlers and device preference precedence unchanged. Uses existing DS components/tokens; no new CSS or component family.

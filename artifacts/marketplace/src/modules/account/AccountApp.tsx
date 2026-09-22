@@ -4,6 +4,8 @@ import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
+import { LocaleSwitcher } from "@workspace/troc-design-system/components/ui/locale-switcher";
+import { ThemeSwitcher } from "@workspace/troc-design-system/components/ui/theme-switcher";
 import { Checkbox } from "@workspace/troc-design-system/components/ui/selection-controls";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { messages, type MessageKey } from "../../messages";
@@ -183,22 +185,115 @@ export function AccountApp({ path }: { path: string }) {
             </form>
           )}
           {user && (
-            <>
-              <p className="break-words">{user.email}</p>
-              <label className="grid gap-2">
-                {locale === "fr" ? "Identifiant du compte" : "Account ID"}
-                <Input readOnly value={user.id} autoComplete="off" />
-              </label>
-              <Button onClick={save} disabled={busy}>
-                {t("save")}
-              </Button>
-              <a className="underline" href={link("account/settings")}>
-                {t("settings")}
-              </a>
-              <Button variant="secondary" onClick={signOut} disabled={busy}>
-                {t("signOut")}
-              </Button>
-            </>
+            <div className="grid gap-6">
+              <nav
+                className="flex flex-wrap items-center gap-4"
+                aria-label={
+                  locale === "fr"
+                    ? "Destinations du compte"
+                    : "Account destinations"
+                }
+              >
+                <Button
+                  asChild
+                  variant={path.endsWith("settings") ? "secondary" : "primary"}
+                >
+                  <a href={`${link("account/orders")}?lang=${locale}`}>
+                    {locale === "fr" ? "Vos commandes" : "Your orders"}
+                  </a>
+                </Button>
+                <a
+                  className="underline"
+                  href={`${link(path.endsWith("settings") ? "account" : "account/settings")}?lang=${locale}`}
+                >
+                  {path.endsWith("settings") ? t("account") : t("settings")}
+                </a>
+              </nav>
+              <section
+                className="grid gap-4"
+                aria-labelledby="account-preferences-title"
+              >
+                <h2
+                  id="account-preferences-title"
+                  className="text-lg font-semibold"
+                >
+                  {locale === "fr" ? "Vos préférences" : "Your preferences"}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {locale === "fr"
+                    ? "Ces choix s’appliquent à cet appareil. Enregistrez-les aussi dans votre compte."
+                    : "These choices apply on this device. Save them to your account as well."}
+                </p>
+                <fieldset className="grid gap-2">
+                  <legend className="mb-2 text-sm font-medium">
+                    {locale === "fr" ? "Langue" : "Language"}
+                  </legend>
+                  <LocaleSwitcher
+                    value={locale}
+                    onValueChange={setLocale}
+                    disabled={busy}
+                    groupLabel={
+                      locale === "fr" ? "Langue du compte" : "Account language"
+                    }
+                    options={[
+                      { value: "en", code: "EN", label: "English" },
+                      { value: "fr", code: "FR", label: "Français" },
+                    ]}
+                  />
+                </fieldset>
+                <fieldset className="grid gap-2">
+                  <legend className="mb-2 text-sm font-medium">
+                    {locale === "fr" ? "Apparence" : "Appearance"}
+                  </legend>
+                  <ThemeSwitcher
+                    value={theme}
+                    onValueChange={setTheme}
+                    disabled={busy}
+                    groupLabel={
+                      locale === "fr"
+                        ? "Apparence du compte"
+                        : "Account appearance"
+                    }
+                    options={[
+                      {
+                        value: "light",
+                        label: locale === "fr" ? "Clair" : "Light",
+                      },
+                      {
+                        value: "dark",
+                        label: locale === "fr" ? "Sombre" : "Dark",
+                      },
+                    ]}
+                  />
+                </fieldset>
+                <Button
+                  variant={path.endsWith("settings") ? "primary" : "secondary"}
+                  onClick={save}
+                  disabled={busy}
+                >
+                  {t("save")}
+                </Button>
+              </section>
+              <section
+                className="grid gap-4 border-t border-border pt-4"
+                aria-labelledby="account-details-title"
+              >
+                <h2
+                  id="account-details-title"
+                  className="text-lg font-semibold"
+                >
+                  {locale === "fr" ? "Détails du compte" : "Account details"}
+                </h2>
+                <p className="break-words">{user.email}</p>
+                <label className="grid gap-2">
+                  {locale === "fr" ? "Identifiant du compte" : "Account ID"}
+                  <Input readOnly value={user.id} autoComplete="off" />
+                </label>
+                <Button variant="secondary" onClick={signOut} disabled={busy}>
+                  {t("signOut")}
+                </Button>
+              </section>
+            </div>
           )}
           {protectedPage && !user && !busy && (
             <a className="underline" href={link("sign-in")}>
