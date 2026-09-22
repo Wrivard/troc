@@ -158,8 +158,8 @@ export function CartGroups({
                       />
                     }
                     metadata={`${l.listing.language.toUpperCase()} · ${l.listing.condition ?? l.listing.productType}`}
-                    unitPrice={money(l.unitCents)}
-                    lineTotal={money(l.totalCents)}
+                    unitPrice={`${money(l.unitCents)} / ${locale === "fr" ? "exemplaire" : "unit"}`}
+                    lineTotal={`${locale === "fr" ? "Ligne" : "Line total"} ${money(l.totalCents)}`}
                     quantity={l.quantity}
                     max={Math.min(100, l.listing.quantity)}
                     quantityLabel={`${t("quantity")} ${l.listing.name[locale]}`}

@@ -4,13 +4,13 @@ import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 const origin = "http://localhost:4313";
 const search = await (
-  await fetch(origin + "/api/catalog/page?path=/search&q=Pidgey")
+  await globalThis.fetch(origin + "/api/catalog/page?path=/search&q=Pidgey")
 ).json();
 const product = search.results.find(
   (r) => r.product.name.en === "Pidgey",
 ).product;
 const detail = await (
-  await fetch(origin + "/api/catalog/page?path=/product/" + product.slug)
+  await globalThis.fetch(origin + "/api/catalog/page?path=/product/" + product.slug)
 ).json();
 const lines = [
   { listingId: detail.offers[0].id, quantity: 2, lockListing: true },
@@ -27,7 +27,7 @@ try {
         });
         await c.addInitScript(
           (lines) =>
-            localStorage.setItem("troc.cart.v1", JSON.stringify(lines)),
+            globalThis.localStorage.setItem("troc.cart.v1", JSON.stringify(lines)),
           lines,
         );
         const p = await c.newPage();
@@ -86,7 +86,7 @@ try {
         await expect(p.locator(".troc-smart-savings")).toHaveCount(0);
         assert.deepEqual(
           await p.evaluate(() =>
-            JSON.parse(localStorage.getItem("troc.cart.v1")),
+            JSON.parse(globalThis.localStorage.getItem("troc.cart.v1")),
           ),
           lines,
         );
