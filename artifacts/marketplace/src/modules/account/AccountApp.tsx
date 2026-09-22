@@ -176,7 +176,7 @@ export function AccountApp({ path }: { path: string }) {
               </Button>
               <a
                 className="underline"
-                href={link(signup ? "sign-in" : "sign-up")}
+                href={`${link(signup ? "sign-in" : "sign-up")}?lang=${locale}`}
               >
                 {t(signup ? "signIn" : "signUp")}
               </a>
