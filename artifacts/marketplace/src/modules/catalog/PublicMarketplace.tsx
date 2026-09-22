@@ -17,7 +17,13 @@ import {
   CardMetadata,
   ProductAvailability,
 } from "@workspace/troc-design-system/components/ui/product-presentation";
-import { PriceBlock } from "@workspace/troc-design-system/components/ui/price";
+import { CatalogArtwork } from "./CatalogArtwork";
+import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
+import {
+  PriceBlock,
+  ReferencePrice,
+  LowestAvailable,
+} from "@workspace/troc-design-system/components/ui/price";
 import { SellerOfferRow } from "@workspace/troc-design-system/components/ui/seller-offer";
 import {
   SellerAvatar,
@@ -60,13 +66,21 @@ export function PublicMarketplace({
   };
   const go = (path: string, values: Record<string, string> = {}) =>
     window.location.assign(href(path, values));
-  const money = (cents: number | null, label: CatalogMessage) => (
-    <PriceBlock
-      amount={cents === null ? null : cents / 100}
-      label={t(label)}
-      locale={locale}
-    />
-  );
+  const money = (cents: number | null, label: CatalogMessage) => {
+    const Price =
+      label === "lowest"
+        ? LowestAvailable
+        : label === "reference"
+          ? ReferencePrice
+          : PriceBlock;
+    return (
+      <Price
+        amount={cents === null ? null : cents / 100}
+        label={t(label)}
+        locale={locale}
+      />
+    );
+  };
   const format = (cents: number) =>
     new Intl.NumberFormat(`${locale}-CA`, {
       style: "currency",
@@ -107,11 +121,13 @@ export function PublicMarketplace({
           <ProductCard
             key={p.id}
             image={
-              <CardImage
-                src={p.imageUrl}
-                alt={p.name[locale]}
-                missingLabel={t("image")}
-              />
+              <a href={productHref} tabIndex={-1} aria-hidden="true">
+                <CatalogArtwork
+                  product={p}
+                  variant={selection.variant}
+                  locale={locale}
+                />
+              </a>
             }
             title={
               <CardTitle>
@@ -303,6 +319,7 @@ export function PublicMarketplace({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader
+        homeHref={href("/")}
         logoLabel="TROC"
         navLabel={t("navigation")}
         navItems={[
@@ -463,10 +480,12 @@ export function PublicMarketplace({
           <>
             <section className="grid gap-6 md:grid-cols-3">
               <div>
-                <CardImage
-                  src={product.imageUrl}
-                  alt={product.name[locale]}
-                  missingLabel={t("image")}
+                <CatalogArtwork
+                  key={selected?.id ?? product.id}
+                  product={product}
+                  variant={selected}
+                  locale={locale}
+                  gallery
                 />
               </div>
               <div className="grid content-start gap-6 md:col-span-2">
@@ -552,7 +571,11 @@ export function PublicMarketplace({
                 }}
               >
                 <input type="hidden" name="lang" value={locale} />
-                <input type="hidden" name="offerLimit" value={page.offerLimit} />
+                <input
+                  type="hidden"
+                  name="offerLimit"
+                  value={page.offerLimit}
+                />
                 <input
                   type="hidden"
                   name="variantId"
@@ -904,7 +927,23 @@ export function PublicMarketplace({
         </p>
       </main>
       <footer className="flex flex-wrap justify-between gap-4 border-t border-border p-6">
-        <span>TROC · CAD · Canada</span>
+        <div className="grid gap-3">
+          <TrocLogo height={26} />
+          <p className="font-semibold">{t("canada")}</p>
+          <p className="text-sm text-muted-foreground">{t("canadaCopy")}</p>
+          <span className="text-sm">CAD · Canada · EN / FR</span>
+        </div>
+        <nav
+          className="flex flex-wrap content-start gap-4"
+          aria-label={t("navigation")}
+        >
+          <a href={href("/search")} className="underline">
+            {t("shop")}
+          </a>
+          <a href={href("/sign-in")} className="underline">
+            {t("account")}
+          </a>
+        </nav>
         <a href={`${base}/style-guide`} className="underline">
           {t("guide")}
         </a>

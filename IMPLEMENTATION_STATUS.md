@@ -8,6 +8,7 @@ is locked. Implementation and activation statuses are distinguished below.
 | 0 — Approved style guide | implemented | Source/tokens/components preserved; visual regression matches |
 | 1 — Foundation | implemented | Code/local regression coverage; hosted activation remains blocked |
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
+| 2.5 — Marketplace polish | in progress | Home-logo navigation, image schema/resolver/gallery and price/footer polish implemented; representative live artwork awaits provider approval |
 | 3 — Low-Value Commerce | deferred | Not started; requires explicit approval |
 | 4 — Seller Platform | deferred | Not started |
 | 5 — Collector + Trust | deferred | Not started |
@@ -64,3 +65,18 @@ Final audit verification: both clean frozen installs, typecheck, lint, **46 test
 full workspace production build, Vercel build, bundled serverless and bilingual SSR
 smoke checks all pass. **96 browser cases**, zero detected axe A/AA violations or
 uncaught page errors, plus eight pixel-identical guide comparisons.
+
+## Milestone 2.5 — polish (in progress)
+
+- Implemented: top-left logos return to the homepage from marketplace, account and integrated style-guide pages, retaining EN/FR preference. No token/layout redesign.
+- Implemented: canonical product/variant image arrays, front/back/detail, responsive rendition dimensions and provider provenance; migration 0005_catalog_images with backend-only reads and no public writes. Not applied to hosted Supabase.
+- Implemented: batched PostgreSQL asset adapter reads approved sources; revoked approval removes artwork including stale legacy image URLs. Maximum 48 products per read and 12 image positions per product/variant.
+- Implemented: existing CardImage accepts srcSet/sizes, intrinsic dimensions, eager product-detail delivery, lazy grids, loading skeleton and stable failure fallback. Product detail supports simple image selection and full view. New states are documented in the approved component family.
+- Implemented: approved LowestAvailable/ReferencePrice hierarchy and Canadian footer/brand copy. Existing marketplace, sellers, sets, activity and prelaunch previews retained.
+- Blocked: 30–100 representative real products per game. Awaiting explicit demo approval for TCGdex, Scryfall and YGOPRODeck; the existing artwork references were limited to style-guide illustration. No new provider data/assets were imported. One Piece requires an appropriate approved source. Riftbound remains fallback-only without Riot-authorized API access.
+- Not started: sample asset acquisition/optimization/cache publication and live-image deployment checks; these depend on the source decision. No production ingestion, payments, checkout or Milestone 3 work.
+- Validation: 48 domain/database tests pass; full typecheck and production build pass. Playwright passed 72 locally injected reference-image route cases (six routes, 390/768/1280 px, EN/FR, dark/light), image selection/failure states and homepage navigation. This is explicitly browser-test imagery, not a populated live catalog.
+
+See docs/CATALOG_IMAGES.md for asset contracts, approval boundaries and remaining work.
+
+Additional polish validation: lint passed; 96 public-route accessibility/responsive checks passed; eight standalone/integrated guide comparisons remain pixel-identical.

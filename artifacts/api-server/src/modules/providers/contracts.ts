@@ -1,3 +1,4 @@
+export type { CatalogAssetProvider } from "../catalog/assets";
 import type { Locale, Money } from "../shared/domain";
 import type { CatalogImportProvider, ImportRecord } from '@workspace/catalog';
 export type Page<T> = { items: T[]; nextCursor?: string };

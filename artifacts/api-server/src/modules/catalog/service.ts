@@ -105,6 +105,14 @@ export async function publicPage(
   );
   page.games = actualMeta.games;
   page.sets = actualMeta.sets;
+  const illustrated = await repo.images(page.results.map((r) => r.product));
+  page.results = page.results.map((r, i) => ({
+    ...r,
+    product: illustrated[i],
+  }));
+  if (page.product)
+    page.product =
+      illustrated.find((p) => p.id === page.product?.id) ?? page.product;
   page.demo =
     page.demo ||
     page.results.some((r) => r.product.demo || r.demo) ||

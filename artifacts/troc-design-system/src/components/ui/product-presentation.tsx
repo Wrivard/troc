@@ -16,6 +16,11 @@ export interface CardImageProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
   /** Card artwork URL. Omit / empty for the accessible missing state. */
   src?: string | null
+  srcSet?: string
+  sizes?: string
+  width?: number
+  height?: number
+  eager?: boolean
   /** Translated alternative text describing the card. */
   alt: string
   /** Render a loading skeleton instead of the image. */
@@ -25,13 +30,15 @@ export interface CardImageProps
 }
 
 const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
-  ({ className, src, alt, loading = false, missingLabel, ...props }, ref) => {
+  ({ className, src, srcSet, sizes, width = 630, height = 880, eager = false, alt, loading = false, missingLabel, ...props }, ref) => {
     // Track load failure locally so a broken but real URL degrades gracefully;
     // we never point <img> at a placeholder/broken URL ourselves.
     const [failed, setFailed] = React.useState(false)
+    const [loaded, setLoaded] = React.useState(false)
     React.useEffect(() => {
       setFailed(false)
-    }, [src])
+      setLoaded(false)
+    }, [src, srcSet])
 
     if (loading) {
       return (
@@ -61,7 +68,8 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
 
     return (
       <span ref={ref} className={cn("troc-card-image", className)} {...props}>
-        <img src={src as string} alt={alt} loading="lazy" onError={() => setFailed(true)} />
+        {!loaded && <Skeleton shape="card" className="troc-card-image-skeleton" />}
+        <img src={src as string} srcSet={srcSet} sizes={sizes} width={width} height={height} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} />
       </span>
     )
   }

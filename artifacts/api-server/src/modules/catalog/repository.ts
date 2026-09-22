@@ -1,3 +1,4 @@
+import { PostgresCatalogAssetProvider } from "./assets";
 import { pool } from "@workspace/db";
 import type {
   Game,
@@ -36,6 +37,7 @@ function referenceCondition(product: Product, options: DetailOptions) {
 }
 export interface CatalogRepository {
   readonly demo: boolean;
+  images(products: Product[]): Promise<Product[]>;
   metadata(
     filters: SearchFilters,
     products?: Product[],
@@ -60,6 +62,9 @@ export interface CatalogRepository {
 }
 export class DemoCatalogRepository implements CatalogRepository {
   readonly demo = true;
+  async images(products: Product[]) {
+    return products;
+  }
   private data = demoCatalog();
   async metadata() {
     return {
@@ -153,6 +158,9 @@ function safeInteger(value: string): number {
 }
 export class PostgresCatalogRepository implements CatalogRepository {
   constructor(private readonly db: CatalogSqlClient = pool) {}
+  images(products: Product[]) {
+    return new PostgresCatalogAssetProvider(this.db).images(products);
+  }
   readonly demo = false;
   async metadata(f: SearchFilters, products: Product[] = []) {
     const [games, sets, sellers] = await Promise.all([
@@ -353,13 +361,11 @@ export class PostgresCatalogRepository implements CatalogRepository {
         ).rows
       : [];
     const a = aggregate.rows[0];
-    const pricePoints = prices.rows
-      .reverse()
-      .map((price) => ({
-        ...price,
-        cents: safeInteger(price.cents),
-        sourceMinorUnits: safeInteger(price.sourceMinorUnits),
-      }));
+    const pricePoints = prices.rows.reverse().map((price) => ({
+      ...price,
+      cents: safeInteger(price.cents),
+      sourceMinorUnits: safeInteger(price.sourceMinorUnits),
+    }));
     return {
       offers: visibleOffers,
       prices: pricePoints,

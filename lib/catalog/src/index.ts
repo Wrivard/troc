@@ -14,7 +14,23 @@ export interface SetRelease {
   name: Text;
   releasedOn: string | null;
 }
+export interface CatalogImage {
+  id: string;
+  side: "front" | "back" | "detail";
+  url: string;
+  sources: { url: string; width: number }[];
+  width: number;
+  height: number;
+  provenance: {
+    provider: string;
+    externalId: string;
+    sourceUrl: string;
+    license: string;
+    capturedAt: string;
+  };
+}
 export interface Variant {
+  images?: CatalogImage[];
   id: string;
   printingId: string;
   language: "en" | "ja";
@@ -25,6 +41,7 @@ export interface Variant {
   artist: string;
 }
 export interface Product {
+  images?: CatalogImage[];
   id: string;
   slug: string;
   name: Text;

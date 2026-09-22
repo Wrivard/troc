@@ -70,7 +70,7 @@ export default function SiteNavigationDemo() {
 
     <Section title={tn("navDesktop")}><DemoPanel>
       <div className="troc-nav-frame">
-        <SiteHeader
+        <SiteHeader homeHref={"/?lang=" + locale}
           navItems={navItems}
           navLabel={tn("navPrimary")}
           logoLabel={tn("navBrandLabel")}

@@ -1,3 +1,4 @@
+import { PostgresCatalogAssetProvider } from "../artifacts/api-server/src/modules/catalog/assets";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -121,6 +122,7 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
       "0001_foundation",
       "0002_backend_access",
       "0003_catalog",
+      "0005_catalog_images",
     ])
       await db.exec(
         await readFile(
@@ -157,6 +159,65 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
     const report = await runImport(sql, provider, principal, "first");
     assert.equal(report.status, "completed");
     assert.equal(report.succeeded, 25);
+    await t.test(
+      "image renditions resolve in order and source revocation removes cached art",
+      async () => {
+        const repo = new PostgresCatalogRepository(sql);
+        const product = (await repo.search(filters())).items[0]?.product;
+        assert.ok(product);
+        const source = (
+          await db.query<{ id: string }>(
+            "INSERT INTO troc.asset_sources(provider,license,approved_at) VALUES('image-test','test only',now()) RETURNING id",
+          )
+        ).rows[0].id;
+        const provenance = (
+          await db.query<{ id: string }>(
+            "INSERT INTO troc.asset_provenance(source_id,source_url) VALUES($1,'https://example.invalid/source') RETURNING id",
+            [source],
+          )
+        ).rows[0].id;
+        const image = (
+          await db.query<{ id: string }>(
+            "INSERT INTO troc.catalog_images(product_id,variant_id,provenance_id,external_id,side,width,height) VALUES($1,$2,$3,'external-front','front',600,825) RETURNING id",
+            [product.id, product.variants[0].id, provenance],
+          )
+        ).rows[0].id;
+        await db.query(
+          "INSERT INTO troc.catalog_image_renditions(image_id,width,url) VALUES($1,600,'/catalog-art/test-600.webp'),($1,245,'/catalog-art/test-245.webp')",
+          [image],
+        );
+        const assets = new PostgresCatalogAssetProvider(sql);
+        const [resolved] = await assets.images([product]);
+        assert.equal(resolved.images?.length, 0);
+        assert.deepEqual(
+          resolved.variants[0].images?.[0].sources.map((s) => s.width),
+          [245, 600],
+        );
+        assert.equal(
+          resolved.variants[0].images?.[0].provenance.provider,
+          "image-test",
+        );
+        await db.query(
+          "UPDATE troc.asset_sources SET approved_at=NULL WHERE id=$1",
+          [source],
+        );
+        const [revoked] = await assets.images([
+          { ...product, imageUrl: "https://example.invalid/stale" },
+        ]);
+        assert.equal(revoked.imageUrl, null);
+        assert.equal(revoked.variants[0].images?.length, 0);
+        await db.query("DELETE FROM troc.catalog_images WHERE id=$1", [image]);
+        await db.query("DELETE FROM troc.asset_provenance WHERE id=$1", [
+          provenance,
+        ]);
+        await db.query("DELETE FROM troc.asset_sources WHERE id=$1", [source]);
+        assert.deepEqual(await assets.images([]), []);
+        await assert.rejects(
+          assets.images(Array.from({ length: 49 }, () => product)),
+          /asset_batch_too_large/,
+        );
+      },
+    );
     const ids = (
       await db.query(
         "SELECT variant_id FROM troc.external_catalog_mappings ORDER BY external_id",

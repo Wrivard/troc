@@ -1,0 +1,581 @@
+{
+  "scope": "Local injected reference artwork; production provider sample pending approval",
+  "cases": [
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/sets/pokemon-demo-set",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/product/pokemon-northern-spark",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "loaded": true,
+      "overflow": false
+    }
+  ]
+}

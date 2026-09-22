@@ -39,6 +39,8 @@ export interface SiteHeaderProps extends React.HTMLAttributes<HTMLElement> {
   navLabel: string
   /** Localized brand label for the logo. */
   logoLabel: string
+  /** Consumer-owned home destination; omitted in isolated component examples. */
+  homeHref?: string
   search: GlobalSearchProps
   locale: LocaleSwitcherProps
   theme: ThemeSwitcherProps
@@ -59,6 +61,7 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
       navItems,
       navLabel,
       logoLabel,
+      homeHref,
       search,
       locale,
       theme,
@@ -76,7 +79,7 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
   ) => (
     <header ref={ref} className={cn("troc-site-header", className)} {...props}>
       <div className="troc-site-header-brand">
-        <TrocLogo variant="auto" height={26} label={logoLabel} />
+        {homeHref ? <a href={homeHref} aria-label={logoLabel}><TrocLogo variant="auto" height={26} label={logoLabel} /></a> : <TrocLogo variant="auto" height={26} label={logoLabel} />}
       </div>
 
       <nav className="troc-site-nav" aria-label={navLabel}>

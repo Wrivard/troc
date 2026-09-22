@@ -64,7 +64,7 @@ export function DesignSystemBrowser() {
   </a>;
   const navigation = (mobile = false) => <div className="ds-sidebar-inner">
     <div className="ds-sidebar-brand">
-      <a href="#page=overview" aria-label={t("systemTitle")} onClick={() => dialogRef.current?.close()}><BrandImage /></a>
+      <a href={`${import.meta.env.BASE_URL}?lang=${locale}`} aria-label={locale === "fr" ? "TROC — Accueil" : "TROC — Home"} onClick={() => dialogRef.current?.close()}><BrandImage /></a>
       <span>{t("designSystem")}</span>
       {mobile && <Button variant="ghost" size="icon" aria-label={t("closeNavigation")} onClick={() => dialogRef.current?.close()}><X /></Button>}
     </div>

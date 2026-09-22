@@ -101,7 +101,7 @@ export function AccountApp({ path }: { path: string }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border p-6">
-        <a href={link("style-guide")} aria-label="TROC">
+        <a href={`${link("")}?lang=${locale}`} aria-label="TROC">
           <TrocLogo />
         </a>
         <div className="flex flex-wrap items-center gap-4">

@@ -194,6 +194,13 @@ export default function ProductPresentationDemo() {
         </DemoPanel>
       </Section>
 
+      <Section title={locale === "fr" ? "Images adaptatives" : "Responsive artwork"}>
+        <DemoPanel><div className="ds-form-grid">
+          <CardImage src={demoArtwork.charizard} srcSet={demoArtwork.charizard + " 600w"} sizes="240px" width={600} height={825} alt={ts("cardCharizardTitle")} missingLabel={ts("imageMissing")} />
+          <CardImage loading alt={ts("cardPikachuTitle")} missingLabel={ts("imageMissing")} />
+          <CardImage alt={ts("cardBoltTitle")} missingLabel={ts("imageMissing")} />
+        </div></DemoPanel>
+      </Section>
       <Guidelines items={[{ kind: "do", text: ts("ppDo") }, { kind: "dont", text: ts("ppDont") }]} />
     </>
   );

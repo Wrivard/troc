@@ -5,6 +5,7 @@ import { AVAILABLE_GROUPS, STORY_LOADERS } from "./catalog";
 
 export type PreviewEntry = { id: string; title: MessageKey; component: ComponentType; number: string };
 export type NavGroup = { title: MessageKey; entries: PreviewEntry[] };
+// Product presentation includes responsive images; navigation supports consumer home links.
 export const DESIGN_SYSTEM = {
   title: "TROC Design System",
   description: "The visual foundation for Canada’s trading card marketplace.",
