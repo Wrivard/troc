@@ -1,0 +1,286 @@
+{
+  "origin": "https://troc-api-server-psi.vercel.app",
+  "commit": "9f4f58e",
+  "results": [
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/sell",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/sign-in",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/cart",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/smart-cart",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/sell",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/sign-in",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/cart",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/smart-cart",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/sell",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/sign-in",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/cart",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/smart-cart",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/sell",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/sign-in",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/cart",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/smart-cart",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    }
+  ]
+}

@@ -1350,6 +1350,714 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
 .troc-condition--dmg .troc-condition-grade { border-style: dotted; opacity: 0.72; }
 .troc-condition--compact .troc-condition-grade { min-width: 18px; font-size: 9px; }
 
+/* marketplace-compositions.css */
+/* Product compositions use the approved palette, typeface and spacing tokens. */
+.troc-interactive-stack {
+  margin: 0;
+  width: 100%;
+  position: relative;
+}
+.troc-stack-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  perspective: 1200px;
+  touch-action: pan-y;
+}
+.troc-stack-float {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.troc-stack-card {
+  position: absolute;
+  width: 41%;
+  top: 15%;
+  left: 30%;
+  transform-style: preserve-3d;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  backface-visibility: hidden;
+}
+.troc-stack-card .troc-card-image {
+  background: transparent;
+  border-radius: inherit;
+}
+.troc-stack-card[data-layer="0"] {
+  transform: translate3d(var(--card-tx, 0px), var(--card-ty, 0px), 64px)
+    rotateX(calc(3deg + var(--card-rx, 0deg)))
+    rotateY(calc(-7deg + var(--card-ry, 0deg))) rotateZ(-4deg);
+}
+.troc-stack-card[data-layer="1"] {
+  width: 35%;
+  left: 7%;
+  top: 27%;
+  transform: translate3d(
+      calc(var(--card-tx, 0px) * -0.55),
+      calc(var(--card-ty, 0px) * 0.65),
+      20px
+    )
+    rotateX(calc(2deg + var(--card-rx, 0deg) * 0.65))
+    rotateY(calc(13deg + var(--card-ry, 0deg) * 0.65)) rotateZ(-17deg);
+}
+.troc-stack-card[data-layer="2"] {
+  width: 33%;
+  left: 62%;
+  top: 24%;
+  transform: translate3d(
+      calc(var(--card-tx, 0px) * -0.9),
+      calc(var(--card-ty, 0px) * -0.5),
+      -18px
+    )
+    rotateX(calc(var(--card-rx, 0deg) * 0.4))
+    rotateY(calc(-18deg + var(--card-ry, 0deg) * 0.4)) rotateZ(14deg);
+}
+.troc-stack-contact {
+  position: absolute;
+  width: 75%;
+  height: 8%;
+  left: 14%;
+  bottom: 14%;
+  border-radius: 50%;
+  background: var(--text-primary);
+  opacity: 0.08;
+  filter: blur(14px);
+  transform: rotate(-8deg);
+}
+.troc-interactive-stack figcaption {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.troc-stack-stage[data-motion="true"][data-visible="true"] .troc-stack-float {
+  animation: troc-calm-float 4.8s ease-in-out 1;
+}
+@keyframes troc-calm-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.troc-stack-stage[data-visible="false"] .troc-stack-float {
+  animation-play-state: paused;
+}
+.troc-stack-stage[data-motion="true"]:hover .troc-stack-card {
+  will-change: transform;
+}
+.troc-interactive-stack--compact .troc-stack-stage {
+  aspect-ratio: 1.15;
+}
+.troc-artwork-panel {
+  perspective: 1200px;
+  padding: var(--space-6);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+}
+.troc-artwork-panel .troc-card-image {
+  background: transparent;
+  transform: rotateX(calc(var(--card-rx, 0deg) * 0.5))
+    rotateY(calc(var(--card-ry, 0deg) * 0.5));
+  box-shadow: var(--shadow-md);
+}
+.troc-market-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: transform 220ms ease;
+}
+.troc-market-card:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 6px;
+}
+.troc-market-card-art {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid transparent;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease;
+}
+.troc-market-card-art .troc-card-image {
+  background: transparent;
+}
+.troc-market-card-art img {
+  transition: transform 220ms ease;
+}
+.troc-market-card-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-1);
+}
+.troc-market-card h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.troc-market-card-meta {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  min-height: 3em;
+}
+.troc-market-card-price {
+  margin-top: auto;
+  padding-top: var(--space-3);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.troc-market-card-price > span {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.troc-market-card-price strong {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+.troc-market-card-availability {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.troc-market-card-availability svg {
+  flex-shrink: 0;
+  transition: transform 220ms ease;
+}
+.troc-market-card-reference {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+@media (hover: hover) and (pointer: fine) {
+  .troc-market-card:hover {
+    transform: translateY(-3px);
+  }
+  .troc-market-card:hover .troc-market-card-art {
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
+  }
+  .troc-market-card:hover img {
+    transform: scale(1.015);
+  }
+  .troc-market-card:hover .troc-market-card-availability svg {
+    transform: translateX(4px);
+  }
+}
+.troc-destination {
+  position: relative;
+  min-width: 0;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: var(--space-5);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.troc-destination-index {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  z-index: 1;
+}
+.troc-destination-art {
+  position: absolute;
+  width: 66%;
+  right: -6%;
+  top: 12%;
+  transform: rotate(14deg);
+  transition: transform 260ms ease;
+}
+.troc-destination-art .troc-card-image {
+  background: transparent;
+  box-shadow: var(--shadow-md);
+}
+.troc-destination::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, var(--surface) 70%);
+  pointer-events: none;
+}
+.troc-destination-copy {
+  position: relative;
+  z-index: 1;
+  padding-top: var(--space-12);
+  display: grid;
+  gap: var(--space-2);
+}
+.troc-destination h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.troc-destination p {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.troc-destination-copy > svg {
+  margin-top: var(--space-3);
+  transition: transform 220ms ease;
+}
+.troc-destination:hover .troc-destination-art {
+  transform: translateY(-6px) rotate(12deg);
+}
+.troc-destination:hover .troc-destination-copy > svg {
+  transform: translate(3px, -3px);
+}
+.troc-destination:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.troc-card-back {
+  aspect-ratio: 63/88;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+}
+.troc-game-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: center;
+  min-height: 280px;
+  max-height: 340px;
+  border-bottom: 1px solid var(--border);
+  padding: var(--space-6) 0;
+}
+.troc-game-hero h1,
+.troc-game-hero h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-top: var(--space-3);
+}
+.troc-game-hero-description {
+  max-width: 38rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: var(--space-3) 0;
+}
+.troc-game-hero-shortcuts {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  font-size: var(--text-sm);
+  margin: var(--space-4) 0;
+}
+.troc-game-hero-shortcuts a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.troc-game-hero-art {
+  max-width: 360px;
+  justify-self: end;
+  width: 100%;
+}
+.troc-store-hero {
+  margin-top: var(--space-4);
+}
+.troc-store-cover {
+  position: relative;
+  height: 280px;
+  background: var(--surface);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+.troc-store-cover > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--store-focal, 50% 50%);
+}
+.troc-store-cover-word {
+  position: absolute;
+  left: var(--space-8);
+  top: var(--space-6);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  max-width: 60%;
+  line-height: 1.1;
+  color: var(--text-secondary);
+}
+.troc-store-profile {
+  position: relative;
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+  padding: 0 var(--space-8) var(--space-4);
+  margin-top: calc(var(--space-8) * -1);
+  overflow: visible;
+}
+.troc-store-profile-avatar {
+  flex-shrink: 0;
+  position: relative;
+  padding: var(--space-2);
+  background: var(--color-background);
+  border-radius: var(--radius-lg);
+}
+.troc-store-profile-avatar .troc-seller-avatar {
+  width: 104px;
+  height: 104px;
+  font-size: 2rem;
+}
+.troc-store-profile-copy {
+  padding-top: var(--space-12);
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.troc-store-profile-copy h1,
+.troc-store-profile-copy h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+.troc-store-profile-copy > p:not(.troc-editorial-eyebrow),
+.troc-store-profile-details {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+.troc-store-profile-badges {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.troc-store-profile-actions {
+  padding-top: var(--space-12);
+}
+.troc-seller-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: var(--text-primary);
+  text-decoration: none;
+  min-width: 0;
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+.troc-seller-preview-cover {
+  height: 145px;
+  position: relative;
+  background: var(--surface);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+.troc-seller-preview-cover > span {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  background: var(--surface);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+.troc-seller-preview-cover .troc-card-image {
+  position: absolute;
+  width: 110px;
+  right: var(--space-6);
+  top: -20px;
+  transform: rotate(17deg);
+}
+.troc-seller-preview-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.troc-seller-preview h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+.troc-seller-preview-identity p,
+.troc-seller-preview-detail {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.troc-seller-preview-stock {
+  display: flex;
+  gap: var(--space-3);
+}
+.troc-seller-preview-stock > * {
+  width: 56px;
+}
+.troc-seller-preview-stock .troc-card-image {
+  background: transparent;
+}
+.troc-seller-preview-action {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: auto;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+.troc-seller-preview:hover .troc-seller-preview-action {
+  text-decoration: underline;
+}
+.troc-seller-preview:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.troc-premium-empty {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: center;
+  padding: var(--space-10) var(--space-6);
+  border-block: 1px solid var(--border);
+}
+.troc-premium-empty-visual {
+  position: relative;
+  min-height: 170px;
+  perspective: 1000px;
+}
+.troc-premium-empty-visual > .troc-card-back {
+  position: absolute;
+  width: 90px;
+  left: 30px;
+  top: 8px;
+  transform: rotate(-14deg);
+}
+.troc-premium-empty-visual > .troc-card-back:nth-child(2) {
+  left: 65px;
+  top: 22px;
+  transform: rotate(9deg);
+  background: var(--surface);
+}
+.troc-premium-empty h2 {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.troc-premium-empty p {
+  margin-top: var(--space-3);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 40rem;
+}
+.troc-premium-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.troc-consolidation {
+  min-width: 0;
+}
+.troc-consolidation-flow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-10);
+  position: relative;
+}
+.troc-consolidation-side {
+  display: grid;
+  gap: var(--space-3);
+}
+.troc-consolidation-side > span {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.troc-consolidation-parcels {
+  display: flex;
+  gap: var(--space-3);
+  height: 24px;
+  margin-top: var(--space-3);
+}
+.troc-consolidation-side[data-after] .troc-consolidation-parcels {
+  color: var(--color-accent);
+}
+.troc-consolidation-side dl {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.troc-consolidation-side dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.troc-consolidation-side dd {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.troc-consolidation-total {
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  letter-spacing: -0.045em;
+  font-weight: 600;
+  border-top: 1px solid var(--border-strong);
+  padding-top: var(--space-3);
+}
+.troc-consolidation-arrow {
+  position: absolute;
+  left: calc(50% - 10px);
+  top: 35%;
+  color: var(--text-muted);
+}
+.troc-consolidation-result {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2) var(--space-3);
+  align-items: baseline;
+  padding-top: var(--space-6);
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+.troc-consolidation-result > span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.troc-consolidation-result > strong {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.troc-consolidation-result p {
+  grid-column: 1/-1;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.troc-consolidation-note {
+  margin-top: var(--space-4);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+@media (max-width: 767px) {
+  .troc-market-card h3 {
+    font-size: var(--text-base);
+  }
+  .troc-market-card-art {
+    padding: var(--space-2);
+  }
+  .troc-market-card-meta,
+  .troc-market-card-availability {
+    font-size: var(--text-xs);
+  }
+  .troc-market-card-price {
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+  }
+  .troc-destination {
+    min-height: 300px;
+    padding: var(--space-4);
+  }
+  .troc-destination h3 {
+    font-size: var(--text-lg);
+  }
+  .troc-game-hero {
+    grid-template-columns: 1fr;
+    max-height: none;
+    gap: 0;
+  }
+  .troc-game-hero-art {
+    max-width: 240px;
+    justify-self: center;
+  }
+  .troc-store-cover {
+    height: 200px;
+  }
+  .troc-store-cover-word {
+    font-size: 2rem;
+    left: var(--space-5);
+    max-width: 70%;
+  }
+  .troc-store-profile {
+    padding-inline: var(--space-4);
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .troc-store-profile-avatar .troc-seller-avatar {
+    width: 80px;
+    height: 80px;
+  }
+  .troc-store-profile-copy {
+    flex-basis: calc(100% - 116px);
+    padding-top: var(--space-12);
+  }
+  .troc-store-profile-actions {
+    padding-top: 0;
+    margin-left: 112px;
+  }
+  .troc-premium-empty {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding-inline: var(--space-4);
+  }
+  .troc-premium-empty-visual {
+    width: 180px;
+    min-height: 160px;
+  }
+  .troc-consolidation-flow {
+    gap: var(--space-6);
+  }
+  .troc-consolidation-side .troc-editorial-eyebrow {
+    letter-spacing: 0.04em;
+    font-size: var(--text-xs);
+  }
+  .troc-consolidation-side .troc-editorial-eyebrow::before {
+    display: none;
+  }
+  .troc-consolidation-arrow {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-stack-float {
+    animation: none !important;
+  }
+  .troc-market-card,
+  .troc-market-card img,
+  .troc-destination-art,
+  .troc-destination-copy > svg,
+  .troc-market-card-availability svg {
+    transition: none !important;
+  }
+  .troc-market-card:hover,
+  .troc-market-card:hover img,
+  .troc-destination:hover .troc-destination-art,
+  .troc-destination:hover .troc-destination-copy > svg,
+  .troc-market-card:hover .troc-market-card-availability svg {
+    transform: none;
+  }
+}
+
 /* marketplace-progress.css */
 /* Seller & shipping progress — thin wrappers over the shared Progress bar. */
 .troc-market-progress { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
@@ -2206,6 +2914,11 @@ a.troc-recently-sold:focus-visible,
   .troc-offer-detail { align-items: flex-start; text-align: left; }
   .troc-offer-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
 }
+/* Open, scan-friendly offer variant used inside the marketplace decision panel. */
+.troc-offer {background:transparent;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:var(--space-5) 0;}
+.troc-offer-seller-name {font-size:var(--text-base);font-weight:600;}.troc-offer-seller-name a {text-decoration:underline;text-decoration-color:transparent;text-underline-offset:4px;}.troc-offer-seller-name a:hover {text-decoration-color:currentColor;}.troc-offer-location {font-size:var(--text-sm);color:var(--text-secondary);}.troc-offer-shipping {line-height:1.6;}.troc-offer-promotion {font-size:var(--text-xs);color:var(--text-secondary);}
+@container (max-width:620px){.troc-offer {grid-template-columns:minmax(0,1fr) auto;}.troc-offer-actions {grid-column:1/-1;flex-direction:row;align-items:center;}.troc-offer-actions .troc-button {width:auto;}.troc-offer-detail {align-items:flex-end;text-align:right;}}
+@media(max-width:767px){.troc-offer {grid-template-columns:minmax(0,1fr) auto;}.troc-offer-actions {grid-column:1/-1;}.troc-offer-actions .troc-button {width:auto;}.troc-offer-detail {align-items:flex-end;text-align:right;}}
 
 /* seller-reputation.css */
 /* Seller reputation — rating, stats, level, plan; meaning never colour-only. */

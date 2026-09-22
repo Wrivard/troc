@@ -1,0 +1,317 @@
+import type { ReactNode, CSSProperties, HTMLAttributes } from "react";
+import { cn } from "../../lib/utils";
+import { EditorialIcon } from "./editorial";
+import { InteractiveCardStack } from "./interactive-card-stack";
+export function MarketplaceProductCard({
+  href,
+  image,
+  name,
+  metadata,
+  price,
+  fromLabel,
+  availability,
+  reference,
+  className,
+}: {
+  href: string;
+  image: ReactNode;
+  name: string;
+  metadata: ReactNode;
+  price: ReactNode;
+  fromLabel: string;
+  availability: ReactNode;
+  reference?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <a href={href} className={cn("troc-market-card", className)}>
+      <div className="troc-market-card-art" aria-hidden="true">
+        {image}
+      </div>
+      <div className="troc-market-card-copy">
+        <h3>{name}</h3>
+        <div className="troc-market-card-meta">{metadata}</div>
+        <div className="troc-market-card-price">
+          <span>{fromLabel}</span>
+          <strong>{price}</strong>
+        </div>
+        <div className="troc-market-card-availability">
+          <span>{availability}</span>
+          <EditorialIcon name="forward" />
+        </div>
+        {reference && (
+          <div className="troc-market-card-reference">{reference}</div>
+        )}
+      </div>
+    </a>
+  );
+}
+export function GameTile({
+  href,
+  index,
+  name,
+  description,
+  art,
+}: {
+  href: string;
+  index: string;
+  name: string;
+  description: string;
+  art?: ReactNode;
+}) {
+  return (
+    <a className="troc-destination" href={href}>
+      <span className="troc-destination-index">{index}</span>
+      <div className="troc-destination-art" aria-hidden="true">
+        {art ?? (
+          <div className="troc-card-back">
+            <EditorialIcon name="layers" />
+          </div>
+        )}
+      </div>
+      <div className="troc-destination-copy">
+        <h3>{name}</h3>
+        <p>{description}</p>
+        <EditorialIcon name="arrow" />
+      </div>
+    </a>
+  );
+}
+export function GameHero({
+  title,
+  eyebrow,
+  description,
+  cards,
+  shortcuts,
+  action,
+  level = 1,
+}: {
+  title: string;
+  eyebrow: string;
+  description: string;
+  cards: ReactNode[];
+  level?: 1 | 2;
+  shortcuts?: ReactNode;
+  action?: ReactNode;
+}) {
+  const Heading = level === 1 ? "h1" : "h2";
+  return (
+    <section className="troc-game-hero">
+      <div>
+        <p className="troc-editorial-eyebrow">{eyebrow}</p>
+        <Heading>{title}</Heading>
+        <p className="troc-game-hero-description">{description}</p>
+        <div className="troc-game-hero-shortcuts">{shortcuts}</div>
+        {action}
+      </div>
+      <div className="troc-game-hero-art" aria-hidden="true">
+        <InteractiveCardStack compact cards={cards} label={title} />
+      </div>
+    </section>
+  );
+}
+export function StoreHero({
+  name,
+  eyebrow,
+  location,
+  avatar,
+  banner,
+  bannerSrc,
+  level = 1,
+  focalPoint = "50% 50%",
+  badges,
+  details,
+  actions,
+}: {
+  name: string;
+  eyebrow: string;
+  location: string;
+  level?: 1 | 2;
+  avatar: ReactNode;
+  banner?: ReactNode;
+  bannerSrc?: string | null;
+  focalPoint?: string;
+  badges?: ReactNode;
+  details?: ReactNode;
+  actions?: ReactNode;
+}) {
+  const Heading = level === 1 ? "h1" : "h2";
+  return (
+    <section className="troc-store-hero">
+      <div
+        className="troc-store-cover"
+        style={{ "--store-focal": focalPoint } as CSSProperties}
+        aria-hidden="true"
+      >
+        {bannerSrc ? <img src={bannerSrc} alt="" /> : banner}
+        <span className="troc-store-cover-word">{location}</span>
+      </div>
+      <div className="troc-store-profile">
+        <div className="troc-store-profile-avatar">{avatar}</div>
+        <div className="troc-store-profile-copy">
+          <p className="troc-editorial-eyebrow">{eyebrow}</p>
+          <Heading>{name}</Heading>
+          <p>{location}</p>
+          {badges && <div className="troc-store-profile-badges">{badges}</div>}
+          {details && (
+            <div className="troc-store-profile-details">{details}</div>
+          )}
+        </div>
+        {actions && <div className="troc-store-profile-actions">{actions}</div>}
+      </div>
+    </section>
+  );
+}
+export function SellerPreviewCard({
+  href,
+  name,
+  location,
+  avatar,
+  banner,
+  thumbnails,
+  typeLabel,
+  detail,
+  actionLabel,
+}: {
+  href: string;
+  name: string;
+  location: string;
+  avatar: ReactNode;
+  banner?: ReactNode;
+  thumbnails?: ReactNode;
+  typeLabel: string;
+  detail?: ReactNode;
+  actionLabel: string;
+}) {
+  return (
+    <a className="troc-seller-preview" href={href}>
+      <div className="troc-seller-preview-cover" aria-hidden="true">
+        {banner}
+        <span>{location}</span>
+      </div>
+      <div className="troc-seller-preview-identity">
+        {avatar}
+        <div>
+          <h3>{name}</h3>
+          <p>{typeLabel}</p>
+        </div>
+      </div>
+      {detail && <p className="troc-seller-preview-detail">{detail}</p>}
+      <div className="troc-seller-preview-stock" aria-hidden="true">
+        {thumbnails}
+      </div>
+      <span className="troc-seller-preview-action">
+        {actionLabel}
+        <EditorialIcon name="arrow" />
+      </span>
+    </a>
+  );
+}
+export function PremiumEmptyState({
+  title,
+  description,
+  actions,
+  visual,
+  className,
+  ...props
+}: HTMLAttributes<HTMLElement> & {
+  title: string;
+  description: ReactNode;
+  actions?: ReactNode;
+  visual?: ReactNode;
+}) {
+  return (
+    <section className={cn("troc-premium-empty", className)} {...props}>
+      <div className="troc-premium-empty-visual" aria-hidden="true">
+        {visual ?? (
+          <>
+            <span className="troc-card-back" />
+            <span className="troc-card-back">
+              <EditorialIcon name="layers" />
+            </span>
+          </>
+        )}
+      </div>
+      <div>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        {actions && <div className="troc-premium-empty-actions">{actions}</div>}
+      </div>
+    </section>
+  );
+}
+export function SmartCartComparison({
+  before,
+  after,
+  locale,
+  labels,
+  note,
+}: {
+  before: { cards: number; shipping: number; sellers: number };
+  after: { cards: number; shipping: number; sellers: number };
+  locale: "en" | "fr";
+  labels: {
+    before: string;
+    after: string;
+    cards: string;
+    shipping: string;
+    sellers: string;
+    save: string;
+    explanation: string;
+  };
+  note?: ReactNode;
+}) {
+  const money = (n: number) =>
+    new Intl.NumberFormat(locale + "-CA", {
+      style: "currency",
+      currency: "CAD",
+    }).format(n / 100);
+  const saving = before.cards + before.shipping - after.cards - after.shipping;
+  return (
+    <div className="troc-consolidation">
+      <div className="troc-consolidation-flow">
+        {[before, after].map((side, i) => (
+          <div
+            className="troc-consolidation-side"
+            data-after={i === 1 || undefined}
+            key={i}
+          >
+            <p className="troc-editorial-eyebrow">
+              {i ? labels.after : labels.before}
+            </p>
+            <div className="troc-consolidation-parcels" aria-hidden="true">
+              {Array.from({ length: Math.min(side.sellers, 4) }, (_, j) => (
+                <EditorialIcon key={j} name="package" />
+              ))}
+            </div>
+            <span>
+              {side.sellers} {labels.sellers}
+            </span>
+            <dl>
+              <div>
+                <dt>{labels.cards}</dt>
+                <dd>{money(side.cards)}</dd>
+              </div>
+              <div>
+                <dt>{labels.shipping}</dt>
+                <dd>{money(side.shipping)}</dd>
+              </div>
+            </dl>
+            <strong className="troc-consolidation-total">
+              {money(side.cards + side.shipping)}
+            </strong>
+          </div>
+        ))}
+        <span className="troc-consolidation-arrow" aria-hidden="true">
+          <EditorialIcon name="forward" />
+        </span>
+      </div>
+      <div className="troc-consolidation-result">
+        <span>{labels.save}</span>
+        <strong>{money(saving)}</strong>
+        <p>{labels.explanation}</p>
+      </div>
+      {note && <p className="troc-consolidation-note">{note}</p>}
+    </div>
+  );
+}

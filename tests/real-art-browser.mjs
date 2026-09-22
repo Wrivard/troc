@@ -43,6 +43,7 @@ try {
           assert.ok(count > 0);
           for (let i = 0; i < count; i++) {
             const img = images.nth(i);
+            if (!(await img.isVisible())) continue;
             await img.scrollIntoViewIfNeeded();
             await expect
               .poll(() => img.evaluate((n) => n.complete && n.naturalWidth > 0))

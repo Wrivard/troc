@@ -1,3 +1,4 @@
+import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { useEffect, useState } from "react";
 import type { OrderView, OrderStatus } from "@workspace/commerce";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -99,18 +100,25 @@ export function OrderPages({
       {!id && (
         <>
           {!busy && !error && list.length === 0 && (
-            <section className="grid gap-3 rounded-lg bg-card p-8">
-              <h2 className="text-xl font-semibold">
-                {locale === "fr"
+            <PremiumEmptyState
+              title={
+                locale === "fr"
                   ? "Vos commandes apparaîtront ici."
-                  : "Your orders will appear here."}
-              </h2>
-              <p className="text-muted-foreground">
-                {locale === "fr"
+                  : "Your orders will appear here."
+              }
+              description={
+                locale === "fr"
                   ? "Retrouvez les articles, les statuts et les messages de chaque vendeur au même endroit."
-                  : "Find items, status updates and seller messages together in one place."}
-              </p>
-            </section>
+                  : "Find items, status updates and seller messages together in one place."
+              }
+              actions={
+                <Button asChild variant="secondary">
+                  <a href={`/search?lang=${locale}`}>
+                    {locale === "fr" ? "Explorer les cartes" : "Explore cards"}
+                  </a>
+                </Button>
+              }
+            />
           )}
           <ul className="grid gap-4">
             {list.map((o) => (

@@ -46,3 +46,8 @@
   .troc-offer-detail { align-items: flex-start; text-align: left; }
   .troc-offer-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
 }
+/* Open, scan-friendly offer variant used inside the marketplace decision panel. */
+.troc-offer {background:transparent;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:var(--space-5) 0;}
+.troc-offer-seller-name {font-size:var(--text-base);font-weight:600;}.troc-offer-seller-name a {text-decoration:underline;text-decoration-color:transparent;text-underline-offset:4px;}.troc-offer-seller-name a:hover {text-decoration-color:currentColor;}.troc-offer-location {font-size:var(--text-sm);color:var(--text-secondary);}.troc-offer-shipping {line-height:1.6;}.troc-offer-promotion {font-size:var(--text-xs);color:var(--text-secondary);}
+@container (max-width:620px){.troc-offer {grid-template-columns:minmax(0,1fr) auto;}.troc-offer-actions {grid-column:1/-1;flex-direction:row;align-items:center;}.troc-offer-actions .troc-button {width:auto;}.troc-offer-detail {align-items:flex-end;text-align:right;}}
+@media(max-width:767px){.troc-offer {grid-template-columns:minmax(0,1fr) auto;}.troc-offer-actions {grid-column:1/-1;}.troc-offer-actions .troc-button {width:auto;}.troc-offer-detail {align-items:flex-end;text-align:right;}}

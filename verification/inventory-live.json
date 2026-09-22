@@ -1,0 +1,147 @@
+{
+  "origin": "https://troc-api-server-psi.vercel.app",
+  "checkedAt": "2026-09-22T15:49:50.779Z",
+  "inventoryActivation": "Hosted authentication/database unavailable; confirmed fail-closed state",
+  "results": [
+    {
+      "route": "/",
+      "width": 390,
+      "lang": "en",
+      "status": 200,
+      "heading": "One search.\nEvery seller."
+    },
+    {
+      "route": "/search",
+      "width": 390,
+      "lang": "en",
+      "status": 200,
+      "heading": "Catalog results"
+    },
+    {
+      "route": "/cart",
+      "width": 390,
+      "lang": "en",
+      "status": 200,
+      "heading": "Your cart"
+    },
+    {
+      "route": "/smart-cart",
+      "width": 390,
+      "lang": "en",
+      "status": 200,
+      "heading": "Smart Cart"
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 390,
+      "lang": "en",
+      "status": 200,
+      "heading": "Your inventory"
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Une recherche.\nTous les vendeurs."
+    },
+    {
+      "route": "/search",
+      "width": 390,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Résultats du catalogue"
+    },
+    {
+      "route": "/cart",
+      "width": 390,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Votre panier"
+    },
+    {
+      "route": "/smart-cart",
+      "width": 390,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Panier intelligent"
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 390,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Votre inventaire"
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "lang": "en",
+      "status": 200,
+      "heading": "One search.\nEvery seller."
+    },
+    {
+      "route": "/search",
+      "width": 1280,
+      "lang": "en",
+      "status": 200,
+      "heading": "Catalog results"
+    },
+    {
+      "route": "/cart",
+      "width": 1280,
+      "lang": "en",
+      "status": 200,
+      "heading": "Your cart"
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1280,
+      "lang": "en",
+      "status": 200,
+      "heading": "Smart Cart"
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1280,
+      "lang": "en",
+      "status": 200,
+      "heading": "Your inventory"
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Une recherche.\nTous les vendeurs."
+    },
+    {
+      "route": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Résultats du catalogue"
+    },
+    {
+      "route": "/cart",
+      "width": 1280,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Votre panier"
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1280,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Panier intelligent"
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1280,
+      "lang": "fr",
+      "status": 200,
+      "heading": "Votre inventaire"
+    }
+  ]
+}
