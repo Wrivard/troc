@@ -414,7 +414,7 @@ export function PublicMarketplace({
       />
       <main
         id="main-content"
-        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "search" ? "troc-search-page" : ""}`}
+        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "search" ? "troc-search-page" : page.seller ? "troc-store-page" : ""}`}
       >
         {page.demo && (
           <p
@@ -1044,11 +1044,34 @@ export function PublicMarketplace({
                       />
                     ) : undefined
                   }
-                  details={`${t("handling")}: ${page.seller.handlingDays} · ${locale === "fr" ? "Aucun avis pour le moment" : "No reviews yet"}`}
+                  details={
+                    locale === "fr"
+                      ? "Aucun avis pour le moment"
+                      : "No reviews yet"
+                  }
                   actions={
-                    <Button disabled variant="secondary">
-                      {t("follow")}
-                    </Button>
+                    <div className="grid gap-2">
+                      <Button asChild>
+                        <a
+                          href="#catalog-results"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setTab("shop");
+                            requestAnimationFrame(() => {
+                              const results =
+                                document.getElementById("catalog-results");
+                              results?.focus({ preventScroll: true });
+                              results?.scrollIntoView({ block: "start" });
+                            });
+                          }}
+                        >
+                          {locale === "fr" ? "Voir les cartes" : "Browse cards"}
+                        </a>
+                      </Button>
+                      <Button disabled variant="ghost">
+                        {t("follow")}
+                      </Button>
+                    </div>
                   }
                 />
                 <nav
@@ -1154,6 +1177,7 @@ export function PublicMarketplace({
                 </details>
                 <p
                   id="catalog-results"
+                  tabIndex={-1}
                   className="text-sm text-muted-foreground"
                 >
                   {page.results.length}{" "}

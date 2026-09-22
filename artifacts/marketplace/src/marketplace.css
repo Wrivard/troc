@@ -1319,3 +1319,9 @@ main {
   .troc-search-page .troc-market-card-art { padding:var(--space-2); }
   .troc-search-page .troc-market-card-copy { gap:var(--space-2); }
 }
+
+/* Store discovery uses the same compact mobile navigation as search. */
+@media (max-width: 639px) {
+  .troc-store-page .troc-catalog-navigation { display: none; }
+}
+#catalog-results:focus-visible { outline: 2px solid var(--color-accent); outline-offset: var(--space-2); }

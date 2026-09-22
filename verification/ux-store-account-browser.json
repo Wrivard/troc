@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 668.09375
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 668.09375
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 668.09375
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 668.09375
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 645
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 645
+    },
+    {
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 705
+    },
+    {
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 705
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 567.5
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 567.5
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "light",
+      "status": "passed",
+      "ctaBottom": 567.5
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "dark",
+      "status": "passed",
+      "ctaBottom": 567.5
+    }
+  ]
+}
