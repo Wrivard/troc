@@ -1,0 +1,53 @@
+{
+  "origin": "http://localhost:4313",
+  "results": [
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "status": "passed"
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "status": "passed"
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "status": "passed"
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "light",
+      "status": "passed"
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "dark",
+      "status": "passed"
+    }
+  ]
+}
