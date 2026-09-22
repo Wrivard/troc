@@ -1,7 +1,7 @@
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { LocaleSwitcher } from "@workspace/troc-design-system/components/ui/locale-switcher";
@@ -23,11 +23,20 @@ export function AccountApp({ path }: { path: string }) {
   const [status, setStatus] = useState<MessageKey | null>(null);
   const [busy, setBusy] = useState(false);
   const [user, setUser] = useState<Account | null>(null);
+  const currentPreferences = useRef({ locale, theme });
+  useEffect(() => {
+    currentPreferences.current = { locale, theme };
+  }, [locale, theme]);
   const changeLocale = (next: Account["locale"]) => {
+    currentPreferences.current = {
+      ...currentPreferences.current,
+      locale: next,
+    };
     setLocale(next);
     if (status === "saved" && next !== locale) setStatus(null);
   };
   const changeTheme = (next: Account["theme"]) => {
+    currentPreferences.current = { ...currentPreferences.current, theme: next };
     setTheme(next);
     if (status === "saved" && next !== theme) setStatus(null);
   };
@@ -90,8 +99,13 @@ export function AccountApp({ path }: { path: string }) {
     setBusy(true);
     setStatus(null);
     try {
-      await api("/account/preferences", "PATCH", { locale, theme });
-      setStatus("saved");
+      const submitted = { locale, theme };
+      await api("/account/preferences", "PATCH", submitted);
+      if (
+        currentPreferences.current.locale === submitted.locale &&
+        currentPreferences.current.theme === submitted.theme
+      )
+        setStatus("saved");
     } catch (error) {
       report(error);
     } finally {
