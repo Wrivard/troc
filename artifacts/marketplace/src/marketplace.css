@@ -1628,56 +1628,67 @@ main {
 .troc-about-intro > p:not(.troc-editorial-eyebrow) { max-width: 46ch; font-size: var(--text-base); color: var(--text-secondary); line-height: 1.75; margin-bottom: var(--space-5); }
 .troc-about-intro > a { margin-top: var(--space-3); }
 @media (max-width: 1023px) { .troc-about-home { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); } }
+.troc-home-page { padding-top: 0; }
+@media (min-width: 1200px) {
+  .troc-home-shell .troc-site-header { padding-inline: clamp(32px, 3.83vw, 64px); }
+  .troc-home-shell .troc-site-header-search { max-width: 540px; }
+}
 /* Supplied cinematic artwork: no recreated maple, smoke, streak or signature. */
 .troc-home-hero.troc-cinematic-hero {
+  --hero-cover-compensation: clamp(0px, calc((1672px - 100vw) * .2155), 96px);
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: 0; row-gap: var(--space-8);
   width: 100vw; margin-inline: calc(50% - 50vw);
-  padding: clamp(3rem, 5vw, 5rem) clamp(2rem, 5.5vw, 6rem) var(--space-8);
-  background: #080809 var(--hero-image) right center / cover no-repeat;
+  padding: clamp(3rem, 4.8vw, 5rem) clamp(2rem, 5.5vw, 6rem) 40px;
+  background: linear-gradient(to bottom, #08080940 60%, #080809e8 83%, #080809 100%), #080809 var(--hero-image) center bottom / cover no-repeat;
   color: var(--text-primary);
   border-radius: 0; overflow: clip;
 }
-.troc-cinematic-hero .troc-hero-copy { gap: var(--space-5); align-self: center; padding: 0; }
-.troc-cinematic-hero .troc-hero-copy h1 { font-size: clamp(3.25rem, 5.65vw, 6.25rem); font-weight: 800; letter-spacing: -.055em; line-height: .99; }
+.troc-hero-demo-note { position: absolute; top: 16px; left: 5.5%; right: 5.5%; color: #aaaab2; font-size: 11px; line-height: 1.5; }
+.troc-cinematic-hero .troc-hero-copy { gap: var(--space-4); align-self: start; margin-top: 22px; padding: 0; max-width: 680px; }
+.troc-cinematic-hero .troc-hero-copy h1 { font-size: clamp(3.25rem, 5.65vw, 6.25rem); font-weight: 800; letter-spacing: -.055em; line-height: .91; }
 .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(3rem, 5.15vw, 5.75rem); }
 .troc-cinematic-hero .troc-hero-copy h1 span { color: #c5c5c8; }
 .troc-cinematic-hero .troc-editorial-eyebrow { font-size: .7rem; letter-spacing: .18em; color: #c6c6cc; margin-bottom: var(--space-2); }
 .troc-cinematic-hero .troc-hero-lead { max-width: none; font-size: clamp(1rem, 1.5vw, 1.5rem); line-height: 1.5; }
-.troc-cinematic-hero .troc-hero-support { max-width: 34rem; font-size: var(--text-sm); color: #babac2; line-height: 1.65; }
-.troc-cinematic-hero .troc-hero-search { background: rgb(18 18 21 / 88%); border: 1px solid #65656b; box-shadow: 0 4px 18px #0004; min-height: 62px; }
-.troc-cinematic-hero .troc-hero-search input { color: #f5f5f6; font-size: var(--text-base); }
+.troc-cinematic-hero .troc-hero-support { max-width: 42.5rem; font-size: var(--text-base); color: #babac2; line-height: 1.65; }
+.troc-cinematic-hero .troc-hero-search { background: rgb(18 18 21 / 88%); border: 1px solid #65656b; box-shadow: 0 4px 18px #0004; min-height: 70px; }
+.troc-cinematic-hero .troc-hero-search { margin-top: 5px; }
+.troc-cinematic-hero .troc-hero-search input { color: #f5f5f6; font-size: 18px; }
+.troc-cinematic-hero .troc-hero-search button { min-width: 114px; min-height: 46px; font-size: var(--text-base); }
 .troc-cinematic-hero .troc-hero-search input::placeholder { color: #a3a3ad; }
-.troc-cinematic-hero .troc-hero-actions { gap: var(--space-6); margin-top: var(--space-1); }
-.troc-cinematic-hero .troc-hero-actions > .troc-button { min-height: 52px; padding-inline: var(--space-6); }
-.troc-cinematic-hero .troc-hero-display { align-self: stretch; position: relative; min-height: 520px; }
-.troc-cinematic-hero .troc-stack-stage { aspect-ratio: auto; height: 520px; }
+.troc-cinematic-hero .troc-hero-actions { gap: var(--space-8); margin-top: var(--space-2); }
+.troc-cinematic-hero .troc-hero-actions > .troc-button { min-height: 56px; min-width: 198px; font-size: var(--text-base); padding-inline: var(--space-6); }
+.troc-cinematic-hero .troc-hero-actions .troc-editorial-text-link { font-size: var(--text-base); }
+.troc-cinematic-hero .troc-hero-display { align-self: stretch; position: relative; min-height: clamp(460px, 33.5vw, 560px); }
+.troc-cinematic-hero .troc-stack-stage { aspect-ratio: auto; height: clamp(460px, 33.5vw, 560px); }
 .troc-cinematic-hero .troc-stack-card { box-shadow: 0 28px 30px #000a, 0 0 1px 1px #ff2d3d55; }
-.troc-cinematic-hero .troc-stack-card[data-layer="0"] { width: 40%; left: 31%; top: 18%; }
-.troc-cinematic-hero .troc-stack-card[data-layer="1"] { width: 35%; left: 8%; top: 31%; }
-.troc-cinematic-hero .troc-stack-card[data-layer="2"] { width: 33%; left: 63%; top: 31%; }
+.troc-cinematic-hero .troc-stack-card[data-layer="0"] { width: 39%; left: 26.5%; top: calc(9.5% + var(--hero-cover-compensation)); }
+.troc-cinematic-hero .troc-stack-card[data-layer="1"] { width: 35%; left: 3.5%; top: calc(25% + var(--hero-cover-compensation)); }
+.troc-cinematic-hero .troc-stack-card[data-layer="2"] { width: 32%; left: 60%; top: calc(19% + var(--hero-cover-compensation)); }
 .troc-cinematic-hero .troc-stack-contact { display: none; }
 .troc-cinematic-hero .troc-art-note { position: absolute; inset: auto 0 0; margin: 0; color: #aaaab2; text-align: right; font-size: 10px; }
 .troc-hero-benefits { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: var(--space-5); }
-.troc-hero-benefits > div { display: flex; align-items: center; gap: var(--space-4); padding-inline: var(--space-5); border-left: 1px solid #ffffff25; }
+.troc-hero-benefits > div { display: flex; align-items: center; gap: 28px; padding-inline: var(--space-5); border-left: 1px solid #ffffff25; }
 .troc-hero-benefits > div:first-child { border-left: 0; padding-left: 0; }
 .troc-hero-benefits > div:last-child { padding-right: 0; }
-.troc-hero-benefit-icon { display: inline-flex; flex: 0 0 38px; width: 38px; height: 38px; align-items: center; justify-content: center; border: 1px solid #ffffff55; border-radius: 50%; }
+.troc-hero-benefit-icon { display: inline-flex; flex: 0 0 46px; width: 46px; height: 46px; align-items: center; justify-content: center; border: 1px solid #ffffff55; border-radius: 50%; }
 .troc-hero-benefit-icon svg { width: 20px; height: 20px; }
-.troc-hero-benefits strong { display: block; font-size: var(--text-sm); font-weight: 600; }
-.troc-hero-benefits p { color: #b8b8c0; font-size: var(--text-xs); line-height: 1.6; margin-top: var(--space-1); }
-.troc-hero-closing { grid-column: 1 / -1; display: flex; gap: var(--space-6); align-items: center; justify-content: center; color: #a5a5af; font-size: 10px; letter-spacing: .28em; text-align: center; }
+.troc-hero-benefits strong { display: block; font-size: var(--text-base); font-weight: 600; }
+.troc-hero-benefits p { color: #b8b8c0; font-size: var(--text-sm); line-height: 1.5; margin-top: var(--space-1); }
+.troc-hero-closing { margin-top: 25px; grid-column: 1 / -1; display: flex; gap: var(--space-6); align-items: center; justify-content: center; color: #a5a5af; font-size: 11px; letter-spacing: .45em; text-align: center; }
 .troc-hero-closing::before, .troc-hero-closing::after { content: ""; width: 34px; height: 1px; background: var(--color-accent); flex-shrink: 0; }
-@media (min-width: 1600px) { .troc-cinematic-hero .troc-stack-stage, .troc-cinematic-hero .troc-hero-display { height: 580px; min-height: 580px; } }
+
 @media (max-width: 1023px) {
-  .troc-home-hero.troc-cinematic-hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding: var(--space-8) 0; background-image: none; }
-  .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-8); max-width: 720px; width: 100%; margin-inline: auto; }
-  .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(3.25rem, 7.5vw, 5.5rem); }
+  .troc-home-hero.troc-cinematic-hero { --hero-cover-compensation: 0px; grid-template-columns: minmax(0, 1fr); gap: 0; padding: var(--space-8) 0; background: #080809; }
+  .troc-hero-demo-note { position: static; padding-inline: var(--space-8); margin-bottom: var(--space-6); }
+  .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-8); margin-top: 0; max-width: 720px; width: 100%; margin-inline: auto; }
+  .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(3.25rem, 7.5vw, 5.5rem); line-height: 1.02; }
   .troc-cinematic-hero .troc-hero-display { min-height: 600px; margin-top: var(--space-4); background: var(--hero-image) right center / auto 100% no-repeat; }
   .troc-cinematic-hero .troc-interactive-stack { width: min(460px, 90%); margin-left: auto; margin-right: 16%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="0"] { top: 20%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="1"] { top: 30%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="2"] { top: 26%; }
+  .troc-cinematic-hero .troc-stack-card[data-layer="0"] { top: 20%; left: 31%; width: 40%; }
+  .troc-cinematic-hero .troc-stack-card[data-layer="1"] { top: 30%; left: 8%; }
+  .troc-cinematic-hero .troc-stack-card[data-layer="2"] { top: 26%; left: 63%; width: 33%; }
   .troc-cinematic-hero .troc-stack-stage { height: 600px; }
   .troc-cinematic-hero .troc-art-note { right: var(--space-5); bottom: var(--space-4); }
   .troc-hero-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--space-6) var(--space-8); row-gap: var(--space-6); }
@@ -1687,6 +1698,7 @@ main {
 }
 @media (max-width: 767px) {
   .troc-home-hero.troc-cinematic-hero { margin-inline: calc(50% - 50vw); }
+  .troc-hero-demo-note { padding-inline: var(--space-5); }
   .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-5); }
   .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(2.75rem, 11vw, 4rem); }
   .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(2rem, 9.2vw, 3.6rem); }
@@ -1697,9 +1709,12 @@ main {
   .troc-cinematic-hero .troc-stack-card[data-layer="1"] { top: 23%; }
   .troc-cinematic-hero .troc-stack-card[data-layer="2"] { top: 27%; }
   .troc-hero-benefits { padding-inline: var(--space-5); gap: var(--space-5); }
-  .troc-hero-benefits > div { flex-direction: column; align-items: flex-start; padding: 0; border: 0; }
+  .troc-hero-benefits > div { flex-direction: column; align-items: flex-start; gap: var(--space-4); padding: 0; border: 0; }
   .troc-cinematic-hero .troc-hero-actions { gap: var(--space-4); }
-  .troc-cinematic-hero .troc-hero-actions > .troc-button { padding-inline: var(--space-4); }
+  .troc-cinematic-hero .troc-hero-actions > .troc-button { min-width: 0; font-size: var(--text-sm); padding-inline: var(--space-4); }
+  .troc-cinematic-hero .troc-hero-search input { font-size: var(--text-base); }
+  .troc-cinematic-hero .troc-hero-search button { min-width: 0; font-size: var(--text-sm); }
+  .troc-cinematic-hero .troc-hero-actions .troc-editorial-text-link { font-size: var(--text-xs); }
   .troc-cinematic-hero .troc-editorial-text-link { font-size: var(--text-xs); }
   .troc-hero-closing { font-size: 9px; letter-spacing: .16em; gap: var(--space-3); }
 }

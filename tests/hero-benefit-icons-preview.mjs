@@ -29,7 +29,7 @@ try {
     );
     assert.deepEqual(
       sizes,
-      Array.from({ length: 4 }, () => [38, 38]),
+      Array.from({ length: 4 }, () => [46, 46]),
     );
     assert.equal(
       await page.evaluate(

@@ -448,7 +448,9 @@ export function PublicMarketplace({
     </form>
   );
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className={`min-h-screen bg-background text-foreground ${page.kind === "home" ? "troc-home-shell" : ""}`}
+    >
       <MarketplaceHeader
         locale={locale}
         theme={theme}
@@ -458,9 +460,9 @@ export function PublicMarketplace({
       />
       <main
         id="main-content"
-        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "search" ? "troc-search-page" : page.seller ? "troc-store-page" : ""}`}
+        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "home" ? "troc-home-page" : page.kind === "search" ? "troc-search-page" : page.seller ? "troc-store-page" : ""}`}
       >
-        {page.demo && (
+        {page.demo && page.kind !== "home" && (
           <p
             className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground"
             role="note"

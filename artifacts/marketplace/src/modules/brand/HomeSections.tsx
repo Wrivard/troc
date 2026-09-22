@@ -136,6 +136,14 @@ export function HomeSections({
           } as CSSProperties
         }
       >
+        {page.demo && (
+          <p className="troc-hero-demo-note" role="note">
+            {c(
+              "Demo marketplace · Fictional sellers, prices and inventory. No purchases available.",
+              "Marché de démonstration · Vendeurs, prix et stocks fictifs. Aucun achat offert.",
+            )}
+          </p>
+        )}
         <div className="troc-hero-copy">
           <p className="troc-editorial-eyebrow">
             {c(
@@ -211,9 +219,6 @@ export function HomeSections({
             label={c("Pokémon leads the collection", "Pokémon au premier plan")}
             cards={heroes.map((r) => art(r.product, true))}
           />
-          <p className="troc-art-note">
-            {c("Demo marketplace", "Marché de démonstration")}
-          </p>
         </div>
         <div className="troc-hero-benefits">
           {(
