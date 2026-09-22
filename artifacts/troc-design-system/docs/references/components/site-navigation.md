@@ -25,3 +25,5 @@ SiteHeader accepts optional homeHref, supplied by the consumer with locale prese
 ## Design polish addition — 2026-09-22
 
 `SiteHeader.compactMobile` is opt-in. It preserves all language/theme/navigation/cart/account controls in three narrow-screen rows; the sign-in text remains available to assistive technology. The default layout remains unchanged. The navigation story includes a toggle for this variant alongside signed-in, loading and disabled states.
+
+Header destinations may supply `href` for native link behavior (keyboard activation, copy link, and new tabs). Disabled/loading destinations render inert native buttons. The navigation demo uses a native Shop link to editorial compositions. Existing callback actions retain their button behavior.

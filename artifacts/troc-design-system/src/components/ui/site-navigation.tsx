@@ -13,6 +13,8 @@ import { ThemeSwitcher, type ThemeSwitcherProps } from "./theme-switcher"
 export interface SiteNavItem {
   id: string
   label: string
+  /** Native header destination; disabled/loading items remain inert buttons. */
+  href?: string
   current?: boolean
   onSelect?: () => void
   /** Disable interaction for this destination (native button disabled). */
@@ -86,7 +88,11 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
       </div>
 
       <nav className="troc-site-nav" aria-label={navLabel}>
-        {navItems.map((item) => (
+        {navItems.map((item) => item.href && !item.disabled && !item.loading ? (
+          <a key={item.id} className="troc-site-nav-link" href={item.href} aria-current={item.current ? "page" : undefined}>
+            {item.label}
+          </a>
+        ) : (
           <button
             key={item.id}
             type="button"

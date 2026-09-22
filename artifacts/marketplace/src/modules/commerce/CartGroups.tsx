@@ -53,8 +53,8 @@ export function CartGroups({
             sellerMeta={
               <>
                 <span className="text-sm">
-                  {g.cards} {t("cards")} · {t("handling")}:{" "}
-                  {g.seller.handlingDays} ·{" "}
+                  {g.cards} {locale === "fr" ? "exemplaires" : "units"} ·{" "}
+                  {t("handling")}: {g.seller.handlingDays} ·{" "}
                   {g.seller.reputation
                     ? `${t("reputation")}: ${g.seller.reputation}/100`
                     : t("noReviews")}
@@ -130,7 +130,15 @@ export function CartGroups({
           >
             <details open={g.lines.length <= 10}>
               <summary className="cursor-pointer p-4 font-semibold">
-                {t("show")} · {g.lines.length}
+                {t("show")} · {g.lines.length}{" "}
+                {locale === "fr"
+                  ? g.lines.length === 1
+                    ? "référence"
+                    : "références"
+                  : g.lines.length === 1
+                    ? "line item"
+                    : "line items"}{" "}
+                · {g.cards} {locale === "fr" ? "exemplaires" : "units"}
               </summary>
               {visible.map((l) => (
                 <div key={l.listingId}>
@@ -150,8 +158,8 @@ export function CartGroups({
                       />
                     }
                     metadata={`${l.listing.language.toUpperCase()} · ${l.listing.condition ?? l.listing.productType}`}
-                    unitPrice={money(l.unitCents)}
-                    lineTotal={money(l.totalCents)}
+                    unitPrice={`${money(l.unitCents)} / ${locale === "fr" ? "exemplaire" : "unit"}`}
+                    lineTotal={`${locale === "fr" ? "Ligne" : "Line total"} ${money(l.totalCents)}`}
                     quantity={l.quantity}
                     max={Math.min(100, l.listing.quantity)}
                     quantityLabel={`${t("quantity")} ${l.listing.name[locale]}`}

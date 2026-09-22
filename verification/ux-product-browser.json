@@ -1,0 +1,91 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "ctaY": 553.703125,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "ctaY": 553.703125,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "ctaY": 553.703125,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "ctaY": 553.703125,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "ctaY": 450.203125,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "ctaY": 450.203125,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "ctaY": 510.203125,
+      "passed": true
+    },
+    {
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "ctaY": 510.203125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "ctaY": 399.578125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "ctaY": 399.578125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "dark",
+      "ctaY": 399.578125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "light",
+      "ctaY": 399.578125,
+      "passed": true
+    }
+  ],
+  "storageFailure": true,
+  "noOffers": true,
+  "soldOut": true
+}

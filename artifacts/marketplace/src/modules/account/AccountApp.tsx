@@ -158,10 +158,10 @@ export function AccountApp({ path }: { path: string }) {
                   required
                   minLength={8}
                   maxLength={128}
-                  aria-describedby="password-hint"
+                  aria-describedby={signup ? "password-hint" : undefined}
                 />
               </label>
-              <p id="password-hint">{t("passwordHint")}</p>
+              {signup && <p id="password-hint">{t("passwordHint")}</p>}
               {signup && (
                 <>
                   <p>{t("country")}</p>
@@ -176,7 +176,7 @@ export function AccountApp({ path }: { path: string }) {
               </Button>
               <a
                 className="underline"
-                href={link(signup ? "sign-in" : "sign-up")}
+                href={`${link(signup ? "sign-in" : "sign-up")}?lang=${locale}`}
               >
                 {t(signup ? "signIn" : "signUp")}
               </a>
@@ -185,6 +185,10 @@ export function AccountApp({ path }: { path: string }) {
           {user && (
             <>
               <p className="break-words">{user.email}</p>
+              <label className="grid gap-2">
+                {locale === "fr" ? "Identifiant du compte" : "Account ID"}
+                <Input readOnly value={user.id} autoComplete="off" />
+              </label>
               <Button onClick={save} disabled={busy}>
                 {t("save")}
               </Button>

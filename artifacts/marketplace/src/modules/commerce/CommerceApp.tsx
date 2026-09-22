@@ -223,6 +223,20 @@ export function CommerceApp({ path }: { path: string }) {
     available,
     Math.max(0, Math.round(Number(credit) * 100) || 0),
   );
+  const unchanged =
+    !!smart &&
+    smart.lines.length === lines.length &&
+    smart.lines.every((candidate) =>
+      lines.some(
+        (line) =>
+          line.listingId === candidate.listingId &&
+          line.quantity === candidate.quantity &&
+          !!line.lockListing === !!candidate.lockListing &&
+          !!line.lockSeller === !!candidate.lockSeller,
+      ),
+    );
+  const beforeTaxLabel =
+    locale === "fr" ? "Total avant taxes" : "Total before taxes";
   return (
     <div className="min-h-screen bg-background text-foreground">
       <MarketplaceHeader
@@ -285,6 +299,13 @@ export function CommerceApp({ path }: { path: string }) {
                       : "Your cards, grouped by seller. Check minimums and shipping before you continue."
               }
             />
+            {!!lines.length && quote && !checkout && (
+              <a className="troc-editorial-text-link" href="#cart-summary">
+                {locale === "fr"
+                  ? "Voir le récapitulatif"
+                  : "View order summary"}
+              </a>
+            )}
             {status && (
               <p role="alert">
                 {t(status)}
@@ -299,11 +320,20 @@ export function CommerceApp({ path }: { path: string }) {
                     {t("repairCart")}
                   </Button>
                 )}
-                {(status === "unauthorized" ||
-                  status === "service_unavailable") && (
+                {status === "unauthorized" && (
                   <a className="ml-2 underline" href={link("/sign-in")}>
                     {t("signIn")}
                   </a>
+                )}
+                {status === "service_unavailable" && checkout && (
+                  <span className="block mt-2">
+                    {locale === "fr"
+                      ? "Le paiement simulé est temporairement indisponible. Votre panier est conservé."
+                      : "Simulated checkout is temporarily unavailable. Your cart is saved."}{" "}
+                    <a className="underline" href={link("/cart")}>
+                      {locale === "fr" ? "Retour au panier" : "Return to cart"}
+                    </a>
+                  </span>
                 )}
               </p>
             )}
@@ -346,52 +376,93 @@ export function CommerceApp({ path }: { path: string }) {
                       </Button>
                       {smart && (
                         <>
+                          {unchanged && (
+                            <div role="status" className="grid gap-2">
+                              <h2 className="text-xl font-semibold">
+                                {locale === "fr"
+                                  ? "Aucun meilleur total trouvé"
+                                  : "No better total found"}
+                              </h2>
+                              <p>
+                                {locale === "fr"
+                                  ? "Parmi les offres comparées, Smart Cart conserve vos cartes et vos vendeurs actuels."
+                                  : "Among the offers compared, Smart Cart keeps your current cards and sellers."}
+                              </p>
+                            </div>
+                          )}
                           <SmartCartComparison
                             locale={locale}
-                            sellersRowLabel={t("sellers")}
+                            sellersRowLabel=""
                             columns={[
                               {
                                 heading: t("original"),
                                 sellersLabel: `${smart.original.cards} ${t("cards")} · ${smart.original.groups.length} ${t("sellers")}`,
                                 lines: summary(smart.original),
-                                totalLabel: t("total"),
+                                totalLabel: beforeTaxLabel,
                                 total: smart.original.totalCents / 100,
                               },
                               {
                                 heading: t("optimized"),
                                 sellersLabel: `${smart.optimized.cards} ${t("cards")} · ${smart.optimized.groups.length} ${t("sellers")}`,
                                 lines: summary(smart.optimized),
-                                totalLabel: t("total"),
+                                totalLabel: beforeTaxLabel,
                                 total: smart.optimized.totalCents / 100,
-                                recommended: true,
+                                recommended: smart.savingsCents > 0,
                               },
                             ]}
-                            savings={{
-                              label: t(
-                                smart.savingsCents < 0
-                                  ? "additionalCost"
-                                  : "save",
-                              ),
-                              amount: Math.abs(smart.savingsCents) / 100,
-                            }}
-                            explanation={`${t("shippingSaved")}: ${money(smart.shippingSavingsCents)}`}
+                            savings={
+                              smart.savingsCents === 0
+                                ? undefined
+                                : {
+                                    label: t(
+                                      smart.savingsCents < 0
+                                        ? "additionalCost"
+                                        : "save",
+                                    ),
+                                    amount: Math.abs(smart.savingsCents) / 100,
+                                  }
+                            }
+                            explanation={
+                              smart.shippingSavingsCents === 0
+                                ? undefined
+                                : `${t("shippingSaved")}: ${money(smart.shippingSavingsCents)}`
+                            }
                           />
                           <SmartChanges result={smart} locale={locale} />
-                          <p>
-                            {smart.substitutions.length
-                              ? `${t("substitutions")}: ${smart.substitutions.length} · ${t("difference")}: ${money(smart.substitutions.reduce((n, s) => n + s.merchandiseDifferenceCents, 0))}`
-                              : t("unchanged")}
-                          </p>
-                          <Button disabled={busy} onClick={applySmart}>
-                            {t("applySmart")}
-                          </Button>
+                          {!unchanged && (
+                            <p>
+                              {smart.substitutions.length
+                                ? `${t("substitutions")}: ${smart.substitutions.length} · ${t("difference")}: ${money(smart.substitutions.reduce((n, s) => n + s.merchandiseDifferenceCents, 0))}`
+                                : t("unchanged")}
+                            </p>
+                          )}
+                          {unchanged ? (
+                            <Button asChild>
+                              <a href={link("/cart")}>
+                                {locale === "fr"
+                                  ? "Retour au panier"
+                                  : "Return to cart"}
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button disabled={busy} onClick={applySmart}>
+                              {t("applySmart")}
+                            </Button>
+                          )}
                         </>
                       )}
                     </>
                   )}
                   <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
                     <CartGroups quote={quote} locale={locale} change={change} />
-                    <aside className="grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6">
+                    <aside
+                      id="cart-summary"
+                      tabIndex={-1}
+                      aria-label={
+                        locale === "fr" ? "Récapitulatif" : "Order summary"
+                      }
+                      className="grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6"
+                    >
                       <OrderTotals
                         locale={locale}
                         lines={[
@@ -412,27 +483,41 @@ export function CommerceApp({ path }: { path: string }) {
                               ]
                             : []),
                         ]}
-                        totalLabel={t("total")}
+                        totalLabel={checkout ? t("total") : beforeTaxLabel}
                         total={(quote.totalCents - used) / 100}
                       />
-                      <label className="grid gap-2">
-                        {t("coupon")}
-                        <Input
-                          value={coupon}
-                          maxLength={40}
-                          onChange={(e) => setCoupon(e.target.value)}
-                        />
-                      </label>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setAppliedCoupon(coupon);
-                          setSmart(null);
-                          setCheckoutKey(crypto.randomUUID());
-                        }}
-                      >
-                        {t("apply")}
-                      </Button>
+                      {!checkout && (
+                        <p className="text-sm text-muted-foreground">
+                          {locale === "fr"
+                            ? "Les taxes seront estimées au paiement simulé, selon votre province."
+                            : "Taxes will be estimated at simulated checkout, based on your province."}
+                        </p>
+                      )}
+                      <details>
+                        <summary className="cursor-pointer py-3 font-medium">
+                          {t("coupon")}
+                        </summary>
+                        <div className="grid gap-3 pb-2">
+                          <label className="grid gap-2">
+                            {t("coupon")}
+                            <Input
+                              value={coupon}
+                              maxLength={40}
+                              onChange={(e) => setCoupon(e.target.value)}
+                            />
+                          </label>
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setAppliedCoupon(coupon);
+                              setSmart(null);
+                              setCheckoutKey(crypto.randomUUID());
+                            }}
+                          >
+                            {t("apply")}
+                          </Button>
+                        </div>
+                      </details>
                       {!checkout && (
                         <>
                           <a className="underline" href={link("/smart-cart")}>
@@ -450,7 +535,7 @@ export function CommerceApp({ path }: { path: string }) {
                       )}
                     </aside>
                   </div>
-                  {checkout && (
+                  {checkout && status !== "service_unavailable" && (
                     <form onSubmit={place} className="grid max-w-xl gap-4">
                       <h2 className="text-xl font-bold">{t("country")}</h2>
                       {(

@@ -1,0 +1,60 @@
+{
+  "results": [
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "firstPriceY": 795.390625,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "firstPriceY": 795.390625,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "firstPriceY": 795.390625,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "firstPriceY": 795.390625,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "firstPriceY": 1363.453125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "firstPriceY": 1363.453125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "dark",
+      "firstPriceY": 1363.453125,
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "fr",
+      "theme": "light",
+      "firstPriceY": 1363.453125,
+      "passed": true
+    }
+  ]
+}

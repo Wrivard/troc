@@ -55,6 +55,7 @@ export interface SellerOfferRowProps extends Omit<
 
   /** Translated Add-to-Cart label. */
   addToCartLabel: string;
+  addToCartAccessibleLabel?: string;
   /** Demo-only callback fired when Add to Cart is pressed. */
   onAddToCart?: () => void;
 
@@ -106,6 +107,7 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
       quantityDecrementLabel,
       quantityIncrementLabel,
       addToCartLabel,
+      addToCartAccessibleLabel,
       onAddToCart,
       selected,
       unavailable = false,
@@ -189,6 +191,7 @@ const SellerOfferRow = React.forwardRef<HTMLElement, SellerOfferRowProps>(
               loading={loading}
               disabled={disabled || unavailable}
               onClick={onAddToCart}
+              aria-label={addToCartAccessibleLabel}
             >
               {addToCartLabel}
             </Button>

@@ -1,5 +1,6 @@
 import {
   MarketplaceProductCard,
+  ProductPurchaseSummary,
   GameHero,
   StoreHero,
   PremiumEmptyState,
@@ -11,6 +12,10 @@ import {
 } from "@workspace/troc-design-system/components/ui/editorial";
 import { useState, useEffect, lazy, Suspense } from "react";
 import type { PublicPage, Locale, ProductResult } from "@workspace/catalog";
+import {
+  Chip,
+  ChipGroup,
+} from "@workspace/troc-design-system/components/ui/chips";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import {
@@ -25,7 +30,6 @@ import { HomeSections } from "../brand/HomeSections";
 import {
   CardImage,
   CardMetadata,
-  ProductAvailability,
 } from "@workspace/troc-design-system/components/ui/product-presentation";
 import { CatalogArtwork } from "./CatalogArtwork";
 import {
@@ -61,9 +65,16 @@ export function PublicMarketplace({
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [filtersOpen, setFiltersOpen] = useState(true);
   useEffect(() => {
-    setFiltersOpen(window.matchMedia("(min-width: 768px)").matches);
-  }, []);
-  const [cartMessage, setCartMessage] = useState("");
+    setFiltersOpen(
+      window.matchMedia("(min-width: 768px)").matches &&
+        page.results.length > 0,
+    );
+  }, [page.results.length]);
+  const [cartMessage, setCartMessage] = useState<{
+    offerId: string;
+    text: string;
+    success: boolean;
+  } | null>(null);
   const [tab, setTab] = useState(
     page.filters.max === 99 && page.kind === "store" ? "deals" : "shop",
   );
@@ -96,6 +107,10 @@ export function PublicMarketplace({
   const currentGame = page.games.find((g) => g.slug === page.filters.game);
   const currentSet = page.sets.find((s) => s.slug === page.filters.set);
   const product = page.product;
+  const hasAvailableOffers = page.offers.some((offer) => offer.quantity > 0);
+  const availableFrom = hasAvailableOffers
+    ? (page.results[0]?.lowestCents ?? null)
+    : null;
   const selected = product?.variants.find(
     (v) => v.id === page.selectedVariantId,
   );
@@ -181,6 +196,59 @@ export function PublicMarketplace({
       </Select>
     </label>
   );
+  const activeFilters = Object.entries(page.filters).filter(
+    ([key, value]) =>
+      [
+        "q",
+        "game",
+        "set",
+        "type",
+        "condition",
+        "language",
+        "variant",
+        "rarity",
+        "min",
+        "max",
+        "seller",
+      ].includes(key) &&
+      value !== null &&
+      value !== "" &&
+      !(key === "game" && (page.kind === "game" || page.kind === "set")) &&
+      !(key === "set" && page.kind === "set"),
+  );
+  const appliedLabel = (key: string, value: unknown) => {
+    if (key === "min" || key === "max")
+      return `${key === "min" ? (locale === "fr" ? "Min." : "Min") : locale === "fr" ? "Max." : "Max"} ${format(Number(value))}`;
+    if (key === "q") return `“${value}”`;
+    if (key === "game")
+      return (
+        page.games.find((game) => game.slug === value)?.name[locale] ??
+        String(value)
+      );
+    if (key === "set")
+      return (
+        page.sets.find((set) => set.slug === value)?.name[locale] ??
+        String(value)
+      );
+    if (key === "seller")
+      return (
+        page.sellers.find(
+          (seller) => seller.id === value || seller.slug === value,
+        )?.name ?? String(value)
+      );
+    if (key === "language") return t(value === "en" ? "english" : "japanese");
+    return String(value) in catalogMessages
+      ? t(String(value) as CatalogMessage)
+      : String(value);
+  };
+  const editFilters = () => {
+    setFiltersOpen(true);
+    requestAnimationFrame(() =>
+      document
+        .querySelector<HTMLInputElement>('.troc-quality-filter input[name="q"]')
+        ?.focus(),
+    );
+  };
   const filterForm = (
     <form
       action={`${base}${page.path}`}
@@ -241,7 +309,14 @@ export function PublicMarketplace({
           step={1}
           name="max"
           defaultValue={page.filters.max ?? ""}
+          aria-describedby="catalog-price-help"
         />
+        <small
+          id="catalog-price-help"
+          className="text-xs text-muted-foreground"
+        >
+          {locale === "fr" ? "100 ¢ = 1 $ CAD" : "100¢ = $1 CAD"}
+        </small>
       </label>
       <details
         className="sm:col-span-2 lg:col-span-4 border-t border-border pt-4"
@@ -306,6 +381,7 @@ export function PublicMarketplace({
               step={1}
               name="min"
               defaultValue={page.filters.min ?? ""}
+              aria-describedby="catalog-price-help"
             />
           </label>
         </div>
@@ -338,16 +414,8 @@ export function PublicMarketplace({
       />
       <main
         id="main-content"
-        className="troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8"
+        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "search" ? "troc-search-page" : page.seller ? "troc-store-page" : ""}`}
       >
-        {cartMessage && (
-          <p role="status">
-            {cartMessage}{" "}
-            <a className="underline" href={href("/cart")}>
-              {t("cart")}
-            </a>
-          </p>
-        )}
         {page.demo && (
           <p
             className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground"
@@ -357,7 +425,10 @@ export function PublicMarketplace({
           </p>
         )}
         {page.kind !== "home" && (
-          <nav aria-label={t("game")} className="flex flex-wrap gap-2">
+          <nav
+            aria-label={t("game")}
+            className="troc-catalog-navigation flex flex-wrap gap-2"
+          >
             <Button asChild variant="ghost" size="sm">
               <a href={href("/")}>{t("home")}</a>
             </Button>
@@ -377,7 +448,8 @@ export function PublicMarketplace({
           page.kind !== "game" &&
           page.kind !== "set" &&
           page.kind !== "store" &&
-          !product && (
+          !product &&
+          page.kind !== "search" && (
             <EditorialIntro
               level={1}
               className="troc-page-opening"
@@ -390,6 +462,20 @@ export function PublicMarketplace({
               }
             />
           )}
+        {page.kind === "search" && (
+          <header className="troc-search-heading">
+            <h1>
+              {locale === "fr" ? "Trouvez vos cartes" : "Find your cards"}
+            </h1>
+            <p>
+              {page.filters.q
+                ? `${locale === "fr" ? "Résultats pour" : "Results for"} “${page.filters.q}”`
+                : locale === "fr"
+                  ? "Comparez les offres en CAD."
+                  : "Compare offers in CAD."}
+            </p>
+          </header>
+        )}
         {(page.kind === "game" || page.kind === "set") && (
           <GameHero
             title={title}
@@ -449,6 +535,78 @@ export function PublicMarketplace({
               </aside>
               <div className="troc-product-decision-details">
                 <EditorialIntro level={1} eyebrow="TROC · CAD" title={title} />
+
+                <ProductPurchaseSummary
+                  printing={
+                    <>
+                      {selected && (
+                        <>
+                          {t(
+                            selected.language === "en" ? "english" : "japanese",
+                          )}{" "}
+                          ·{" "}
+                          {selected.key in catalogMessages
+                            ? t(selected.key as CatalogMessage)
+                            : selected.key}{" "}
+                          ·{" "}
+                        </>
+                      )}
+                      {
+                        page.sets.find((set) => set.id === product.setId)?.name[
+                          locale
+                        ]
+                      }{" "}
+                      {selected?.number && ` · #${selected.number}`}
+                    </>
+                  }
+                  price={
+                    <LowestAvailable
+                      amount={
+                        availableFrom === null ? null : availableFrom / 100
+                      }
+                      locale={locale}
+                      label={
+                        locale === "fr"
+                          ? "À partir de · CAD / carte"
+                          : "From · CAD / card"
+                      }
+                    />
+                  }
+                  availability={
+                    hasAvailableOffers
+                      ? `${page.results[0]?.sellerCount ?? 0} ${t("sellers")}`
+                      : locale === "fr"
+                        ? "Aucune offre disponible"
+                        : "No available offers"
+                  }
+                  action={
+                    <Button asChild>
+                      <a
+                        href="#seller-offers"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          const offers =
+                            document.getElementById("seller-offers");
+                          offers?.focus({ preventScroll: true });
+                          offers?.scrollIntoView({ block: "start" });
+                        }}
+                      >
+                        {hasAvailableOffers
+                          ? locale === "fr"
+                            ? "Choisir une offre"
+                            : "View offers"
+                          : locale === "fr"
+                            ? "Vérifier les filtres"
+                            : "Review filters"}
+                      </a>
+                    </Button>
+                  }
+                  note={
+                    locale === "fr"
+                      ? "Hors livraison. Livraison regroupée simulée au panier."
+                      : "Shipping excluded. Combined shipping is simulated in your cart."
+                  }
+                />
                 <section className="troc-product-summary grid content-start gap-6">
                   <CardMetadata
                     items={[
@@ -464,14 +622,13 @@ export function PublicMarketplace({
                   />
                   <div className="flex flex-wrap gap-2">
                     {product.variants.map((v) => (
-                      <Button
-                        asChild
-                        variant={
-                          v.id === selected?.id ? "primary" : "secondary"
-                        }
-                        key={v.id}
-                      >
-                        <a href={href(page.path, { variantId: v.id })}>
+                      <Button asChild variant="secondary" key={v.id}>
+                        <a
+                          aria-current={
+                            v.id === selected?.id ? "true" : undefined
+                          }
+                          href={href(page.path, { variantId: v.id })}
+                        >
                           {t(v.language === "en" ? "english" : "japanese")} ·{" "}
                           {v.key in catalogMessages
                             ? t(v.key as CatalogMessage)
@@ -492,21 +649,6 @@ export function PublicMarketplace({
                       ),
                     ]}
                   />
-                  <div className="troc-product-prices">
-                    {money(page.results[0]?.lowestCents ?? null, "lowest")}
-                    {money(
-                      page.results[0]?.referenceCents ?? null,
-                      "reference",
-                    )}
-                    {money(page.results[0]?.medianCents ?? null, "median")}
-                  </div>
-                  <ProductAvailability
-                    sellersLabel={`${page.results[0]?.sellerCount ?? 0} ${t("sellers")}`}
-                    stockLabel={`${page.results[0]?.quantity ?? 0} ${t("available")}`}
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    {t("referenceNote")}
-                  </p>
                   <details className="text-sm text-muted-foreground">
                     <summary className="cursor-pointer">
                       {locale === "fr"
@@ -535,7 +677,12 @@ export function PublicMarketplace({
                     </a>
                   </details>
                 </section>
-                <section className="troc-offer-list grid gap-4">
+                <section
+                  id="seller-offers"
+                  tabIndex={-1}
+                  aria-label={t("offers")}
+                  className="troc-offer-list grid gap-4"
+                >
                   <EditorialIntro
                     compact
                     title={t("offers")}
@@ -632,7 +779,25 @@ export function PublicMarketplace({
                         ? page.selectedGrade || t("chooseGrade")
                         : t("sealed")}
                   </p>
-                  {page.offers.length === 0 && <p>{t("empty")}</p>}
+                  {page.offers.length === 0 && (
+                    <div className="grid gap-3">
+                      <p>
+                        {locale === "fr"
+                          ? "Aucune offre ne correspond à cette édition et à vos filtres."
+                          : "No offers match this printing and your filters."}
+                      </p>
+                      <a
+                        className="underline"
+                        href={href(page.path, {
+                          variantId: page.selectedVariantId ?? "",
+                        })}
+                      >
+                        {locale === "fr"
+                          ? "Retirer les filtres d’offres"
+                          : "Clear offer filters"}
+                      </a>
+                    </div>
+                  )}
                   {page.offers.map((offer) => {
                     const seller = page.sellers.find(
                       (s) => s.id === offer.sellerId,
@@ -658,16 +823,34 @@ export function PublicMarketplace({
                             offer.condition ? (
                               <ConditionBadge
                                 condition={offer.condition}
-                                label={offer.condition}
+                                label={
+                                  (
+                                    {
+                                      NM: ["Near mint", "Presque neuf"],
+                                      LP: ["Lightly played", "Légèrement joué"],
+                                      MP: [
+                                        "Moderately played",
+                                        "Modérément joué",
+                                      ],
+                                      HP: ["Heavily played", "Très joué"],
+                                      DMG: ["Damaged", "Endommagé"],
+                                    } as const
+                                  )[offer.condition][locale === "fr" ? 1 : 0]
+                                }
                               />
                             ) : undefined
                           }
                           price={money(offer.cents, "offerPrice")}
                           shipping={`${t("minimum")}: ${seller.minimumCents ? format(seller.minimumCents) : t("none")} · ${t("handling")}: ${seller.handlingDays}`}
                           promotion={`${offer.quantity} ${t("available")}${offer.grade ? ` · ${t("grade")}: ${offer.grade}` : ""}`}
-                          quantityLabel={t("quantity")}
-                          quantityDecrementLabel={t("less")}
-                          quantityIncrementLabel={t("more")}
+                          quantityLabel={`${t("quantity")} · ${seller.name}`}
+                          quantityDecrementLabel={`${t("less")} · ${seller.name}`}
+                          quantityIncrementLabel={`${t("more")} · ${seller.name}`}
+                          unavailable={offer.quantity <= 0}
+                          unavailableLabel={
+                            locale === "fr" ? "Épuisé" : "Out of stock"
+                          }
+                          addToCartAccessibleLabel={`${locale === "fr" ? "Ajouter au panier" : "Add to cart"} · ${seller.name}`}
                           maxQuantity={offer.quantity}
                           quantity={quantities[offer.id] ?? 1}
                           onQuantityChange={(quantity) =>
@@ -684,20 +867,38 @@ export function PublicMarketplace({
                           onAddToCart={() => {
                             try {
                               addCart(offer.id, quantities[offer.id] ?? 1);
-                              setCartMessage(
-                                locale === "en"
-                                  ? "Added to your cart."
-                                  : "Ajouté à votre panier.",
-                              );
+                              setCartMessage({
+                                offerId: offer.id,
+                                success: true,
+                                text:
+                                  locale === "en"
+                                    ? `Added ${quantities[offer.id] ?? 1} from ${seller.name} to your cart.`
+                                    : `${quantities[offer.id] ?? 1} ajouté(s) au panier chez ${seller.name}.`,
+                              });
                             } catch {
-                              setCartMessage(
-                                locale === "en"
-                                  ? "Could not save your cart on this device."
-                                  : "Impossible d’enregistrer le panier sur cet appareil.",
-                              );
+                              setCartMessage({
+                                offerId: offer.id,
+                                success: false,
+                                text:
+                                  locale === "en"
+                                    ? "Could not save your cart on this device. Please try again."
+                                    : "Impossible d’enregistrer le panier sur cet appareil. Réessayez.",
+                              });
                             }
                           }}
                         />
+                        {cartMessage?.offerId === offer.id && (
+                          <p className="troc-offer-feedback" role="status">
+                            {cartMessage.text}{" "}
+                            {cartMessage.success && (
+                              <a className="underline" href={href("/cart")}>
+                                {locale === "fr"
+                                  ? "Voir le panier"
+                                  : "View cart"}
+                              </a>
+                            )}
+                          </p>
+                        )}
 
                         {(offer.grade ||
                           offer.gradingCompany ||
@@ -777,6 +978,13 @@ export function PublicMarketplace({
                   locale === "fr" ? "LE PRIX EN CONTEXTE" : "PRICE IN CONTEXT"
                 }
               />
+              <div className="troc-product-reference-context">
+                {money(page.results[0]?.referenceCents ?? null, "reference")}
+                {money(page.results[0]?.medianCents ?? null, "median")}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {t("referenceNote")}
+              </p>
               <Suspense fallback={<p>{t("loading")}</p>}>
                 <PriceHistory prices={page.prices} locale={locale} />
               </Suspense>
@@ -836,11 +1044,34 @@ export function PublicMarketplace({
                       />
                     ) : undefined
                   }
-                  details={`${t("handling")}: ${page.seller.handlingDays} · ${locale === "fr" ? "Aucun avis pour le moment" : "No reviews yet"}`}
+                  details={
+                    locale === "fr"
+                      ? "Aucun avis pour le moment"
+                      : "No reviews yet"
+                  }
                   actions={
-                    <Button disabled variant="secondary">
-                      {t("follow")}
-                    </Button>
+                    <div className="grid gap-2">
+                      <Button asChild>
+                        <a
+                          href="#catalog-results"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setTab("shop");
+                            requestAnimationFrame(() => {
+                              const results =
+                                document.getElementById("catalog-results");
+                              results?.focus({ preventScroll: true });
+                              results?.scrollIntoView({ block: "start" });
+                            });
+                          }}
+                        >
+                          {locale === "fr" ? "Voir les cartes" : "Browse cards"}
+                        </a>
+                      </Button>
+                      <Button disabled variant="ghost">
+                        {t("follow")}
+                      </Button>
+                    </div>
                   }
                 />
                 <nav
@@ -899,6 +1130,39 @@ export function PublicMarketplace({
               </div>
             ) : (
               <>
+                {activeFilters.length > 0 && (
+                  <ChipGroup
+                    className="troc-applied-filters"
+                    label={
+                      locale === "fr" ? "Filtres appliqués" : "Applied filters"
+                    }
+                  >
+                    {activeFilters.map(([key, value]) => (
+                      <Chip
+                        key={key}
+                        removeLabel={`${locale === "fr" ? "Retirer" : "Remove"} ${appliedLabel(key, value)}`}
+                        onRemove={() =>
+                          go(
+                            page.path,
+                            Object.fromEntries(
+                              Object.entries(page.filters)
+                                .filter(
+                                  ([name, val]) =>
+                                    name !== key &&
+                                    name !== "cursor" &&
+                                    val !== null &&
+                                    val !== "",
+                                )
+                                .map(([name, val]) => [name, String(val)]),
+                            ),
+                          )
+                        }
+                      >
+                        {appliedLabel(key, value)}
+                      </Chip>
+                    ))}
+                  </ChipGroup>
+                )}
                 <details
                   className="troc-catalog-filters"
                   open={filtersOpen}
@@ -913,6 +1177,7 @@ export function PublicMarketplace({
                 </details>
                 <p
                   id="catalog-results"
+                  tabIndex={-1}
                   className="text-sm text-muted-foreground"
                 >
                   {page.results.length}{" "}
@@ -958,16 +1223,28 @@ export function PublicMarketplace({
                   )
                 ) : (
                   <PremiumEmptyState
-                    title={t("empty")}
+                    className="troc-search-empty"
+                    title={
+                      locale === "fr"
+                        ? "Aucune carte trouvée"
+                        : "No cards found"
+                    }
                     description={
                       locale === "fr"
                         ? "Essayez un autre nom ou retirez quelques filtres pour découvrir plus de cartes."
                         : "Try another name or remove a few filters to discover more cards."
                     }
                     actions={
-                      <Button asChild variant="secondary">
-                        <a href={href(page.path)}>{t("reset")}</a>
-                      </Button>
+                      <>
+                        <Button onClick={editFilters}>
+                          {locale === "fr"
+                            ? "Modifier la recherche"
+                            : "Edit search"}
+                        </Button>
+                        <Button asChild variant="secondary">
+                          <a href={href(page.path)}>{t("reset")}</a>
+                        </Button>
+                      </>
                     }
                   />
                 )}
