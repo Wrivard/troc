@@ -3,12 +3,14 @@
 - Read MEMORY.md and docs/COORDINATION.md (or the live build-pack parent copy) before edits. This
   checkout owns Milestone 3.5; the concurrent task owns existing-page design.
   Coordinate shared file edits and serialize main pushes/deployments.
-- Current authorized scope is Milestone 3.5 only. Preserve completed Milestones
-  1–3. Stop before Milestone 4; earlier authorization below is historical.
+- This release owns Milestone 3.5. Preserve completed Milestones 1–3. The user
+  subsequently authorized bounded parallel Milestone 4 seller work and early
+  Milestone 6.5 prelaunch work in separate tasks; follow docs/COORDINATION.md.
+  Do not expand those assignments or claim entire milestones complete.
 
 - Preserve the approved style guide. Use the numbered product specifications and
   IMPLEMENTATION_STATUS.md to work one approved milestone at a time.
-- The user authorizes auditing/completing Milestone 2.5, then implementing and auditing Milestone 3. Proceed to Milestone 3 only when Milestone 2.5 passes its gate. Stop before Milestone 4.
+- Earlier Milestone 2.5/3 gate instructions are historical; do not restart them.
 - Push completed, verified changes to https://github.com/Wrivard/troc on `main`.
   This is the user's standing instruction. Never force-push or overwrite unrelated work.
 - The user will connect the repository to Vercel. Keep root deployment configuration

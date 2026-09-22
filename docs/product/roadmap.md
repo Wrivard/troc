@@ -10,12 +10,12 @@ Milestones 1–3 are complete for sequencing per the user. Existing hosted activ
 | 2.5 | Marketplace polish | Existing completed polish |
 | 3 | Low-Value Commerce | Existing local cart/Smart Cart/checkout; hosted authenticated activation blocked |
 | **3.5** | **Frictionless Seller Inventory & Integration-Ready Architecture** | **In development — current authorized milestone** |
-| 4 | Seller Platform | Planned; reuse 3.5 inventory/listing/import work, extend with remaining seller features |
+| 4 | Seller Platform | In development in a separate task: bounded applications/manual approval/teams/dashboard. Reuse 3.5 inventory; broader scope remains planned |
 | 4.5 | Seller API & Live-Sync Foundation | Planned; public credentials, signed webhooks, delivery/retry workers and sync health |
 | 5 | Collector + Trust | Planned |
 | 5.5 | Founding Seller & Seller Referral System | Planned; activation-based qualification, configurable benefits |
 | 6 | Admin + Demo + Leads + Future | Planned |
-| 6.5 | Pre-Launch Buyer & Seller Growth System | Planned; may launch earlier only with safe isolation and user direction |
+| 6.5 | Pre-Launch Buyer & Seller Growth System | In development in a separate task; user authorized safe isolated early work |
 | 7.5 | Wishlist & Demand Network | Planned |
 | 8.5 | Smart Cart expansion | Planned; extend Milestone 3 optimizer, never create a duplicate cart system |
 | 9.5 | Canadian Market Data | Planned; legitimate transactions and minimum quality/sample thresholds |
@@ -25,4 +25,4 @@ The supplied original roadmap ends at 6. No original Milestones 7–10 were supp
 
 Milestone 3.5 intentionally brings the inventory/listing/CSV subset of original Milestone 4 forward. Seller approval, teams, promotions, storefront configuration, seller analytics, referrals and public integration delivery remain later work. Milestone 8.5 extends the already implemented Milestone 3 delivered-cost optimization with demand/wishlist inputs and further preferences.
 
-Stop after 3.5 audit, fixes, relevant tests/build checks and deployment health verification. Do not proceed to 4 without explicit user direction. The concurrent design task has separate file ownership and deployment coordination recorded in `../../COORDINATION.md` relative to the repository root's parent build pack.
+This implementation task stops after 3.5 audit and release. The user subsequently gave explicit direction for bounded parallel Milestone 4 and isolated Milestone 6.5 work. Their exact ownership, dependencies and serialized integration gates are recorded in [coordination](../COORDINATION.md). Neither parallel track is integrated or complete merely because it is authorized.

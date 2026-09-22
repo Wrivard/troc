@@ -1,6 +1,6 @@
 # Milestone 3.5 audit
 
-Date: 2026-09-22. Status: **In development — local implementation and verification complete; combined design integration and hosted deployment pending**.
+Date: 2026-09-22. Status: **In development for hosted activation — local implementation, audit and combined design integration verified; hosted deployment verification pending**.
 
 ## Architectural result
 
@@ -17,6 +17,7 @@ The new `/seller/inventory` flow includes authorized seller selection, bounded c
 - Mobile CSV file input exceeded the viewport; bounded its width/minimum size. Retained shared approved typography, header/footer, controls and theme/locale preferences.
 - Isolated the larger body parser to import preview requests. Tested foreign-origin rejection and fail-closed identity for payloads above the ordinary 16 KB API limit.
 - Interrupted-connection messaging does not claim a write failed when its result is uncertain. Selecting a new CSV clears the prior preview immediately, preventing accidental publication of an older file after a rejected upload.
+- Browser header detection is bounded before rendering mapping controls; oversized, duplicate, empty or unfinished quoted headers cannot create an unbounded mapping UI.
 
 ## Validation evidence
 
@@ -26,6 +27,7 @@ The new `/seller/inventory` flow includes authorized seller selection, bounded c
 - **13 browser cases passed**: 390/768/1280 widths × EN/FR × light/dark, plus manual listing → CSV publication → stock update → unauthorized state. Main-content WCAG A/AA checks, horizontal overflow, and JavaScript errors were checked. Evidence: `verification/inventory-browser.json`.
 - Type checking and lint passed. Full workspace production build passed using the repository-required PORT/BASE_PATH environment. Bundled production SSR and internal catalog API smoke checks passed.
 - GitHub reported Vercel success for baseline main `9b45877967aec23b325d0cba1db438c2cdeeddd0`. This is baseline health, not a claim that 3.5 is already deployed.
+- Combined final design `9f4f58e` and evidence `e236c29` merged without conflicts. Against that combined code: 70 tests, lint, 13 inventory browser cases, full production build/type checking and bundled SSR smoke checks passed again. Design's own final evidence remains in DESIGN_QUALITY_REVIEW.md.
 
 ## Scope and activation limits
 
@@ -45,4 +47,4 @@ The Vercel application can be deployed before hosted inventory is activated: mis
 
 Migration 0008 is additive. A UI/API rollback should revert the inventory application changes while retaining existing listing identities and data; do not drop inventory records, import review history or audit events as a rollback shortcut. If a future hosted activation fails, disable the affected workflow and investigate configuration rather than fabricating demo authentication.
 
-Stop after 3.5. Milestone 4 is not authorized.
+This implementation task stops after 3.5. The user's later instruction authorizes bounded separate Milestone 4 and early-isolated 6.5 tracks; see COORDINATION.md. They are not included in this release or claimed complete.

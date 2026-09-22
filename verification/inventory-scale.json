@@ -3,18 +3,18 @@
   "timings": [
     {
       "count": 100,
-      "previewMs": 35,
-      "totalMs": 97
+      "previewMs": 34,
+      "totalMs": 86
     },
     {
       "count": 1000,
-      "previewMs": 97,
-      "totalMs": 499
+      "previewMs": 72,
+      "totalMs": 370
     },
     {
       "count": 10001,
-      "previewMs": 1125,
-      "totalMs": 5103
+      "previewMs": 831,
+      "totalMs": 3229
     }
   ]
 }

@@ -4,6 +4,8 @@ Updated: 2026-09-22. This note preserves context across conversations using this
 
 ## Latest checkpoint — concurrent Milestone 3.5 work
 
+Latest authorization: the user explicitly asked to start later work where dependencies allow. Orchestrator `01a0c9c3-7aec-7f60-b187-f2c1fefd2db9` assigned bounded Milestone 4 seller work to `01a0c9c6-b40a-77c3-8757-22ff6dbf93fd` in `Troc-Milestone-4-Seller`, and isolated early 6.5 growth work to `01a0c9c6-db14-7200-a837-1feede59dbab` in `Troc-Growth`. Those worktrees started at `f4b830e`; they must update to the final design+3.5 release before final verification. Migration 0009 belongs to seller work, 0010 to growth. This task remains the milestone integrator, one track at a time; neither new task may push main, deploy or migrate production. This supersedes historical stop-after-3.5 language only for those bounded assignments. See docs/COORDINATION.md for details.
+
 - The user authorized Milestone 3.5 alongside the other conversation's design work. Ownership was acknowledged in both tasks. Milestone task: `01a0c994-3aa1-7700-9d47-040948c4bdfa`; design task: `01a0c68d-0c6c-7141-b324-bb4a6f618553`.
 - Milestone implementation is in the isolated `Troc-Milestone-3-5` worktree. Local implementation/audit checks pass: 70 domain/database tests, 13 browser cases, type checking, lint, production builds and bundled SSR smoke checks. See `docs/MILESTONE_3_5_AUDIT.md` for evidence and limits.
 - The design task received another authorized design pass and is active. It deploys first and sends its final commit; this milestone task then integrates and verifies the combined changes. Do not overlap main pushes or overwrite the other checkout.

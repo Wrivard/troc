@@ -94,8 +94,11 @@ function headers(csv: string) {
       cell = "";
     } else if ((c === "\n" || c === "\r") && !quoted) break;
     else cell += c;
+    if (cell.length > 500 || out.length > 49) throw new Error("invalid_csv");
   }
   out.push(cell.trim());
+  if (quoted || out.some((h) => !h) || new Set(out).size !== out.length)
+    throw new Error("invalid_csv");
   return out;
 }
 export function InventoryApp() {
@@ -741,10 +744,11 @@ export function InventoryApp() {
                             /^\uFEFF/,
                             "",
                           );
+                          const detected = headers(content);
                           setCsv(content);
                           setMapping(
                             Object.fromEntries(
-                              headers(content).map((h) => [
+                              detected.map((h) => [
                                 h.toLowerCase().replace(/[ -]/g, "_"),
                                 h,
                               ]),
