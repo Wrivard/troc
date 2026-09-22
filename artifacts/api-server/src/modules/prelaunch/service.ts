@@ -29,7 +29,7 @@ const tables = {
 };
 type Session = {
   id: string;
-  kind: Kind;
+  kind: Kind | "landing";
   source: string;
   referral_code: string | null;
   analytics_consent: boolean;
@@ -50,9 +50,12 @@ export class PrelaunchService {
   private sign(v: string) {
     return createHmac("sha256", this.signingKey).update(v).digest("base64url");
   }
-  async throttle(address: string) {
+  async throttle(
+    address: string,
+    scope: "acquisition" | "withdrawal" = "acquisition",
+  ) {
     const window = Math.floor(Date.now() / 900000);
-    const key = this.sign(`${window}:${address}`);
+    const key = this.sign(`${scope}:${window}:${address}`);
     const row = (
       await this.db.query<{ hits: number }>(
         `INSERT INTO troc.prelaunch_rate_windows(key,hits,expires_at) VALUES($1,1,now()+interval '15 minutes') ON CONFLICT(key) DO UPDATE SET hits=prelaunch_rate_windows.hits+1 RETURNING hits`,
@@ -63,7 +66,7 @@ export class PrelaunchService {
   }
   async session(value: unknown) {
     const v = object(value),
-      audience = kind(v.kind);
+      audience = choice(v.kind, ["landing", "collector", "seller"]);
     const source = choice(v.source ?? "direct", [
       "direct",
       "newsletter",
@@ -121,6 +124,24 @@ export class PrelaunchService {
         [s.id, name, provenance],
       );
   }
+  async sessionPreferences(value: unknown) {
+    const v = object(value);
+    if (typeof v.analyticsConsent !== "boolean")
+      throw new DomainError("invalid_input");
+    await this.store.transaction(async (db) => {
+      const s = await this.sessionFor(db, v.token),
+        next =
+          v.kind === undefined
+            ? s.kind
+            : choice(v.kind, ["landing", "collector", "seller"]);
+      // Audience may be chosen once; source/referrer never change. Consent toggles preserve dedup identity.
+      const result = await db.query(
+        `UPDATE troc.prelaunch_sessions SET analytics_consent=$2,kind=$3 WHERE id=$1 AND (kind='landing' OR kind=$3) RETURNING id`,
+        [s.id, v.analyticsConsent, next],
+      );
+      if (!result.rows.length) throw new DomainError("session_conflict", 409);
+    });
+  }
   async observe(value: unknown) {
     const v = object(value),
       s = await this.sessionFor(this.db, v.token);
@@ -135,8 +156,9 @@ export class PrelaunchService {
     const v = object(value);
     return this.store.transaction(async (db) => {
       const s = await this.sessionFor(db, v.token),
-        data = signup(v, s.kind),
-        table = tables[s.kind];
+        audience = kind(s.kind),
+        data = signup(v, audience),
+        table = tables[audience];
       // Serializes retries and differently-cased submissions without deleting legacy duplicates.
       await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
         `${s.kind}:${data.email}`,

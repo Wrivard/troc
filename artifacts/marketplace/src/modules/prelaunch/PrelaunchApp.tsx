@@ -1,10 +1,11 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { api } from "../../api";
 import { copy, options, type CopyKey } from "./copy";
 import { PrelaunchAdmin } from "./PrelaunchAdmin";
+import { analyticsPreference, journey, observe } from "./journey";
 import "./prelaunch.css";
 const version = "prelaunch-2026-09-v1";
 const link = (path: string) => `${import.meta.env.BASE_URL}early-access${path}`;
@@ -27,47 +28,62 @@ export function PrelaunchApp({ path }: { path: string }) {
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState<CopyKey | null>(null),
     [receipt, setReceipt] = useState("");
-  const [analytics, setAnalytics] = useState(false);
-  const session = useRef<Promise<{
-    token: string;
-    consentVersion: string;
-  }> | null>(null);
+  const [analytics, setAnalytics] = useState(analyticsPreference);
+  const [analyticsBusy, setAnalyticsBusy] = useState(false);
+  const formObserved = useRef(false);
   const withdrawal = useRef("");
-  async function start(measure = analytics) {
-    if (!session.current) {
-      const query = new URLSearchParams(window.location.search),
-        source = query.get("source") ?? "direct";
-      session.current = api<{ token: string; consentVersion: string }>(
-        "/prelaunch/sessions",
-        "POST",
-        {
-          kind: audience,
-          source: [
-            "direct",
-            "newsletter",
-            "social",
-            "event",
-            "partner",
-          ].includes(source)
-            ? source
-            : "direct",
-          referral: query.get("ref")?.slice(0, 64) ?? "",
-          analyticsConsent: measure,
-        },
-      );
-      try {
-        const s = await session.current;
-        if (measure)
-          await api("/prelaunch/events", "POST", {
-            token: s.token,
-            name: "form_start",
-          });
-      } catch (error) {
-        session.current = null;
-        throw error;
-      }
+  useEffect(() => {
+    if (path === "/early-access" && analytics)
+      void journey("landing", true)
+        .then((j) => observe(j, "landing_visit"))
+        .catch(() => setMessage("error"));
+  }, [path, analytics]);
+  async function start() {
+    const j = await journey(audience, analytics);
+    if (analytics && !formObserved.current) {
+      await observe(j, "form_start");
+      formObserved.current = true;
     }
-    return session.current;
+    return j;
+  }
+  async function analyticsChange(enabled: boolean) {
+    setAnalyticsBusy(true);
+    setAnalytics(enabled);
+    try {
+      const j = await journey(formPage ? audience : "landing", enabled);
+      if (enabled) {
+        await observe(j, formPage ? "form_start" : "landing_visit");
+        if (formPage) formObserved.current = true;
+      }
+    } catch {
+      setMessage("error");
+    } finally {
+      setAnalyticsBusy(false);
+    }
+  }
+  function analyticsControl() {
+    return (
+      <label className="prelaunch-check">
+        <input
+          type="checkbox"
+          name="analytics"
+          checked={analytics}
+          disabled={busy || analyticsBusy}
+          onChange={(e) => void analyticsChange(e.target.checked)}
+        />
+        {t("analytics")}
+      </label>
+    );
+  }
+  async function choosePath(selected: "collector" | "seller", href: string) {
+    try {
+      const j = await journey(selected, true);
+      await observe(j, "cta");
+    } catch {
+      /* Measurement must not obstruct navigation. */
+    } finally {
+      window.location.assign(href);
+    }
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -140,7 +156,9 @@ export function PrelaunchApp({ path }: { path: string }) {
   function checks(name: CopyKey) {
     return (
       <fieldset>
-        <legend>{t(name)}</legend>
+        <legend>
+          {t(name)} ({t("optionalLabel")})
+        </legend>
         <div className="prelaunch-checks">
           {options[name].map(([v, en, fr]) => (
             <label key={v}>
@@ -172,9 +190,10 @@ export function PrelaunchApp({ path }: { path: string }) {
         ) : path === "/early-access/withdraw" ? (
           <>
             <h1>{t("withdraw")}</h1>
+            <p>{t("withdrawalHelp")}</p>
             <form onSubmit={withdraw}>
               <label>
-                {t("choose")}
+                {t("listConcerned")}
                 <select name="kind">
                   <option value="collector">{t("collector")}</option>
                   <option value="seller">{t("seller")}</option>
@@ -201,7 +220,15 @@ export function PrelaunchApp({ path }: { path: string }) {
             <h1>{t(audience)}</h1>
             <p>{t(audience === "seller" ? "sellerText" : "collectorText")}</p>
             {!receipt && (
-              <form onSubmit={submit}>
+              <form
+                onSubmit={submit}
+                onFocusCapture={() => {
+                  if (analytics && !formObserved.current)
+                    void start().catch(() => setMessage("error"));
+                }}
+              >
+                <p>{t("requiredNote")}</p>
+                <h2>{t("contactSection")}</h2>
                 <label>
                   {t("email")}
                   <Input
@@ -226,6 +253,7 @@ export function PrelaunchApp({ path }: { path: string }) {
                   )}
                   {select("province")}
                 </div>
+                <h2>{t("activitySection")}</h2>
                 {checks("games")}
                 {audience === "seller" ? (
                   <>
@@ -236,10 +264,6 @@ export function PrelaunchApp({ path }: { path: string }) {
                       {select("sellerType")}
                       {select("experience")}
                     </div>
-                    <label className="prelaunch-check">
-                      <input name="adult" type="checkbox" required />
-                      {t("adult")}
-                    </label>
                   </>
                 ) : (
                   <details>
@@ -260,7 +284,14 @@ export function PrelaunchApp({ path }: { path: string }) {
                   Website
                   <input name="website" tabIndex={-1} autoComplete="off" />
                 </label>
+                <h2>{t("consentSection")}</h2>
                 <p className="prelaunch-privacy">{t("privacy")}</p>
+                {audience === "seller" && (
+                  <label className="prelaunch-check">
+                    <input name="adult" type="checkbox" required />
+                    {t("adult")}
+                  </label>
+                )}
                 <label className="prelaunch-check">
                   <input type="checkbox" name="country" required />
                   {t("country")}
@@ -269,20 +300,7 @@ export function PrelaunchApp({ path }: { path: string }) {
                   <input type="checkbox" name="consent" required />
                   {t("consent")}
                 </label>
-                <label className="prelaunch-check">
-                  <input
-                    type="checkbox"
-                    checked={analytics}
-                    disabled={busy}
-                    onChange={(e) => {
-                      setAnalytics(e.target.checked);
-                      session.current = null;
-                      if (e.target.checked)
-                        void start(true).catch(() => setMessage("error"));
-                    }}
-                  />
-                  {t("analytics")}
-                </label>
+                {analyticsControl()}
                 <Button type="submit" disabled={busy}>
                   {t(busy ? "busy" : "submit")}
                 </Button>
@@ -293,12 +311,27 @@ export function PrelaunchApp({ path }: { path: string }) {
           <>
             <h1>{t("title")}</h1>
             <p className="prelaunch-intro">{t("intro")}</p>
+            {analyticsControl()}
             <div className="prelaunch-paths">
               {(["collector", "seller"] as const).map((k) => (
                 <section key={k}>
                   <h2>{t(k)}</h2>
                   <p>{t(k === "seller" ? "sellerText" : "collectorText")}</p>
-                  <a href={pathLink("/" + k)}>
+                  <a
+                    href={pathLink("/" + k)}
+                    onClick={(e) => {
+                      if (
+                        analytics &&
+                        !e.ctrlKey &&
+                        !e.metaKey &&
+                        !e.shiftKey &&
+                        !e.altKey
+                      ) {
+                        e.preventDefault();
+                        void choosePath(k, e.currentTarget.href);
+                      }
+                    }}
+                  >
                     {t(k)} <span aria-hidden="true">→</span>
                   </a>
                 </section>

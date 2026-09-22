@@ -22,7 +22,7 @@ CREATE TABLE prelaunch_referrals (
  created_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE TABLE prelaunch_sessions (
- id uuid PRIMARY KEY, kind text NOT NULL CHECK(kind IN ('collector','seller')),
+ id uuid PRIMARY KEY, kind text NOT NULL CHECK(kind IN ('landing','collector','seller')),
  source text NOT NULL CHECK(source IN ('direct','newsletter','social','event','partner')),
  referral_code text REFERENCES prelaunch_referrals(code), analytics_consent boolean NOT NULL,
  created_at timestamptz NOT NULL DEFAULT now(), expires_at timestamptz NOT NULL
@@ -49,3 +49,4 @@ DO $$ DECLARE tab text; BEGIN
 END $$;
 GRANT UPDATE(active) ON prelaunch_referrals TO troc_backend;
 GRANT UPDATE(hits) ON prelaunch_rate_windows TO troc_backend;
+GRANT UPDATE(kind,analytics_consent) ON prelaunch_sessions TO troc_backend;

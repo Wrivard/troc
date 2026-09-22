@@ -35,7 +35,13 @@ export function prelaunchRouter(
     : null;
   let origin = "";
   try {
-    origin = new URL(config.appOrigin ?? "").origin;
+    const configured = new URL(config.appOrigin ?? "");
+    if (
+      ["http:", "https:"].includes(configured.protocol) &&
+      !configured.username &&
+      !configured.password
+    )
+      origin = configured.origin;
   } catch {
     /* fail closed below */
   }
@@ -57,7 +63,10 @@ export function prelaunchRouter(
   });
   router.use(json({ limit: "12kb" }));
   router.use(async (req, _res, next) => {
-    await service!.throttle(req.ip ?? req.socket.remoteAddress ?? "unknown");
+    await service!.throttle(
+      req.ip ?? req.socket.remoteAddress ?? "unknown",
+      req.path === "/withdraw" ? "withdrawal" : "acquisition",
+    );
     next();
   });
   router.post("/sessions", async (req, res) =>
@@ -66,6 +75,10 @@ export function prelaunchRouter(
   router.post("/events", async (req, res) => {
     await service!.observe(req.body);
     res.status(202).json({ ok: true });
+  });
+  router.post("/session-preferences", async (req, res) => {
+    await service!.sessionPreferences(req.body);
+    res.json({ ok: true });
   });
   router.post("/leads", async (req, res) => {
     await service!.capture(req.body);
@@ -99,6 +112,14 @@ export function prelaunchRouter(
     (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
       if (error instanceof DomainError)
         return res.status(error.status).json({ code: error.code });
+      const parsed = error as { type?: string };
+      if (parsed?.type === "entity.too.large")
+        return res.status(413).json({ code: "payload_too_large" });
+      if (
+        parsed?.type === "entity.parse.failed" ||
+        parsed?.type === "request.aborted"
+      )
+        return res.status(400).json({ code: "invalid_input" });
       return res.status(503).json({ code: "prelaunch_unavailable" });
     },
   );

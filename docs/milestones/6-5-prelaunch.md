@@ -41,8 +41,10 @@ entrypoint has been changed by this task. Owner: Agent C, `Troc-Growth`.
   Body fields cannot replace session attribution. URL source is explicitly
   unverified acquisition, not proof of identity/qualification. The landing path
   carries only bounded `source` and `ref` parameters into the chosen form.
-- Durable database throttle: 40 requests per client address / 15-minute fixed
-  window; HMAC-derived, rotating keys, no raw IP stored. Honeypot, bounded fields,
+- Durable database throttle: 40 acquisition requests per client address / 15-minute
+  fixed window, plus an independent 40-request withdrawal quota so exhausted
+  signup traffic cannot block consent withdrawal. HMAC-derived, rotating keys,
+  no raw IP stored. Honeypot, bounded fields,
   small JSON payloads, enum validation, no arbitrary metadata storage.
 
 ## Honest funnel foundation
@@ -50,10 +52,16 @@ entrypoint has been changed by this task. Owner: Agent C, `Troc-Growth`.
 Events are optional and require separate analytics consent. Each `(session,name)`
 is unique. Browser observations (`landing_visit`, `cta`, `form_start`) cannot forge
 server-only `completion` or `referral`; completion is emitted only on a new lead.
-The shipped form starts observation only when optional analytics is selected:
-`form_start` means first observed form activity, not necessarily the first field.
-It does **not** backfill landing/CTA events for earlier unobserved actions. The API
-supports these observations for a later consent-aware landing integration.
+The shipped landing includes an unchecked analytics choice. After opt-in it
+records the currently observed landing visit; a real path click records CTA. A
+form records first observed activity while consented, not necessarily its first
+field. It does **not** backfill earlier unconsented actions. A tab-scoped journey
+in sessionStorage retains the same signed session across navigation and consent
+toggles; source/referrer remain immutable. A landing session can select its
+audience once. Toggles update consent, never reset dedup identity. An explicit
+switch to the other audience starts another journey. If storage is unavailable,
+capture still works but cross-page continuity is unavailable. No cross-tab or
+cross-device identity claims. Expiry is bounded by the server's 24-hour session.
 
 Counts represent consented sessions, not verified people, conversion rates,
 transactions or qualified demand. Retries and duplicate emails do not inflate
@@ -79,7 +87,8 @@ No cross-device attribution, automatic invitations or abandonment reminder email
    `enabled: PRELAUNCH_ENABLED === 'true'`, `databaseReady` only when the existing
    database/auth prerequisites and migration are ready, `appOrigin: APP_ORIGIN`,
    `signingKey: PRELAUNCH_SIGNING_KEY` (cryptographically random, at least 32 chars).
-   Missing/disabled config returns 503 `prelaunch_unavailable`; database/schema
+   APP_ORIGIN must be HTTP(S), without embedded credentials; opaque or invalid
+   origins fail closed. Missing/disabled config returns 503 `prelaunch_unavailable`; database/schema
    failures do too. Never use catalog demo mode to bypass prelaunch prerequisites.
    Secret rotation invalidates outstanding sessions only, not withdrawal codes.
 4. Client route gate: add only `/early-access`, `/early-access/collector`,
@@ -102,16 +111,17 @@ No cross-device attribution, automatic invitations or abandonment reminder email
 
 Endpoints relative to `/api/prelaunch`:
 
-| Method / path                  | Contract                                                                                       |
-| ------------------------------ | ---------------------------------------------------------------------------------------------- |
-| POST `/sessions`               | kind, allowlisted source, optional referral, analyticsConsent → signed token                   |
-| POST `/leads`                  | token + validated kind-specific fields + consent/version + withdrawal capability → neutral 202 |
-| POST `/events`                 | token + one allowed browser observation → 202; no client completion/activation                 |
-| POST `/withdraw`               | kind + original withdrawal capability → neutral 202                                            |
-| GET `/admin/leads`             | kind + optional filter parameters + zero-based page; 51 rows (50 + next-page sentinel)         |
-| PATCH `/admin/leads/:kind/:id` | cohort, status, revision → success or 409; withdrawn leads cannot join cohorts                 |
-| POST `/admin/referrals`        | optional kind + leadId → random code, audited; active consent required for an owner            |
-| GET `/admin/metrics`           | consented event counts, provenance, explicit uninstrumented stages                             |
+| Method / path                  | Contract                                                                                                          |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| POST `/sessions`               | kind, allowlisted source, optional referral, analyticsConsent → signed token                                      |
+| POST `/leads`                  | token + validated kind-specific fields + consent/version + withdrawal capability → neutral 202                    |
+| POST `/events`                 | token + one allowed browser observation → 202; no client completion/activation                                    |
+| POST `/session-preferences`    | token + analyticsConsent + optional one-time audience choice; immutable source/referral and stable dedup identity |
+| POST `/withdraw`               | kind + original withdrawal capability → neutral 202                                                               |
+| GET `/admin/leads`             | kind + optional filter parameters + zero-based page; 51 rows (50 + next-page sentinel)                            |
+| PATCH `/admin/leads/:kind/:id` | cohort, status, revision → success or 409; withdrawn leads cannot join cohorts                                    |
+| POST `/admin/referrals`        | optional kind + leadId → random code, audited; active consent required for an owner                               |
+| GET `/admin/metrics`           | consented event counts, provenance, explicit uninstrumented stages                                                |
 
 ## Future activation bridge (agreement with B)
 
@@ -168,5 +178,33 @@ updates, filtering, attribution/signature tampering, event deduplication, referr
 revocation/self-attribution and throttling. Browser checks exercise responsive
 EN/FR light/dark paths, accessibility and real API capture/withdrawal.
 
-Final combined results and commit are recorded below after the release-baseline
-merge and verification.
+## Author verification and reciprocal audit checkpoint
+
+Release baseline `512a37e` merged without conflicts (merge `1e15d42`); initial
+isolated implementation `082a087`. All code changes remain in the owned modules,
+test files, migration and this document. Generated timing/build output changes
+were restored; no shared source, dependency or configuration changes.
+
+- Combined baseline + prelaunch: **83 tests pass**, including 13 prelaunch tests/
+  subtests. Full workspace typecheck/lint passed; initial full production client,
+  SSR and API builds passed on the merged baseline. Corrected prelaunch dependency
+  graph independently builds via `node tests/prelaunch-build.mjs` (production
+  entrypoints remain intentionally unmounted).
+- **40** mobile/desktop × EN/FR × light/dark route checks pass with no detected
+  axe A/AA violations or page exceptions; **16** real local API capture/withdraw
+  journeys pass. `tests/prelaunch-journey-browser.mjs` additionally verifies
+  consented landing → CTA → form → completion, toggle deduplication (one session),
+  and no retroactive landing/CTA events after a later form opt-in, in EN/FR.
+- Independent B audit found B01 invalid opaque origin, B02 withdrawal sharing
+  signup quota, B03 parser errors reported as outage, and B04 missing landing/CTA
+  instrumentation plus consent-toggle event inflation. Author fixes cover all
+  four with regression tests. B's independent retest is still required against
+  the new stable commit; these author results alone do not clear the gate.
+- The new mandatory reciprocal review/release gate applies. Representative
+  PostgreSQL capacity/concurrency, hosted auth/database activation, privacy
+  operations and final integrated deployment verification remain **BLOCKED** or
+  pending. This is not production-ready and is not full Milestone 6.5 completion.
+
+UX audit feedback also led to explicit optional group labels, contact/activity/
+consent sections, grouped age/Canada confirmation, and withdrawal-list/code help.
+The input rules and seller qualification boundary are unchanged.

@@ -1,4 +1,20 @@
 export const copy = {
+  listConcerned: ["Which interest list?", "Liste concernée"],
+  withdrawalHelp: [
+    "Use the private code shown after your original signup. This page does not send email or recover lost codes.",
+    "Utilisez le code privé affiché après votre inscription initiale. Cette page n’envoie pas de courriel et ne récupère pas les codes perdus.",
+  ],
+  contactSection: ["Contact details", "Coordonnées"],
+  activitySection: [
+    "Your collecting or selling",
+    "Votre activité de collection ou de vente",
+  ],
+  consentSection: ["Your choices", "Vos choix"],
+  requiredNote: [
+    "Fields are required unless marked optional.",
+    "Les champs sont obligatoires sauf indication contraire.",
+  ],
+  optionalLabel: ["optional", "facultatif"],
   development: [
     "In development · Canadian early access",
     "En développement · Accès anticipé au Canada",

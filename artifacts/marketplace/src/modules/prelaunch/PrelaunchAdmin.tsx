@@ -243,7 +243,12 @@ export function PrelaunchAdmin() {
           <ul>
             {metrics.events.map((e) => (
               <li key={e.kind + e.name}>
-                {t(e.kind === "seller" ? "seller" : "collector")} ·{" "}
+                {e.kind === "landing"
+                  ? lang
+                    ? "Parcours non choisi"
+                    : "Path not selected"
+                  : t(e.kind === "seller" ? "seller" : "collector")}{" "}
+                ·{" "}
                 {
                   ({
                     landing_visit: ["Landing visit", "Visite de la page"],

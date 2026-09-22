@@ -339,6 +339,67 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
       },
     );
     await t.test(
+      "consent toggles retain journey identity; no unconsented or retroactive events",
+      async () => {
+        const j = await session({ kind: "landing", analyticsConsent: false });
+        await service.observe({ token: j.token, name: "landing_visit" });
+        assert.equal(
+          (
+            await db.query(
+              "SELECT * FROM troc.prelaunch_events WHERE session_id=$1",
+              [j.token.split(".")[0]],
+            )
+          ).rows.length,
+          0,
+        );
+        await service.sessionPreferences({
+          token: j.token,
+          analyticsConsent: true,
+        });
+        await service.observe({ token: j.token, name: "landing_visit" });
+        await service.sessionPreferences({
+          token: j.token,
+          kind: "collector",
+          analyticsConsent: true,
+        });
+        await service.observe({ token: j.token, name: "cta" });
+        await service.observe({ token: j.token, name: "form_start" });
+        for (let i = 0; i < 2; i++) {
+          await service.sessionPreferences({
+            token: j.token,
+            analyticsConsent: false,
+          });
+          await service.observe({ token: j.token, name: "form_start" });
+          await service.sessionPreferences({
+            token: j.token,
+            analyticsConsent: true,
+          });
+          await service.observe({ token: j.token, name: "form_start" });
+        }
+        assert.equal(
+          (
+            await db.query(
+              "SELECT * FROM troc.prelaunch_events WHERE session_id=$1",
+              [j.token.split(".")[0]],
+            )
+          ).rows.length,
+          3,
+        );
+        await assert.rejects(
+          service.sessionPreferences({
+            token: j.token,
+            kind: "seller",
+            analyticsConsent: true,
+          }),
+          /session_conflict/,
+        );
+        const landing = await session({ kind: "landing" });
+        await assert.rejects(
+          service.capture({ ...payload(), token: landing.token }),
+        );
+      },
+    );
+    await t.test(
       "expired sessions and durable request throttles fail closed",
       async () => {
         const expired = await session();
@@ -397,6 +458,13 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
             config,
           ),
         );
+        app.use(
+          "/opaque",
+          prelaunchRouter(sql, store, async () => p, {
+            ...config,
+            appOrigin: "file:///tmp/prelaunch",
+          }),
+        );
         const server = app.listen(4312, "127.0.0.1");
         await new Promise<void>((resolve) => server.once("listening", resolve));
         try {
@@ -445,6 +513,71 @@ test("prelaunch migration on 0008, real lead lifecycle, private admin, attributi
           );
           assert.equal(response.status, 201);
           assert.equal(response.headers.get("cache-control"), "no-store");
+          const post = (
+            path: string,
+            body: string,
+            origin = config.appOrigin,
+          ) =>
+            fetch("http://127.0.0.1:4312" + path, {
+              method: "POST",
+              headers: { Origin: origin, "Content-Type": "application/json" },
+              body,
+            });
+          assert.equal(
+            (await post("/opaque/sessions", "{}", "null")).status,
+            503,
+          );
+          for (const [body, status] of [
+            ["{", 400],
+            ["null", 400],
+            [JSON.stringify({ x: "a".repeat(13000) }), 413],
+          ] as const) {
+            const r = await post("/api/prelaunch/sessions", body);
+            assert.equal(r.status, status);
+          }
+          const fresh = payload(),
+            freshSession = await session();
+          await service.capture({
+            ...fresh,
+            email: "quota-withdraw@example.test",
+            token: freshSession.token,
+          });
+          for (let i = 0; i < 40; i++) {
+            try {
+              await service.throttle("127.0.0.1");
+            } catch {
+              break;
+            }
+          }
+          assert.equal(
+            (
+              await post(
+                "/api/prelaunch/sessions",
+                JSON.stringify({ kind: "collector", analyticsConsent: false }),
+              )
+            ).status,
+            429,
+          );
+          assert.equal(
+            (
+              await post(
+                "/api/prelaunch/withdraw",
+                JSON.stringify({
+                  kind: "collector",
+                  withdrawal: fresh.withdrawal,
+                }),
+              )
+            ).status,
+            202,
+          );
+          assert.ok(
+            (
+              await db.query<{ unsubscribed_at: string }>(
+                "SELECT unsubscribed_at FROM troc.buyer_waitlist WHERE email=$1",
+                ["quota-withdraw@example.test"],
+              )
+            ).rows[0].unsubscribed_at,
+          );
         } finally {
           await new Promise<void>((resolve, reject) =>
             server.close((error) => (error ? reject(error) : resolve())),
