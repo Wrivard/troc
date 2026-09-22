@@ -383,7 +383,11 @@ export function CommerceApp({
             )}
             {visibleStatus && (
               <p role="alert">
-                {t(visibleStatus)}
+                {!status && quoteStatus === "service_unavailable"
+                  ? locale === "fr"
+                    ? "Le devis est temporairement indisponible. Votre sélection est conservée."
+                    : "The estimate is temporarily unavailable. Your selection is saved."
+                  : t(visibleStatus)}
                 {(visibleStatus === "inventory_unavailable" ||
                   visibleStatus === "seller_unavailable") && (
                   <Button
