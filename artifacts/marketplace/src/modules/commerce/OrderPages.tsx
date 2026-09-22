@@ -40,6 +40,7 @@ export function OrderPages({
     [busy, setBusy] = useState(true);
   const load = async () => {
     setBusy(true);
+    setError(null);
     try {
       const route = "/commerce/" + (seller ? "seller/" : "") + "orders";
       if (id) setOrder(await api<OrderView>(route + "/" + id));
@@ -52,9 +53,11 @@ export function OrderPages({
         );
     } catch (e) {
       setError(
-        e instanceof Error && e.message in commerceMessages
+        e instanceof Error &&
+          e.message !== "service_unavailable" &&
+          e.message in commerceMessages
           ? (e.message as CommerceMessage)
-          : "error",
+          : "order_unavailable",
       );
     } finally {
       setBusy(false);
@@ -73,12 +76,16 @@ export function OrderPages({
         ...extra,
       });
       await load();
+      return true;
     } catch (e) {
       setError(
-        e instanceof Error && e.message in commerceMessages
+        e instanceof Error &&
+          e.message !== "service_unavailable" &&
+          e.message in commerceMessages
           ? (e.message as CommerceMessage)
-          : "error",
+          : "order_unavailable",
       );
+      return false;
     } finally {
       setBusy(false);
     }
@@ -90,12 +97,22 @@ export function OrderPages({
       </h1>
       {busy && <p role="status">{t("loading")}</p>}
       {error && (
-        <p role="alert">
+        <div role="alert">
           {t(error)}{" "}
-          <a className="underline" href={`/sign-in?lang=${locale}`}>
-            {t("signIn")}
-          </a>
-        </p>
+          {error === "unauthorized" ? (
+            <a className="underline" href={`/sign-in?lang=${locale}`}>
+              {t("signIn")}
+            </a>
+          ) : (
+            <Button
+              variant="outline"
+              disabled={busy}
+              onClick={() => void load()}
+            >
+              {t("reloadOrders")}
+            </Button>
+          )}
+        </div>
       )}
       {!id && (
         <>
@@ -349,12 +366,14 @@ export function OrderPages({
               )}
               <form
                 className="grid max-w-xl gap-3 print:hidden"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  void action(g.id, "message", {
-                    body: new FormData(e.currentTarget).get("body"),
-                  });
-                  e.currentTarget.reset();
+                  const form = e.currentTarget;
+                  const body = new FormData(form).get("body");
+                  const sent = await action(g.id, "message", { body });
+                  // Preserve failed submissions and any edits made while awaiting the response.
+                  if (sent && new FormData(form).get("body") === body)
+                    form.reset();
                 }}
               >
                 <label className="grid gap-2">
