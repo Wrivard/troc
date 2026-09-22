@@ -25,14 +25,21 @@ export function PrelaunchAdmin() {
     [filters, setFilters] = useState("kind=seller"),
     [page, setPage] = useState(0),
     [loaded, setLoaded] = useState(false),
-    [error, setError] = useState(false),
+    [error, setError] = useState<CopyKey | null>(null),
     [busy, setBusy] = useState(false);
+  function errorKey(error: unknown): CopyKey {
+    const code = error instanceof Error ? error.message : "";
+    if (code === "unauthorized") return "adminSignIn";
+    if (code === "forbidden") return "adminForbidden";
+    if (code === "lead_conflict") return "adminConflict";
+    return "adminUnavailable";
+  }
   const [metrics, setMetrics] = useState<{
     events: { kind: string; name: string; provenance: string; count: number }[];
   } | null>(null);
   async function load(query = filters, index = page) {
     setBusy(true);
-    setError(false);
+    setError(null);
     try {
       const [rows, counts] = await Promise.all([
         api<Lead[]>("/prelaunch/admin/leads?" + query + "&page=" + index),
@@ -50,10 +57,10 @@ export function PrelaunchAdmin() {
       setLoaded(true);
       setPage(index);
       setFilters(query);
-    } catch {
+    } catch (error) {
       setLeads([]);
       setMetrics(null);
-      setError(true);
+      setError(errorKey(error));
     } finally {
       setBusy(false);
     }
@@ -70,7 +77,7 @@ export function PrelaunchAdmin() {
   async function save(event: FormEvent<HTMLFormElement>, lead: Lead) {
     event.preventDefault();
     setBusy(true);
-    setError(false);
+    setError(null);
     try {
       await api(
         "/prelaunch/admin/leads/" +
@@ -84,8 +91,8 @@ export function PrelaunchAdmin() {
         },
       );
       await load();
-    } catch {
-      setError(true);
+    } catch (error) {
+      setError(errorKey(error));
     } finally {
       setBusy(false);
     }
@@ -140,10 +147,17 @@ export function PrelaunchAdmin() {
           {t("load")}
         </Button>
       </form>
-      {error && <p role="alert">{t("restricted")}</p>}
+      {error && (
+        <div>
+          <p role="alert">{t(error)}</p>
+          <Button type="button" disabled={busy} onClick={() => void load()}>
+            {t("reload")}
+          </Button>
+        </div>
+      )}
       {loaded && !leads.length && !error && <p>{t("empty")}</p>}
       {leads.slice(0, 50).map((lead) => (
-        <article className="prelaunch-lead" key={lead.id}>
+        <article className="prelaunch-lead" key={`${lead.id}:${lead.revision}`}>
           <h2>{lead.email}</h2>
           <p>
             {lead.unsubscribed_at
@@ -188,7 +202,7 @@ export function PrelaunchAdmin() {
             disabled={busy || !!lead.unsubscribed_at}
             onClick={async () => {
               setBusy(true);
-              setError(false);
+              setError(null);
               try {
                 const result = await api<{ code: string }>(
                   "/prelaunch/admin/referrals",
@@ -202,8 +216,8 @@ export function PrelaunchAdmin() {
                   ...previous,
                   [lead.id]: `${window.location.origin}${import.meta.env.BASE_URL}early-access?ref=${result.code}`,
                 }));
-              } catch {
-                setError(true);
+              } catch (error) {
+                setError(errorKey(error));
               } finally {
                 setBusy(false);
               }

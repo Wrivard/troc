@@ -75,8 +75,10 @@ try {
             await page.locator("[name=country]").check();
             await page.locator("[name=consent]").check();
             await page.locator("form button").last().click();
-            await page.locator("[role=status] code").waitFor();
-            const code = await page.locator("[role=status] code").textContent();
+            await page.locator("[role=status] input[readonly]").waitFor();
+            const code = await page
+              .locator("[role=status] input[readonly]")
+              .inputValue();
             assert.equal(code.length, 43);
             await page.goto(origin + "/early-access/withdraw");
             await page.locator("[name=kind]").selectOption(path.slice(1));

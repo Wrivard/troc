@@ -1,4 +1,21 @@
 export const copy = {
+  adminSignIn: [
+    "Sign in to review prelaunch leads.",
+    "Connectez-vous pour examiner les inscriptions.",
+  ],
+  adminForbidden: [
+    "Your account does not have administrator access.",
+    "Votre compte ne dispose pas d’un accès administrateur.",
+  ],
+  adminConflict: [
+    "This lead changed. Reload the latest data before reviewing and saving again. Your change was not saved.",
+    "Cette inscription a changé. Rechargez les données actuelles avant de les examiner et d’enregistrer à nouveau. Votre modification n’a pas été enregistrée.",
+  ],
+  adminUnavailable: [
+    "The service is temporarily unavailable. Reload the data and try again.",
+    "Le service est temporairement indisponible. Rechargez les données et réessayez.",
+  ],
+  reload: ["Reload latest data", "Recharger les données actuelles"],
   listConcerned: ["Which interest list?", "Liste concernée"],
   withdrawalHelp: [
     "Use the private code shown after your original signup. This page does not send email or recover lost codes.",
