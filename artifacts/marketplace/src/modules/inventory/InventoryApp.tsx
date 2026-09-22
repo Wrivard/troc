@@ -120,6 +120,7 @@ export function InventoryApp() {
     [selected, setSelected] = useState<string[]>([]);
   const [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
+    [accessUnavailable, setAccessUnavailable] = useState(false),
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
   const [tab, setTab] = useState("inventory"),
@@ -219,7 +220,13 @@ export function InventoryApp() {
         }
       })
       .catch((e) => {
-        if (active) report(e);
+        if (active) {
+          setAccessUnavailable(
+            !(e instanceof Error) ||
+              !["unauthorized", "forbidden"].includes(e.message),
+          );
+          report(e);
+        }
       })
       .finally(() => {
         if (active) setLoaded(true);
@@ -344,18 +351,30 @@ export function InventoryApp() {
         {notice && <p role="status">{notice}</p>}
         {!loaded && <p role="status">{t("Loading…", "Chargement…")}</p>}
         {loaded && !sellers.length ? (
-          <section>
-            <h2>{t("Seller access required", "Accès vendeur requis")}</h2>
-            <p>
-              {t(
-                "An active seller account with inventory permission is required.",
-                "Un compte vendeur actif avec la permission de gérer l’inventaire est requis.",
-              )}
-            </p>
-            <a href={`${import.meta.env.BASE_URL}sign-in`}>
-              {t("Sign in", "Se connecter")}
-            </a>
-          </section>
+          accessUnavailable ? (
+            <section>
+              <h2>{t("Inventory unavailable", "Inventaire indisponible")}</h2>
+              <p>
+                {t(
+                  "We could not load seller access. Please try again later.",
+                  "Nous n’avons pas pu charger l’accès vendeur. Réessayez plus tard.",
+                )}
+              </p>
+            </section>
+          ) : (
+            <section>
+              <h2>{t("Seller access required", "Accès vendeur requis")}</h2>
+              <p>
+                {t(
+                  "An active seller account with inventory permission is required.",
+                  "Un compte vendeur actif avec la permission de gérer l’inventaire est requis.",
+                )}
+              </p>
+              <a href={`${import.meta.env.BASE_URL}sign-in?lang=${locale}`}>
+                {t("Sign in", "Se connecter")}
+              </a>
+            </section>
+          )
         ) : (
           seller && (
             <>
