@@ -1277,72 +1277,233 @@ main {
 }
 
 /* Follow-up screenshot review: compact filters and name-first mobile decisions. */
-.troc-catalog-filters { border-block: 1px solid var(--border); padding-block: var(--space-4); }
-.troc-catalog-filters > summary { cursor: pointer; font-weight: 600; }
-.troc-preview-binder progress { accent-color: var(--color-primary); }
+.troc-catalog-filters {
+  border-block: 1px solid var(--border);
+  padding-block: var(--space-4);
+}
+.troc-catalog-filters > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.troc-preview-binder progress {
+  accent-color: var(--color-primary);
+}
 @media (max-width: 767px) {
-  .troc-product-decision-details { display: contents; }
-  .troc-product-decision-details > .troc-editorial-intro { order: -1; }
-  .troc-quality-filter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .troc-quality-filter > label:first-of-type, .troc-quality-filter > details { grid-column: 1 / -1; }
+  .troc-product-decision-details {
+    display: contents;
+  }
+  .troc-product-decision-details > .troc-editorial-intro {
+    order: -1;
+  }
+  .troc-quality-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .troc-quality-filter > label:first-of-type,
+  .troc-quality-filter > details {
+    grid-column: 1 / -1;
+  }
 }
 
 /* UX audit 01: visible offer-selection path; purchasing context before detail. */
-.troc-product-decision-details { gap: var(--space-5); }
-.troc-product-reference-context { display: flex; flex-wrap: wrap; gap: var(--space-6); }
-.troc-product-summary [aria-current="true"] { box-shadow: inset 0 0 0 2px var(--text-primary); }
-.troc-offer-list { scroll-margin-top: var(--space-6); }
-.troc-offer-list:focus { outline: 2px solid var(--focus); outline-offset: var(--space-2); }
-.troc-offer-feedback { padding: var(--space-3); background: var(--surface); font-size: var(--text-sm); }
+.troc-product-decision-details {
+  gap: var(--space-5);
+}
+.troc-product-reference-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+.troc-product-summary [aria-current="true"] {
+  box-shadow: inset 0 0 0 2px var(--text-primary);
+}
+.troc-offer-list {
+  scroll-margin-top: var(--space-6);
+}
+.troc-offer-list:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: var(--space-2);
+}
+.troc-offer-feedback {
+  padding: var(--space-3);
+  background: var(--surface);
+  font-size: var(--text-sm);
+}
 @media (max-width: 767px) {
-  .troc-product-decision { gap: var(--space-5); }
-  .troc-product-decision-details > .troc-editorial-intro { order: -3; }
-  .troc-product-decision-details > .troc-purchase-summary { order: -2; }
-  .troc-product-sticky [data-catalog-artwork] { max-width: 180px; }
-  .troc-product-sticky .troc-artwork-panel { padding: var(--space-4); }
+  .troc-product-decision {
+    gap: var(--space-5);
+  }
+  .troc-product-decision-details > .troc-editorial-intro {
+    order: -3;
+  }
+  .troc-product-decision-details > .troc-purchase-summary {
+    order: -2;
+  }
+  .troc-product-sticky [data-catalog-artwork] {
+    max-width: 180px;
+  }
+  .troc-product-sticky .troc-artwork-panel {
+    padding: var(--space-4);
+  }
 }
 
 /* UX audit 02: utility-first search, with applied criteria outside collapsed controls. */
-.troc-search-heading { display: grid; gap: var(--space-2); }
-.troc-search-heading h1 { font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.04em; line-height: 1.2; }
-.troc-search-heading p { color: var(--text-secondary); }
-.troc-applied-filters { gap: var(--space-2); }
-.troc-applied-filters .troc-chip-remove { min-width: 44px; min-height: 44px; }
-.troc-search-empty { padding: var(--space-6); grid-template-columns: 1fr; }
-.troc-search-empty .troc-premium-empty-visual { display: none; }
-@media (max-width:767px) {
-  .troc-search-page { gap: var(--space-4); }
-  .troc-search-page .troc-catalog-navigation { display: none; }
-  .troc-search-page .troc-search-heading h1 { font-size: var(--text-2xl); }
-  .troc-search-page .troc-catalog-filters { padding-block: var(--space-2); }
-  .troc-search-page .troc-catalog-filters > summary { min-height:44px; align-content:center; }
-  .troc-search-page .troc-market-card-art { padding:var(--space-2); }
-  .troc-search-page .troc-market-card-copy { gap:var(--space-2); }
+.troc-search-heading {
+  display: grid;
+  gap: var(--space-2);
+}
+.troc-search-heading h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.troc-search-heading p {
+  color: var(--text-secondary);
+}
+.troc-applied-filters {
+  gap: var(--space-2);
+}
+.troc-applied-filters .troc-chip-remove {
+  min-width: 44px;
+  min-height: 44px;
+}
+.troc-search-empty {
+  padding: var(--space-6);
+  grid-template-columns: 1fr;
+}
+.troc-search-empty .troc-premium-empty-visual {
+  display: none;
+}
+@media (max-width: 767px) {
+  .troc-search-page {
+    gap: var(--space-4);
+  }
+  .troc-search-page .troc-catalog-navigation {
+    display: none;
+  }
+  .troc-search-page .troc-search-heading h1 {
+    font-size: var(--text-2xl);
+  }
+  .troc-search-page .troc-catalog-filters {
+    padding-block: var(--space-2);
+  }
+  .troc-search-page .troc-catalog-filters > summary {
+    min-height: 44px;
+    align-content: center;
+  }
+  .troc-search-page .troc-market-card-art {
+    padding: var(--space-2);
+  }
+  .troc-search-page .troc-market-card-copy {
+    gap: var(--space-2);
+  }
 }
 
 /* Store discovery uses the same compact mobile navigation as search. */
 @media (max-width: 639px) {
-  .troc-store-page .troc-catalog-navigation { display: none; }
+  .troc-store-page .troc-catalog-navigation {
+    display: none;
+  }
 }
-#catalog-results:focus-visible { outline: 2px solid var(--color-accent); outline-offset: var(--space-2); }
+#catalog-results:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: var(--space-2);
+}
 
 /* Product offer comparison: auxiliary controls stay available without dominating offers. */
-.troc-offer-controls { border-block: 1px solid var(--border); padding-block: var(--space-2); }
-.troc-offer-controls > summary { cursor: pointer; min-height: 44px; align-content: center; }
-.troc-offer-controls > summary > span + span { margin-inline-start: var(--space-3); }
-.troc-offer-controls form { padding-block: var(--space-3); }
+.troc-offer-controls {
+  border-block: 1px solid var(--border);
+  padding-block: var(--space-2);
+}
+.troc-offer-controls > summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+}
+.troc-offer-controls > summary > span + span {
+  margin-inline-start: var(--space-3);
+}
+.troc-offer-controls form {
+  padding-block: var(--space-3);
+}
 
 /* Desktop search exposes query and sort while keeping advanced criteria available. */
-.troc-search-more-filters { grid-column: 1 / -1; }
-.troc-search-more-filters > summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: 600; }
+.troc-search-more-filters {
+  grid-column: 1 / -1;
+}
+.troc-search-more-filters > summary {
+  cursor: pointer;
+  min-height: 44px;
+  align-content: center;
+  font-weight: 600;
+}
 @media (min-width: 768px) {
-  .troc-search-page { gap: var(--space-4); }
-  .troc-search-filter-form { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; }
-  .troc-search-page .troc-catalog-filters { padding-block: var(--space-2); }
-  .troc-search-page .troc-market-card-art .troc-card-image { max-width: 138px; margin-inline: auto; }
+  .troc-search-page {
+    gap: var(--space-4);
+  }
+  .troc-search-filter-form {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+  }
+  .troc-search-page .troc-catalog-filters {
+    padding-block: var(--space-2);
+  }
+  .troc-search-page .troc-market-card-art .troc-card-image {
+    max-width: 138px;
+    margin-inline: auto;
+  }
 }
 
 @media (min-width: 768px) {
-  .troc-search-page .troc-catalog-navigation { display: none; }
-  .troc-search-page .troc-search-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4); }
+  .troc-search-page .troc-catalog-navigation {
+    display: none;
+  }
+  .troc-search-page .troc-search-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+}
+
+/* Homepage vision: a white opening in light mode, quiet surfaces in dark mode. */
+.troc-home-hero {
+  background: var(--surface);
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  border-radius: var(--radius-lg);
+}
+.troc-home-hero::before {
+  content: none;
+}
+.troc-home-hero .troc-hero-search {
+  background: var(--surface-hover);
+}
+.troc-home-editorial .troc-value-rail {
+  margin-top: calc(-1 * var(--space-6));
+}
+.troc-how-edit .troc-product-example {
+  margin: 0;
+  padding: var(--space-5);
+  border: 0;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  min-height: 180px;
+  align-content: center;
+}
+.troc-how-edit .troc-example-result > .troc-card-image {
+  width: 78px;
+}
+@media (max-width: 767px) {
+  .troc-home-hero {
+    padding: var(--space-5);
+  }
+  .troc-how-edit .troc-product-example {
+    min-height: 0;
+  }
+}
+
+.troc-home-editorial .troc-value-rail {
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: var(--space-6);
+  border: 0;
 }

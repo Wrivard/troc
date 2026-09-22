@@ -16,3 +16,7 @@ All styles use approved semantic tokens. EN/FR and both themes are demonstrated;
 ## ProductPurchaseSummary — UX audit 01
 
 Translated printing, available price, seller availability, explicit offer-selection action and shipping caveat. The caller owns navigation/focus; the component never selects a seller or adds to cart. Reference/median prices belong outside this purchase summary. The editorial guide demonstrates the composition. Existing SellerOfferRow accepts an optional seller-specific accessible action name; quantity labels remain caller supplied.
+
+## MarketplaceJourney and complete store artwork
+
+MarketplaceJourney renders an ordered sequence of caller-supplied id/title/description/illustration, with full-width supporting art and natural mobile stacking. The editorial guide shows a bilingual three-step example. It has no navigation, animation or commerce behavior. StoreHero optionally accepts bannerFit="contain" to preserve complete artwork with dark framing; default cover behavior remains. At narrow mobile sizes, identity and actions use the available width beneath the avatar.

@@ -44,6 +44,7 @@ import { ConditionBadge } from "@workspace/troc-design-system/components/ui/mark
 const PriceHistory = lazy(() => import("./PriceHistory"));
 import { catalogMessages, type CatalogMessage } from "./messages";
 import { formatSourcePrice, productSelection } from "./presentation";
+import { demoStoreBranding } from "../brand/demo-store-branding";
 import { addCart } from "../commerce/cart-storage";
 export interface PublicProps {
   page: PublicPage;
@@ -53,12 +54,19 @@ export interface PublicProps {
   onTheme?: (theme: "dark" | "light") => void;
 }
 export function PublicMarketplace({
-  page,
+  page: sourcePage,
   theme = "dark",
   base = "",
   onLocale,
   onTheme,
 }: PublicProps) {
+  const page = {
+    ...sourcePage,
+    sellers: sourcePage.sellers.map(demoStoreBranding),
+    seller: sourcePage.seller
+      ? demoStoreBranding(sourcePage.seller)
+      : sourcePage.seller,
+  };
   const locale = page.locale;
   const t = (key: CatalogMessage) =>
     catalogMessages[key][locale === "en" ? 0 : 1];
@@ -1090,6 +1098,7 @@ export function PublicMarketplace({
                     />
                   }
                   bannerSrc={page.seller.bannerUrl}
+                  bannerFit={page.seller.demo ? "contain" : "cover"}
                   banner={
                     <div className="troc-store-cover-cards">
                       {page.results

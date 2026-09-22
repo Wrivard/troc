@@ -1,6 +1,7 @@
 import { InteractiveCardStack } from "@workspace/troc-design-system/components/ui/interactive-card-stack";
 import {
   GameTile,
+  MarketplaceJourney,
   SellerPreviewCard,
   SmartCartComparison,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
@@ -183,7 +184,7 @@ export function HomeSections({
           </p>
         </div>
       </section>
-      <div className="troc-value-rail">
+      <div className="troc-value-rail light">
         {(
           [
             [
@@ -297,112 +298,103 @@ export function HomeSections({
             "TROC réunit les détails pour vous laisser profiter des cartes.",
           )}
         />
-        <div className="troc-how-steps">
-          {(
+        <MarketplaceJourney
+          steps={(
             [
               [
                 "search",
-                "One catalog",
-                "Un catalogue",
+                "Find your card",
+                "Trouvez votre carte",
                 "Find the right card, printing and language.",
                 "Trouvez la bonne carte, l’édition et la langue.",
               ],
               [
                 "layers",
-                "Compare the whole offer",
-                "Comparez l’offre complète",
+                "Choose your seller",
+                "Choisissez votre vendeur",
                 "See the condition, seller minimum and handling—not just the sticker price.",
                 "Consultez l’état, le minimum vendeur et le délai avec le prix.",
               ],
               [
                 "package",
-                "Build a better order",
-                "Composez une meilleure commande",
+                "Compare the delivered total",
+                "Comparez le total livré",
                 "Combine cards from the same seller. Compare the total with shipping.",
                 "Regroupez les cartes d’un vendeur. Comparez le total avec la livraison.",
               ],
             ] as const
-          ).map(([icon, en, french, body, bodyFr], i) => (
-            <div key={icon}>
-              <span className="troc-step-index">0{i + 1}</span>
-              <EditorialIcon name={icon} />
-              <div>
-                <h3>{c(en, french)}</h3>
-                <p>{c(body, bodyFr)}</p>
-                <div className="troc-product-example">
-                  {i === 0 ? (
-                    <>
-                      <Input
-                        readOnly
-                        tabIndex={-1}
-                        aria-label={c(
-                          "Example catalog search",
-                          "Exemple de recherche",
-                        )}
-                        value={lead?.product.name[page.locale] ?? "Pokémon"}
-                      />
-                      <div className="troc-example-result">
-                        {lead && art(lead.product)}
-                        <span>
-                          {lead?.product.name[page.locale]}
-                          <small>
-                            {c(
-                              "One card. All available offers.",
-                              "Une carte. Toutes les offres disponibles.",
-                            )}
-                          </small>
-                        </span>
-                      </div>
-                    </>
-                  ) : i === 1 ? (
-                    page.sellers.slice(0, 3).map((seller) => (
-                      <div className="troc-example-seller" key={seller.id}>
-                        <SellerAvatar name={seller.name} src={seller.logoUrl} />
-                        <span>
-                          {seller.name}
-                          <small>
-                            {seller.city}, {seller.province}
-                          </small>
-                        </span>
-                        <span>
-                          {seller.handlingDays}{" "}
+          ).map(([icon, en, french, body, bodyFr], i) => ({
+            id: icon,
+            title: c(en, french),
+            description: c(body, bodyFr),
+            illustration: (
+              <div className="troc-product-example">
+                {i === 0 ? (
+                  <>
+                    <div className="troc-example-result">
+                      {lead && art(lead.product)}
+                      <span>
+                        {lead?.product.name[page.locale]}
+                        <small>
                           {c(
-                            seller.handlingDays === 1 ? "day" : "days",
-                            seller.handlingDays === 1 ? "jour" : "jours",
+                            "One card. All available offers.",
+                            "Une carte. Toutes les offres disponibles.",
                           )}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div className="troc-example-seller">
-                        <EditorialIcon name="package" />
-                        <strong>
-                          {c("30 cards. One seller.", "30 cartes. Un vendeur.")}
-                        </strong>
-                      </div>
-                      <div className="troc-example-order">
-                        <span>{c("Cards", "Cartes")}</span>
-                        <span>{fr ? "7,22 $" : "$7.22"}</span>
-                        <span>
-                          {c("Combined shipping", "Livraison regroupée")}
-                        </span>
-                        <span>{fr ? "4,00 $" : "$4.00"}</span>
-                        <strong>
-                          {c("Total before tax", "Total avant taxes")}
-                        </strong>
-                        <strong>{fr ? "11,22 $" : "$11.22"}</strong>
-                      </div>
-                    </>
-                  )}
-                  <small className="troc-art-note">
-                    {c("Illustrative demo preview", "Aperçu de démonstration")}
-                  </small>
-                </div>
+                        </small>
+                      </span>
+                    </div>
+                  </>
+                ) : i === 1 ? (
+                  page.sellers.slice(0, 2).map((seller) => (
+                    <div className="troc-example-seller" key={seller.id}>
+                      <SellerAvatar name={seller.name} src={seller.logoUrl} />
+                      <span>
+                        {seller.name}
+                        <small>
+                          {seller.city}, {seller.province}
+                        </small>
+                      </span>
+                      <span>
+                        {seller.handlingDays}{" "}
+                        {c(
+                          seller.handlingDays === 1 ? "day" : "days",
+                          seller.handlingDays === 1 ? "jour" : "jours",
+                        )}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="troc-example-seller">
+                      <EditorialIcon name="package" />
+                      <strong>
+                        {c("30 cards. One seller.", "30 cartes. Un vendeur.")}
+                      </strong>
+                    </div>
+                    <div className="troc-example-order">
+                      <span>{c("Cards", "Cartes")}</span>
+                      <span>{fr ? "7,22 $" : "$7.22"}</span>
+                      <span>
+                        {c("Combined shipping", "Livraison regroupée")}
+                      </span>
+                      <span>{fr ? "4,00 $" : "$4.00"}</span>
+                      <strong>
+                        {c("Total before tax", "Total avant taxes")}
+                      </strong>
+                      <strong>{fr ? "11,22 $" : "$11.22"}</strong>
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            ),
+          }))}
+        />
+        <p className="troc-art-note">
+          {c(
+            "Illustrative journey. Demo sellers and basket; all amounts in CAD before tax.",
+            "Parcours illustratif. Vendeurs et panier de démonstration; montants en CAD avant taxes.",
+          )}
+        </p>
       </section>
       <EditorialPanel className="troc-smart-edit">
         <div className="troc-smart-story">
@@ -555,7 +547,13 @@ export function HomeSections({
                 "Canadian demo store",
                 "Boutique canadienne fictive",
               )}
-              banner={products[i] && art(products[i].product)}
+              banner={
+                seller.bannerUrl ? (
+                  <img src={seller.bannerUrl} alt="" loading="lazy" />
+                ) : (
+                  products[i] && art(products[i].product)
+                )
+              }
               thumbnails={products.slice(i, i + 3).map((r) => (
                 <div key={r.product.id}>{art(r.product)}</div>
               ))}
@@ -579,29 +577,26 @@ export function HomeSections({
           <TrocLogo variant="compact" height={96} />
         </div>
         <EditorialIntro
-          eyebrow={c(
-            "YOUR NEXT CHAPTER STARTS HERE",
-            "VOTRE PROCHAIN CHAPITRE COMMENCE ICI",
-          )}
+          eyebrow={c("BUILD TROC WITH US", "BÂTISSONS TROC ENSEMBLE")}
           title={c(
-            "Make room for your next favourite.",
-            "Faites place à un nouveau favori.",
+            "Your cards. Your store. On TROC.",
+            "Vos cartes. Votre boutique. Sur TROC.",
           )}
           description={c(
-            "Find the card. Meet the seller. Keep the hobby going.",
-            "Trouvez la carte. Découvrez le vendeur. Faites vivre la passion.",
+            "A shared catalog. Prices in CAD. Combined shipping. Our goal: welcome 250 founding sellers to help build Canada’s card marketplace.",
+            "Un catalogue commun. Des prix en CAD. La livraison regroupée. Notre objectif : accueillir 250 vendeurs fondateurs pour bâtir le marché canadien des cartes.",
           )}
         />
         <div className="troc-hero-actions">
           {action(
-            "/search",
-            "Find your next card",
-            "Trouver votre prochaine carte",
-          )}
-          {action(
             "/founding-sellers",
             "Become a founding seller",
             "Devenir vendeur fondateur",
+          )}
+          {action(
+            "/sell",
+            "Explore selling on TROC",
+            "Découvrir la vente sur TROC",
             true,
           )}
         </div>

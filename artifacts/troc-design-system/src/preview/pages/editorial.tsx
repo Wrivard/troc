@@ -4,6 +4,7 @@ import {
 } from "../../components/ui/interactive-card-stack";
 import {
   MarketplaceProductCard,
+  MarketplaceJourney,
   ProductPurchaseSummary,
   GameTile,
   GameHero,
@@ -64,6 +65,38 @@ export default function EditorialPage() {
               : "One clear introduction, useful context and a primary action."
           }
           aside={<EditorialIcon name="layers" />}
+        />
+      </Section>
+      <Section title={fr ? "Parcours en trois étapes" : "Three-step journey"}>
+        <MarketplaceJourney
+          steps={[
+            {
+              id: "find",
+              title: fr ? "Trouvez votre carte" : "Find your card",
+              description: fr
+                ? "Identifiez la bonne impression."
+                : "Identify the right printing.",
+              illustration: pieces[0],
+            },
+            {
+              id: "compare",
+              title: fr ? "Choisissez votre vendeur" : "Choose your seller",
+              description: fr
+                ? "Comparez état, minimum et délai."
+                : "Compare condition, minimum and handling.",
+              illustration: <SellerAvatar name="Demo seller" />,
+            },
+            {
+              id: "total",
+              title: fr
+                ? "Comparez le total livré"
+                : "Compare the delivered total",
+              description: fr
+                ? "Regroupez les cartes et la livraison."
+                : "Combine cards and shipping.",
+              illustration: <EditorialIcon name="package" />,
+            },
+          ]}
         />
       </Section>
       <Section title={fr ? "Surfaces éditoriales" : "Editorial surfaces"}>

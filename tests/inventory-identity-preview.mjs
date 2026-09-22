@@ -63,8 +63,8 @@ try {
         });
         await page.addInitScript(
           ({ lang, theme }) => {
-            localStorage.setItem("troc.locale", lang);
-            localStorage.setItem("troc.theme", theme);
+            globalThis.localStorage.setItem("troc.locale", lang);
+            globalThis.localStorage.setItem("troc.theme", theme);
           },
           { lang, theme },
         );

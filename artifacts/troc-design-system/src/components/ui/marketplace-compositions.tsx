@@ -119,6 +119,7 @@ export function StoreHero({
   avatar,
   banner,
   bannerSrc,
+  bannerFit = "cover",
   level = 1,
   focalPoint = "50% 50%",
   badges,
@@ -132,6 +133,7 @@ export function StoreHero({
   avatar: ReactNode;
   banner?: ReactNode;
   bannerSrc?: string | null;
+  bannerFit?: "cover" | "contain";
   focalPoint?: string;
   badges?: ReactNode;
   details?: ReactNode;
@@ -141,12 +143,15 @@ export function StoreHero({
   return (
     <section className="troc-store-hero">
       <div
-        className="troc-store-cover"
+        className={cn("troc-store-cover", bannerFit === "contain" && "dark")}
+        data-fit={bannerFit}
         style={{ "--store-focal": focalPoint } as CSSProperties}
         aria-hidden="true"
       >
         {bannerSrc ? <img src={bannerSrc} alt="" /> : banner}
-        <span className="troc-store-cover-word">{location}</span>
+        {!bannerSrc && (
+          <span className="troc-store-cover-word">{location}</span>
+        )}
       </div>
       <div className="troc-store-profile">
         <div className="troc-store-profile-avatar">{avatar}</div>
@@ -350,5 +355,32 @@ export function ProductPurchaseSummary({
       </div>
       <p className="troc-purchase-summary-note">{note}</p>
     </section>
+  );
+}
+
+/** A readable progression of decisions, with one supporting illustration per step. */
+export function MarketplaceJourney({
+  steps,
+}: {
+  steps: {
+    id: string;
+    title: ReactNode;
+    description: ReactNode;
+    illustration: ReactNode;
+  }[];
+}) {
+  return (
+    <ol className="troc-marketplace-journey">
+      {steps.map((step, index) => (
+        <li key={step.id}>
+          <div className="troc-journey-heading">
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <h3>{step.title}</h3>
+          </div>
+          <p>{step.description}</p>
+          <div className="troc-journey-illustration">{step.illustration}</div>
+        </li>
+      ))}
+    </ol>
   );
 }
