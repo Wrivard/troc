@@ -138,8 +138,10 @@ See docs/DEMO_CATALOG_APPROVAL.md and verification/real-art-browser.json. Earlie
 
 ## Design quality pass — 2026-09-22
 
-Status: **implemented**, release verification in progress. See [DESIGN_QUALITY_REVIEW.md](DESIGN_QUALITY_REVIEW.md) for critical route review, iterations and evidence.
+Status: **implemented and live verified**. Code release `9f4f58e` is deployed on the production Vercel URL. See [DESIGN_QUALITY_REVIEW.md](DESIGN_QUALITY_REVIEW.md) for critical route review, iterations and evidence.
 
 Implemented: shared depth-aware card stack; whole-card marketplace links; larger game destinations; realistic labelled how-it-works examples; Smart Cart price/shipping comparison; seller previews; compact game heroes; sticky product decisions and compact reference history; unclipped storefront identity; seller/binder/auth/empty-state compositions; desktop/mobile filter hierarchy. Original logo, palette, type, Canadian story and footer preserved. EN/FR and theme preference retained. No new marketplace milestone business scope.
 
 Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.
+
+Release gate: 59 domain tests, typecheck, lint, full workspace build, Vercel build, 400 responsive route cases, 96 artwork cases, 12 local commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Touch, avatar bounds, keyboard card navigation and mobile heading order also passed. Production verification: 40 route cases plus 3 guest cart/Smart Cart cases passed; hosted authenticated checkout remains explicitly unavailable. See `verification/design-quality-live.json` and `DESIGN_QUALITY_REVIEW.md`.

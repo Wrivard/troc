@@ -58,3 +58,9 @@ This is a stronger demo marketplace, not a fully branded live seller network. Tw
 ### Final local gate
 
 400 responsive route cases, 96 image cases, 12 commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Additional 375/430/1024/1600 tests passed for touch capability, unclipped avatars and no-results; keyboard whole-card activation and mobile title-first order passed. Final human screenshot review covered the homepage sections, full-route composition sheets, mobile first screens and product/store/binder/auth details. These passed layout/contrast checks without claiming that planned surfaces are live features.
+
+### Production verification
+
+Code commit `9f4f58e` pushed to `Wrivard/troc` main and deployed successfully by Vercel at https://troc-api-server-psi.vercel.app. Forty live route cases passed (10 routes × four width/language/theme combinations). Live homepage artwork decoded correctly and the homepage did not load the chart bundle. Three guest cart/Smart Cart cases passed; authenticated checkout correctly remained unavailable. One initial contrast measurement ran during a theme transition; the complete run passed after explicitly waiting for the requested theme, fonts and transition. This was a measurement-timing correction, not a suppressed accessibility violation.
+
+No later milestone implementation was included. The separate milestone integrator receives this release before integrating its isolated work. Local screenshots remain outside Git by repository policy.
