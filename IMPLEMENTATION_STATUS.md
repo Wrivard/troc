@@ -1,5 +1,15 @@
 # TROC implementation status
 
+## Current release hold — 2026-09-22
+
+Final scoped cart review: engineering B and independent UX auditor PASS on application `43b32b5`; C01 transport/display gap closed in the observed cases. Remaining release blockers are real runtime/Auth/staging and operational readiness, not this cart finding. Production remains unchanged.
+
+Combined UI checkpoint `43b32b5`: reviewed seller/design handoffs integrated, account-ID guidance independently rechecked, source-derived printing metadata added to cart display. 99 tests, types, lint and production build pass; seller/public browser suites pass. Final cart metadata independent review is pending. Staging runtime/Auth/operations gates below remain held; no code beyond main `512a37e` deployed.
+
+Latest checkpoint: independent local reviews passed combined `dfd58eb`; A hardening/checksum followup `2fcc2eb` passed B review and 99 local tests. Authorized staging project `wcpsyflzqaeorxaejaqh` now has reviewed migrations 0001–0011 with matching canonical checksums. Security warnings are cleared; intentionally restricted tables retain informational RLS notices. Runtime connection, confirmed Auth fixtures, PostgreSQL concurrency and operational readiness remain unverified. Seller UX and final Design handoffs still require combined integration validation. Main is unchanged at `512a37e`; staging setup is not a release gate pass. See MEMORY.md for current details; earlier pending statements below are historical.
+
+Bounded seller Milestone 4 is locally integrated for reciprocal review; no release or production migration. Independent review, combined stress/recovery and all readiness gates are mandatory before B/C release or a next milestone. Hosted auth/database and representative PostgreSQL load validation remain BLOCKED. See docs/COORDINATION.md and MEMORY.md. Historical deployment evidence below concerns only earlier releases.
+
 ## Milestone 3.5 — seller inventory, 2026-09-22
 
 Status: **In development** for hosted activation; local implementation and audit complete. This task's implementation scope ends at 3.5. The user has separately authorized bounded Milestone 4 seller work and early Milestone 6.5 prelaunch work; see docs/COORDINATION.md. Those tracks are not yet integrated or claimed complete.
@@ -23,12 +33,12 @@ Implementation and activation statuses are distinguished below.
 | 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
 | 3.5 — Seller Inventory | implemented/audited; application deployed; hosted activation blocked | Versioned inventory, raw-single listings, reviewed CSV import and events; 20 live page checks passed |
 | Design / UX / brand polish | implemented | Bilingual marketplace composition, shared navigation/footer, existing commerce polish, explicit roadmap states; no new product milestone |
-| 4 — Seller Platform | In development in separate worktree | Bounded application/manual approval/team/dashboard scope; not integrated; broader milestone remains planned |
+| 4 — Seller Platform | In development; locally integrated for review | Bounded application/manual approval/team/dashboard scope; release held; broader milestone remains planned |
 | 4.5 — Seller API + Live Sync | Planned | Credentials, signed delivery/retries and live synchronization |
 | 5 — Collector + Trust | deferred | Not started |
 | 5.5 — Founding Seller + Referrals | Planned | Qualified contribution and configurable benefits |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
-| 6.5 — Prelaunch Growth | In development in separate worktree | Isolated waitlists/private leads/consent/cohorts; not integrated |
+| 6.5 — Prelaunch Growth | In development in separate worktree | Waitlists/private leads/consent/cohorts locally integrated behind default-off gates; independent final integration review pending |
 | 7.5 — Wishlist + Demand | Planned | Demand matching and privacy-safe alerts |
 | 8.5 — Smart Cart Expansion | Planned | Extend the existing Milestone 3 optimizer |
 | 9.5 — Canadian Market Data | Planned | Legitimate transaction-derived data |
@@ -164,3 +174,5 @@ Implemented: shared depth-aware card stack; whole-card marketplace links; larger
 Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.
 
 Release gate: 59 domain tests, typecheck, lint, full workspace build, Vercel build, 400 responsive route cases, 96 artwork cases, 12 local commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Touch, avatar bounds, keyboard card navigation and mobile heading order also passed. Production verification: 40 route cases plus 3 guest cart/Smart Cart cases passed; hosted authenticated checkout remains explicitly unavailable. See `verification/design-quality-live.json` and `DESIGN_QUALITY_REVIEW.md`.
+
+

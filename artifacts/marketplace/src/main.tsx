@@ -1,6 +1,9 @@
 import { createRoot } from "react-dom/client";
-import { lazy, Suspense } from "react";
-import { PreferencesProvider } from "@workspace/troc-design-system/hooks/use-preferences";
+import { lazy, Suspense, useEffect } from "react";
+import {
+  PreferencesProvider,
+  usePreferences,
+} from "@workspace/troc-design-system/hooks/use-preferences";
 import { AccountApp } from "./modules/account/AccountApp";
 import {
   InformationPage,
@@ -17,12 +20,69 @@ const InventoryApp = lazy(() =>
     default: m.InventoryApp,
   })),
 );
+const SellerPlatformApp = lazy(() =>
+  import("./modules/seller-platform/SellerPlatformApp").then((m) => ({
+    default: m.SellerPlatformApp,
+  })),
+);
+const PrelaunchApp = lazy(() =>
+  import("./modules/prelaunch/PrelaunchApp").then((m) => ({
+    default: m.PrelaunchApp,
+  })),
+);
+const prelaunchTitles = {
+  "/early-access": ["Early access", "Accès anticipé"],
+  "/early-access/collector": [
+    "Collector interest",
+    "Intérêt des collectionneurs",
+  ],
+  "/early-access/seller": ["Seller interest", "Intérêt des vendeurs"],
+  "/early-access/withdraw": ["Withdraw consent", "Retirer le consentement"],
+  "/early-access/admin": ["Prelaunch lead review", "Examen des inscriptions"],
+};
+function PrelaunchPage({ path }: { path: keyof typeof prelaunchTitles }) {
+  const { locale } = usePreferences();
+  useEffect(() => {
+    document.title = `${prelaunchTitles[path][locale === "fr" ? 1 : 0]} · TROC`;
+  }, [path, locale]);
+  return <PrelaunchApp path={path} />;
+}
 const Guide = lazy(async () => {
   await import("./style-guide.css");
   return import("@workspace/troc-design-system/preview");
 });
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = window.location.pathname.slice(base.length);
+const prelaunchPath = Object.hasOwn(prelaunchTitles, path)
+  ? (path as keyof typeof prelaunchTitles)
+  : null;
+function SellerPageMetadata({
+  view,
+}: {
+  view: "apply" | "dashboard" | "team" | "admin";
+}) {
+  const { locale } = usePreferences();
+  useEffect(() => {
+    const titles = {
+      apply: ["Seller application", "Demande vendeur"],
+      dashboard: ["Seller dashboard", "Tableau de bord vendeur"],
+      team: ["Seller team", "Équipe vendeur"],
+      admin: ["Review seller applications", "Examiner les demandes vendeurs"],
+    };
+    document.title = `${titles[view][locale === "fr" ? 1 : 0]} · TROC`;
+  }, [view, locale]);
+  return null;
+}
+const sellerView =
+  path === "/seller/apply"
+    ? "apply"
+    : path === "/seller/dashboard"
+      ? "dashboard"
+      : path === "/seller/team"
+        ? "team"
+        : path === "/admin/seller-applications"
+          ? "admin"
+          : null;
 if (!path.startsWith("/style-guide")) await import("./marketplace.css");
 createRoot(document.getElementById("root")!).render(
   path.startsWith("/style-guide") ? (
@@ -34,6 +94,15 @@ createRoot(document.getElementById("root")!).render(
       {path === "/seller/inventory" ? (
         <Suspense>
           <InventoryApp />
+        </Suspense>
+      ) : sellerView ? (
+        <Suspense>
+          <SellerPageMetadata view={sellerView} />
+          <SellerPlatformApp view={sellerView} />
+        </Suspense>
+      ) : prelaunchPath ? (
+        <Suspense>
+          <PrelaunchPage path={prelaunchPath} />
         </Suspense>
       ) : isInformationPage(path) ? (
         <InformationPage path={path} />

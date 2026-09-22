@@ -1,0 +1,138 @@
+.seller-platform {
+  max-width: 960px;
+  margin: auto;
+  padding: clamp(2rem, 5vw, 4rem) 1rem 5rem;
+}
+.seller-platform > p {
+  color: var(--text-secondary);
+  max-width: 75ch;
+  margin-block: 1rem;
+  line-height: 1.65;
+}
+.seller-platform > p:first-child {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.seller-platform h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.seller-platform h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-block: 2rem 1rem;
+}
+.seller-platform nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin: 1rem 0 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.seller-platform nav a {
+  padding-block: 0.4rem;
+  color: var(--text-secondary);
+}
+.seller-platform nav a:hover {
+  color: var(--text-primary);
+}
+.seller-platform nav a[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.5rem;
+}
+.seller-platform form {
+  display: grid;
+  gap: 1rem;
+  max-width: 640px;
+  margin-block: 1.5rem;
+}
+.seller-platform label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.seller-platform > label {
+  max-width: 400px;
+}
+.seller-platform select,
+.seller-platform textarea {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
+  width: 100%;
+}
+.seller-platform option {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.seller-platform textarea {
+  min-height: 100px;
+}
+.seller-platform label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.seller-platform input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+.seller-platform section {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+}
+.seller-platform dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.seller-platform dt {
+  color: var(--text-secondary);
+}
+.seller-platform dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.seller-platform code {
+  overflow-wrap: anywhere;
+}
+.seller-platform [role="alert"] {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1rem;
+}
+.seller-platform :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.seller-platform .seller-application-details {
+  display: block;
+}
+.seller-platform .seller-application-details > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 1rem;
+  margin-block: 0.75rem;
+}
+.seller-platform .seller-application-details dd {
+  overflow-wrap: anywhere;
+  font-weight: 400;
+}

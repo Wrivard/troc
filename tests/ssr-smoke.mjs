@@ -1,6 +1,6 @@
 import process from "node:process";
 import assert from "node:assert/strict";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 const base = process.env.SSR_ORIGIN || "http://localhost:3001";
 const evidence = [];
 for (const locale of ["en", "fr"]) {
@@ -17,7 +17,19 @@ for (const locale of ["en", "fr"]) {
   assert.match(html, /hreflang="fr-CA"/);
   assert.match(html, /name="robots" content="noindex,follow"/);
   assert.match(html, /window\.__TROC_PAGE__/);
-  assert.match(html, /rel="stylesheet" href="\/assets\/index-/);
+  const stylesheet = html.match(
+    /rel="stylesheet" href="(\/assets\/[A-Za-z0-9_-]+\.css)"/,
+  );
+  assert.ok(stylesheet, "SSR must include a built stylesheet");
+  // Hosting serves static assets separately from the API-only local SSR server.
+  const css = await readFile(
+    new URL(`../artifacts/marketplace/dist${stylesheet[1]}`, import.meta.url),
+    "utf8",
+  );
+  assert.ok(
+    css.length > 0,
+    "SSR stylesheet must exist in the deployment output",
+  );
   evidence.push({
     locale,
     status: response.status,
@@ -28,7 +40,10 @@ for (const locale of ["en", "fr"]) {
   });
 }
 assert.equal((await globalThis.fetch(`${base}/product/missing`)).status, 404);
-assert.match(await (await globalThis.fetch(`${base}/robots.txt`)).text(), /Disallow: \//);
+assert.match(
+  await (await globalThis.fetch(`${base}/robots.txt`)).text(),
+  /Disallow: \//,
+);
 const sitemap = await (await globalThis.fetch(`${base}/sitemap.xml`)).text();
 assert.match(sitemap, /<sitemapindex/);
 assert.ok(!sitemap.includes("<loc>"));

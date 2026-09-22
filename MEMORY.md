@@ -2,6 +2,30 @@
 
 Updated: 2026-09-22. This note preserves context across conversations using this project. Update it when scope, decisions, or verified progress changes. Do not record credentials here.
 
+## Current checkpoint — staging authorized, release held
+
+Independent review closure: B engineering and UX auditor both passed exact application `43b32b5`. B verified 825 source mappings, both SQL paths, six metadata render cases and unchanged quote calculations. UX inspected ten real/response-fixture renders at EN/FR 390/1440, with correct translated/missing/unknown metadata and no overflow; see parent `UX-AUDIT/11-CART-METADATA-43b32b5.md`. This closes the observed C01 cart gap, not hosted Auth/database/operations gates. A's review preview is released after this checkpoint.
+
+Integration update: B `9cfbd01` and Design `5885b6b` merged cleanly into `1a30893`. Account/team helper `d7649dc` independently passed C's 8-case V02 review. A `43b32b5` adds source-derived variant key/collector number to cart quotes and readable cart metadata; independent engineering/visual reviews requested. Combined 99 tests, typecheck, lint and full build pass. Browser evidence: 40 seller cases, 40 public design cases, 2 account-ID response fixtures and 4 native-navigation cases; the final cart addition passed 8 responsive/accessibility cases with exact collector-number assertions. Real hosted Auth is still unverified. SSR smoke no longer assumes a bundler filename prefix and checks the stylesheet exists in deployment output. No release or main push.
+
+This section supersedes historical pending statements below. The user authorized empty Supabase project `wcpsyflzqaeorxaejaqh` for staging. A alone coordinates schema/configuration and bounded test windows. Reviewed migrations 0001–0011 are applied with canonical LF checksums; existing platform security and migration history are preserved. All 67 application tables have RLS. Security advisor warnings are cleared after 0011; 15 informational default-deny tables remain intentionally restricted. No production deployment or activation is authorized by this staging setup.
+
+Combined candidate `dfd58eb` passed independent B/C local reviews and 98 tests. A followups: `054c3a0` inventory failure copy independently passed UX review; `2fcc2eb` adds portable checksum verification and additive runtime hardening, independently passed B review and 99 local tests. Pending integration: seller UX `9cfbd01` and Design `5885b6b` plus its final handoff. Read the live parent COORDINATION.md for dispatch holds and ownership before assigning work.
+
+Real application PostgreSQL/auth/concurrency gates remain BLOCKED. The direct database endpoint resolves IPv6 but is unreachable from this host; a verified session-pooler endpoint is needed. No dedicated runtime LOGIN or confirmed Auth test users exist yet. Ignored `.env.staging` has staging public configuration and a local signing key; never copy its contents into notes or logs. MCP SQL access is not runtime-role or connection-pool evidence. Main remains `512a37e`; no subsequent code has been pushed or deployed.
+
+## Previous combined candidate — historical local review
+
+Seller fixes1be237f and growth fixesb85c786 are now combined in A's isolated checkout. Growth is wired behind explicit default-off PRELAUNCH_ENABLED/PRELAUNCH_SCHEMA_READY and existing server auth/database/signing prerequisites.97combined tests,lint,typecheck,fullbuild and bundledSSR pass; 40integrated growth responsive/axe cases,16capture/withdrawflows and EN/FR consent-journey checks pass. Independent reviews closed seller C01–C04 and growth B01–B04 locally; C05 seller/team pagination remains B-owned and must pass C retest. A's verified identity/transaction adapter is shared without changing its behavior. No production activation or release; main remains512a37e. Review evidence lives in parent MILESTONE-REVIEWS.
+
+## Mandatory review gate and current integration — 2026-09-22
+
+The user now requires deep reciprocal milestone reviews, fixes, independent retests, realistic stress/recovery evidence and all readiness criteria before release or any next milestone. A holds B/C releases. B reviews C and A's integration; C reviews B including integration fixes; A reviews combined contracts/migrations/3.5 compatibility. Reports live in the build-pack MILESTONE-REVIEWS/{A,B,C}/. Read the latest docs/COORDINATION.md or live parent copy before acting.
+
+Bounded seller Milestone 4 is locally wired in A's isolated checkout: application, manual admin review, dashboard and owner-only team pages. Source handoff258fb92 is integrated with legacy-application compatibility, reduced grants and submission rate-limit ordering fixes. Independent reviews remain pending. Full milestone4 is not complete. No B/C main push, production migration or deployment has occurred. Final main remains512a37e.
+
+Hosted authentication/database activation and representative PostgreSQL stress evidence are BLOCKED, not passed. PGlite functional tests and test-only identities do not establish production readiness. Do not silently substitute a disabled-code release for these mandatory gates. The new design/audit pass runs separately in Troc-UX-Design and UX-AUDIT; A serializes all integration.
+
 ## Latest checkpoint — concurrent Milestone 3.5 work
 
 Latest authorization: the user explicitly asked to start later work where dependencies allow. Orchestrator `01a0c9c3-7aec-7f60-b187-f2c1fefd2db9` assigned bounded Milestone 4 seller work to `01a0c9c6-b40a-77c3-8757-22ff6dbf93fd` in `Troc-Milestone-4-Seller`, and isolated early 6.5 growth work to `01a0c9c6-db14-7200-a837-1feede59dbab` in `Troc-Growth`. Those worktrees started at `f4b830e`; they must update to the final design+3.5 release before final verification. Migration 0009 belongs to seller work, 0010 to growth. This task remains the milestone integrator, one track at a time; neither new task may push main, deploy or migrate production. This supersedes historical stop-after-3.5 language only for those bounded assignments. See docs/COORDINATION.md for details.
@@ -49,3 +73,6 @@ This conversation added memory and discovery pointers only. It has not implement
 ## Resuming in another conversation
 
 Read this file, `AGENTS.md`, `IMPLEMENTATION_STATUS.md`, and the source specifications. Recheck the working tree and current evidence before acting; this note is context, not proof that pending work has been completed. Keep the stop-after-3.5 boundary unless the user changes it.
+
+
+

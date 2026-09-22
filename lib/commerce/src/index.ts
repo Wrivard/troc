@@ -37,6 +37,8 @@ export interface CommerceListing {
   productId: string;
   printingId: string;
   variantId: string;
+  variantKey?: string | null;
+  collectorNumber?: string | null;
   language: "en" | "ja";
   condition: Condition | null;
   productType: "raw_single" | "graded_card" | "sealed";

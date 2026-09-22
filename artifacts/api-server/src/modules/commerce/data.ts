@@ -41,6 +41,8 @@ export function demoCommerce(): {
         productId: p.id,
         printingId: v.printingId,
         variantId: v.id,
+        variantKey: v.key,
+        collectorNumber: v.number,
         language: v.language,
         condition: o.condition,
         productType: p.type,
@@ -62,7 +64,7 @@ export function demoCommerce(): {
     }),
   };
 }
-const listingColumns = `l.id,l.seller_id AS "sellerId",p.id AS "productId",pr.id AS "printingId",v.id AS "variantId",pr.language,l.condition,p.product_type AS "productType",jsonb_build_object('en',p.name_en,'fr',p.name_fr) AS name,p.slug,p.set_id AS "setId",(SELECT slug FROM troc.set_releases WHERE id=p.set_id) AS "setSlug",(l.special_listing OR l.grade IS NOT NULL OR EXISTS(SELECT 1 FROM troc.listing_photos ph WHERE ph.listing_id=l.id)) AS special,NULL::text AS "imageUrl",l.unit_price_cents AS cents,l.sale_cents AS "saleCents",(l.quantity-COALESCE((SELECT sum(r.quantity) FROM troc.inventory_reservations r WHERE r.listing_id=l.id AND r.state='reserved' AND r.expires_at>now()),0))::integer AS quantity,(l.status='active') AS active,l.grams,l.thickness_mm::float AS "thicknessMm",l.promoted_attributable AS promoted,(l.demo_batch_id IS NOT NULL) AS demo`;
+const listingColumns = `l.id,l.seller_id AS "sellerId",p.id AS "productId",pr.id AS "printingId",v.id AS "variantId",v.variant_key AS "variantKey",pr.collector_number AS "collectorNumber",pr.language,l.condition,p.product_type AS "productType",jsonb_build_object('en',p.name_en,'fr',p.name_fr) AS name,p.slug,p.set_id AS "setId",(SELECT slug FROM troc.set_releases WHERE id=p.set_id) AS "setSlug",(l.special_listing OR l.grade IS NOT NULL OR EXISTS(SELECT 1 FROM troc.listing_photos ph WHERE ph.listing_id=l.id)) AS special,NULL::text AS "imageUrl",l.unit_price_cents AS cents,l.sale_cents AS "saleCents",(l.quantity-COALESCE((SELECT sum(r.quantity) FROM troc.inventory_reservations r WHERE r.listing_id=l.id AND r.state='reserved' AND r.expires_at>now()),0))::integer AS quantity,(l.status='active') AS active,l.grams,l.thickness_mm::float AS "thicknessMm",l.promoted_attributable AS promoted,(l.demo_batch_id IS NOT NULL) AS demo`;
 const joins = `FROM troc.listings l JOIN troc.variants v ON v.id=l.variant_id JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_products p ON p.id=pr.product_id`;
 export async function loadCommerce(db: Sql, ids: string[], candidates = false) {
   const listings = (
