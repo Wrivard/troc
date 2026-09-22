@@ -7,6 +7,7 @@ import { logger } from "./lib/logger";
 import { pool } from "@workspace/db";
 import { principal, transactionStore } from "./modules/auth/runtime";
 import { prelaunchRouter } from "./routes/prelaunch";
+import { requestSummary, errorSummary } from "./lib/safe-logging";
 
 const app: Express = express();
 
@@ -15,12 +16,9 @@ app.use(
     logger,
     serializers: {
       req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")[0],
-        };
+        return requestSummary(req);
       },
+      err: errorSummary,
       res(res) {
         return {
           statusCode: res.statusCode,
