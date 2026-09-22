@@ -1,0 +1,146 @@
+{
+  "origin": "https://troc-api-server-psi.vercel.app",
+  "commit": "7981f5f",
+  "results": [
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/about",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/about",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/about",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "path": "/",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/search",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/about",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "path": "/collection",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "dark",
+      "passed": true
+    }
+  ]
+}

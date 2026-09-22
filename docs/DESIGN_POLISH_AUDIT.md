@@ -56,10 +56,12 @@ The opt-in compact header retains all controls in three rows. Game discovery use
 - `tests/commerce-browser.mjs`: 12 authenticated local flows across three widths, EN/FR, both themes: product → cart → Smart Cart → simulated checkout → buyer order → seller shipment. Assertions now scope to the main content because the footer also contains headings/links.
 - 12 large-cart cases (5/20/50/100 lines at 390/768/1280), including seller-minimum recovery and discovery links, passed.
 - 96 real-art route cases (eight routes × three widths × EN/FR × dark/light) passed after the final product and storefront changes.
-- Exact Vercel production build passed. GitHub-triggered deployment and live smoke verification are reported in the task completion; hosted authentication remains unavailable.
+- Exact Vercel production build passed. Implementation commit `7981f5f` was pushed to `main`; Vercel deployment `CttAZkqpPmnA9iaCwzDo41EH5VAX` completed successfully.
+- Live site https://troc-api-server-psi.vercel.app passed 20 page checks across 390/768/1280/1920 and both languages/themes, plus three cart/Smart Cart smoke flows. Updated homepage SSR, marketplace stylesheet, three loaded hero images, no chart download on home and accessible responsive layouts verified. Hosted authentication remains unavailable, as expected.
+- New guide showcase/compact-header states and seller name/banner geometry passed targeted 390-FR-light and 1280-EN-dark checks.
 - Eight standalone/integrated guide screenshots match; locale and theme persistence pass. Manual visual inspection covers home, product, seller storefront, account and checkout compositions. Existing guide tokens/default layout are retained; the documented additions are intentional.
 - Main entry bundle reduced from approximately 637 KB / 188 KB gzip before chart splitting to 247 KB / 79 KB gzip. A separate approximately 388 KB chart bundle loads for product history. These are build sizes, not a measured Core Web Vitals score.
-- Evidence: `verification/design-polish-browser.json`, `verification/commerce-browser.json`, `verification/commerce-large.json`, `verification/real-art-browser.json`, `verification/browser-results.json`. Screenshots and local logs remain ignored.
+- Evidence: `verification/design-polish-browser.json`, `verification/commerce-browser.json`, `verification/commerce-large.json`, `verification/real-art-browser.json`, `verification/browser-results.json`, `verification/design-polish-live.json`. Screenshots and local logs remain ignored.
 
 ## H. Remaining limits / recommended next
 
