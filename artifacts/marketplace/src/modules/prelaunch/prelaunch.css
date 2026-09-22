@@ -1,0 +1,184 @@
+.prelaunch-shell {
+  max-width: 1000px;
+  margin: auto;
+  padding: 1.5rem;
+  color: var(--text-primary);
+}
+.prelaunch-shell header,
+.prelaunch-shell footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.prelaunch-shell header > a {
+  font-size: 2rem;
+  font-weight: 900;
+  font-style: italic;
+  text-decoration: none;
+}
+.prelaunch-shell main {
+  padding-block: 3rem;
+}
+.prelaunch-shell h1 {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.06;
+  font-weight: 800;
+  max-width: 18ch;
+  margin-block: 1rem 1.5rem;
+  letter-spacing: -0.04em;
+}
+.prelaunch-shell h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.prelaunch-shell p {
+  line-height: 1.65;
+  max-width: 70ch;
+}
+.prelaunch-intro {
+  font-size: 1.2rem;
+}
+.prelaunch-eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+.prelaunch-paths,
+.prelaunch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.prelaunch-paths {
+  margin-block: 2rem;
+}
+.prelaunch-paths section,
+.prelaunch-lead {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+}
+.prelaunch-paths a {
+  display: block;
+  margin-top: 1.5rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.prelaunch-shell form {
+  max-width: 720px;
+  margin-block: 2rem;
+}
+.prelaunch-shell label {
+  display: grid;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+.prelaunch-shell select,
+.prelaunch-shell textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.prelaunch-shell textarea {
+  min-height: 6rem;
+}
+.prelaunch-shell fieldset {
+  border: 0;
+  margin-block: 1.5rem;
+  padding: 0;
+}
+.prelaunch-shell legend {
+  font-weight: 600;
+}
+.prelaunch-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+.prelaunch-shell .prelaunch-check,
+.prelaunch-checks label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.5;
+}
+.prelaunch-shell input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  accent-color: var(--brand-red);
+}
+.prelaunch-shell .prelaunch-trap {
+  display: none;
+}
+.prelaunch-shell summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  text-decoration: underline;
+}
+.prelaunch-privacy,
+.prelaunch-note {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-block: 2rem;
+}
+.prelaunch-message {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  margin-top: 1rem;
+}
+.prelaunch-message code {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-block: 1rem;
+}
+.prelaunch-lead {
+  margin-block: 1rem;
+  overflow-wrap: anywhere;
+}
+.prelaunch-lead dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.5rem;
+}
+.prelaunch-lead dd {
+  margin: 0;
+}
+.prelaunch-shell button,
+.prelaunch-shell a {
+  min-height: 44px;
+}
+.prelaunch-shell :focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .prelaunch-shell {
+    padding: 1rem;
+  }
+  .prelaunch-shell main {
+    padding-block: 1.5rem;
+  }
+  .prelaunch-paths,
+  .prelaunch-grid {
+    grid-template-columns: 1fr;
+  }
+  .prelaunch-shell footer {
+    flex-wrap: wrap;
+  }
+  .prelaunch-lead dl {
+    grid-template-columns: 1fr;
+  }
+  .prelaunch-shell h1 {
+    font-size: 2.5rem;
+  }
+}
