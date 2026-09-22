@@ -4,6 +4,7 @@ import {
 } from "../../components/ui/interactive-card-stack";
 import {
   MarketplaceProductCard,
+  ProductPurchaseSummary,
   GameTile,
   GameHero,
   StoreHero,
@@ -272,6 +273,34 @@ export default function EditorialPage() {
             actionLabel={fr ? "Explorer la boutique" : "Explore store"}
           />
         </div>
+      </Section>
+
+      <Section title="ProductPurchaseSummary">
+        <ProductPurchaseSummary
+          printing={
+            fr
+              ? "Français · Édition démo · #001"
+              : "English · Demo printing · #001"
+          }
+          price={
+            <strong>
+              {fr ? "À partir de 0,05 $ CAD / carte" : "From $0.05 CAD / card"}
+            </strong>
+          }
+          availability={fr ? "3 vendeurs · exemple" : "3 sellers · example"}
+          action={
+            <Button asChild>
+              <a href="#page=seller-offer">
+                {fr ? "Choisir une offre" : "View offers"}
+              </a>
+            </Button>
+          }
+          note={
+            fr
+              ? "Hors livraison. Livraison regroupée simulée au panier."
+              : "Shipping excluded. Combined shipping is simulated in your cart."
+          }
+        />
       </Section>
       <Section title="ProductArtworkPanel">
         <div className="max-w-sm">

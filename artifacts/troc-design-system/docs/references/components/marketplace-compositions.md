@@ -12,3 +12,7 @@ Implementation: `src/components/ui/interactive-card-stack.tsx`, `marketplace-com
 - PremiumEmptyState: translated title/explanation/actions, optional visual; default card-back visual is decorative.
 
 All styles use approved semantic tokens. EN/FR and both themes are demonstrated; keyboard focus, touch, reduced-motion and unclipped avatar behavior are browser checked. The marketplace owns catalog fetches, formats, links, actions and any domain rules.
+
+## ProductPurchaseSummary — UX audit 01
+
+Translated printing, available price, seller availability, explicit offer-selection action and shipping caveat. The caller owns navigation/focus; the component never selects a seller or adds to cart. Reference/median prices belong outside this purchase summary. The editorial guide demonstrates the composition. Existing SellerOfferRow accepts an optional seller-specific accessible action name; quantity labels remain caller supplied.

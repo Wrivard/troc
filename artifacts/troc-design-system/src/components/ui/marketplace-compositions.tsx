@@ -315,3 +315,32 @@ export function SmartCartComparison({
     </div>
   );
 }
+
+/** Available purchase price and explicit progression to seller selection. No implicit offer selection. */
+export function ProductPurchaseSummary({
+  price,
+  printing,
+  availability,
+  action,
+  note,
+}: {
+  price: ReactNode;
+  printing: ReactNode;
+  availability: ReactNode;
+  action: ReactNode;
+  note: ReactNode;
+}) {
+  return (
+    <section className="troc-purchase-summary">
+      <div className="troc-purchase-summary-printing">{printing}</div>
+      <div className="troc-purchase-summary-row">
+        <div>
+          {price}
+          <p>{availability}</p>
+        </div>
+        <div className="troc-purchase-summary-action">{action}</div>
+      </div>
+      <p className="troc-purchase-summary-note">{note}</p>
+    </section>
+  );
+}

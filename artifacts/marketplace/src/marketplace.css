@@ -1286,3 +1286,18 @@ main {
   .troc-quality-filter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .troc-quality-filter > label:first-of-type, .troc-quality-filter > details { grid-column: 1 / -1; }
 }
+
+/* UX audit 01: visible offer-selection path; purchasing context before detail. */
+.troc-product-decision-details { gap: var(--space-5); }
+.troc-product-reference-context { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+.troc-product-summary [aria-current="true"] { box-shadow: inset 0 0 0 2px var(--text-primary); }
+.troc-offer-list { scroll-margin-top: var(--space-6); }
+.troc-offer-list:focus { outline: 2px solid var(--focus); outline-offset: var(--space-2); }
+.troc-offer-feedback { padding: var(--space-3); background: var(--surface); font-size: var(--text-sm); }
+@media (max-width: 767px) {
+  .troc-product-decision { gap: var(--space-5); }
+  .troc-product-decision-details > .troc-editorial-intro { order: -3; }
+  .troc-product-decision-details > .troc-purchase-summary { order: -2; }
+  .troc-product-sticky [data-catalog-artwork] { max-width: 180px; }
+  .troc-product-sticky .troc-artwork-panel { padding: var(--space-4); }
+}
