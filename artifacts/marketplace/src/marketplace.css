@@ -1623,3 +1623,8 @@ main {
     padding-inline: var(--space-4);
   }
 }
+.troc-about-home { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: var(--space-12); border-top: 1px solid var(--color-border); }
+.troc-about-intro h2 { max-width: 16ch; font-size: clamp(2rem, 3.4vw, 3.25rem); line-height: 1.12; letter-spacing: -.035em; margin: var(--space-4) 0 var(--space-6); }
+.troc-about-intro > p:not(.troc-editorial-eyebrow) { max-width: 46ch; font-size: var(--text-base); color: var(--text-secondary); line-height: 1.75; margin-bottom: var(--space-5); }
+.troc-about-intro > a { margin-top: var(--space-3); }
+@media (max-width: 1023px) { .troc-about-home { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); } }

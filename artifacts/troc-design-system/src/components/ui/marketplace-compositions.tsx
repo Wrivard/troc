@@ -2,6 +2,60 @@ import type { ReactNode, CSSProperties, HTMLAttributes } from "react";
 import { cn } from "../../lib/utils";
 import { EditorialIcon } from "./editorial";
 import { InteractiveCardStack } from "./interactive-card-stack";
+import { MetricStat } from "./metric-stat";
+
+/** Display-only aggregates. Callers supply verified scope and formatted values. */
+export function MarketplaceStats({
+  label,
+  scope,
+  source,
+  unavailableLabel,
+  items,
+}: {
+  label: string;
+  scope: string;
+  source: string;
+  unavailableLabel: string;
+  items: { id: string; label: string; value: string | null; detail: string }[];
+}) {
+  return (
+    <section className="troc-marketplace-stats" aria-label={label}>
+      <p className="troc-stats-scope">{scope}</p>
+      <div className="troc-stats-grid">
+        {items.map((item) => (
+          <MetricStat
+            key={item.id}
+            label={item.label}
+            value={item.value ?? <span aria-label={unavailableLabel}>—</span>}
+            meta={item.detail}
+          />
+        ))}
+      </div>
+      <p className="troc-stats-source">{source}</p>
+    </section>
+  );
+}
+
+/** Values with explicit explanations; icons supplement the visible headings. */
+export function MarketplacePrinciples({
+  items,
+}: {
+  items: { id: string; title: string; description: string; icon: ReactNode }[];
+}) {
+  return (
+    <div className="troc-marketplace-principles">
+      {items.map((item) => (
+        <article key={item.id}>
+          <span className="troc-principle-icon" aria-hidden="true">
+            {item.icon}
+          </span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
 export function MarketplaceProductCard({
   href,
   image,

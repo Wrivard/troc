@@ -16,17 +16,19 @@ try {
           { lang, theme },
         );
         await page.goto(`http://127.0.0.1:4313/?lang=${lang}`);
-        await page.locator(".troc-value-rail").waitFor();
-        for (const selector of [".troc-home-hero", ".troc-value-rail"])
+        await page.locator(".troc-marketplace-stats").waitFor();
+        for (const selector of [".troc-home-hero"])
           assert.equal(
             await page
               .locator(selector)
-              .evaluate((el) => globalThis.getComputedStyle(el).backgroundColor),
+              .evaluate(
+                (el) => globalThis.getComputedStyle(el).backgroundColor,
+              ),
             "rgba(0, 0, 0, 0)",
           );
         assert.equal(
           await page
-            .locator(".troc-value-rail")
+            .locator(".troc-marketplace-stats")
             .evaluate((el) => el.classList.contains("light")),
           false,
         );
@@ -36,16 +38,12 @@ try {
           ),
           false,
         );
-        await page
-          .locator(".troc-home-hero")
-          .screenshot({
-            path: `verification/home-backdrop-${width}-${lang}-${theme}-hero.png`,
-          });
-        await page
-          .locator(".troc-value-rail")
-          .screenshot({
-            path: `verification/home-backdrop-${width}-${lang}-${theme}-rail.png`,
-          });
+        await page.locator(".troc-home-hero").screenshot({
+          path: `verification/home-backdrop-${width}-${lang}-${theme}-hero.png`,
+        });
+        await page.locator(".troc-marketplace-stats").screenshot({
+          path: `verification/home-backdrop-${width}-${lang}-${theme}-stats.png`,
+        });
         console.log({ width, lang, theme, result: "PASS" });
         await page.close();
       }

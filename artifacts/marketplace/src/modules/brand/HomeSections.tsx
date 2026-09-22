@@ -2,6 +2,8 @@ import { InteractiveCardStack } from "@workspace/troc-design-system/components/u
 import {
   GameTile,
   MarketplaceJourney,
+  MarketplaceStats,
+  MarketplacePrinciples,
   SellerPreviewCard,
   SmartCartComparison,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
@@ -184,48 +186,56 @@ export function HomeSections({
           </p>
         </div>
       </section>
-      <div className="troc-value-rail">
-        {(
-          [
-            [
-              "globe",
-              "Canada-first",
-              "Pensé pour le Canada",
-              "Closer to your next find.",
-              "Plus près de votre prochaine trouvaille.",
-            ],
-            [
-              "coin",
-              "All in CAD",
-              "Tout en CAD",
-              "Your currency. Clearer comparisons.",
-              "Votre devise. Des comparaisons claires.",
-            ],
-            [
-              "language",
-              "English & français",
-              "Français & English",
-              "The hobby, in your language.",
-              "La passion, dans votre langue.",
-            ],
-            [
-              "layers",
-              "Every single matters",
-              "Chaque carte compte",
-              "Yes, even the 25¢ ones.",
-              "Oui, même celles à 25 ¢.",
-            ],
-          ] as const
-        ).map(([icon, en, french, body, bodyFr]) => (
-          <div key={icon}>
-            <EditorialIcon name={icon} />
-            <div>
-              <strong>{c(en, french)}</strong>
-              <p>{c(body, bodyFr)}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      <MarketplaceStats
+        label={c("TROC in numbers", "TROC en chiffres")}
+        scope={c(
+          "Marketplace figures · not yet available",
+          "Les chiffres du marché · bientôt disponibles",
+        )}
+        source={c(
+          "Verified totals are not connected yet. This preview does not represent live marketplace activity.",
+          "Les totaux vérifiés ne sont pas encore reliés. Cet aperçu ne représente pas l’activité réelle du marché.",
+        )}
+        unavailableLabel={c("Not available", "Indisponible")}
+        items={[
+          {
+            id: "products",
+            value: null,
+            label: c("Catalog products", "Produits du catalogue"),
+            detail: c(
+              "Distinct canonical products",
+              "Produits canoniques distincts",
+            ),
+          },
+          {
+            id: "listings",
+            value: null,
+            label: c("Seller listings", "Offres des vendeurs"),
+            detail: c(
+              "Active offers, across sellers",
+              "Offres actives, tous vendeurs confondus",
+            ),
+          },
+          {
+            id: "units",
+            value: null,
+            label: c("Available units", "Exemplaires disponibles"),
+            detail: c(
+              "Quantities across active listings",
+              "Quantités des offres actives",
+            ),
+          },
+          {
+            id: "sellers",
+            value: null,
+            label: c("Active sellers", "Vendeurs actifs"),
+            detail: c(
+              "Sellers with available offers",
+              "Vendeurs proposant des offres disponibles",
+            ),
+          },
+        ]}
+      />
       <section className="troc-home-section">
         <EditorialIntro
           eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
@@ -477,52 +487,81 @@ export function HomeSections({
             .slice(0, 4),
         )}
       </section>
-      <EditorialPanel
-        tone="contrast"
-        className="troc-canada-edit"
-        image={heroes[0] && art(heroes[0].product)}
+      <section
+        className="troc-home-section troc-about-home"
+        aria-labelledby="troc-about-title"
       >
-        <div className="troc-canada-heading">
+        <div className="troc-about-intro">
           <p className="troc-editorial-eyebrow">
-            {c("CANADIAN OWNED & OPERATED", "ENTREPRISE CANADIENNE")}
+            {c("ABOUT TROC", "À PROPOS DE TROC")}
           </p>
-          <h2>
-            {c("Built here.", "D’ici.")}
-            <br />
-            <span>
-              {c("For collectors here.", "Pour les collectionneurs d’ici.")}
-            </span>
+          <h2 id="troc-about-title">
+            {c(
+              "A home for the way we collect.",
+              "Une place pour notre façon de collectionner.",
+            )}
           </h2>
-          <TrocLogo variant="compact" height={32} />
-        </div>
-        <div className="troc-canada-copy">
           <p>
             {c(
-              "For the way we actually collect.",
-              "Pour notre façon de collectionner.",
+              "TROC starts with a simple idea: finding a card in Canada should make sense for the whole order, even when the card costs just a few cents.",
+              "TROC part d’une idée simple : trouver une carte au Canada devrait avoir du sens pour la commande entière, même quand la carte ne coûte que quelques sous.",
             )}
           </p>
           <p>
             {c(
-              "From a shop in Montréal to a binder in Vancouver. Our hobby crosses the country. Buying cards should feel a little closer to home.",
-              "D’une boutique à Montréal à un cartable à Vancouver. Notre passion traverse le pays. Acheter des cartes devrait nous rapprocher.",
-            )}
-          </p>
-          <p>
-            {c(
-              "CAD from the start. English and French. Canadian sellers. Room for every part of your collection.",
-              "Le CAD dès le départ. Le français et l’anglais. Des vendeurs canadiens. Une place pour chaque carte de votre collection.",
+              "We’re building a marketplace that brings collectors, independent sellers and local shops together around the details that matter: the right card, a clear price and the cost of getting it home.",
+              "Nous bâtissons un marché qui réunit collectionneurs, vendeurs indépendants et boutiques autour de l’essentiel : la bonne carte, un prix clair et le coût pour la recevoir.",
             )}
           </p>
           <a className="troc-editorial-text-link" href={href("/about")}>
-            {c("Why we’re building TROC", "Pourquoi nous créons TROC")}
+            {c(
+              "Discover the idea behind TROC",
+              "Découvrir l’idée derrière TROC",
+            )}
             <EditorialIcon name="arrow" />
           </a>
         </div>
-        <div className="troc-canada-foot">
-          CANADA <span>CAD / EN + FR</span>
-        </div>
-      </EditorialPanel>
+        <MarketplacePrinciples
+          items={[
+            {
+              id: "canada",
+              icon: <EditorialIcon name="globe" />,
+              title: c("Canada-first", "Pensé pour le Canada"),
+              description: c(
+                "A Canadian starting point for a worldwide hobby. Find offers from sellers here, with shipping and seller minimums visible before you decide.",
+                "Un point de départ canadien pour une passion mondiale. Retrouvez des offres de vendeurs d’ici, avec la livraison et les minimums visibles avant de choisir.",
+              ),
+            },
+            {
+              id: "cad",
+              icon: <EditorialIcon name="coin" />,
+              title: c("All in CAD", "Tout en CAD"),
+              description: c(
+                "Compare in the currency you use. Card prices and order estimates are shown in Canadian dollars, so the complete cost is easier to understand.",
+                "Comparez dans votre devise. Les prix des cartes et les estimations de commande sont en dollars canadiens, pour mieux comprendre le coût complet.",
+              ),
+            },
+            {
+              id: "languages",
+              icon: <EditorialIcon name="language" />,
+              title: c("English & français", "Français & English"),
+              description: c(
+                "Choose the language that feels natural, from discovering cards to reviewing your basket. Card language stays a separate choice, because the printing matters too.",
+                "Choisissez la langue qui vous convient, de la découverte au panier. La langue de la carte reste un choix distinct : l’impression compte aussi.",
+              ),
+            },
+            {
+              id: "singles",
+              icon: <EditorialIcon name="layers" />,
+              title: c("Every single matters", "Chaque carte compte"),
+              description: c(
+                "The common that completes a set deserves a place beside the chase card. TROC is built around buying several cards and combining shipping from the same seller.",
+                "La commune qui complète une extension a sa place à côté de la carte convoitée. TROC est pensé pour acheter plusieurs cartes et regrouper la livraison d’un même vendeur.",
+              ),
+            },
+          ]}
+        />
+      </section>
       <section className="troc-home-section">
         <EditorialIntro
           eyebrow={c(

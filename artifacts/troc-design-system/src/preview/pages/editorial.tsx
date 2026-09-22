@@ -5,6 +5,8 @@ import {
 import {
   MarketplaceProductCard,
   MarketplaceJourney,
+  MarketplaceStats,
+  MarketplacePrinciples,
   ProductPurchaseSummary,
   ProductFacts,
   GameTile,
@@ -56,6 +58,76 @@ export default function EditorialPage() {
             : "Hierarchy, contrast and depth using the approved tokens."
         }
       />
+      <Section title="MarketplaceStats">
+        <MarketplaceStats
+          label={fr ? "Exemple de statistiques" : "Statistics example"}
+          scope={
+            fr
+              ? "Démo du composant · chiffres fictifs"
+              : "Component demo · fictional figures"
+          }
+          source={
+            fr
+              ? "Exemple de mise en page uniquement. Aucune activité réelle."
+              : "Layout example only. No real marketplace activity."
+          }
+          unavailableLabel={fr ? "Indisponible" : "Not available"}
+          items={[
+            {
+              id: "products",
+              value: new Intl.NumberFormat(fr ? "fr-CA" : "en-CA").format(
+                12345,
+              ),
+              label: fr ? "Produits du catalogue" : "Catalog products",
+              detail: fr
+                ? "Produits distincts fictifs"
+                : "Fictional distinct products",
+            },
+            {
+              id: "listings",
+              value: "0",
+              label: fr ? "Offres des vendeurs" : "Seller listings",
+              detail: fr
+                ? "Exemple de valeur nulle"
+                : "Example of a zero count",
+            },
+            {
+              id: "units",
+              value: null,
+              label: fr ? "Exemplaires disponibles" : "Available units",
+              detail: fr ? "Donnée indisponible" : "Unavailable data",
+            },
+            {
+              id: "sellers",
+              value: "24",
+              label: fr ? "Vendeurs actifs" : "Active sellers",
+              detail: fr ? "Vendeurs fictifs" : "Fictional sellers",
+            },
+          ]}
+        />
+      </Section>
+      <Section title="MarketplacePrinciples">
+        <MarketplacePrinciples
+          items={[
+            {
+              id: "cad",
+              icon: <EditorialIcon name="coin" />,
+              title: fr ? "Tout en CAD" : "All in CAD",
+              description: fr
+                ? "Des prix en dollars canadiens pour comparer dans votre devise."
+                : "Canadian-dollar prices to compare in your own currency.",
+            },
+            {
+              id: "singles",
+              icon: <EditorialIcon name="layers" />,
+              title: fr ? "Chaque carte compte" : "Every single matters",
+              description: fr
+                ? "Une place pour la commune qui complète votre extension."
+                : "A place for the common that completes your set.",
+            },
+          ]}
+        />
+      </Section>
       <Section title={fr ? "Ouverture de page" : "Page opening"}>
         <EditorialIntro
           eyebrow="TROC · CANADA"
