@@ -1,0 +1,49 @@
+.seller-platform {
+  max-width: 960px;
+  margin: auto;
+  padding: 2rem 1rem 5rem;
+}
+.seller-platform nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+}
+.seller-platform form {
+  display: grid;
+  gap: 1rem;
+  max-width: 640px;
+}
+.seller-platform label {
+  display: grid;
+  gap: 0.4rem;
+}
+.seller-platform select,
+.seller-platform textarea {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  width: 100%;
+}
+.seller-platform section {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+}
+.seller-platform dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+.seller-platform dd {
+  margin: 0;
+  font-weight: 600;
+}
+.seller-platform code {
+  overflow-wrap: anywhere;
+}
+.seller-platform [role="alert"] {
+  border: 1px solid var(--destructive);
+  padding: 1rem;
+}
