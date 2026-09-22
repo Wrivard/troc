@@ -2,16 +2,17 @@
 
 ## Milestone 3.5 — seller inventory, 2026-09-22
 
-Status: **In development**. The next authorized milestone is 3.5 only; earlier milestone gate language below is historical. Stop before Milestone 4.
+Status: **In development** for hosted activation; local implementation and audit complete. This task's implementation scope ends at 3.5. The user has separately authorized bounded Milestone 4 seller work and early Milestone 6.5 prelaunch work; see docs/COORDINATION.md. Those tracks are not yet integrated or claimed complete.
 
 - Added source/external identifiers, versioned stock edits, canonical-only manual listings, generic CSV mapping/preview/publish, seller inventory search/filters/bulk actions and durable inventory state events.
 - Preserved canonical catalog/listing separation and all existing commerce flows. Existing inventory identifiers are unchanged.
-- Local validation: 70 tests pass, including 100/1,000/10,001-row imports and prior commerce regressions; 13 inventory browser cases, type checking, lint, full production builds and bundled SSR smoke checks pass. Combined design integration and hosted verification remain pending. See [the audit](docs/MILESTONE_3_5_AUDIT.md).
+- Combined validation after merging design code `9f4f58e` and evidence `e236c29`: 70 tests pass, including 100/1,000/10,001-row imports and prior commerce regressions; 13 inventory browser cases, type checking, lint, full production builds and bundled SSR smoke checks pass. Release `e8b8b92` deployed successfully on Vercel; 20 live checks passed with inventory correctly unavailable until hosted activation. See [the audit](docs/MILESTONE_3_5_AUDIT.md).
 - Hosted activation still requires the existing Supabase/database configuration plus migration 0008. Source names do not imply live integrations. Graded-card creation and real integration delivery remain outside this bounded workflow.
 - Master roadmap: [docs/product/roadmap.md](docs/product/roadmap.md). Internal docs: [docs/README.md](docs/README.md).
 
-Milestones 1 and 2 are approved. Milestone 3 is authorized **after the Milestone 2.5 audit passes**. **Stop before Milestone 4.** The approved style guide
-is locked. Implementation and activation statuses are distinguished below.
+Milestones 1–3 are complete for sequencing. Earlier gate statements in historical
+sections below are superseded by the current scope and coordination record.
+Implementation and activation statuses are distinguished below.
 
 | Milestone | Status | Scope |
 |---|---|---|
@@ -20,10 +21,18 @@ is locked. Implementation and activation statuses are distinguished below.
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
 | 2.5 — Marketplace polish | implemented | Approved bounded sample: 159 products, 324 local responsive renditions; real-art/browser audit passed; production catalog remains unapproved |
 | 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
+| 3.5 — Seller Inventory | implemented/audited; application deployed; hosted activation blocked | Versioned inventory, raw-single listings, reviewed CSV import and events; 20 live page checks passed |
 | Design / UX / brand polish | implemented | Bilingual marketplace composition, shared navigation/footer, existing commerce polish, explicit roadmap states; no new product milestone |
-| 4 — Seller Platform | deferred | Not started |
+| 4 — Seller Platform | In development in separate worktree | Bounded application/manual approval/team/dashboard scope; not integrated; broader milestone remains planned |
+| 4.5 — Seller API + Live Sync | Planned | Credentials, signed delivery/retries and live synchronization |
 | 5 — Collector + Trust | deferred | Not started |
+| 5.5 — Founding Seller + Referrals | Planned | Qualified contribution and configurable benefits |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
+| 6.5 — Prelaunch Growth | In development in separate worktree | Isolated waitlists/private leads/consent/cohorts; not integrated |
+| 7.5 — Wishlist + Demand | Planned | Demand matching and privacy-safe alerts |
+| 8.5 — Smart Cart Expansion | Planned | Extend the existing Milestone 3 optimizer |
+| 9.5 — Canadian Market Data | Planned | Legitimate transaction-derived data |
+| 10.5 — Collection Flywheel | Planned | Collection-to-sell and wishlist-to-buy |
 
 ## Major design refinement — 2026-09-22
 
@@ -145,3 +154,13 @@ The earlier demo-source blocker is resolved by explicit user approval (attachmen
 Actual art passed 96 Playwright cases over eight routes, three widths, EN/FR and dark/light. File-level tests verify every rendition's actual width and aspect ratio. Seller-card mobile spacing was corrected in the reusable style-guide component without changing visual tokens. Both frozen installs, 51 tests, typecheck, lint, production build and Vercel build pass. One Piece/Riftbound retain permitted fallbacks; selected providers do not cleanly supply sealed samples, so those remain fictional fixtures. No production catalog, real pricing feed or payment integration is approved.
 
 See docs/DEMO_CATALOG_APPROVAL.md and verification/real-art-browser.json. Earlier Phase A blockers below/above are historical; this approval supersedes the representative-demo artwork blocker only.
+
+## Design quality pass — 2026-09-22
+
+Status: **implemented and live verified**. Code release `9f4f58e` is deployed on the production Vercel URL. See [DESIGN_QUALITY_REVIEW.md](DESIGN_QUALITY_REVIEW.md) for critical route review, iterations and evidence.
+
+Implemented: shared depth-aware card stack; whole-card marketplace links; larger game destinations; realistic labelled how-it-works examples; Smart Cart price/shipping comparison; seller previews; compact game heroes; sticky product decisions and compact reference history; unclipped storefront identity; seller/binder/auth/empty-state compositions; desktop/mobile filter hierarchy. Original logo, palette, type, Canadian story and footer preserved. EN/FR and theme preference retained. No new marketplace milestone business scope.
+
+Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.
+
+Release gate: 59 domain tests, typecheck, lint, full workspace build, Vercel build, 400 responsive route cases, 96 artwork cases, 12 local commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Touch, avatar bounds, keyboard card navigation and mobile heading order also passed. Production verification: 40 route cases plus 3 guest cart/Smart Cart cases passed; hosted authenticated checkout remains explicitly unavailable. See `verification/design-quality-live.json` and `DESIGN_QUALITY_REVIEW.md`.

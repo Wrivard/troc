@@ -14,7 +14,7 @@ try {
         });
         const page = await context.newPage();
         await page.goto(`http://localhost:5173/?lang=${lang}&theme=${theme}`);
-        const display = page.locator(".troc-card-showcase--showroom");
+        const display = page.locator(".troc-stack-stage");
         await expect(display.locator("img").first()).toHaveAttribute(
           "alt",
           "Bulbasaur",
@@ -28,26 +28,50 @@ try {
           box.x + box.width * 0.75,
           box.y + box.height * 0.5,
         );
+        await page.waitForTimeout(250);
         const style = await display.evaluate((el) => ({
-          x: el.style.getPropertyValue("--showroom-x"),
-          animation: globalThis.getComputedStyle(el).animationName,
-          z: [...el.querySelectorAll(".troc-card-showcase-item")].map((card) =>
-            Number(globalThis.getComputedStyle(card).zIndex),
+          x: el.style.getPropertyValue("--card-ry"),
+          animation: globalThis.getComputedStyle(
+            el.querySelector(".troc-stack-float"),
+          ).animationName,
+          z: [...el.querySelectorAll(".troc-stack-card")].map(
+            (card) =>
+              new globalThis.DOMMatrix(globalThis.getComputedStyle(card).transform).m43,
           ),
+          perspective: globalThis.getComputedStyle(el).perspective,
         }));
+        assert.equal(style.perspective, "1200px");
         assert.ok(style.z[0] > style.z[1] && style.z[0] > style.z[2]);
         if (reducedMotion === "reduce") {
           assert.ok(!style.x || style.x === "0deg");
           assert.equal(style.animation, "none");
         } else {
-          assert.ok(Math.abs(parseFloat(style.x)) <= 2);
+          assert.ok(Math.abs(parseFloat(style.x)) <= 6);
           assert.notEqual(parseFloat(style.x), 0);
         }
-        await page.goto(`http://localhost:5173/search?lang=${lang}&theme=${theme}`);
-        const refinements=page.locator('details').filter({has:page.locator('input[name="max"]')}).last();
-        await refinements.locator('summary').click();
-        await page.locator('input[name="max"]').fill('99');
-        await page.locator('form').filter({has:page.locator('input[name="max"]')}).locator('button[type="submit"]').click();
+        await page.mouse.move(0, 0);
+        await expect
+          .poll(async () =>
+            Math.abs(
+              parseFloat(
+                await display.evaluate((el) =>
+                  el.style.getPropertyValue("--card-ry"),
+                ),
+              ) || 0,
+            ),
+          )
+          .toBeLessThan(0.05);
+        await page.locator("footer").scrollIntoViewIfNeeded();
+        await expect(display).toHaveAttribute("data-visible", "false");
+        await page.goto(
+          `http://localhost:5173/search?lang=${lang}&theme=${theme}`,
+        );
+        await page.locator('input[name="max"]').fill("99");
+        await page
+          .locator("form")
+          .filter({ has: page.locator('input[name="max"]') })
+          .locator('button[type="submit"]')
+          .click();
         await expect(page).toHaveURL(/max=99/);
         await expect(page.locator('input[name="max"]')).toBeVisible();
         await page.goto(

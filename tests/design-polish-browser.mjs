@@ -104,7 +104,9 @@ try {
         await page.evaluate(
           () =>
             new Promise((resolve) =>
-              globalThis.requestAnimationFrame(() => globalThis.requestAnimationFrame(resolve)),
+              globalThis.requestAnimationFrame(() =>
+                globalThis.requestAnimationFrame(resolve),
+              ),
             ),
         );
         const violations = (
@@ -135,6 +137,7 @@ try {
         ) {
           const name = route === "/" ? "home" : route.split("/")[1];
           for (const img of await page.locator("main img").all()) {
+            if (!(await img.isVisible())) continue;
             await img.scrollIntoViewIfNeeded();
             await expect(img).toHaveJSProperty("complete", true);
             await expect(img).not.toHaveJSProperty("naturalWidth", 0);
