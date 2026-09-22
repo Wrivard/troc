@@ -94,7 +94,7 @@ export default function EditorialPage() {
             {
               id: "units",
               value: null,
-              label: fr ? "Exemplaires disponibles" : "Available units",
+              label: fr ? "Exemplaires en vente" : "Listed units",
               detail: fr ? "Donnée indisponible" : "Unavailable data",
             },
             {

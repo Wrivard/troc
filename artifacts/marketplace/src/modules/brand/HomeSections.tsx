@@ -21,17 +21,49 @@ import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { imagesForVariant } from "../catalog/images";
 
+// Structural presentation input for A's CatalogStats projection (a8865e8).
+// Optional so the component also renders safely before that server projection is integrated.
+type HomeStats = {
+  status: "available" | "unavailable";
+  source: "demo_snapshot" | "database";
+  scope: "demo_catalog" | "non_demo_catalog";
+  measuredAt: string | null;
+  catalogProducts: number | null;
+  activeListings: number | null;
+  listedUnits: number | null;
+  activeSellers: number | null;
+};
+
 export function HomeSections({
   page,
   cards,
   href,
 }: {
-  page: PublicPage;
+  page: PublicPage & { stats?: HomeStats };
   cards: (items: ProductResult[]) => ReactNode;
   href: (path: string, params?: Record<string, string>) => string;
 }) {
   const fr = page.locale === "fr";
   const c = (en: string, french: string) => (fr ? french : en);
+  const stats = page.stats;
+  const demoStats =
+    stats?.source === "demo_snapshot" || stats?.scope === "demo_catalog";
+  const metric = (
+    key: "catalogProducts" | "activeListings" | "listedUnits" | "activeSellers",
+  ) => {
+    const value = stats?.[key];
+    return stats?.status === "available" &&
+      typeof value === "number" &&
+      Number.isSafeInteger(value) &&
+      value >= 0
+      ? new Intl.NumberFormat(fr ? "fr-CA" : "en-CA").format(value)
+      : null;
+  };
+  const measuredAt = stats?.measuredAt ? new Date(stats.measuredAt) : null;
+  const measuredLabel =
+    measuredAt && Number.isFinite(measuredAt.getTime())
+      ? `${c("Snapshot", "Instantané")} · ${new Intl.DateTimeFormat(fr ? "fr-CA" : "en-CA", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(measuredAt)} UTC. `
+      : "";
   const products = page.results.filter((r) => r.product.images?.length);
   const games = [...page.games].sort(
     (a, b) => Number(b.slug === "pokemon") - Number(a.slug === "pokemon"),
@@ -188,19 +220,44 @@ export function HomeSections({
       </section>
       <MarketplaceStats
         label={c("TROC in numbers", "TROC en chiffres")}
-        scope={c(
-          "Marketplace figures · not yet available",
-          "Les chiffres du marché · bientôt disponibles",
-        )}
-        source={c(
-          "Verified totals are not connected yet. This preview does not represent live marketplace activity.",
-          "Les totaux vérifiés ne sont pas encore reliés. Cet aperçu ne représente pas l’activité réelle du marché.",
-        )}
+        scope={
+          stats?.status !== "available"
+            ? c(
+                "Marketplace figures · currently unavailable",
+                "Les chiffres du marché · indisponibles pour le moment",
+              )
+            : demoStats
+              ? c(
+                  "Demo catalog · sample data",
+                  "Catalogue de démonstration · données fictives",
+                )
+              : c(
+                  "TROC catalog · published products and active listings",
+                  "Catalogue TROC · produits publiés et offres actives",
+                )
+        }
+        source={
+          stats?.status !== "available"
+            ? c(
+                "Totals are currently unavailable. Missing data is not a zero count.",
+                "Les totaux sont indisponibles pour le moment. Une donnée manquante ne signifie pas zéro.",
+              )
+            : measuredLabel +
+              (demoStats
+                ? c(
+                    "Source: complete demo catalog snapshot. These figures do not represent real sellers or transactions.",
+                    "Source : instantané complet du catalogue de démonstration. Ces chiffres ne représentent pas des vendeurs ou transactions réels.",
+                  )
+                : c(
+                    "Source: published catalog and qualifying active Canadian seller listings. Listed quantities can change and are not reserved stock.",
+                    "Source : catalogue publié et offres actives admissibles de vendeurs canadiens. Les quantités affichées peuvent changer et ne sont pas réservées.",
+                  ))
+        }
         unavailableLabel={c("Not available", "Indisponible")}
         items={[
           {
             id: "products",
-            value: null,
+            value: metric("catalogProducts"),
             label: c("Catalog products", "Produits du catalogue"),
             detail: c(
               "Distinct canonical products",
@@ -209,7 +266,7 @@ export function HomeSections({
           },
           {
             id: "listings",
-            value: null,
+            value: metric("activeListings"),
             label: c("Seller listings", "Offres des vendeurs"),
             detail: c(
               "Active offers, across sellers",
@@ -218,8 +275,8 @@ export function HomeSections({
           },
           {
             id: "units",
-            value: null,
-            label: c("Available units", "Exemplaires disponibles"),
+            value: metric("listedUnits"),
+            label: c("Listed units", "Exemplaires en vente"),
             detail: c(
               "Quantities across active listings",
               "Quantités des offres actives",
@@ -227,7 +284,7 @@ export function HomeSections({
           },
           {
             id: "sellers",
-            value: null,
+            value: metric("activeSellers"),
             label: c("Active sellers", "Vendeurs actifs"),
             detail: c(
               "Sellers with available offers",

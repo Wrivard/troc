@@ -34,8 +34,8 @@ try {
         ]);
         await expect(stats).toContainText(
           lang === "fr"
-            ? "ne représente pas l’activité réelle"
-            : "does not represent live marketplace activity",
+            ? "Une donnée manquante ne signifie pas zéro"
+            : "Missing data is not a zero count",
         );
         assert.equal(
           await page
@@ -127,6 +127,66 @@ try {
     });
     await page.close();
   }
+  for (const lang of ["en", "fr"])
+    for (const state of ["demo", "zero", "unavailable"]) {
+      const page = await browser.newPage({
+        viewport: { width: lang === "fr" ? 390 : 1440, height: 900 },
+      });
+      await page.addInitScript((lang) => {
+        globalThis.localStorage.setItem("troc.locale", lang);
+        globalThis.localStorage.setItem("troc.theme", "dark");
+      }, lang);
+      await page.route("**/api/catalog/page?**", async (route) => {
+        const original = await route.fetch();
+        const data = await original.json();
+        data.stats = {
+          status: state === "unavailable" ? "unavailable" : "available",
+          source: state === "demo" ? "demo_snapshot" : "database",
+          scope: state === "demo" ? "demo_catalog" : "non_demo_catalog",
+          measuredAt: "2026-09-22T12:00:00Z",
+          reason: state === "unavailable" ? "capacity_exceeded" : null,
+          catalogProducts: state === "demo" ? 12345 : 0,
+          activeListings: state === "demo" ? 98765 : 0,
+          listedUnits: state === "demo" ? 234567 : 0,
+          activeSellers: state === "demo" ? 24 : 0,
+        };
+        await route.fulfill({ response: original, json: data });
+      });
+      await page.goto(`http://127.0.0.1:4313/?lang=${lang}`);
+      const stats = page.locator(".troc-marketplace-stats");
+      const values =
+        state === "unavailable"
+          ? ["—", "—", "—", "—"]
+          : state === "zero"
+            ? ["0", "0", "0", "0"]
+            : [12345, 98765, 234567, 24].map((n) =>
+                new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA").format(
+                  n,
+                ),
+              );
+      await expect(stats.locator(".troc-metric-value")).toHaveText(values);
+      await expect(stats).toContainText(
+        lang === "fr" ? "Exemplaires en vente" : "Listed units",
+      );
+      if (state === "demo") {
+        await expect(stats).toContainText(
+          lang === "fr" ? "données fictives" : "sample data",
+        );
+        await stats.screenshot({
+          path: `verification/stats-projection-${lang}.png`,
+        });
+      }
+      if (state === "zero")
+        await expect(stats).toContainText(
+          lang === "fr" ? "ne sont pas réservées" : "not reserved stock",
+        );
+      assert.equal(
+        await stats.evaluate((el) => el.scrollWidth > el.clientWidth),
+        false,
+      );
+      console.log({ projectionFixture: true, lang, state, result: "PASS" });
+      await page.close();
+    }
 } finally {
   await browser.close();
 }
