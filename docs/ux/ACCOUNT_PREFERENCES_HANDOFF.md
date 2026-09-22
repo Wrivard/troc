@@ -7,3 +7,7 @@ Author checks: marketplace TypeScript and repository lint PASS; client/SSR build
 Run node tests/account-preferences-preview.mjs after building marketplace to reproduce an isolated ephemeral loopback-only visual fixture. It serves built assets, supplies one synthetic account, returns503 for first preference PATCH and200 thereafter, and returns503 for all other API routes. It never contacts auth/application APIs. Author fixture log: save1 locale=fr theme=light status503; save2 same values status200. UI retained selected values after failure and showed saved confirmation after200. Synthetic email/id only; no credentials, accounts, email or real writes. This harness does not validate authorization or database persistence.
 
 Independent matrix/keyboard/preferences-priority retest requested on stable source; pending. Existing fetch/save/auth/signOut handlers and device preference precedence unchanged. Uses existing DS components/tokens; no new CSS or component family.
+
+## Saved-feedback follow-up
+
+Author reproduced saved confirmation remaining after an unsaved theme change. A granted narrowly scoped shared UI callbacks. Header/local preference callbacks now clear only saved status when the selected value actually changes; other errors, save/auth/fetch handlers and device precedence remain unchanged. Rebuilt client/SSR, types and lint PASS. Synthetic UI retest: save200, choose same Dark value retains confirmation; switch to Light clears it. Independent retest requested on this new candidate, including503 and both control locations.

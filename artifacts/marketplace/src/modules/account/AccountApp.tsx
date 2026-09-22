@@ -23,6 +23,14 @@ export function AccountApp({ path }: { path: string }) {
   const [status, setStatus] = useState<MessageKey | null>(null);
   const [busy, setBusy] = useState(false);
   const [user, setUser] = useState<Account | null>(null);
+  const changeLocale = (next: Account["locale"]) => {
+    setLocale(next);
+    if (status === "saved" && next !== locale) setStatus(null);
+  };
+  const changeTheme = (next: Account["theme"]) => {
+    setTheme(next);
+    if (status === "saved" && next !== theme) setStatus(null);
+  };
   const signup = path === "/sign-up";
   const protectedPage = path === "/account" || path === "/account/settings";
   const known = protectedPage || signup || path === "/sign-in";
@@ -105,8 +113,8 @@ export function AccountApp({ path }: { path: string }) {
       <MarketplaceHeader
         locale={locale}
         theme={theme}
-        onLocale={setLocale}
-        onTheme={setTheme}
+        onLocale={changeLocale}
+        onTheme={changeTheme}
       />
 
       <main id="main-content" className="troc-auth-layout" aria-busy={busy}>
@@ -230,7 +238,7 @@ export function AccountApp({ path }: { path: string }) {
                   </legend>
                   <LocaleSwitcher
                     value={locale}
-                    onValueChange={setLocale}
+                    onValueChange={changeLocale}
                     disabled={busy}
                     groupLabel={
                       locale === "fr" ? "Langue du compte" : "Account language"
@@ -247,7 +255,7 @@ export function AccountApp({ path }: { path: string }) {
                   </legend>
                   <ThemeSwitcher
                     value={theme}
-                    onValueChange={setTheme}
+                    onValueChange={changeTheme}
                     disabled={busy}
                     groupLabel={
                       locale === "fr"
