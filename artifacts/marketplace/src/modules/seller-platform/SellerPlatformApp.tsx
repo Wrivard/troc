@@ -68,12 +68,30 @@ export function SellerPlatformApp({
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
   const money = (v: string) => formatCad(v, locale);
+  function loadFailure(error: unknown) {
+    const code = error instanceof Error ? error.message : "";
+    if (code === "unauthorized")
+      return t(
+        "Sign in to access this workspace.",
+        "Connectez-vous pour accéder à cet espace.",
+      );
+    if (code === "forbidden")
+      return t(
+        "Your account does not have permission to access this workspace.",
+        "Votre compte n’a pas l’autorisation d’accéder à cet espace.",
+      );
+    return t(
+      "This workspace is temporarily unavailable. Please try again.",
+      "Cet espace est temporairement indisponible. Veuillez réessayer.",
+    );
+  }
   function pageControls(
     label: string,
     page: number,
     count: number,
     change: (page: number) => void,
   ) {
+    if (page === 0 && count < 50) return null;
     return (
       <nav aria-label={label}>
         <Button
@@ -125,15 +143,9 @@ export function SellerPlatformApp({
             );
           }
         }
-      } catch {
+      } catch (error) {
         if (!cancelled) setLoadError(true);
-        if (!cancelled)
-          setError(
-            t(
-              "Sign in with an authorized account, or try again later.",
-              "Connectez-vous avec un compte autorisé ou réessayez plus tard.",
-            ),
-          );
+        if (!cancelled) setError(loadFailure(error));
       } finally {
         if (!cancelled) setLoaded(true);
       }
@@ -159,15 +171,9 @@ export function SellerPlatformApp({
           if (view === "team") setTeam(data as Member[]);
           else setDashboard(data as Dashboard);
         }
-      } catch {
+      } catch (error) {
         if (!cancelled) setWorkspaceError(true);
-        if (!cancelled)
-          setError(
-            t(
-              "This seller workspace is unavailable for your role.",
-              "Cet espace vendeur est inaccessible pour votre rôle.",
-            ),
-          );
+        if (!cancelled) setError(loadFailure(error));
       } finally {
         if (!cancelled) setWorkspaceLoaded(true);
       }
@@ -252,9 +258,24 @@ export function SellerPlatformApp({
                 : t("Seller dashboard", "Tableau de bord vendeur")}
         </h1>
         <nav aria-label={t("Seller navigation", "Navigation vendeur")}>
-          <a href="/seller/apply">{t("Application", "Demande")}</a>
-          <a href="/seller/dashboard">{t("Dashboard", "Tableau de bord")}</a>
-          <a href="/seller/team">{t("Team", "Équipe")}</a>
+          <a
+            href="/seller/apply"
+            aria-current={view === "apply" ? "page" : undefined}
+          >
+            {t("Application", "Demande")}
+          </a>
+          <a
+            href="/seller/dashboard"
+            aria-current={view === "dashboard" ? "page" : undefined}
+          >
+            {t("Dashboard", "Tableau de bord")}
+          </a>
+          <a
+            href="/seller/team"
+            aria-current={view === "team" ? "page" : undefined}
+          >
+            {t("Team", "Équipe")}
+          </a>
           <a href="/seller/inventory">{t("Inventory", "Inventaire")}</a>
         </nav>
         {error && <p role="alert">{error}</p>}
@@ -683,17 +704,33 @@ export function SellerPlatformApp({
                   const f = new FormData(e.currentTarget);
                   void save(`/seller/platform/${seller}/team`, {
                     userId: f.get("userId"),
-                    role: f.get("role") || null,
+                    role: f.get("role") === "remove" ? null : f.get("role"),
                   });
                 }}
               >
                 <label>
                   {t("Existing account ID", "Identifiant de compte existant")}
-                  <Input name="userId" required />
+                  <Input
+                    name="userId"
+                    required
+                    aria-describedby="seller-member-id-help"
+                  />
                 </label>
+                <p id="seller-member-id-help">
+                  {t(
+                    "Use the existing member’s TROC account ID, not an email address. Email invitations are not available yet.",
+                    "Utilisez l’identifiant de compte TROC du membre, et non son adresse courriel. Les invitations par courriel ne sont pas encore disponibles.",
+                  )}
+                </p>
                 <label>
                   {t("Role", "Rôle")}
-                  <select name="role">
+                  <select name="role" required defaultValue="">
+                    <option value="" disabled>
+                      {t(
+                        "Choose a role or remove access",
+                        "Choisir un rôle ou retirer l’accès",
+                      )}
+                    </option>
                     {[
                       "owner",
                       "manager",
@@ -705,7 +742,7 @@ export function SellerPlatformApp({
                         {roleLabel(r, fr)}
                       </option>
                     ))}
-                    <option value="">
+                    <option value="remove">
                       {t("Remove access", "Retirer l’accès")}
                     </option>
                   </select>
