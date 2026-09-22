@@ -125,6 +125,9 @@ export function demoCatalog(): CatalogSnapshot {
               : 7000 + n * 100 + day * 50,
         capturedAt: `2026-09-${String(day + 10).padStart(2, "0")}T12:00:00Z`,
         provider: "TROC fictional demo",
+        providerProductId: `fixture:${v.id}`,
+        condition: p.type === "raw_single" ? ("NM" as const) : null,
+        grade: p.type === "graded_card" ? "9" : null,
         sourceCurrency: "CAD",
         sourceMinorUnits:
           p.type === "raw_single"

@@ -1,90 +1,66 @@
 # TROC implementation status
 
-Milestone boundary: **Milestone 2 approved and implemented. Stop before Milestone 3.**
-The user has approved the complete `/style-guide`; prior partial-approval notes are historical.
+Milestones 1 and 2 are approved. **Stop before Milestone 3.** The approved style guide
+is locked. Implementation and activation statuses are distinguished below.
 
 | Milestone | Status | Scope |
 |---|---|---|
-| 0 — Approved style guide | implemented | Preserved source, assets, tokens and component catalog |
-| 1 — Foundation | implemented | Code and local verification; external integration activation blocked below |
-| 2 — Catalog + Public Marketplace | implemented | Local demo and PostgreSQL adapter verified; licensed production activation blocked |
-| 3 — Low-Value Commerce | not started | No cart, Smart Cart, checkout or payments |
-| 4 — Seller Platform | not started | No approval UI, dashboard or inventory workflows |
-| 5 — Collector + Trust | not started | No collections, messaging or review workflows |
-| 6 — Admin + Demo + Leads + Future | not started | No admin UI, production seed/purge or lead forms |
+| 0 — Approved style guide | implemented | Source/tokens/components preserved; visual regression matches |
+| 1 — Foundation | implemented | Code/local regression coverage; hosted activation remains blocked |
+| 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
+| 3 — Low-Value Commerce | deferred | Not started; requires explicit approval |
+| 4 — Seller Platform | deferred | Not started |
+| 5 — Collector + Trust | deferred | Not started |
+| 6 — Admin + Demo + Leads + Future | deferred | Not started |
 
-## Foundation features
-
-| Feature | Status | Evidence / limits |
-|---|---|---|
-| Approved UI reuse | implemented | Direct package imports; original guide exported intact |
-| Domain boundaries | implemented | Auth, users, sellers, providers, shared, demo modules; SQL ownership and later module map documented |
-| PostgreSQL/Supabase architecture | implemented | SQL migrations, checksum/lock runner, Supabase SSR adapter, restricted backend role |
-| Core entity schema | implemented | Identity, sellers, canonical catalog, listings/inventory, price/FX provenance, parent/child orders, audit, demo batches and separate leads |
-| Buyer authentication/account | implemented | Sign-up, PKCE confirmation, sign-in/out, verified protected account and preferences API; activation requires Supabase |
-| Server authorization | implemented | Buyer ownership, seller owner/manager/inventory/fulfillment/customer service, admin, support, catalog moderator |
-| Seller application foundation | implemented | Adult/Canada validation, transactional submission, open-application uniqueness, audit; full application/approval workflow M4 |
-| EN/FR | implemented | Typed paired copy, API error codes, original preference persistence and account defaults |
-| Theme persistence | implemented | Original provider unchanged, account persistence endpoint |
-| Provider interfaces | implemented | CatalogProvider, PricingProvider, PaymentProvider, ShippingProvider, SearchProvider, EmailProvider, StorageProvider, FxProvider |
-| Demo provenance foundation | implemented | Repeatable batch keys, automatic immutable provenance, explicit protected-table boundaries; no purge endpoint |
-| Tests | implemented | Domain, HTTP, PostgreSQL constraints and database privileges; browser regression script |
-| Live Supabase auth/database verification | blocked | No project credentials, runtime role or email-delivery setup supplied |
-| Production catalog license | blocked | No production source approved; only authored fictional fixtures are available |
-
-## Verification
-
-- `pnpm typecheck`: passed across the workspace.
-- `pnpm lint`: passed for foundation and marketplace code/tests.
-- `pnpm test`: 36 passing tests, including executable migrations and restricted-role assertions.
-- Marketplace, approved guide and API production builds: passed.
-- Browser checks: 8 combinations (390/1280 px × EN/FR × dark/light), no overflow or
-  uncaught errors, persistent locale/theme after reload. Standalone/integrated guide
-  overview screenshots are pixel-identical in all 8 combinations.
-- Account/mobile and guide screenshots visually inspected. Browser evidence is in
-  `verification/browser-results.json`; PNGs are local verification artifacts.
-- No remote migration, email delivery or real hosted authentication was claimed tested.
-
-## Remaining activation / later work
-
-1. Provision the intended Supabase project, apply migrations with separate owner
-   credentials, create a runtime LOGIN inheriting `troc_backend`, and configure
-   confirmation email/PKCE redirects. Run hosted sign-up, refresh and sign-out smoke tests.
-2. Configure a same-origin deployment/reverse proxy and a shared rate limiter before
-   running multiple API instances. GitHub is configured for Vercel; no live Vercel URL has been supplied or verified.
-3. Licensed production provider adapters, seller approval/Founding Seller allocation,
-   complete commerce ledgers/rules, demo purge, and other product screens remain in
-   their assigned later milestones. Schema support does not imply workflow completion.
-4. The existing API build dependency reports a pre-existing esbuild-plugin-pino peer
-   version warning; its production build passes. No design source was changed for it.
-
-No real catalog, scraping, real payments, KYC, shipping integration or third-party public API was added.
-See `docs/FOUNDATION_SETUP.md` for reproducible commands and configuration requirements.
-
-## Milestone 2 features
+## Foundation
 
 | Feature | Status | Evidence / limits |
 |---|---|---|
-| Canonical catalog/import | implemented | Migration 0003; provider mappings, license gates, bounded batches, idempotency, row failures and audit; only fictional adapter enabled |
-| Search | implemented | PostgreSQL trigram search, canonical deduplication, keyset pagination, same-offer filters and integer-cent aggregates |
-| Public routes | implemented | Home, search, game, set, product and seller store; approved components, EN/FR and theme preferences |
-| Product offers/prices | implemented | Exact language/variant, lowest/median/reference, seller minimums, price history and FX provenance; best 50 offers and 90 history samples |
-| SEO | implemented | Server-rendered HTML, canonical/hreflang, paged sitemap index; demo/search pages noindex |
-| Vercel configuration | implemented | Single project, bundled SSR renderer, API rewrites, explicit review-only demo mode |
-| Production catalog/pricing/images | blocked | Requires explicit data-source and image licensing approval and provider credentials |
-| Hosted deployment verification | blocked | User will connect GitHub to Vercel; actual deployment URL not yet available |
+| Approved design system and themes | implemented | Direct package imports; eight pixel-identical guide comparisons |
+| Domain boundaries and provider interfaces | implemented | Auth/users/sellers/catalog/pricing/search/storage/demo; Catalog, Pricing, Payment, Shipping, Search, Email, Storage, Fx interfaces |
+| PostgreSQL/Supabase architecture | implemented | Reproducible SQL migrations, checksum/lock runner, restricted backend role |
+| Core relational schema | implemented | Canonical catalog, listings, parent/child orders, integer CAD cents, UTC timestamps, audit and demo provenance |
+| Buyer authentication and preferences | implemented | Supabase PKCE adapter, verified server identity, account preference endpoints |
+| Authorization | implemented | Buyer ownership; seller owner/member roles; admin/support/catalog moderator; negative regression tests |
+| EN/FR and theme persistence | implemented | Paired messages, existing preference provider, account persistence API |
+| Demo versus leads | implemented | Tagged fictional fixtures and immutable provenance; real leads separate and protected |
+| Hosted account/database verification | blocked | Connected Supabase has no TROC schema; credentials/runtime role/email redirects not activated |
 
-Milestone 2 validation: 48 public-route browser checks (six routes × two viewport
-widths × two languages × two themes), interactive filters and variant navigation,
-plus bilingual SSR metadata/status/indexing checks. Original guide comparison remains
-pixel-identical in all eight combinations. Evidence: verification/marketplace-browser-results.json
-and verification/ssr-results.json. Client and SSR marketplace builds and API build pass.
+## Catalog and public marketplace
 
-Intentional limits: purchasing, saved searches, wishlist matching, follows and reviews
-remain unavailable until their assigned milestones. No fake reviews or real artworks
-were generated. Store deals currently filter the displayed result page; catalog metadata
-selectors are bounded (50 games, 100 sets, 24 sellers). Large-catalog selector search and
-further offer pagination remain TODOs. Vite reports a 639 kB main client chunk; splitting
-the price-chart dependencies is a performance follow-up, not a failed build.
+| Feature | Status | Evidence / limits |
+|---|---|---|
+| Catalog hierarchy and provider mapping | implemented | Game → Set → Product → Printing → Variant → Listing; TROC-owned UUIDs |
+| Import adapter and logs | implemented | Approval gates, mappings, aliases, image provenance, bounded batches, row failures, idempotent reruns |
+| Provider-wide completeness/jobs | partial | Run counts available; expected-total reconciliation/resumption awaits provider contract |
+| Search | implemented | Canonical deduplication, filters on matching offers, keyset pagination, trigram/alias search |
+| Public routes | implemented | /, /search, /games/[slug], /sets/[slug], /product/[slug], /store/[slug] |
+| Offers and references | implemented | Pageable/sortable exact variants, seller minimum context, condition/grade-specific history, FX metadata, safe integer conversion |
+| Graded/photo display | partial | Item company/certificate and configured storage URLs supported; bucket inactive; separate price-provider grading-company dimension pending |
+| SEO and SSR | implemented | Metadata/hreflang, sitemap index, demo noindex, root route precedes filesystem |
+| Store Deals | implemented | Server-side under-$1 filtering |
+| Follows/reviews/activity/collector actions | deferred | Honest empty/unavailable states; assigned to later milestones |
+| Licensed production catalog/prices/art | blocked | No source approved; no scraping or production ingestion |
+| Vercel deployment | implemented | Frozen-install repair c9c7d18 confirmed Ready before audit; see deployment/audit docs |
+| Supabase platform helper permissions | implemented | Migration 0004; anon/authenticated EXECUTE revoked; advisor clear |
+| Sentry issues | blocked | Connected organization has no projects; does not block local completion |
 
-See docs/CATALOG_SETUP.md for import operation and recovery limits.
+## Verification and remaining work
+
+Use pinned **pnpm 10.34.5** (`corepack pnpm` if global pnpm differs). Both frozen install
+modes were tested from separate clean dependency states. Typecheck, lint, domain/SQL
+tests, full workspace production build and Vercel build are required before each push.
+Browser evidence covers 96 public route/viewport/locale/theme combinations plus
+keyboard/loading/error interactions and the original eight style-guide comparisons.
+
+See docs/DEPLOYMENT_REPAIR.md, docs/MILESTONE_2_AUDIT.md, docs/CATALOG_SETUP.md and
+docs/VERCEL.md for evidence, activation steps and precise limitations. Remaining
+performance work includes chart chunk splitting and deep-offer keyset pagination;
+selector lists are bounded. No real payments, KYC, shipping integration, Smart Cart,
+checkout, seller dashboard or third-party public API was added.
+
+Final audit verification: both clean frozen installs, typecheck, lint, **46 tests**,
+full workspace production build, Vercel build, bundled serverless and bilingual SSR
+smoke checks all pass. **96 browser cases**, zero detected axe A/AA violations or
+uncaught page errors, plus eight pixel-identical guide comparisons.

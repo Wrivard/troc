@@ -2,6 +2,8 @@ import type { PublicPage } from "@workspace/catalog";
 import { filtersFrom } from "./search";
 import { catalogRepository, type CatalogRepository } from "./repository";
 import { DomainError } from "../shared/domain";
+import { resolveListingPhotos } from "../storage/listing-photos";
+import type { OfferSort } from "@workspace/catalog";
 export async function publicPage(
   path: string,
   params: URLSearchParams,
@@ -27,6 +29,21 @@ export async function publicPage(
   if (kind === "game") f.game = slug;
   if (kind === "set") f.set = slug;
   if (kind === "store") f.seller = slug;
+  const offerPage = Number(params.get("offerPage") || 1);
+  const offerLimit = Number(params.get("offerLimit") || 20);
+  const offerSort = params.get("offerSort") || "price_asc";
+  const selectedGrade = params.get("grade") || null;
+  if (
+    !Number.isInteger(offerPage) ||
+    offerPage < 1 ||
+    offerPage > 10000 ||
+    !Number.isInteger(offerLimit) ||
+    offerLimit < 1 ||
+    offerLimit > 50 ||
+    !["price_asc", "price_desc", "quantity"].includes(offerSort) ||
+    (selectedGrade !== null && !/^[a-zA-Z0-9 .+-]{1,30}$/.test(selectedGrade))
+  )
+    throw new DomainError("invalid_search");
   const meta = await repo.metadata(f);
   const page: PublicPage = {
     kind,
@@ -39,6 +56,11 @@ export async function publicPage(
     nextCursor: null,
     offers: [],
     prices: [],
+    offerPage,
+    offerLimit,
+    offerSort: offerSort as OfferSort,
+    nextOfferPage: null,
+    selectedGrade,
   };
   if (
     (kind === "game" && !meta.games.some((g) => g.slug === slug)) ||
@@ -52,22 +74,43 @@ export async function publicPage(
     const selected = params.get("variantId") || product.variants[0]?.id;
     if (!product.variants.some((v) => v.id === selected))
       throw new DomainError("invalid_variant");
-    const detail = await repo.detail(product, selected);
+    const detail = await repo.detail(product, selected, {
+      filters: f,
+      page: offerPage,
+      limit: offerLimit,
+      sort: offerSort as OfferSort,
+      grade: selectedGrade,
+    });
     page.product = product;
     page.selectedVariantId = selected;
-    page.offers = detail.offers;
+    page.offers = await Promise.all(
+      detail.offers.map(async (offer) => ({
+        ...offer,
+        photoUrls: await resolveListingPhotos(offer.photos),
+      })),
+    );
     page.prices = detail.prices;
     page.results = [detail.summary];
     page.sellers = detail.sellers;
+    page.nextOfferPage = detail.nextOfferPage;
   } else {
     const result = await repo.search(f);
     page.results = result.items;
     page.nextCursor = result.nextCursor;
   }
   if (kind === "store") page.seller = meta.sellers.find((s) => s.slug === slug);
+  const actualMeta = await repo.metadata(
+    f,
+    page.results.map((result) => result.product),
+  );
+  page.games = actualMeta.games;
+  page.sets = actualMeta.sets;
   page.demo =
     page.demo ||
-    page.results.some((r) => r.product.demo) ||
+    page.results.some((r) => r.product.demo || r.demo) ||
+    page.offers.some((offer) => offer.demo) ||
+    page.prices.some((price) => price.demo) ||
+    page.sellers.some((seller) => seller.demo) ||
     page.seller?.demo === true;
   return page;
 }

@@ -59,10 +59,17 @@ export interface Offer {
   cents: number;
   quantity: number;
   grade: string | null;
+  gradingCompany?: string | null;
+  certificateNumber?: string | null;
   photos: string[];
+  photoUrls?: string[];
   demo: boolean;
 }
+export type OfferSort = "price_asc" | "price_desc" | "quantity";
 export interface PricePoint {
+  condition?: Condition | null;
+  grade?: string | null;
+  providerProductId?: string;
   variantId: string;
   cents: number;
   capturedAt: string;
@@ -100,6 +107,8 @@ export interface SearchFilters {
   limit: number;
 }
 export interface ProductResult {
+  /** True when an offer, seller or reference contributing to this result is demo data. */
+  demo?: boolean;
   product: Product;
   lowestCents: number | null;
   medianCents: number | null;
@@ -118,6 +127,11 @@ export interface PublicPage {
   sellers: Seller[];
   results: ProductResult[];
   nextCursor: string | null;
+  offerPage: number;
+  offerLimit: number;
+  offerSort: OfferSort;
+  nextOfferPage: number | null;
+  selectedGrade?: string | null;
   product?: Product;
   offers: Offer[];
   prices: PricePoint[];

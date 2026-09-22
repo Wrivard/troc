@@ -13,7 +13,9 @@ Supabase. Never use migration-owner credentials as the runtime database connecti
 Vercel runs the existing Express app through `api/index.js`. Database provisioning
 is a separate operator step; builds never run migrations or seed a production database.
 
-This configuration has not yet been deployed to or verified on a live Vercel URL.
+Deployment repair c9c7d18 was confirmed Ready on the existing project before the
+Milestone 2 audit. Product SSR was verified with authenticated Vercel CLI access.
+Deployment Protection remains enabled; visitors may be redirected to Vercel sign-in.
 
 Public marketplace routes render on the server through the same Express entry. The
 build includes both client assets and the standalone SSR renderer. The committed

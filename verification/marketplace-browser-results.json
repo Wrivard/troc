@@ -4,55 +4,527 @@
     "locale": "en",
     "theme": "dark",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 390,
     "locale": "en",
     "theme": "light",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 390,
     "locale": "fr",
     "theme": "dark",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 390,
     "locale": "fr",
     "theme": "light",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "locale": "fr",
+    "theme": "dark",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "locale": "fr",
+    "theme": "light",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 1280,
     "locale": "en",
     "theme": "dark",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 1280,
     "locale": "en",
     "theme": "light",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 1280,
     "locale": "fr",
     "theme": "dark",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   },
   {
     "width": 1280,
     "locale": "fr",
     "theme": "light",
     "routes": 6,
-    "errors": []
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "locale": "en",
+    "theme": "dark",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "locale": "en",
+    "theme": "light",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "locale": "fr",
+    "theme": "dark",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "locale": "fr",
+    "theme": "light",
+    "routes": 6,
+    "errors": [],
+    "accessibility": [
+      {
+        "route": "/",
+        "violations": []
+      },
+      {
+        "route": "/search?game=pokemon&max=99",
+        "violations": []
+      },
+      {
+        "route": "/games/pokemon",
+        "violations": []
+      },
+      {
+        "route": "/sets/pokemon-demo-set",
+        "violations": []
+      },
+      {
+        "route": "/product/pokemon-northern-spark",
+        "violations": []
+      },
+      {
+        "route": "/store/cartes-du-nord",
+        "violations": []
+      }
+    ]
   }
 ]

@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { chromium, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -7,7 +8,7 @@ const directory = new URL("../verification/", import.meta.url);
 await mkdir(directory, { recursive: true });
 const results = [];
 try {
-  for (const width of [390, 1280])
+  for (const width of [390, 768, 1280, 1920])
     for (const locale of ["en", "fr"])
       for (const theme of ["dark", "light"]) {
         const context = await browser.newContext({
@@ -17,6 +18,7 @@ try {
         });
         const page = await context.newPage();
         const errors = [];
+        const accessibility = [];
         page.on("pageerror", (e) => errors.push(e.message));
         const routes = [
           "/",
@@ -43,6 +45,21 @@ try {
             `Overflow: ${route} ${width}/${locale}/${theme}`,
           );
           assert.ok(await page.locator("h1").textContent());
+          assert.equal(await page.locator("h1").count(), 1);
+          const scan = await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+            .analyze();
+          accessibility.push({
+            route,
+            violations: scan.violations.map((v) => ({
+              id: v.id,
+              impact: v.impact,
+              nodes: v.nodes.map((n) => ({
+                target: n.target,
+                summary: n.failureSummary,
+              })),
+            })),
+          });
           if (route === "/" || route.startsWith("/product/"))
             await page.screenshot({
               path: fileURLToPath(
@@ -54,7 +71,15 @@ try {
               fullPage: true,
             });
         }
-        results.push({ width, locale, theme, routes: routes.length, errors });
+        results.push({
+          width,
+          locale,
+          theme,
+          routes: routes.length,
+          errors,
+          accessibility,
+        });
+        console.log(`Audited ${width}/${locale}/${theme}`);
         assert.deepEqual(errors, []);
         await context.close();
       }
@@ -94,8 +119,14 @@ try {
     new URL("marketplace-browser-results.json", directory),
     JSON.stringify(results, null, 2),
   );
+  assert.ok(
+    results.every((r) =>
+      r.accessibility.every((a) => a.violations.length === 0),
+    ),
+    "Accessibility violations: see verification/marketplace-browser-results.json",
+  );
   console.log(
-    "Passed 48 public-route locale/theme/viewport checks, filters, exact-variant navigation, disabled purchasing and locale persistence.",
+    "Passed 96 public-route locale/theme/viewport checks, filters, exact-variant navigation, disabled purchasing and locale persistence.",
   );
 } finally {
   await browser.close();

@@ -246,19 +246,13 @@ async function importRecord(
       [product, alias],
     );
   if (r.image) {
-    let source = (
+    const source = (
       await db.query(
         "SELECT id FROM troc.asset_sources WHERE provider=$1 AND license=$2 AND approved_at IS NOT NULL LIMIT 1",
         [provider, r.image.license],
       )
     ).rows[0]?.id;
-    if (!source)
-      source = (
-        await db.query(
-          "INSERT INTO troc.asset_sources(provider,license,approved_at) VALUES($1,$2,now()) RETURNING id",
-          [provider, r.image.license],
-        )
-      ).rows[0].id;
+    if (!source) throw new DomainError("image_license_unapproved");
     await db.query(
       "INSERT INTO troc.asset_provenance(source_id,variant_id,source_url) VALUES($1,$2,$3) ON CONFLICT DO NOTHING",
       [source, variant, r.image.url],

@@ -9,15 +9,36 @@ import type {
   Seller,
   Offer,
   PricePoint,
+  OfferSort,
 } from "@workspace/catalog";
 import { demoCatalog } from "./demo";
-import { searchSnapshot, summarize } from "./search";
+import { searchSnapshot, summarize, filtersFrom } from "./search";
 import { DomainError } from "../shared/domain";
 import type { CatalogSqlClient } from "./importer";
+export type DetailOptions = {
+  filters: SearchFilters;
+  page: number;
+  limit: number;
+  sort: OfferSort;
+  grade: string | null;
+};
+const defaultDetail = (): DetailOptions => ({
+  filters: filtersFrom(new URLSearchParams()),
+  page: 1,
+  limit: 20,
+  sort: "price_asc",
+  grade: null,
+});
+function referenceCondition(product: Product, options: DetailOptions) {
+  return product.type === "raw_single"
+    ? options.filters.condition || "NM"
+    : null;
+}
 export interface CatalogRepository {
   readonly demo: boolean;
   metadata(
     filters: SearchFilters,
+    products?: Product[],
   ): Promise<Pick<CatalogSnapshot, "games" | "sets" | "sellers">>;
   search(
     filters: SearchFilters,
@@ -26,11 +47,13 @@ export interface CatalogRepository {
   detail(
     product: Product,
     variantId: string,
+    options?: DetailOptions,
   ): Promise<{
     offers: Offer[];
     prices: PricePoint[];
     sellers: Seller[];
     summary: ProductResult;
+    nextOfferPage: number | null;
   }>;
   sitemap(cursor: string): Promise<{ path: string; cursor: string }[]>;
   sitemapCursors(): Promise<string[]>;
@@ -51,16 +74,47 @@ export class DemoCatalogRepository implements CatalogRepository {
   async product(slug: string) {
     return this.data.products.find((p) => p.slug === slug) ?? null;
   }
-  async detail(product: Product, variantId: string) {
+  async detail(product: Product, variantId: string, options = defaultDetail()) {
+    const f = options.filters;
     const offers = this.data.offers
-      .filter((o) => o.variantId === variantId && o.quantity > 0)
-      .sort((a, b) => a.cents - b.cents || a.id.localeCompare(b.id));
-    const prices = this.data.prices.filter((p) => p.variantId === variantId);
+      .filter(
+        (o) =>
+          o.variantId === variantId &&
+          o.quantity > 0 &&
+          (!f.condition || o.condition === f.condition) &&
+          (!f.seller ||
+            this.data.sellers.some(
+              (s) => s.id === o.sellerId && s.slug === f.seller,
+            )) &&
+          (f.min === null || o.cents >= f.min) &&
+          (f.max === null || o.cents <= f.max) &&
+          (!options.grade || o.grade === options.grade),
+      )
+      .sort(
+        (a, b) =>
+          (options.sort === "quantity"
+            ? b.quantity - a.quantity
+            : options.sort === "price_desc"
+              ? b.cents - a.cents
+              : a.cents - b.cents) || a.id.localeCompare(b.id),
+      );
+    const prices = this.data.prices.filter(
+      (p) =>
+        p.variantId === variantId &&
+        p.condition === referenceCondition(product, options) &&
+        p.grade === (product.type === "graded_card" ? options.grade : null) &&
+        (product.type !== "graded_card" || options.grade !== null),
+    );
+    const offset = (options.page - 1) * options.limit;
     return {
-      offers,
+      offers: offers.slice(offset, offset + options.limit),
       prices,
       sellers: this.data.sellers,
       summary: summarize(product, offers, prices),
+      nextOfferPage:
+        offset + options.limit < offers.length && options.page < 10000
+          ? options.page + 1
+          : null,
     };
   }
   async sitemap(cursor: string) {
@@ -84,14 +138,23 @@ const sellerSql = `SELECT s.id,s.slug,s.display_name AS name,COALESCE(p.city,'')
  COALESCE(st.minimum_order_cents,0) AS "minimumCents",COALESCE(st.handling_days,2) AS "handlingDays",(s.demo_batch_id IS NOT NULL) AS demo,
  p.logo_url AS "logoUrl",p.banner_url AS "bannerUrl",EXISTS(SELECT 1 FROM troc.seller_badge_assignments b WHERE b.seller_id=s.id AND b.badge_id='verified_hobby_shop') AS "verifiedShop"
  FROM troc.seller_accounts s LEFT JOIN troc.seller_public_profiles p ON p.seller_id=s.id LEFT JOIN troc.seller_settings st ON st.seller_id=s.id WHERE s.status='active' AND s.country='CA'`;
-const offerSql = `SELECT l.id,l.variant_id AS "variantId",l.seller_id AS "sellerId",l.condition,l.unit_price_cents AS cents,l.quantity,l.grade,
+const offerSql = `SELECT l.id,l.variant_id AS "variantId",l.seller_id AS "sellerId",l.condition,l.unit_price_cents AS cents,l.quantity,l.grade,l.grading_company_id AS "gradingCompany",l.certificate_number AS "certificateNumber",
  COALESCE((SELECT jsonb_agg(ph.storage_key ORDER BY ph.position) FROM troc.listing_photos ph WHERE ph.listing_id=l.id),'[]') AS photos,(l.demo_batch_id IS NOT NULL) AS demo
  FROM troc.listings l JOIN troc.seller_accounts s ON s.id=l.seller_id WHERE l.status='active' AND l.quantity>0 AND s.status='active' AND s.country='CA'`;
-const priceSql = `SELECT r.variant_id AS "variantId",r.converted_cad_cents::integer AS cents,r.captured_at::text AS "capturedAt",r.provider,r.source_currency AS "sourceCurrency",r.source_price_minor_units::integer AS "sourceMinorUnits",f.rate::text AS "fxRate",f.rate_date::text AS "fxDate",r.provider_updated_at::text AS "providerUpdatedAt",(r.demo_batch_id IS NOT NULL) AS demo FROM troc.reference_prices r JOIN troc.fx_rates f ON f.id=r.fx_rate_id`;
+const priceSql = `SELECT r.variant_id AS "variantId",r.condition,r.grade,r.provider_product_id AS "providerProductId",r.converted_cad_cents::text AS cents,r.captured_at::text AS "capturedAt",r.provider,r.source_currency AS "sourceCurrency",r.source_price_minor_units::text AS "sourceMinorUnits",f.rate::text AS "fxRate",f.rate_date::text AS "fxDate",r.provider_updated_at::text AS "providerUpdatedAt",(r.demo_batch_id IS NOT NULL) AS demo FROM troc.reference_prices r JOIN troc.fx_rates f ON f.id=r.fx_rate_id`;
+type StoredPricePoint = Omit<PricePoint, "cents" | "sourceMinorUnits"> & {
+  cents: string;
+  sourceMinorUnits: string;
+};
+function safeInteger(value: string): number {
+  if (!/^\d+$/.test(value) || BigInt(value) > BigInt(Number.MAX_SAFE_INTEGER))
+    throw new DomainError("invalid_money", 503);
+  return Number(value);
+}
 export class PostgresCatalogRepository implements CatalogRepository {
   constructor(private readonly db: CatalogSqlClient = pool) {}
   readonly demo = false;
-  async metadata(f: SearchFilters) {
+  async metadata(f: SearchFilters, products: Product[] = []) {
     const [games, sets, sellers] = await Promise.all([
       this.db.query<Game>(
         `SELECT id,slug,jsonb_build_object('en',name_en,'fr',name_fr) AS name FROM troc.games ORDER BY slug LIMIT 50`,
@@ -105,7 +168,32 @@ export class PostgresCatalogRepository implements CatalogRepository {
         [f.seller],
       ),
     ]);
-    return { games: games.rows, sets: sets.rows, sellers: sellers.rows };
+    // Selector limits must never hide the actual context of returned products.
+    const missingGameIds = [...new Set(products.map((p) => p.gameId))].filter(
+      (id) => !games.rows.some((g) => g.id === id),
+    );
+    const missingSetIds = [...new Set(products.map((p) => p.setId))].filter(
+      (id) => !sets.rows.some((s) => s.id === id),
+    );
+    const [actualGames, actualSets] = await Promise.all([
+      missingGameIds.length
+        ? this.db.query<Game>(
+            "SELECT id,slug,jsonb_build_object('en',name_en,'fr',name_fr) AS name FROM troc.games WHERE id=ANY($1::uuid[])",
+            [missingGameIds],
+          )
+        : { rows: [] },
+      missingSetIds.length
+        ? this.db.query<SetRelease>(
+            `SELECT id,game_id AS "gameId",slug,jsonb_build_object('en',name_en,'fr',name_fr) AS name,released_on::text AS "releasedOn" FROM troc.set_releases WHERE id=ANY($1::uuid[])`,
+            [missingSetIds],
+          )
+        : { rows: [] },
+    ]);
+    return {
+      games: [...games.rows, ...actualGames.rows],
+      sets: [...sets.rows, ...actualSets.rows],
+      sellers: sellers.rows,
+    };
   }
   async product(slug: string) {
     return (
@@ -161,7 +249,8 @@ export class PostgresCatalogRepository implements CatalogRepository {
       document: Product;
       lowest: number | null;
       median: number | null;
-      reference: number | null;
+      reference: string | null;
+      demo: boolean;
       quantity: number;
       sellers: number;
       sort_value: string | number;
@@ -169,10 +258,11 @@ export class PostgresCatalogRepository implements CatalogRepository {
       `WITH matched AS (
       SELECT p.id,p.name_en,s.released_on,d.document,
       a.lowest,a.median,a.quantity,a.sellers,
-      (SELECT r.converted_cad_cents::integer FROM troc.reference_prices r JOIN troc.variants rv ON rv.id=r.variant_id JOIN troc.printings rp ON rp.id=rv.printing_id WHERE rp.product_id=p.id AND ($5='' OR rp.language=$5) AND ($6='' OR rv.variant_key=$6) ORDER BY r.captured_at DESC,r.id LIMIT 1) AS reference
+      (COALESCE(a.demo,false) OR EXISTS(SELECT 1 FROM troc.reference_prices dr JOIN troc.variants dv ON dv.id=dr.variant_id JOIN troc.printings dp ON dp.id=dv.printing_id WHERE dp.product_id=p.id AND dr.demo_batch_id IS NOT NULL AND ($5='' OR dp.language=$5) AND ($6='' OR dv.variant_key=$6))) AS demo,
+      (SELECT r.converted_cad_cents::text FROM troc.reference_prices r JOIN troc.variants rv ON rv.id=r.variant_id JOIN troc.printings rp ON rp.id=rv.printing_id WHERE rp.product_id=p.id AND ($5='' OR rp.language=$5) AND ($6='' OR rv.variant_key=$6) AND ($7='' OR rp.rarity=$7) AND r.condition IS NOT DISTINCT FROM CASE WHEN p.product_type='raw_single' THEN COALESCE(NULLIF($8,''),'NM') ELSE NULL END AND r.grade IS NULL AND p.product_type<>'graded_card' ORDER BY r.captured_at DESC,r.id LIMIT 1) AS reference
       FROM troc.catalog_products p JOIN troc.catalog_documents d ON d.product_id=p.id JOIN troc.games g ON g.id=p.game_id JOIN troc.set_releases s ON s.id=p.set_id
       CROSS JOIN LATERAL (
-        SELECT min(l.unit_price_cents) AS lowest,round(percentile_cont(0.5) WITHIN GROUP(ORDER BY l.unit_price_cents))::integer AS median,COALESCE(sum(l.quantity),0)::integer AS quantity,count(DISTINCT l.seller_id)::integer AS sellers
+        SELECT min(l.unit_price_cents) AS lowest,round(percentile_cont(0.5) WITHIN GROUP(ORDER BY l.unit_price_cents))::integer AS median,COALESCE(sum(l.quantity),0)::integer AS quantity,count(DISTINCT l.seller_id)::integer AS sellers,bool_or(l.demo_batch_id IS NOT NULL OR sa.demo_batch_id IS NOT NULL) AS demo
         FROM troc.listings l JOIN troc.variants v ON v.id=l.variant_id JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.seller_accounts sa ON sa.id=l.seller_id
         WHERE pr.product_id=p.id AND l.status='active' AND l.quantity>0 AND sa.status='active' AND sa.country='CA'
         AND ($5='' OR pr.language=$5) AND ($6='' OR v.variant_key=$6) AND ($7='' OR pr.rarity=$7) AND ($8='' OR l.condition=$8) AND ($9='' OR sa.slug=$9)
@@ -193,7 +283,8 @@ export class PostgresCatalogRepository implements CatalogRepository {
         product: r.document,
         lowestCents: r.lowest,
         medianCents: r.median,
-        referenceCents: r.reference,
+        referenceCents: r.reference === null ? null : safeInteger(r.reference),
+        demo: r.demo,
         quantity: r.quantity,
         sellerCount: r.sellers,
       })),
@@ -208,43 +299,81 @@ export class PostgresCatalogRepository implements CatalogRepository {
           : null,
     };
   }
-  async detail(product: Product, variantId: string) {
+  async detail(product: Product, variantId: string, options = defaultDetail()) {
+    const f = options.filters;
+    const match =
+      "l.variant_id=$1 AND ($2='' OR l.condition=$2) AND ($3='' OR s.slug=$3) AND ($4::integer IS NULL OR l.unit_price_cents>=$4) AND ($5::integer IS NULL OR l.unit_price_cents<=$5) AND ($6::text IS NULL OR l.grade=$6)";
+    const values = [
+      variantId,
+      f.condition,
+      f.seller,
+      f.min,
+      f.max,
+      options.grade,
+    ];
+    const order =
+      options.sort === "quantity"
+        ? "l.quantity DESC"
+        : options.sort === "price_desc"
+          ? "l.unit_price_cents DESC"
+          : "l.unit_price_cents ASC";
     const [offers, prices, aggregate] = await Promise.all([
       this.db.query<Offer>(
-        `${offerSql} AND l.variant_id=$1 ORDER BY l.unit_price_cents,l.id LIMIT 50`,
-        [variantId],
+        `${offerSql} AND ${match} ORDER BY ${order},l.id LIMIT $7 OFFSET $8`,
+        [...values, options.limit + 1, (options.page - 1) * options.limit],
       ),
-      this.db.query<PricePoint>(
-        `${priceSql} WHERE r.variant_id=$1 ORDER BY r.captured_at DESC,r.id LIMIT 90`,
-        [variantId],
+      this.db.query<StoredPricePoint>(
+        `WITH selected_series AS (SELECT provider,provider_product_id,source_currency FROM troc.reference_prices WHERE variant_id=$1 AND condition IS NOT DISTINCT FROM $2::text AND grade IS NOT DISTINCT FROM $3::text AND $4::boolean ORDER BY captured_at DESC,id LIMIT 1)
+        ${priceSql} JOIN selected_series series ON series.provider=r.provider AND series.provider_product_id=r.provider_product_id AND series.source_currency=r.source_currency
+        WHERE r.variant_id=$1 AND r.condition IS NOT DISTINCT FROM $2::text AND r.grade IS NOT DISTINCT FROM $3::text ORDER BY r.captured_at DESC,r.id LIMIT 90`,
+        [
+          variantId,
+          referenceCondition(product, options),
+          product.type === "graded_card" ? options.grade : null,
+          product.type !== "graded_card" || options.grade !== null,
+        ],
       ),
       this.db.query<{
         lowest: number | null;
         median: number | null;
         quantity: number | null;
         sellers: number;
+        demo: boolean;
       }>(
-        `SELECT min(l.unit_price_cents) AS lowest,round(percentile_cont(0.5) WITHIN GROUP(ORDER BY l.unit_price_cents))::integer AS median,sum(l.quantity)::integer AS quantity,count(DISTINCT l.seller_id)::integer AS sellers FROM troc.listings l JOIN troc.seller_accounts s ON s.id=l.seller_id WHERE l.variant_id=$1 AND l.status='active' AND l.quantity>0 AND s.status='active' AND s.country='CA'`,
-        [variantId],
+        `SELECT min(l.unit_price_cents) AS lowest,round(percentile_cont(0.5) WITHIN GROUP(ORDER BY l.unit_price_cents))::integer AS median,sum(l.quantity)::integer AS quantity,count(DISTINCT l.seller_id)::integer AS sellers,bool_or(l.demo_batch_id IS NOT NULL OR s.demo_batch_id IS NOT NULL) AS demo FROM troc.listings l JOIN troc.seller_accounts s ON s.id=l.seller_id WHERE ${match} AND l.status='active' AND l.quantity>0 AND s.status='active' AND s.country='CA'`,
+        values,
       ),
     ]);
-    const sellers = offers.rows.length
+    const visibleOffers = offers.rows.slice(0, options.limit);
+    const sellers = visibleOffers.length
       ? (
           await this.db.query<Seller>(`${sellerSql} AND s.id=ANY($1::uuid[])`, [
-            [...new Set(offers.rows.map((o) => o.sellerId))],
+            [...new Set(visibleOffers.map((o) => o.sellerId))],
           ])
         ).rows
       : [];
     const a = aggregate.rows[0];
+    const pricePoints = prices.rows
+      .reverse()
+      .map((price) => ({
+        ...price,
+        cents: safeInteger(price.cents),
+        sourceMinorUnits: safeInteger(price.sourceMinorUnits),
+      }));
     return {
-      offers: offers.rows,
-      prices: prices.rows.reverse(),
+      offers: visibleOffers,
+      prices: pricePoints,
       sellers,
+      nextOfferPage:
+        offers.rows.length > options.limit && options.page < 10000
+          ? options.page + 1
+          : null,
       summary: {
         product,
         lowestCents: a.lowest,
         medianCents: a.median,
-        referenceCents: prices.rows.at(-1)?.cents ?? null,
+        referenceCents: pricePoints.at(-1)?.cents ?? null,
+        demo: a.demo || pricePoints.some((price) => price.demo),
         quantity: a.quantity ?? 0,
         sellerCount: a.sellers ?? 0,
       },

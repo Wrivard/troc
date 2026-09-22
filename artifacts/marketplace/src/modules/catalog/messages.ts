@@ -1,4 +1,16 @@
 export const catalogMessages = {
+  offerSort: ["Sort offers", "Trier les offres"],
+  priceAscending: ["Lowest price", "Prix croissant"],
+  priceDescending: ["Highest price", "Prix décroissant"],
+  quantityDescending: ["Most available", "Quantité décroissante"],
+  previousOffers: ["Previous offers", "Offres précédentes"],
+  nextOffers: ["More offers", "Autres offres"],
+  certificate: ["Certificate", "Certificat"],
+  referenceBasis: ["Reference basis", "Base du prix de référence"],
+  chooseGrade: [
+    "Choose a grade to compare reference prices.",
+    "Choisissez une note pour comparer les prix de référence.",
+  ],
   shop: ["Shop", "Magasiner"],
   sell: ["Sell · soon", "Vendre · bientôt"],
   collect: ["Collect · soon", "Collectionner · bientôt"],

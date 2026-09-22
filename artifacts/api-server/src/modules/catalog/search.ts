@@ -94,6 +94,8 @@ export function summarize(
   )[0];
   return {
     product,
+    demo:
+      offers.some((offer) => offer.demo) || prices.some((price) => price.demo),
     lowestCents: cents[0] ?? null,
     medianCents: median,
     referenceCents: reference?.cents ?? null,
@@ -161,8 +163,13 @@ export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
       summarize(
         { ...p, variants },
         offers,
-        data.prices.filter((price) =>
-          variants.some((v) => v.id === price.variantId),
+        data.prices.filter(
+          (price) =>
+            variants.some((v) => v.id === price.variantId) &&
+            p.type !== "graded_card" &&
+            (price.condition ?? null) ===
+              (p.type === "raw_single" ? f.condition || "NM" : null) &&
+            (price.grade ?? null) === null,
         ),
       ),
     ];

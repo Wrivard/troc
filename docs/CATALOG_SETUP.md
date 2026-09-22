@@ -46,3 +46,10 @@ The internal page-data route supports the first-party frontend; it is not the fu
 third-party public API product. Public pages never enable purchasing or follow/save
 mutations. A single canonical product result aggregates eligible offers, and all
 condition/language/variant/price/seller constraints apply to the same matching offer.
+
+Audit update: offers now use bounded pages (20 default, maximum 50, up to 10,000
+pages) with price/quantity sorting; selected condition/grade/provider series controls
+reference comparisons. Image imports require an existing approved exact provider/license
+record. Listing-photo display requires STORAGE_PUBLIC_BASE_URL; keys remain encoded
+under that trusted HTTPS base. This read-only adapter does not add upload workflows.
+Run node tests/marketplace-interactions.mjs for keyboard/state/pagination coverage.

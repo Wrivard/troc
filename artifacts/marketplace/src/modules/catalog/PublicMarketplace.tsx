@@ -32,6 +32,7 @@ import {
 } from "@workspace/troc-design-system/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { catalogMessages, type CatalogMessage } from "./messages";
+import { formatSourcePrice, productSelection } from "./presentation";
 export interface PublicProps {
   page: PublicPage;
   theme?: "dark" | "light";
@@ -50,7 +51,9 @@ export function PublicMarketplace({
   const t = (key: CatalogMessage) =>
     catalogMessages[key][locale === "en" ? 0 : 1];
   const [query, setQuery] = useState(page.filters.q);
-  const [tab, setTab] = useState("shop");
+  const [tab, setTab] = useState(
+    page.filters.max === 99 && page.kind === "store" ? "deals" : "shop",
+  );
   const href = (path: string, values: Record<string, string> = {}) => {
     const p = new URLSearchParams({ lang: locale, ...values });
     return `${base}${path}?${p}`;
@@ -81,11 +84,25 @@ export function PublicMarketplace({
     currentSet?.name[locale] ??
     currentGame?.name[locale] ??
     t(page.kind === "home" ? "title" : "results");
+  const offerHref = (offerPage: number) =>
+    href(page.path, {
+      variantId: page.selectedVariantId ?? "",
+      offerPage: String(offerPage),
+      offerLimit: String(page.offerLimit),
+      offerSort: page.offerSort,
+      condition: page.filters.condition,
+      seller: page.filters.seller,
+      min: page.filters.min === null ? "" : String(page.filters.min),
+      max: page.filters.max === null ? "" : String(page.filters.max),
+      grade: page.selectedGrade ?? "",
+    });
   const cards = (items: ProductResult[]) => (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
       {items.map((result) => {
         const p = result.product;
         const set = page.sets.find((s) => s.id === p.setId);
+        const selection = productSelection(p, page.filters);
+        const productHref = href(`/product/${p.slug}`, selection.params);
         return (
           <ProductCard
             key={p.id}
@@ -98,7 +115,7 @@ export function PublicMarketplace({
             }
             title={
               <CardTitle>
-                <a href={href(`/product/${p.slug}`)}>{p.name[locale]}</a>
+                <a href={productHref}>{p.name[locale]}</a>
               </CardTitle>
             }
             metadata={
@@ -106,7 +123,7 @@ export function PublicMarketplace({
                 items={[
                   page.games.find((g) => g.id === p.gameId)?.name[locale],
                   set?.name[locale] ?? "",
-                  p.variants[0]?.number,
+                  selection.variant?.number,
                   t(p.type),
                 ]}
               />
@@ -126,7 +143,7 @@ export function PublicMarketplace({
             }
             actions={
               <Button asChild variant="secondary" size="sm">
-                <a href={href(`/product/${p.slug}`)}>{t("view")}</a>
+                <a href={productHref}>{t("view")}</a>
               </Button>
             }
           />
@@ -522,7 +539,89 @@ export function PublicMarketplace({
             </section>
             <section className="grid gap-4">
               <h2 className="text-xl font-bold">{t("offers")}</h2>
-              <p>{t("bestOffers")}</p>
+              <form
+                action={page.path}
+                className="flex flex-wrap items-end gap-4"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const params = new URLSearchParams();
+                  new FormData(event.currentTarget).forEach((v, k) => {
+                    if (v && v !== "__all") params.set(k, String(v));
+                  });
+                  window.location.assign(page.path + "?" + params);
+                }}
+              >
+                <input type="hidden" name="lang" value={locale} />
+                <input type="hidden" name="offerLimit" value={page.offerLimit} />
+                <input
+                  type="hidden"
+                  name="variantId"
+                  value={page.selectedVariantId}
+                />
+                <input
+                  type="hidden"
+                  name="seller"
+                  value={page.filters.seller}
+                />
+                <input
+                  type="hidden"
+                  name="min"
+                  value={page.filters.min ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="max"
+                  value={page.filters.max ?? ""}
+                />
+                <label className="grid gap-2">
+                  <span>{t("offerSort")}</span>
+                  <Select name="offerSort" defaultValue={page.offerSort}>
+                    <SelectTrigger aria-label={t("offerSort")}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        ["price_asc", "priceAscending"],
+                        ["price_desc", "priceDescending"],
+                        ["quantity", "quantityDescending"],
+                      ].map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {t(label as CatalogMessage)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </label>
+                {product.type === "raw_single" &&
+                  filter(
+                    "condition",
+                    "condition",
+                    page.filters.condition,
+                    ["NM", "LP", "MP", "HP", "DMG"].map((v) => ({
+                      value: v,
+                      label: v,
+                    })),
+                  )}
+                {product.type === "graded_card" && (
+                  <label className="grid gap-2">
+                    {t("grade")}
+                    <Input
+                      name="grade"
+                      defaultValue={page.selectedGrade ?? ""}
+                      maxLength={20}
+                    />
+                  </label>
+                )}
+                <Button type="submit">{t("apply")}</Button>
+              </form>
+              <p className="text-sm text-muted-foreground">
+                {t("referenceBasis")}:{" "}
+                {product.type === "raw_single"
+                  ? page.filters.condition || "NM"
+                  : product.type === "graded_card"
+                    ? page.selectedGrade || t("chooseGrade")
+                    : t("sealed")}
+              </p>
               {page.offers.length === 0 && <p>{t("empty")}</p>}
               {page.offers.map((offer) => {
                 const seller = page.sellers.find(
@@ -532,6 +631,14 @@ export function PublicMarketplace({
                   <div className="grid gap-2" key={offer.id}>
                     <SellerOfferRow
                       sellerName={seller.name}
+                      verification={
+                        seller.verifiedShop ? (
+                          <SellerBadge
+                            kind="verified-hobby-shop"
+                            label={t("verifiedShop")}
+                          />
+                        ) : undefined
+                      }
                       ratingValue={null}
                       ratingLabel={t("rating")}
                       locale={locale}
@@ -552,6 +659,7 @@ export function PublicMarketplace({
                       maxQuantity={offer.quantity}
                       addToCartLabel={t("buySoon")}
                       disabled
+                      data-disabled={false}
                     />
                     <a
                       className="underline"
@@ -559,15 +667,63 @@ export function PublicMarketplace({
                     >
                       {t("store")} · {seller.name}
                     </a>
-                    {offer.grade && (
+                    {(offer.grade ||
+                      offer.gradingCompany ||
+                      offer.certificateNumber) && (
                       <p className="text-sm text-muted-foreground">
-                        {t("photo")}:{" "}
+                        {offer.gradingCompany} {offer.grade}{" "}
+                        {offer.certificateNumber
+                          ? t("certificate") + ": " + offer.certificateNumber
+                          : ""}{" "}
+                        · {t("photo")}:{" "}
                         {offer.photos.length ? offer.photos.length : t("image")}
                       </p>
+                    )}
+                    {(offer.photoUrls ?? []).length > 0 && (
+                      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        {offer.photoUrls!.map((url, index) => (
+                          <a
+                            key={url}
+                            href={url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <CardImage
+                              src={url}
+                              alt={
+                                product.name[locale] +
+                                " · " +
+                                seller.name +
+                                " · " +
+                                t("photo") +
+                                " " +
+                                (index + 1)
+                              }
+                              missingLabel={t("image")}
+                            />
+                          </a>
+                        ))}
+                      </div>
                     )}
                   </div>
                 );
               })}
+              <nav className="flex flex-wrap gap-4" aria-label={t("offers")}>
+                {page.offerPage > 1 && (
+                  <Button asChild variant="secondary">
+                    <a href={offerHref(page.offerPage - 1)}>
+                      {t("previousOffers")}
+                    </a>
+                  </Button>
+                )}
+                {page.nextOfferPage && (
+                  <Button asChild variant="secondary">
+                    <a href={offerHref(page.nextOfferPage)}>
+                      {t("nextOffers")}
+                    </a>
+                  </Button>
+                )}
+              </nav>
               <p className="text-sm text-muted-foreground">{t("shipping")}</p>
             </section>
             <section className="grid gap-4">
@@ -615,9 +771,13 @@ export function PublicMarketplace({
               {page.prices.at(-1) && (
                 <p className="text-sm text-muted-foreground">
                   {t("source")}: {page.prices.at(-1)!.provider} ·{" "}
-                  {page.prices.at(-1)!.sourceMinorUnits / 100}{" "}
-                  {page.prices.at(-1)!.sourceCurrency} · {t("fx")}:{" "}
-                  {page.prices.at(-1)!.fxRate} / {page.prices.at(-1)!.fxDate}
+                  {formatSourcePrice(
+                    page.prices.at(-1)!.sourceMinorUnits,
+                    page.prices.at(-1)!.sourceCurrency,
+                    locale,
+                  )}{" "}
+                  · {t("fx")}: {page.prices.at(-1)!.fxRate} /{" "}
+                  {page.prices.at(-1)!.fxDate}
                 </p>
               )}
             </section>
@@ -664,7 +824,14 @@ export function PublicMarketplace({
                     <Button
                       key={v}
                       variant={tab === v ? "primary" : "secondary"}
-                      onClick={() => setTab(v)}
+                      onClick={() => {
+                        if (v === "shop" || v === "deals")
+                          go(
+                            page.path,
+                            v === "deals" ? { max: "99", sort: "price" } : {},
+                          );
+                        else setTab(v);
+                      }}
                       aria-pressed={tab === v}
                     >
                       {t(v as CatalogMessage)}
