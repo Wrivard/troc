@@ -62,6 +62,17 @@ export async function inspect(env, createClient) {
       pg_has_role(current_user,'troc_backend','USAGE') AS backend_access,
       NOT (rolsuper OR rolbypassrls OR rolcreatedb OR rolcreaterole OR rolreplication) AS restricted_role,
       NOT has_schema_privilege(current_user,'troc','CREATE') AS no_schema_creation,
+      NOT EXISTS (SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+        WHERE n.nspname='troc' AND pg_has_role(current_user,c.relowner,'MEMBER'))
+        AND NOT EXISTS (SELECT 1 FROM pg_namespace n WHERE n.nspname='troc'
+          AND pg_has_role(current_user,n.nspowner,'MEMBER')) AS no_effective_ownership,
+      NOT EXISTS (SELECT 1 FROM pg_roles reachable WHERE
+        pg_has_role(current_user,reachable.oid,'MEMBER') AND
+        (reachable.rolsuper OR reachable.rolbypassrls OR reachable.rolcreatedb
+          OR reachable.rolcreaterole OR reachable.rolreplication
+          OR reachable.rolname IN ('pg_read_all_data','pg_write_all_data',
+            'pg_read_server_files','pg_write_server_files','pg_execute_server_program',
+            'pg_signal_backend','pg_checkpoint','pg_maintain'))) AS no_dangerous_membership,
       (SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()) AS encrypted,
       (SELECT count(*)::int FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
         WHERE n.nspname='troc' AND c.relkind='r' AND NOT c.relrowsecurity) AS unprotected_tables,
@@ -74,6 +85,8 @@ export async function inspect(env, createClient) {
       backendAccess: row.backend_access === true,
       restrictedRole: row.restricted_role === true,
       noSchemaCreation: row.no_schema_creation === true,
+      noEffectiveOwnership: row.no_effective_ownership === true,
+      noDangerousMembership: row.no_dangerous_membership === true,
       encrypted: row.encrypted === true,
       allTablesProtected:
         row.unprotected_tables === 0 && row.application_tables >= 67,

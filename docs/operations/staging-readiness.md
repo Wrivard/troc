@@ -16,6 +16,8 @@ One connection, TLS certificate verification enforced, connect/statement timeout
 
 ## Monitoring and escalation
 
+The role gate also rejects application relation/schema ownership and dangerous role memberships, including transitive and NOINHERIT memberships. It intentionally uses MEMBER conservatively: even a membership currently constrained by SET/INHERIT options is rejected when the target owns application relations or carries elevated capabilities. Remove unnecessary memberships rather than treating RLS-enabled table flags as proof that runtime cannot bypass policies. Tests reproduce an actual owner reading a default-deny row locally. This remains metadata validation, not a substitute for application tenant-isolation tests.
+
 Request logs retain HTTP method, fixed API surface, response status and duration. They omit path identifiers, query strings, headers, bodies and raw driver error details. Error serializers retain only a bounded category. Never add personal data or arbitrary error objects as new log fields. Liveness remains public and lightweight; runtime diagnostics remain operator-side, avoiding public disclosure of infrastructure state.
 
 Before activation, assign an operator and real alert destination. Proposed initial signals for review: liveness failures on three consecutive one-minute checks; any runtime diagnostic FAIL; sustained5xx above1% across at least100 requests over5minutes; repeated database timeouts/authentication failures; pool/resource saturation from provider metrics. These are proposed starting thresholds, not measured SLOs. Demonstrate alert delivery and recovery once a destination exists; do not claim monitoring is active from code alone. No external notification is sent by this tooling.

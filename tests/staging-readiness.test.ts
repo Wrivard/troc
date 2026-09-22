@@ -53,6 +53,8 @@ test("staging diagnostics enforce TLS, read-only scope, role checks and cleanup"
                 backend_access: true,
                 restricted_role: true,
                 no_schema_creation: true,
+                no_effective_ownership: true,
+                no_dangerous_membership: true,
                 encrypted: true,
                 unprotected_tables: 0,
                 application_tables: 67,
