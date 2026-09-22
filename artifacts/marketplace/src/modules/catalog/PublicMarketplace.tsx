@@ -12,6 +12,10 @@ import {
 } from "@workspace/troc-design-system/components/ui/editorial";
 import { useState, useEffect, lazy, Suspense } from "react";
 import type { PublicPage, Locale, ProductResult } from "@workspace/catalog";
+import {
+  Chip,
+  ChipGroup,
+} from "@workspace/troc-design-system/components/ui/chips";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import {
@@ -61,8 +65,11 @@ export function PublicMarketplace({
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [filtersOpen, setFiltersOpen] = useState(true);
   useEffect(() => {
-    setFiltersOpen(window.matchMedia("(min-width: 768px)").matches);
-  }, []);
+    setFiltersOpen(
+      window.matchMedia("(min-width: 768px)").matches &&
+        page.results.length > 0,
+    );
+  }, [page.results.length]);
   const [cartMessage, setCartMessage] = useState<{
     offerId: string;
     text: string;
@@ -189,6 +196,59 @@ export function PublicMarketplace({
       </Select>
     </label>
   );
+  const activeFilters = Object.entries(page.filters).filter(
+    ([key, value]) =>
+      [
+        "q",
+        "game",
+        "set",
+        "type",
+        "condition",
+        "language",
+        "variant",
+        "rarity",
+        "min",
+        "max",
+        "seller",
+      ].includes(key) &&
+      value !== null &&
+      value !== "" &&
+      !(key === "game" && (page.kind === "game" || page.kind === "set")) &&
+      !(key === "set" && page.kind === "set"),
+  );
+  const appliedLabel = (key: string, value: unknown) => {
+    if (key === "min" || key === "max")
+      return `${key === "min" ? (locale === "fr" ? "Min." : "Min") : locale === "fr" ? "Max." : "Max"} ${format(Number(value))}`;
+    if (key === "q") return `“${value}”`;
+    if (key === "game")
+      return (
+        page.games.find((game) => game.slug === value)?.name[locale] ??
+        String(value)
+      );
+    if (key === "set")
+      return (
+        page.sets.find((set) => set.slug === value)?.name[locale] ??
+        String(value)
+      );
+    if (key === "seller")
+      return (
+        page.sellers.find(
+          (seller) => seller.id === value || seller.slug === value,
+        )?.name ?? String(value)
+      );
+    if (key === "language") return t(value === "en" ? "english" : "japanese");
+    return String(value) in catalogMessages
+      ? t(String(value) as CatalogMessage)
+      : String(value);
+  };
+  const editFilters = () => {
+    setFiltersOpen(true);
+    requestAnimationFrame(() =>
+      document
+        .querySelector<HTMLInputElement>('.troc-quality-filter input[name="q"]')
+        ?.focus(),
+    );
+  };
   const filterForm = (
     <form
       action={`${base}${page.path}`}
@@ -249,7 +309,14 @@ export function PublicMarketplace({
           step={1}
           name="max"
           defaultValue={page.filters.max ?? ""}
+          aria-describedby="catalog-price-help"
         />
+        <small
+          id="catalog-price-help"
+          className="text-xs text-muted-foreground"
+        >
+          {locale === "fr" ? "100 ¢ = 1 $ CAD" : "100¢ = $1 CAD"}
+        </small>
       </label>
       <details
         className="sm:col-span-2 lg:col-span-4 border-t border-border pt-4"
@@ -314,6 +381,7 @@ export function PublicMarketplace({
               step={1}
               name="min"
               defaultValue={page.filters.min ?? ""}
+              aria-describedby="catalog-price-help"
             />
           </label>
         </div>
@@ -346,7 +414,7 @@ export function PublicMarketplace({
       />
       <main
         id="main-content"
-        className="troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8"
+        className={`troc-marketplace-width mx-auto grid gap-8 px-4 pb-12 pt-6 md:px-8 ${page.kind === "search" ? "troc-search-page" : ""}`}
       >
         {page.demo && (
           <p
@@ -357,7 +425,10 @@ export function PublicMarketplace({
           </p>
         )}
         {page.kind !== "home" && (
-          <nav aria-label={t("game")} className="flex flex-wrap gap-2">
+          <nav
+            aria-label={t("game")}
+            className="troc-catalog-navigation flex flex-wrap gap-2"
+          >
             <Button asChild variant="ghost" size="sm">
               <a href={href("/")}>{t("home")}</a>
             </Button>
@@ -377,7 +448,8 @@ export function PublicMarketplace({
           page.kind !== "game" &&
           page.kind !== "set" &&
           page.kind !== "store" &&
-          !product && (
+          !product &&
+          page.kind !== "search" && (
             <EditorialIntro
               level={1}
               className="troc-page-opening"
@@ -390,6 +462,20 @@ export function PublicMarketplace({
               }
             />
           )}
+        {page.kind === "search" && (
+          <header className="troc-search-heading">
+            <h1>
+              {locale === "fr" ? "Trouvez vos cartes" : "Find your cards"}
+            </h1>
+            <p>
+              {page.filters.q
+                ? `${locale === "fr" ? "Résultats pour" : "Results for"} “${page.filters.q}”`
+                : locale === "fr"
+                  ? "Comparez les offres en CAD."
+                  : "Compare offers in CAD."}
+            </p>
+          </header>
+        )}
         {(page.kind === "game" || page.kind === "set") && (
           <GameHero
             title={title}
@@ -1021,6 +1107,39 @@ export function PublicMarketplace({
               </div>
             ) : (
               <>
+                {activeFilters.length > 0 && (
+                  <ChipGroup
+                    className="troc-applied-filters"
+                    label={
+                      locale === "fr" ? "Filtres appliqués" : "Applied filters"
+                    }
+                  >
+                    {activeFilters.map(([key, value]) => (
+                      <Chip
+                        key={key}
+                        removeLabel={`${locale === "fr" ? "Retirer" : "Remove"} ${appliedLabel(key, value)}`}
+                        onRemove={() =>
+                          go(
+                            page.path,
+                            Object.fromEntries(
+                              Object.entries(page.filters)
+                                .filter(
+                                  ([name, val]) =>
+                                    name !== key &&
+                                    name !== "cursor" &&
+                                    val !== null &&
+                                    val !== "",
+                                )
+                                .map(([name, val]) => [name, String(val)]),
+                            ),
+                          )
+                        }
+                      >
+                        {appliedLabel(key, value)}
+                      </Chip>
+                    ))}
+                  </ChipGroup>
+                )}
                 <details
                   className="troc-catalog-filters"
                   open={filtersOpen}
@@ -1080,16 +1199,28 @@ export function PublicMarketplace({
                   )
                 ) : (
                   <PremiumEmptyState
-                    title={t("empty")}
+                    className="troc-search-empty"
+                    title={
+                      locale === "fr"
+                        ? "Aucune carte trouvée"
+                        : "No cards found"
+                    }
                     description={
                       locale === "fr"
                         ? "Essayez un autre nom ou retirez quelques filtres pour découvrir plus de cartes."
                         : "Try another name or remove a few filters to discover more cards."
                     }
                     actions={
-                      <Button asChild variant="secondary">
-                        <a href={href(page.path)}>{t("reset")}</a>
-                      </Button>
+                      <>
+                        <Button onClick={editFilters}>
+                          {locale === "fr"
+                            ? "Modifier la recherche"
+                            : "Edit search"}
+                        </Button>
+                        <Button asChild variant="secondary">
+                          <a href={href(page.path)}>{t("reset")}</a>
+                        </Button>
+                      </>
                     }
                   />
                 )}

@@ -1301,3 +1301,21 @@ main {
   .troc-product-sticky [data-catalog-artwork] { max-width: 180px; }
   .troc-product-sticky .troc-artwork-panel { padding: var(--space-4); }
 }
+
+/* UX audit 02: utility-first search, with applied criteria outside collapsed controls. */
+.troc-search-heading { display: grid; gap: var(--space-2); }
+.troc-search-heading h1 { font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.04em; line-height: 1.2; }
+.troc-search-heading p { color: var(--text-secondary); }
+.troc-applied-filters { gap: var(--space-2); }
+.troc-applied-filters .troc-chip-remove { min-width: 44px; min-height: 44px; }
+.troc-search-empty { padding: var(--space-6); grid-template-columns: 1fr; }
+.troc-search-empty .troc-premium-empty-visual { display: none; }
+@media (max-width:767px) {
+  .troc-search-page { gap: var(--space-4); }
+  .troc-search-page .troc-catalog-navigation { display: none; }
+  .troc-search-page .troc-search-heading h1 { font-size: var(--text-2xl); }
+  .troc-search-page .troc-catalog-filters { padding-block: var(--space-2); }
+  .troc-search-page .troc-catalog-filters > summary { min-height:44px; align-content:center; }
+  .troc-search-page .troc-market-card-art { padding:var(--space-2); }
+  .troc-search-page .troc-market-card-copy { gap:var(--space-2); }
+}
