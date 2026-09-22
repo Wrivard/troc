@@ -425,27 +425,29 @@ export function SellerPlatformApp({
                 "Les demandes sont affichées par pages de 50. Chaque décision exige une note visible au demandeur.",
               )}
             </p>
-            <nav aria-label={t("Application pages", "Pages de demandes")}>
-              <Button
-                variant="secondary"
-                disabled={busy || adminPage === 0}
-                onClick={() => setAdminPage((page) => page - 1)}
-              >
-                {t("Previous page", "Page précédente")}
-              </Button>
-              <span>
-                {t("Page", "Page")} {adminPage + 1}
-              </span>
-              <Button
-                variant="secondary"
-                disabled={
-                  busy || applications.length < 50 || adminPage >= 10000
-                }
-                onClick={() => setAdminPage((page) => page + 1)}
-              >
-                {t("Next page", "Page suivante")}
-              </Button>
-            </nav>
+            {(adminPage > 0 || applications.length >= 50) && (
+              <nav aria-label={t("Application pages", "Pages de demandes")}>
+                <Button
+                  variant="secondary"
+                  disabled={busy || adminPage === 0}
+                  onClick={() => setAdminPage((page) => page - 1)}
+                >
+                  {t("Previous page", "Page précédente")}
+                </Button>
+                <span>
+                  {t("Page", "Page")} {adminPage + 1}
+                </span>
+                <Button
+                  variant="secondary"
+                  disabled={
+                    busy || applications.length < 50 || adminPage >= 10000
+                  }
+                  onClick={() => setAdminPage((page) => page + 1)}
+                >
+                  {t("Next page", "Page suivante")}
+                </Button>
+              </nav>
+            )}
             {!applications.length && (
               <p>
                 {t(
@@ -521,6 +523,14 @@ export function SellerPlatformApp({
                     </div>
                   ))}
                 </dl>
+                {a.review_note && (
+                  <dl className="seller-application-details">
+                    <div>
+                      <dt>{t("Review note", "Note d’examen")}</dt>
+                      <dd>{a.review_note}</dd>
+                    </div>
+                  </dl>
+                )}
                 {a.status === "submitted" && (
                   <form
                     onSubmit={(e) => {
@@ -548,7 +558,10 @@ export function SellerPlatformApp({
                     </label>
                     <label>
                       {t("Decision", "Décision")}
-                      <select name="decision">
+                      <select name="decision" defaultValue="" required>
+                        <option value="" disabled>
+                          {t("Choose a decision", "Choisir une décision")}
+                        </option>
                         <option value="rejected">
                           {t("Reject", "Refuser")}
                         </option>
