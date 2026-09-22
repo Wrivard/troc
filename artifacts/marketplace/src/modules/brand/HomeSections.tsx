@@ -1,11 +1,14 @@
+import { InteractiveCardStack } from "@workspace/troc-design-system/components/ui/interactive-card-stack";
+import {
+  GameTile,
+  SellerPreviewCard,
+  SmartCartComparison,
+} from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import type { ReactNode } from "react";
 import type { PublicPage, ProductResult, Product } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
-import {
-  CardShowcase,
-  CardImage,
-} from "@workspace/troc-design-system/components/ui/product-presentation";
+import { CardImage } from "@workspace/troc-design-system/components/ui/product-presentation";
 import {
   EditorialIntro,
   EditorialIcon,
@@ -149,8 +152,8 @@ export function HomeSections({
           <p className="troc-hero-signature">
             <span aria-hidden="true" />{" "}
             {c(
-              "Built here. For collectors here.",
-              "D’ici. Pour les collectionneurs d’ici.",
+              "Canadian sellers. Prices in CAD.",
+              "Vendeurs canadiens. Prix en CAD.",
             )}
           </p>
         </div>
@@ -159,8 +162,7 @@ export function HomeSections({
             <span>01 / {c("THE COLLECTION", "LA COLLECTION")}</span>
             <span>{c("YOUR NEXT FIND", "VOTRE PROCHAINE TROUVAILLE")}</span>
           </div>
-          <CardShowcase
-            variant="showroom"
+          <InteractiveCardStack
             label={c("Pokémon leads the collection", "Pokémon au premier plan")}
             caption={
               <>
@@ -239,33 +241,17 @@ export function HomeSections({
           {games.map((g, index) => {
             const p = products.find((r) => r.product.gameId === g.id)?.product;
             return (
-              <a
+              <GameTile
                 key={g.id}
                 href={href(`/games/${g.slug}`)}
-                className="troc-game-tile"
-                data-featured={index === 0 || undefined}
-              >
-                <span className="troc-game-number">0{index + 1}</span>
-                {p ? (
-                  <div className="troc-game-art" aria-hidden="true">
-                    {art(p)}
-                  </div>
-                ) : (
-                  <div className="troc-game-fallback" aria-hidden="true">
-                    <EditorialIcon name="layers" />
-                  </div>
+                index={String(index + 1).padStart(2, "0")}
+                name={g.name[page.locale]}
+                description={c(
+                  "Singles · Sealed · Graded",
+                  "Unités · Scellées · Gradées",
                 )}
-                <div className="troc-game-tile-copy">
-                  <span>{g.name[page.locale]}</span>
-                  <EditorialIcon name="arrow" />
-                </div>
-                <span className="troc-game-subtitle">
-                  {c(
-                    p ? "Explore the edit" : "Explore the demo",
-                    p ? "Découvrir la sélection" : "Explorer la démo",
-                  )}
-                </span>
-              </a>
+                art={p ? art(p) : undefined}
+              />
             );
           })}
         </div>
@@ -346,6 +332,76 @@ export function HomeSections({
               <div>
                 <h3>{c(en, french)}</h3>
                 <p>{c(body, bodyFr)}</p>
+                <div className="troc-product-example">
+                  {i === 0 ? (
+                    <>
+                      <Input
+                        readOnly
+                        tabIndex={-1}
+                        aria-label={c(
+                          "Example catalog search",
+                          "Exemple de recherche",
+                        )}
+                        value={lead?.product.name[page.locale] ?? "Pokémon"}
+                      />
+                      <div className="troc-example-result">
+                        {lead && art(lead.product)}
+                        <span>
+                          {lead?.product.name[page.locale]}
+                          <small>
+                            {c(
+                              "One card. All available offers.",
+                              "Une carte. Toutes les offres disponibles.",
+                            )}
+                          </small>
+                        </span>
+                      </div>
+                    </>
+                  ) : i === 1 ? (
+                    page.sellers.slice(0, 3).map((seller) => (
+                      <div className="troc-example-seller" key={seller.id}>
+                        <SellerAvatar name={seller.name} src={seller.logoUrl} />
+                        <span>
+                          {seller.name}
+                          <small>
+                            {seller.city}, {seller.province}
+                          </small>
+                        </span>
+                        <span>
+                          {seller.handlingDays}{" "}
+                          {c(
+                            seller.handlingDays === 1 ? "day" : "days",
+                            seller.handlingDays === 1 ? "jour" : "jours",
+                          )}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="troc-example-seller">
+                        <EditorialIcon name="package" />
+                        <strong>
+                          {c("30 cards. One seller.", "30 cartes. Un vendeur.")}
+                        </strong>
+                      </div>
+                      <div className="troc-example-order">
+                        <span>{c("Cards", "Cartes")}</span>
+                        <span>{fr ? "7,22 $" : "$7.22"}</span>
+                        <span>
+                          {c("Combined shipping", "Livraison regroupée")}
+                        </span>
+                        <span>{fr ? "4,00 $" : "$4.00"}</span>
+                        <strong>
+                          {c("Total before tax", "Total avant taxes")}
+                        </strong>
+                        <strong>{fr ? "11,22 $" : "$11.22"}</strong>
+                      </div>
+                    </>
+                  )}
+                  <small className="troc-art-note">
+                    {c("Illustrative demo preview", "Aperçu de démonstration")}
+                  </small>
+                </div>
               </div>
             </div>
           ))}
@@ -373,63 +429,27 @@ export function HomeSections({
             "Trouver un meilleur total",
           )}
         </div>
-        <div className="troc-smart-proof">
-          <p className="troc-editorial-eyebrow">
-            {c(
-              "SAME 30-CARD LIST. DIFFERENT TOTAL.",
-              "MÊME LISTE DE 30 CARTES. AUTRE TOTAL.",
-            )}
-          </p>
-          <div className="troc-smart-proof-columns">
-            <div>
-              <p>{c("Separate orders", "Commandes séparées")}</p>
-              <div className="troc-parcels" aria-hidden="true">
-                <EditorialIcon name="package" />
-                <EditorialIcon name="package" />
-                <EditorialIcon name="package" />
-              </div>
-              <span className="troc-proof-total">
-                {fr ? "14,25 $" : "$14.25"}
-              </span>
-              <p>
-                {c(
-                  "3 sellers · $7.50 shipping",
-                  "3 vendeurs · 7,50 $ de livraison",
-                )}
-              </p>
-            </div>
-            <div className="troc-smart-proof-after">
-              <p>{c("Consolidated", "Regroupées")}</p>
-              <div className="troc-parcels" aria-hidden="true">
-                <EditorialIcon name="package" />
-              </div>
-              <span className="troc-proof-total">
-                {fr ? "11,22 $" : "$11.22"}
-              </span>
-              <p>
-                {c(
-                  "1 seller · $4.00 shipping",
-                  "1 vendeur · 4,00 $ de livraison",
-                )}
-              </p>
-            </div>
-          </div>
-          <div className="troc-proof-saving">
-            <EditorialIcon name="check" />
-            <span>
-              {c("$3.50 less shipping", "3,50 $ de moins en livraison")}
-            </span>
-            <strong>
-              {c("$3.03 saved overall", "3,03 $ économisés au total")}
-            </strong>
-          </div>
-          <p className="troc-art-note">
-            {c(
-              "Tested demo basket, before tax. Card prices vary between sellers. Actual savings depend on the available offers.",
-              "Panier de démonstration testé, avant taxes. Le prix des cartes varie selon le vendeur. Les économies dépendent des offres disponibles.",
-            )}
-          </p>
-        </div>
+        <SmartCartComparison
+          before={{ cards: 675, shipping: 750, sellers: 3 }}
+          after={{ cards: 722, shipping: 400, sellers: 1 }}
+          locale={page.locale}
+          labels={{
+            before: c("SEPARATE ORDERS", "COMMANDES SÉPARÉES"),
+            after: "SMART CART",
+            cards: c("Cards", "Cartes"),
+            shipping: c("Shipping", "Livraison"),
+            sellers: c("seller(s)", "vendeur(s)"),
+            save: c("SAVE", "ÉCONOMISEZ"),
+            explanation: c(
+              "+$0.47 in cards. −$3.50 in shipping. The same 30-card list, a better total.",
+              "+0,47 $ en cartes. −3,50 $ en livraison. Les mêmes 30 cartes, un meilleur total.",
+            ),
+          }}
+          note={c(
+            "Tested demo basket, before tax. Actual savings depend on available offers.",
+            "Panier de démonstration testé, avant taxes. Les économies dépendent des offres disponibles.",
+          )}
+        />
       </EditorialPanel>
       <section className="troc-home-section troc-small-edit">
         <EditorialIntro
@@ -527,38 +547,27 @@ export function HomeSections({
           )}
         />
         <div className="troc-community-grid">
-          {page.sellers.slice(0, 3).map((s, i) => (
-            <article className="troc-community-store" key={s.id}>
-              <div className="troc-community-location">
-                <EditorialIcon name="pin" />
-                <span>
-                  {s.city}, {s.province}
-                </span>
-                <span className="troc-community-code" aria-hidden="true">
-                  {s.province}
-                </span>
-              </div>
-              <div className="troc-community-identity">
-                <SellerAvatar name={s.name} src={s.logoUrl} />
-                <div>
-                  <h3>{s.name}</h3>
-                  <p>
-                    {c("Canadian demo store", "Boutique canadienne fictive")}
-                  </p>
-                </div>
-              </div>
-              <p className="troc-community-story">{s.story[page.locale]}</p>
-              <a
-                className="troc-editorial-text-link"
-                href={href(`/store/${s.slug}`)}
-              >
-                {c("Step inside", "Entrer dans la boutique")}
-                <EditorialIcon name="arrow" />
-              </a>
-              <span className="troc-art-note">
-                0{i + 1} / {c("DEMO STORE", "BOUTIQUE DÉMO")}
-              </span>
-            </article>
+          {page.sellers.slice(0, 3).map((seller, i) => (
+            <SellerPreviewCard
+              key={seller.id}
+              href={href(`/store/${seller.slug}`)}
+              name={seller.name}
+              location={`${seller.city}, ${seller.province}`}
+              avatar={<SellerAvatar name={seller.name} src={seller.logoUrl} />}
+              typeLabel={c(
+                "Canadian demo store",
+                "Boutique canadienne fictive",
+              )}
+              banner={products[i] && art(products[i].product)}
+              thumbnails={products.slice(i, i + 3).map((r) => (
+                <div key={r.product.id}>{art(r.product)}</div>
+              ))}
+              detail={c(
+                `Ships in ${seller.handlingDays} ${seller.handlingDays === 1 ? "day" : "days"} · Sample cards`,
+                `Expédition en ${seller.handlingDays} ${seller.handlingDays === 1 ? "jour" : "jours"} · Exemples de cartes`,
+              )}
+              actionLabel={c("Explore store", "Explorer la boutique")}
+            />
           ))}
         </div>
         <p className="troc-art-note">
@@ -578,7 +587,7 @@ export function HomeSections({
             "VOTRE PROCHAIN CHAPITRE COMMENCE ICI",
           )}
           title={c(
-            "Make room for a new favourite.",
+            "Make room for your next favourite.",
             "Faites place à un nouveau favori.",
           )}
           description={c(

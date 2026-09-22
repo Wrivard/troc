@@ -1,3 +1,4 @@
+import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
@@ -106,103 +107,120 @@ export function AccountApp({ path }: { path: string }) {
         onTheme={setTheme}
       />
 
-      <main
-        id="main-content"
-        className="mx-auto my-12 grid w-full max-w-lg gap-6 rounded-lg border border-border bg-card p-6 md:p-8"
-        aria-busy={busy}
-      >
-        <EditorialIntro
-          level={1}
-          compact
-          className="troc-page-opening"
-          eyebrow="TROC · CANADA"
-          title={t(
-            !known
-              ? "notFound"
-              : protectedPage
-                ? path.endsWith("settings")
-                  ? "settings"
-                  : "account"
-                : signup
-                  ? "signUp"
-                  : "signIn",
-          )}
-          description={
-            locale === "fr"
-              ? protectedPage
-                ? "Vos commandes, vos préférences et votre place dans la communauté TROC."
-                : "Retrouvez vos cartes et vos commandes. Un compte pour votre passion."
-              : protectedPage
-                ? "Your orders, your preferences and your place in the TROC community."
-                : "Keep your cards and orders together. One account for your hobby."
-          }
-        />
-        {busy && <p role="status">{t("loading")}</p>}
-        {status && <p role="status">{t(status)}</p>}
-        {known && !protectedPage && (
-          <form onSubmit={submit} className="grid gap-4">
-            <label className="grid gap-2">
-              {t("email")}
-              <Input
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                maxLength={254}
-              />
-            </label>
-            <label className="grid gap-2">
-              {t("password")}
-              <Input
-                name="password"
-                type="password"
-                autoComplete={signup ? "new-password" : "current-password"}
-                required
-                minLength={8}
-                maxLength={128}
-                aria-describedby="password-hint"
-              />
-            </label>
-            <p id="password-hint">{t("passwordHint")}</p>
-            {signup && (
-              <>
-                <p>{t("country")}</p>
-                <label className="flex items-center gap-2">
-                  <Checkbox required name="canada" />
-                  {t("canadaConfirm")}
-                </label>
-              </>
+      <main id="main-content" className="troc-auth-layout" aria-busy={busy}>
+        <div className="troc-auth-form">
+          <EditorialIntro
+            level={1}
+            compact
+            className="troc-page-opening"
+            eyebrow="TROC · CANADA"
+            title={t(
+              !known
+                ? "notFound"
+                : protectedPage
+                  ? path.endsWith("settings")
+                    ? "settings"
+                    : "account"
+                  : signup
+                    ? "signUp"
+                    : "signIn",
             )}
-            <Button type="submit" disabled={busy}>
-              {t(signup ? "signUp" : "signIn")}
-            </Button>
-            <a
-              className="underline"
-              href={link(signup ? "sign-in" : "sign-up")}
-            >
-              {t(signup ? "signIn" : "signUp")}
+            description={
+              locale === "fr"
+                ? protectedPage
+                  ? "Vos commandes, vos préférences et votre place dans la communauté TROC."
+                  : "Retrouvez vos cartes et vos commandes. Un compte pour votre passion."
+                : protectedPage
+                  ? "Your orders, your preferences and your place in the TROC community."
+                  : "Keep your cards and orders together. One account for your hobby."
+            }
+          />
+          {busy && <p role="status">{t("loading")}</p>}
+          {status && <p role="status">{t(status)}</p>}
+          {known && !protectedPage && (
+            <form onSubmit={submit} className="grid gap-4">
+              <label className="grid gap-2">
+                {t("email")}
+                <Input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  maxLength={254}
+                />
+              </label>
+              <label className="grid gap-2">
+                {t("password")}
+                <Input
+                  name="password"
+                  type="password"
+                  autoComplete={signup ? "new-password" : "current-password"}
+                  required
+                  minLength={8}
+                  maxLength={128}
+                  aria-describedby="password-hint"
+                />
+              </label>
+              <p id="password-hint">{t("passwordHint")}</p>
+              {signup && (
+                <>
+                  <p>{t("country")}</p>
+                  <label className="flex items-center gap-2">
+                    <Checkbox required name="canada" />
+                    {t("canadaConfirm")}
+                  </label>
+                </>
+              )}
+              <Button type="submit" disabled={busy}>
+                {t(signup ? "signUp" : "signIn")}
+              </Button>
+              <a
+                className="underline"
+                href={link(signup ? "sign-in" : "sign-up")}
+              >
+                {t(signup ? "signIn" : "signUp")}
+              </a>
+            </form>
+          )}
+          {user && (
+            <>
+              <p className="break-words">{user.email}</p>
+              <Button onClick={save} disabled={busy}>
+                {t("save")}
+              </Button>
+              <a className="underline" href={link("account/settings")}>
+                {t("settings")}
+              </a>
+              <Button variant="secondary" onClick={signOut} disabled={busy}>
+                {t("signOut")}
+              </Button>
+            </>
+          )}
+          {protectedPage && !user && !busy && (
+            <a className="underline" href={link("sign-in")}>
+              {t("signIn")}
             </a>
-          </form>
-        )}
-        {user && (
-          <>
-            <p className="break-words">{user.email}</p>
-            <Button onClick={save} disabled={busy}>
-              {t("save")}
-            </Button>
-            <a className="underline" href={link("account/settings")}>
-              {t("settings")}
-            </a>
-            <Button variant="secondary" onClick={signOut} disabled={busy}>
-              {t("signOut")}
-            </Button>
-          </>
-        )}
-        {protectedPage && !user && !busy && (
-          <a className="underline" href={link("sign-in")}>
-            {t("signIn")}
-          </a>
-        )}
+          )}
+        </div>
+        <aside className="troc-auth-aside">
+          <div className="troc-auth-art" aria-hidden="true">
+            <span className="troc-card-back" />
+            <span className="troc-card-back">
+              <TrocLogo variant="compact" height={32} />
+            </span>
+            <span className="troc-card-back" />
+          </div>
+          <h2>
+            {locale === "fr"
+              ? "Votre passion. Un seul compte."
+              : "Your hobby. One account."}
+          </h2>
+          <p>
+            {locale === "fr"
+              ? "Vos commandes aujourd’hui. Votre collection et vos vendeurs favoris dans les outils à venir."
+              : "Your orders today. Your collection and favourite sellers in the tools to come."}
+          </p>
+        </aside>
       </main>
       <MarketplaceFooter locale={locale} />
     </div>
