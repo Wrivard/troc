@@ -3,72 +3,72 @@
     "width": 390,
     "lines": 5,
     "renderedRows": 5,
-    "loadMs": 1996
+    "loadMs": 1870
   },
   {
     "width": 390,
     "lines": 20,
     "renderedRows": 19,
-    "loadMs": 2099
+    "loadMs": 1959
   },
   {
     "width": 390,
     "lines": 50,
     "renderedRows": 20,
-    "loadMs": 1834
+    "loadMs": 1748
   },
   {
     "width": 390,
-    "lines": 100,
-    "renderedRows": 20,
-    "loadMs": 1803
-  },
-  {
-    "width": 768,
-    "lines": 5,
-    "renderedRows": 5,
-    "loadMs": 1848
-  },
-  {
-    "width": 768,
-    "lines": 20,
-    "renderedRows": 19,
-    "loadMs": 2137
-  },
-  {
-    "width": 768,
-    "lines": 50,
-    "renderedRows": 20,
-    "loadMs": 1734
-  },
-  {
-    "width": 768,
     "lines": 100,
     "renderedRows": 20,
     "loadMs": 1771
   },
   {
+    "width": 768,
+    "lines": 5,
+    "renderedRows": 5,
+    "loadMs": 1758
+  },
+  {
+    "width": 768,
+    "lines": 20,
+    "renderedRows": 19,
+    "loadMs": 2093
+  },
+  {
+    "width": 768,
+    "lines": 50,
+    "renderedRows": 20,
+    "loadMs": 1814
+  },
+  {
+    "width": 768,
+    "lines": 100,
+    "renderedRows": 20,
+    "loadMs": 1786
+  },
+  {
     "width": 1280,
     "lines": 5,
     "renderedRows": 5,
-    "loadMs": 1848
+    "loadMs": 1811
   },
   {
     "width": 1280,
     "lines": 20,
     "renderedRows": 19,
-    "loadMs": 2043
+    "loadMs": 1984
   },
   {
     "width": 1280,
     "lines": 50,
     "renderedRows": 20,
-    "loadMs": 1750
+    "loadMs": 1790
   },
   {
     "width": 1280,
     "lines": 100,
     "renderedRows": 20,
-    "loadMs": 1790
+    "loadMs": 1925
   }
 ]

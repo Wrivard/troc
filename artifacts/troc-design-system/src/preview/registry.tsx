@@ -22,6 +22,7 @@ export const NAV_GROUPS: NavGroup[] = [
     component: lazy(STORY_LOADERS[`./demos/${family.slug}.tsx`]), number: "",
   })) })),
   { title: "content", entries: [
+    { id: "editorial", title: "editorial", component: lazy(() => import("./pages/editorial")), number: "" },
     { id: "voice", title: "voice", component: lazy(() => import("./pages/guidance").then((m) => ({ default: m.VoicePage }))), number: "10" },
     { id: "accessibility", title: "accessibility", component: lazy(() => import("./pages/guidance").then((m) => ({ default: m.AccessibilityPage }))), number: "11" },
     { id: "mobile", title: "mobile", component: lazy(() => import("./pages/mobile")), number: "12" },

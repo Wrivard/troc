@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { PublicPage, ProductResult } from "@workspace/catalog";
+import type { PublicPage, ProductResult, Product } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import {
@@ -7,9 +7,12 @@ import {
   CardImage,
 } from "@workspace/troc-design-system/components/ui/product-presentation";
 import {
-  SellerAvatar,
-  SellerStorefrontHeader,
-} from "@workspace/troc-design-system/components/ui/seller-storefront";
+  EditorialIntro,
+  EditorialIcon,
+  EditorialPanel,
+} from "@workspace/troc-design-system/components/ui/editorial";
+import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller-storefront";
+import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { imagesForVariant } from "../catalog/images";
 
 export function HomeSections({
@@ -22,331 +25,436 @@ export function HomeSections({
   href: (path: string, params?: Record<string, string>) => string;
 }) {
   const fr = page.locale === "fr";
-  const copy = (en: string, french: string) => (fr ? french : en);
-  const illustrated = page.results.filter((r) => r.product.images?.length);
-  const products = illustrated.length ? illustrated : page.results;
-  // A balanced selection across games; no invented popularity or sales ranking.
+  const c = (en: string, french: string) => (fr ? french : en);
+  const products = page.results.filter((r) => r.product.images?.length);
+  const games = [...page.games].sort(
+    (a, b) => Number(b.slug === "pokemon") - Number(a.slug === "pokemon"),
+  );
+  const pokemon = games.find((g) => g.slug === "pokemon");
+  const lead =
+    products.find(
+      (r) =>
+        r.product.gameId === pokemon?.id &&
+        /bulbasaur/i.test(r.product.name.en),
+    ) ?? products.find((r) => r.product.gameId === pokemon?.id);
+  const heroes = [
+    lead,
+    ...games
+      .filter((g) => g.slug !== "pokemon")
+      .map((g) => products.find((r) => r.product.gameId === g.id)),
+  ]
+    .filter((r): r is ProductResult => Boolean(r))
+    .slice(0, 3);
   const featured = [
     ...new Map(
       [
-        ...page.games.flatMap((g) =>
-          products.filter((r) => r.product.gameId === g.id).slice(0, 2),
+        ...games.flatMap((g) =>
+          products.filter((r) => r.product.gameId === g.id).slice(0, 1),
         ),
         ...products,
       ].map((r) => [r.product.id, r]),
     ).values(),
   ];
-  const heroes = page.games
-    .flatMap((g) =>
-      featured.filter((r) => r.product.gameId === g.id).slice(0, 1),
-    )
-    .slice(0, 3);
-  const link = (url: string, en: string, french: string, secondary = false) => (
+  const art = (p: Product, eager = false) => {
+    const i = imagesForVariant(p, p.variants[0])[0];
+    return (
+      <CardImage
+        src={i?.url}
+        srcSet={i?.sources.map((s) => `${s.url} ${s.width}w`).join(", ")}
+        sizes={
+          eager
+            ? "(min-width: 1024px) 300px, 45vw"
+            : "(min-width: 1024px) 220px, 40vw"
+        }
+        width={i?.width}
+        height={i?.height}
+        eager={eager}
+        alt={p.name[page.locale]}
+        missingLabel={c("Artwork coming soon", "Visuel à venir")}
+      />
+    );
+  };
+  const action = (
+    url: string,
+    en: string,
+    french: string,
+    secondary = false,
+  ) => (
     <Button asChild variant={secondary ? "secondary" : "primary"}>
-      <a href={href(url)}>{copy(en, french)}</a>
+      <a href={href(url)}>
+        {c(en, french)}
+        <EditorialIcon name="arrow" />
+      </a>
     </Button>
   );
   return (
-    <div className="grid gap-16 md:gap-24">
-      <section className="grid items-center gap-8 pt-6 lg:grid-cols-2 lg:gap-12 lg:py-8">
-        <div className="grid gap-6">
-          <p className="text-sm font-semibold tracking-wide text-muted-foreground">
-            {copy(
-              "CANADA’S TRADING CARD MARKETPLACE",
-              "LE MARCHÉ CANADIEN DES CARTES",
+    <div className="troc-home-editorial">
+      <section className="troc-home-hero">
+        <div className="troc-hero-copy">
+          <p className="troc-editorial-eyebrow">
+            {c(
+              "THE HOBBY HAS A HOME. CANADA.",
+              "LA PASSION A SON ADRESSE. AU CANADA.",
             )}
           </p>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl xl:text-6xl">
-            {copy("One search.", "Une recherche.")}
+          <h1>
+            {c("One search.", "Une recherche.")}
             <br />
-            {copy("Every seller.", "Tous les vendeurs.")}
+            <span>{c("Every seller.", "Tous les vendeurs.")}</span>
           </h1>
-          <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
-            {copy(
-              "Find your next card. Compare Canadian sellers. All prices in CAD.",
-              "Trouvez votre prochaine carte. Comparez les vendeurs canadiens. Tous les prix en dollars canadiens.",
+          <p className="troc-hero-lead">
+            {c(
+              "The next card. The last piece of your set. Find it here.",
+              "La prochaine carte. La dernière de votre extension. Trouvez-la ici.",
+            )}
+          </p>
+          <p className="troc-hero-support">
+            {c(
+              "Compare Canadian sellers in one place. Singles, sealed and graded. All in CAD.",
+              "Comparez les vendeurs canadiens au même endroit. Cartes à l’unité, scellées et gradées. Tout en CAD.",
             )}
           </p>
           <form
             role="search"
-            aria-label={copy(
+            aria-label={c(
               "Find your next card",
               "Trouvez votre prochaine carte",
             )}
             action={href("/search").split("?")[0]}
-            className="flex gap-2"
+            className="troc-hero-search"
           >
             <input type="hidden" name="lang" value={page.locale} />
+            <EditorialIcon name="search" />
             <Input
               name="q"
               maxLength={100}
-              aria-label={copy(
-                "Card or set name",
-                "Nom de carte ou d’extension",
+              aria-label={c("Card or set name", "Nom de carte ou d’extension")}
+              placeholder={c(
+                "Your next find starts here…",
+                "Votre prochaine trouvaille…",
               )}
-              placeholder={copy(
-                "What are you collecting?",
-                "Que collectionnez-vous?",
-              )}
-              className="min-w-0 flex-1"
             />
-            <Button type="submit">{copy("Search", "Chercher")}</Button>
+            <Button type="submit">{c("Search", "Chercher")}</Button>
           </form>
-          <div className="flex flex-wrap gap-3">
-            {link("/search", "Shop cards", "Magasiner les cartes")}
-            {link(
-              "/founding-sellers",
-              "Become a founding seller",
-              "Devenir vendeur fondateur",
-              true,
-            )}
+          <div className="troc-hero-actions">
+            {action("/search", "Explore cards", "Explorer les cartes")}
+            <a
+              className="troc-editorial-text-link"
+              href={href("/founding-sellers")}
+            >
+              {c("Sell with TROC", "Vendre avec TROC")}
+              <EditorialIcon name="arrow" />
+            </a>
           </div>
-        </div>
-        <div>
-          <CardShowcase
-            label={copy(
-              "A few cards. Endless possibilities.",
-              "Quelques cartes. Tant de possibilités.",
+          <p className="troc-hero-signature">
+            <span aria-hidden="true" />{" "}
+            {c(
+              "Built here. For collectors here.",
+              "D’ici. Pour les collectionneurs d’ici.",
             )}
-            cards={heroes.map(({ product }) => {
-              const image = imagesForVariant(product, product.variants[0])[0];
-              return (
-                <CardImage
-                  key={product.id}
-                  src={image?.url}
-                  srcSet={image?.sources
-                    .map((s) => `${s.url} ${s.width}w`)
-                    .join(", ")}
-                  sizes="(min-width: 1024px) 240px, 32vw"
-                  width={image?.width}
-                  height={image?.height}
-                  eager
-                  alt={product.name[page.locale]}
-                  missingLabel={copy("Artwork coming soon", "Visuel à venir")}
-                />
-              );
-            })}
+          </p>
+        </div>
+        <div className="troc-hero-display">
+          <div className="troc-hero-display-label">
+            <span>01 / {c("THE COLLECTION", "LA COLLECTION")}</span>
+            <span>{c("YOUR NEXT FIND", "VOTRE PROCHAINE TROUVAILLE")}</span>
+          </div>
+          <CardShowcase
+            variant="showroom"
+            label={c("Pokémon leads the collection", "Pokémon au premier plan")}
+            caption={
+              <>
+                <span>{lead?.product.name[page.locale] ?? "Pokémon"}</span>
+                <span aria-hidden="true">/</span>
+                <span>
+                  {c(
+                    "A little card. A whole world.",
+                    "Une petite carte. Tout un univers.",
+                  )}
+                </span>
+              </>
+            }
+            cards={heroes.map((r) => art(r.product, true))}
           />
-          <p className="text-center text-xs text-muted-foreground">
-            {copy(
-              "Real cards. Demo marketplace.",
-              "De vraies cartes. Un marché de démonstration.",
+          <p className="troc-art-note">
+            {c(
+              "Approved card imagery · Demo marketplace",
+              "Visuels approuvés · Marché de démonstration",
             )}
           </p>
         </div>
       </section>
-      <div className="grid grid-cols-2 gap-6 border-y border-border py-6 md:grid-cols-4">
-        {[
+      <div className="troc-value-rail">
+        {(
           [
-            "Canada-first",
-            "Pensé pour le Canada",
-            "Canadian sellers, closer to home.",
-            "Des vendeurs canadiens, plus près de vous.",
-          ],
-          [
-            "All in CAD",
-            "Tout en dollars canadiens",
-            "Compare prices in your currency.",
-            "Comparez les prix dans votre devise.",
-          ],
-          [
-            "English & français",
-            "Français & English",
-            "Your hobby. Your language.",
-            "Votre passion. Votre langue.",
-          ],
-          [
-            "Every single matters",
-            "Chaque carte compte",
-            "Built for the cards under $1, too.",
-            "Aussi pour les cartes à moins de 1 $.",
-          ],
-        ].map(([en, french, body, bodyFr]) => (
-          <div className="grid gap-2" key={en}>
-            <p className="text-sm font-semibold">{copy(en, french)}</p>
-            <p className="text-sm text-muted-foreground">
-              {copy(body, bodyFr)}
-            </p>
+            [
+              "globe",
+              "Canada-first",
+              "Pensé pour le Canada",
+              "Closer to your next find.",
+              "Plus près de votre prochaine trouvaille.",
+            ],
+            [
+              "coin",
+              "All in CAD",
+              "Tout en CAD",
+              "Your currency. Clearer comparisons.",
+              "Votre devise. Des comparaisons claires.",
+            ],
+            [
+              "language",
+              "English & français",
+              "Français & English",
+              "The hobby, in your language.",
+              "La passion, dans votre langue.",
+            ],
+            [
+              "layers",
+              "Every single matters",
+              "Chaque carte compte",
+              "Yes, even the 25¢ ones.",
+              "Oui, même celles à 25 ¢.",
+            ],
+          ] as const
+        ).map(([icon, en, french, body, bodyFr]) => (
+          <div key={icon}>
+            <EditorialIcon name={icon} />
+            <div>
+              <strong>{c(en, french)}</strong>
+              <p>{c(body, bodyFr)}</p>
+            </div>
           </div>
         ))}
       </div>
-      <section id="browse-games" className="grid gap-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight">
-            {copy("Find your game.", "Trouvez votre jeu.")}
-          </h2>
-          <span className="text-sm text-muted-foreground">
-            {copy("Singles · Sealed · Graded", "À l’unité · Scellés · Gradées")}
-          </span>
+      <section className="troc-home-section">
+        <EditorialIntro
+          eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
+          title={c("Find your world.", "Trouvez votre univers.")}
+          description={c(
+            "A new deck. A familiar favourite. Follow what you collect.",
+            "Un nouveau deck. Un grand favori. Suivez votre passion.",
+          )}
+        />
+        <div className="troc-game-edit">
+          {games.map((g, index) => {
+            const p = products.find((r) => r.product.gameId === g.id)?.product;
+            return (
+              <a
+                key={g.id}
+                href={href(`/games/${g.slug}`)}
+                className="troc-game-tile"
+                data-featured={index === 0 || undefined}
+              >
+                <span className="troc-game-number">0{index + 1}</span>
+                {p ? (
+                  <div className="troc-game-art" aria-hidden="true">
+                    {art(p)}
+                  </div>
+                ) : (
+                  <div className="troc-game-fallback" aria-hidden="true">
+                    <EditorialIcon name="layers" />
+                  </div>
+                )}
+                <div className="troc-game-tile-copy">
+                  <span>{g.name[page.locale]}</span>
+                  <EditorialIcon name="arrow" />
+                </div>
+                <span className="troc-game-subtitle">
+                  {c(
+                    p ? "Explore the edit" : "Explore the demo",
+                    p ? "Découvrir la sélection" : "Explorer la démo",
+                  )}
+                </span>
+              </a>
+            );
+          })}
         </div>
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
-          {page.games.map((g, index) => (
-            <a
-              key={g.id}
-              href={href(`/games/${g.slug}`)}
-              className="grid content-between gap-4 rounded-lg border border-border bg-card p-4 md:gap-6 md:p-6 hover:border-foreground"
-            >
-              <span className="text-xs text-muted-foreground">
-                0{index + 1}
-              </span>
-              <span className="font-semibold">
-                {g.name[page.locale]} <span aria-hidden="true">↗</span>
-              </span>
+      </section>
+      <section className="troc-home-section troc-discovery-edit">
+        <EditorialIntro
+          eyebrow={c("THE DISCOVERY EDIT / 01", "LA SÉLECTION / 01")}
+          title={c(
+            "A place for your next obsession.",
+            "Votre prochaine passion commence ici.",
+          )}
+          description={c(
+            "Familiar favourites and unexpected finds. A small window into a much bigger hobby.",
+            "Des favoris familiers et des trouvailles inattendues. Un aperçu d’une grande passion.",
+          )}
+          aside={
+            <a className="troc-editorial-text-link" href={href("/search")}>
+              {c("View all cards", "Toutes les cartes")}
+              <EditorialIcon name="arrow" />
             </a>
-          ))}
-        </div>
-      </section>
-      <section className="grid gap-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="grid gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {copy("THE DISCOVERY EDIT", "À DÉCOUVRIR")}
-            </p>
-            <h2 className="text-2xl font-bold tracking-tight">
-              {copy("Your next great find.", "Votre prochaine trouvaille.")}
-            </h2>
-          </div>
-          {link(
-            "/search",
-            "Explore the marketplace",
-            "Explorer le marché",
-            true,
-          )}
-        </div>
-        {page.demo && (
-          <p className="text-sm text-muted-foreground">
-            {copy(
-              "A curated demo selection. Prices and stock are illustrative.",
-              "Une sélection de démonstration. Prix et stocks fictifs.",
-            )}
-          </p>
-        )}
+          }
+        />
         {cards(featured.slice(0, 4))}
-      </section>
-      <section className="grid gap-8 border-y border-border py-12">
-        <h2 className="text-2xl font-bold tracking-tight">
-          {copy(
-            "Less searching. More collecting.",
-            "Moins chercher. Plus collectionner.",
+        <p className="troc-art-note">
+          {c(
+            "Curated demo selection. Prices, stock and sellers are illustrative.",
+            "Sélection de démonstration. Prix, stocks et vendeurs fictifs.",
           )}
-        </h2>
-        <div className="grid gap-8 md:grid-cols-3">
-          {[
+        </p>
+      </section>
+      <section className="troc-how-edit">
+        <EditorialIntro
+          eyebrow={c(
+            "LESS FRICTION. MORE HOBBY.",
+            "MOINS D’EFFORT. PLUS DE PASSION.",
+          )}
+          title={
+            <>
+              {c("The card is the beginning.", "La carte, c’est le début.")}
+              <br />
+              {c("The whole order matters.", "La commande complète compte.")}
+            </>
+          }
+          description={c(
+            "TROC brings the details together, so you can get back to the cards.",
+            "TROC réunit les détails pour vous laisser profiter des cartes.",
+          )}
+        />
+        <div className="troc-how-steps">
+          {(
             [
-              "01",
-              "One catalog",
-              "Un catalogue",
-              "Find the right card, printing and language without opening a dozen tabs.",
-              "Trouvez la bonne carte, l’édition et la langue sans multiplier les onglets.",
-            ],
-            [
-              "02",
-              "Compare the whole offer",
-              "Comparez l’offre complète",
-              "See condition, seller minimums and handling alongside the price.",
-              "Consultez l’état, le minimum du vendeur et le délai de traitement avec le prix.",
-            ],
-            [
-              "03",
-              "Build a better order",
-              "Composez une meilleure commande",
-              "Group your cards by seller. Let Smart Cart compare the total, including shipping.",
-              "Regroupez vos cartes par vendeur. Smart Cart compare le total, livraison comprise.",
-            ],
-          ].map(([n, en, french, body, bodyFr]) => (
-            <div className="grid content-start gap-3" key={n}>
-              <span className="text-sm text-muted-foreground">{n}</span>
-              <h3 className="text-lg font-semibold">{copy(en, french)}</h3>
-              <p className="leading-relaxed text-muted-foreground">
-                {copy(body, bodyFr)}
-              </p>
+              [
+                "search",
+                "One catalog",
+                "Un catalogue",
+                "Find the right card, printing and language.",
+                "Trouvez la bonne carte, l’édition et la langue.",
+              ],
+              [
+                "layers",
+                "Compare the whole offer",
+                "Comparez l’offre complète",
+                "See the condition, seller minimum and handling—not just the sticker price.",
+                "Consultez l’état, le minimum vendeur et le délai avec le prix.",
+              ],
+              [
+                "package",
+                "Build a better order",
+                "Composez une meilleure commande",
+                "Combine cards from the same seller. Compare the total with shipping.",
+                "Regroupez les cartes d’un vendeur. Comparez le total avec la livraison.",
+              ],
+            ] as const
+          ).map(([icon, en, french, body, bodyFr], i) => (
+            <div key={icon}>
+              <span className="troc-step-index">0{i + 1}</span>
+              <EditorialIcon name={icon} />
+              <div>
+                <h3>{c(en, french)}</h3>
+                <p>{c(body, bodyFr)}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
-      <section className="grid items-center gap-8 lg:grid-cols-2">
-        <div className="grid gap-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            SMART CART
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight">
-            {copy(
-              "More cards. Less shipping.",
-              "Plus de cartes. Moins de frais.",
+      <EditorialPanel className="troc-smart-edit">
+        <div className="troc-smart-story">
+          <EditorialIntro
+            eyebrow="TROC / SMART CART"
+            title={
+              <>
+                {c("Love the cards.", "Aimez les cartes.")}
+                <br />
+                {c("Lose the extra shipping.", "Réduisez la livraison.")}
+              </>
+            }
+            description={c(
+              "A 25¢ card shouldn’t get left behind. Let Smart Cart compare compatible offers, seller minimums and combined shipping.",
+              "Une carte à 25 ¢ ne devrait pas être oubliée. Smart Cart compare les offres compatibles, les minimums et la livraison regroupée.",
             )}
-          </h2>
-          <p className="max-w-lg leading-relaxed text-muted-foreground">
-            {copy(
-              "A 25¢ card deserves a place in your order. Compare sellers, reach minimums and combine shipping—without losing sight of the cards you actually want.",
-              "Une carte à 25 ¢ mérite sa place dans votre commande. Comparez les vendeurs, atteignez leurs minimums et regroupez la livraison, tout en gardant les cartes que vous voulez.",
-            )}
-          </p>
-          <div>
-            {link("/smart-cart", "Explore Smart Cart", "Découvrir Smart Cart")}
-          </div>
+          />
+          {action(
+            "/smart-cart",
+            "Find a smarter total",
+            "Trouver un meilleur total",
+          )}
         </div>
-        <div className="grid gap-6 rounded-lg border border-border bg-card p-6 md:p-8">
-          <p className="text-sm font-semibold">
-            {copy(
-              "30 cards. A smarter total.",
-              "30 cartes. Un meilleur total.",
+        <div className="troc-smart-proof">
+          <p className="troc-editorial-eyebrow">
+            {c(
+              "SAME 30-CARD LIST. DIFFERENT TOTAL.",
+              "MÊME LISTE DE 30 CARTES. AUTRE TOTAL.",
             )}
           </p>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="grid gap-2">
-              <p className="text-sm text-muted-foreground">
-                {copy("Before", "Avant")}
-              </p>
-              <p className="text-3xl font-bold">{fr ? "14,25 $" : "$14.25"}</p>
-              <p className="text-sm text-muted-foreground">
-                {copy(
+          <div className="troc-smart-proof-columns">
+            <div>
+              <p>{c("Separate orders", "Commandes séparées")}</p>
+              <div className="troc-parcels" aria-hidden="true">
+                <EditorialIcon name="package" />
+                <EditorialIcon name="package" />
+                <EditorialIcon name="package" />
+              </div>
+              <span className="troc-proof-total">
+                {fr ? "14,25 $" : "$14.25"}
+              </span>
+              <p>
+                {c(
                   "3 sellers · $7.50 shipping",
                   "3 vendeurs · 7,50 $ de livraison",
                 )}
               </p>
             </div>
-            <div className="grid gap-2 border-l border-border pl-6">
-              <p className="text-sm font-semibold">
-                {copy("Consolidated", "Regroupé")}
-              </p>
-              <p className="text-3xl font-bold">{fr ? "11,22 $" : "$11.22"}</p>
-              <p className="text-sm text-muted-foreground">
-                {copy(
+            <div className="troc-smart-proof-after">
+              <p>{c("Consolidated", "Regroupées")}</p>
+              <div className="troc-parcels" aria-hidden="true">
+                <EditorialIcon name="package" />
+              </div>
+              <span className="troc-proof-total">
+                {fr ? "11,22 $" : "$11.22"}
+              </span>
+              <p>
+                {c(
                   "1 seller · $4.00 shipping",
                   "1 vendeur · 4,00 $ de livraison",
                 )}
               </p>
             </div>
           </div>
-          <p className="border-t border-border pt-4 text-sm">
-            {copy(
-              "$3.03 saved in this demo scenario.",
-              "3,03 $ économisés dans cet exemple.",
-            )}
-          </p>
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            {copy(
-              "Illustrative tested basket, before tax. Card prices can change between sellers. Your savings depend on available offers, minimums and shipping.",
-              "Panier de démonstration testé, avant taxes. Le prix des cartes varie selon le vendeur. Vos économies dépendent des offres, des minimums et de la livraison.",
+          <div className="troc-proof-saving">
+            <EditorialIcon name="check" />
+            <span>
+              {c("$3.50 less shipping", "3,50 $ de moins en livraison")}
+            </span>
+            <strong>
+              {c("$3.03 saved overall", "3,03 $ économisés au total")}
+            </strong>
+          </div>
+          <p className="troc-art-note">
+            {c(
+              "Tested demo basket, before tax. Card prices vary between sellers. Actual savings depend on the available offers.",
+              "Panier de démonstration testé, avant taxes. Le prix des cartes varie selon le vendeur. Les économies dépendent des offres disponibles.",
             )}
           </p>
         </div>
-      </section>
-      <section className="grid gap-6">
-        <div className="flex flex-wrap justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight">
-            {copy(
-              "Small prices. Big possibilities.",
-              "Petits prix. Grandes possibilités.",
-            )}
-          </h2>
-          <a
-            className="text-sm underline"
-            href={href("/search", { max: "99", sort: "price" })}
-          >
-            {copy("Browse cards under $1", "Voir les cartes à moins de 1 $")}
-          </a>
-        </div>
+      </EditorialPanel>
+      <section className="troc-home-section troc-small-edit">
+        <EditorialIntro
+          eyebrow={c(
+            "SMALL CHANGE. REAL JOY.",
+            "PETITE MONNAIE. GRAND PLAISIR.",
+          )}
+          title={c(
+            "The little finds count, too.",
+            "Les petites trouvailles comptent aussi.",
+          )}
+          description={c(
+            "The common that finishes a set. The playset that makes a deck. Good collecting isn’t always expensive.",
+            "La commune qui complète une extension. Le carré qui complète un deck. Collectionner ne coûte pas toujours cher.",
+          )}
+          aside={
+            <a
+              className="troc-editorial-text-link"
+              href={href("/search", { max: "99", sort: "price" })}
+            >
+              {c("Cards under $1", "Cartes à moins de 1 $")}
+              <EditorialIcon name="arrow" />
+            </a>
+          }
+        />
         {cards(
           products
             .filter(
@@ -360,96 +468,134 @@ export function HomeSections({
             .slice(0, 4),
         )}
       </section>
-      <section className="grid gap-8 rounded-lg bg-card p-6 md:grid-cols-2 md:p-12">
-        <div className="grid content-start gap-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {copy("OUR HOME. OUR HOBBY.", "NOTRE PASSION, ICI.")}
+      <EditorialPanel
+        tone="contrast"
+        className="troc-canada-edit"
+        image={heroes[0] && art(heroes[0].product)}
+      >
+        <div className="troc-canada-heading">
+          <p className="troc-editorial-eyebrow">
+            {c("CANADIAN OWNED & OPERATED", "ENTREPRISE CANADIENNE")}
           </p>
-          <h2 className="text-3xl font-bold tracking-tight">
-            {copy("Built here.", "D’ici.")}
+          <h2>
+            {c("Built here.", "D’ici.")}
             <br />
-            {copy("For collectors here.", "Pour les collectionneurs d’ici.")}
+            <span>
+              {c("For collectors here.", "Pour les collectionneurs d’ici.")}
+            </span>
           </h2>
+          <TrocLogo variant="compact" height={32} />
         </div>
-        <div className="grid content-start gap-5">
-          <p className="text-lg leading-relaxed">
-            {copy(
-              "Canadian owned and operated. Created for the way Canadians actually buy cards.",
-              "Une entreprise canadienne. Créée pour la façon dont on achète des cartes ici.",
+        <div className="troc-canada-copy">
+          <p>
+            {c(
+              "For the way we actually collect.",
+              "Pour notre façon de collectionner.",
             )}
           </p>
-          <p className="leading-relaxed text-muted-foreground">
-            {copy(
-              "From the last common in your set to the card you’ve been chasing for years. TROC brings Canadian sellers, CAD pricing and English and French together in one place.",
-              "De la dernière carte commune de votre extension à celle que vous cherchez depuis des années. TROC réunit les vendeurs canadiens, les prix en dollars canadiens et les deux langues, au même endroit.",
+          <p>
+            {c(
+              "From a shop in Montréal to a binder in Vancouver. Our hobby crosses the country. Buying cards should feel a little closer to home.",
+              "D’une boutique à Montréal à un cartable à Vancouver. Notre passion traverse le pays. Acheter des cartes devrait nous rapprocher.",
             )}
           </p>
-          <a className="font-semibold underline" href={href("/about")}>
-            {copy("The story behind TROC", "L’histoire de TROC")}
+          <p>
+            {c(
+              "CAD from the start. English and French. Canadian sellers. Room for every part of your collection.",
+              "Le CAD dès le départ. Le français et l’anglais. Des vendeurs canadiens. Une place pour chaque carte de votre collection.",
+            )}
+          </p>
+          <a className="troc-editorial-text-link" href={href("/about")}>
+            {c("Why we’re building TROC", "Pourquoi nous créons TROC")}
+            <EditorialIcon name="arrow" />
           </a>
         </div>
-      </section>
-      <section className="grid gap-6">
-        <div className="grid gap-3">
-          <h2 className="text-2xl font-bold tracking-tight">
-            {copy(
-              "Behind every card, a community.",
-              "Derrière chaque carte, une communauté.",
-            )}
-          </h2>
-          <p className="max-w-2xl text-muted-foreground">
-            {copy(
-              "Independent collectors, online sellers and local hobby shops. Discover the people who keep the hobby moving.",
-              "Collectionneurs indépendants, vendeurs en ligne et boutiques locales. Découvrez ceux qui font vivre la passion.",
-            )}
-          </p>
-          {page.demo && (
-            <p className="text-xs text-muted-foreground">
-              {copy(
-                "Illustrative stores—not live sellers or endorsements.",
-                "Boutiques fictives : ni vendeurs actifs ni recommandations.",
-              )}
-            </p>
-          )}
+        <div className="troc-canada-foot">
+          CANADA <span>CAD / EN + FR</span>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {page.sellers.slice(0, 3).map((s) => (
-            <SellerStorefrontHeader
-              key={s.id}
-              name={s.name}
-              avatar={<SellerAvatar name={s.name} src={s.logoUrl} />}
-              tagline={`${s.city}, ${s.province}`}
-              compact
-              actions={
-                <Button asChild variant="secondary">
-                  <a href={href(`/store/${s.slug}`)}>
-                    {copy("Explore store", "Voir la boutique")}
-                  </a>
-                </Button>
-              }
-            />
+      </EditorialPanel>
+      <section className="troc-home-section">
+        <EditorialIntro
+          eyebrow={c(
+            "THE PEOPLE BEHIND THE CARDS",
+            "LES GENS DERRIÈRE LES CARTES",
+          )}
+          title={c("A hobby is better together.", "La passion se partage.")}
+          description={c(
+            "Collectors, online sellers and local hobby shops. Different stories. The same love for the cards.",
+            "Collectionneurs, vendeurs en ligne et boutiques locales. Des histoires différentes. Le même amour des cartes.",
+          )}
+        />
+        <div className="troc-community-grid">
+          {page.sellers.slice(0, 3).map((s, i) => (
+            <article className="troc-community-store" key={s.id}>
+              <div className="troc-community-location">
+                <EditorialIcon name="pin" />
+                <span>
+                  {s.city}, {s.province}
+                </span>
+                <span className="troc-community-code" aria-hidden="true">
+                  {s.province}
+                </span>
+              </div>
+              <div className="troc-community-identity">
+                <SellerAvatar name={s.name} src={s.logoUrl} />
+                <div>
+                  <h3>{s.name}</h3>
+                  <p>
+                    {c("Canadian demo store", "Boutique canadienne fictive")}
+                  </p>
+                </div>
+              </div>
+              <p className="troc-community-story">{s.story[page.locale]}</p>
+              <a
+                className="troc-editorial-text-link"
+                href={href(`/store/${s.slug}`)}
+              >
+                {c("Step inside", "Entrer dans la boutique")}
+                <EditorialIcon name="arrow" />
+              </a>
+              <span className="troc-art-note">
+                0{i + 1} / {c("DEMO STORE", "BOUTIQUE DÉMO")}
+              </span>
+            </article>
           ))}
         </div>
-      </section>
-      <section className="grid gap-6 border-t border-border py-12 text-center">
-        <h2 className="text-3xl font-bold tracking-tight">
-          {copy(
-            "Make room for your next find.",
-            "Faites place à votre prochaine trouvaille.",
-          )}
-        </h2>
-        <p className="text-muted-foreground">
-          {copy(
-            "Build your next deck. Complete that set. Find your people.",
-            "Préparez votre prochain deck. Complétez votre extension. Trouvez votre communauté.",
+        <p className="troc-art-note">
+          {c(
+            "Illustrative stores. No live seller activity or endorsement is implied.",
+            "Boutiques fictives. Aucune activité réelle ni affiliation n’est revendiquée.",
           )}
         </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          {link("/search", "Start exploring", "Commencer à explorer")}
-          {link(
+      </section>
+      <section className="troc-final-edit">
+        <div className="troc-final-mark" aria-hidden="true">
+          <TrocLogo variant="compact" height={96} />
+        </div>
+        <EditorialIntro
+          eyebrow={c(
+            "YOUR NEXT CHAPTER STARTS HERE",
+            "VOTRE PROCHAIN CHAPITRE COMMENCE ICI",
+          )}
+          title={c(
+            "Make room for a new favourite.",
+            "Faites place à un nouveau favori.",
+          )}
+          description={c(
+            "Find the card. Meet the seller. Keep the hobby going.",
+            "Trouvez la carte. Découvrez le vendeur. Faites vivre la passion.",
+          )}
+        />
+        <div className="troc-hero-actions">
+          {action(
+            "/search",
+            "Find your next card",
+            "Trouver votre prochaine carte",
+          )}
+          {action(
             "/founding-sellers",
-            "Sell with TROC",
-            "Vendre avec TROC",
+            "Become a founding seller",
+            "Devenir vendeur fondateur",
             true,
           )}
         </div>

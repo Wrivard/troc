@@ -28,7 +28,7 @@
 .ds-nav-link { display: flex; align-items: center; gap: 10px; min-height: 35px; padding: 8px 12px; color: var(--text-secondary); font-size: 11px; border-radius: var(--radius-sm); margin-bottom: 2px; }
 .ds-nav-link:hover { background: var(--surface-hover); color: var(--text-primary); }
 .ds-nav-link.is-active { color: var(--color-sidebar-accent-foreground); background: var(--color-sidebar-accent); }
-.ds-nav-number { margin-left: auto; font-family: var(--font-mono); font-size: 9px; opacity: .7; }
+.ds-nav-number { margin-left: auto; font-family: var(--font-mono); font-size: 9px; }
 .ds-nav-dash { width: 15px; }
 .ds-nav-link.is-active .ds-nav-dash::before { content: ""; display: block; width: 4px; height: 4px; background: currentColor; border-radius: 50%; }
 .ds-nav-empty { padding: 14px; font-size: 12px; color: var(--text-muted); }

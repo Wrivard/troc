@@ -1,3 +1,4 @@
+import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
 import type { CartLine, CartQuote, SmartResult } from "@workspace/commerce";
@@ -263,22 +264,26 @@ export function CommerceApp({ path }: { path: string }) {
           <OrderPages path={path} locale={locale} />
         ) : (
           <>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {t(checkout ? "checkout" : smartPage ? "smart" : "cart")}
-            </h1>
-            <p className="max-w-2xl leading-relaxed text-muted-foreground">
-              {locale === "fr"
-                ? checkout
-                  ? "Vérifiez votre adresse et le détail de chaque vendeur. Ce paiement est simulé : aucun montant ne sera prélevé."
-                  : smartPage
-                    ? "Comparez le coût total, livraison comprise. Vérifiez chaque changement avant de l’appliquer à votre panier."
-                    : "Vos cartes, regroupées par vendeur. Vérifiez les minimums et la livraison avant de poursuivre."
-                : checkout
-                  ? "Review your address and each seller’s order. This checkout is simulated: no money will be charged."
-                  : smartPage
-                    ? "Compare the complete cost, including shipping. Review every change before applying it to your cart."
-                    : "Your cards, grouped by seller. Check minimums and shipping before you continue."}
-            </p>
+            <EditorialIntro
+              level={1}
+              compact
+              className="troc-page-opening"
+              eyebrow="TROC · CANADA"
+              title={t(checkout ? "checkout" : smartPage ? "smart" : "cart")}
+              description={
+                locale === "fr"
+                  ? checkout
+                    ? "Vérifiez votre adresse et le détail de chaque vendeur. Ce paiement est simulé : aucun montant ne sera prélevé."
+                    : smartPage
+                      ? "Comparez le coût total, livraison comprise. Vérifiez chaque changement avant de l’appliquer à votre panier."
+                      : "Vos cartes, regroupées par vendeur. Vérifiez les minimums et la livraison avant de poursuivre."
+                  : checkout
+                    ? "Review your address and each seller’s order. This checkout is simulated: no money will be charged."
+                    : smartPage
+                      ? "Compare the complete cost, including shipping. Review every change before applying it to your cart."
+                      : "Your cards, grouped by seller. Check minimums and shipping before you continue."
+              }
+            />
             {status && (
               <p role="alert">
                 {t(status)}

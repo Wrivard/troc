@@ -145,13 +145,20 @@ export function MarketplaceFooter({
     },
   ];
   return (
-    <footer className="border-t border-border bg-card text-card-foreground print:hidden">
-      <div className="mx-auto grid max-w-screen-xl gap-10 px-4 py-12 md:px-8">
+    <footer className="troc-footer-editorial text-card-foreground print:hidden">
+      <div className="mx-auto grid max-w-screen-xl gap-10 px-4 py-16 md:px-8">
+        <div className="troc-footer-masthead">
+          <a href={`${base}/?lang=${locale}`} aria-label="TROC">
+            <TrocLogo height={44} />
+          </a>
+          <p>
+            {fr
+              ? "Une carte pour compléter votre extension. Une boutique à découvrir. Votre passion, au bon endroit."
+              : "A card to complete your set. A store to discover. Your hobby, in the right place."}
+          </p>
+        </div>
         <div className="grid gap-10 lg:grid-cols-[1.3fr_3fr]">
           <div className="grid content-start gap-4">
-            <a href={`${base}/?lang=${locale}`} aria-label="TROC">
-              <TrocLogo height={28} />
-            </a>
             <p className="max-w-xs text-lg font-semibold">
               {fr
                 ? "D’ici. Pour les collectionneurs d’ici."
@@ -184,7 +191,7 @@ export function MarketplaceFooter({
             ))}
           </div>
         </div>
-        <div className="flex flex-wrap justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground">
+        <div className="troc-footer-note">
           <p>© {new Date().getUTCFullYear()} TROC · CAD · Canada · EN / FR</p>
           <a className="underline" href={`${base}/help?lang=${locale}#demo`}>
             {fr ? "À propos de cette démo" : "About this demo"}

@@ -1,3 +1,4 @@
+import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -110,8 +111,12 @@ export function AccountApp({ path }: { path: string }) {
         className="mx-auto my-12 grid w-full max-w-lg gap-6 rounded-lg border border-border bg-card p-6 md:p-8"
         aria-busy={busy}
       >
-        <h1 className="text-2xl font-bold">
-          {t(
+        <EditorialIntro
+          level={1}
+          compact
+          className="troc-page-opening"
+          eyebrow="TROC · CANADA"
+          title={t(
             !known
               ? "notFound"
               : protectedPage
@@ -122,16 +127,16 @@ export function AccountApp({ path }: { path: string }) {
                   ? "signUp"
                   : "signIn",
           )}
-        </h1>
-        <p className="leading-relaxed text-muted-foreground">
-          {locale === "fr"
-            ? protectedPage
-              ? "Vos commandes, vos préférences et votre place dans la communauté TROC."
-              : "Retrouvez vos cartes et vos commandes. Un compte pour votre passion."
-            : protectedPage
-              ? "Your orders, your preferences and your place in the TROC community."
-              : "Keep your cards and orders together. One account for your hobby."}
-        </p>
+          description={
+            locale === "fr"
+              ? protectedPage
+                ? "Vos commandes, vos préférences et votre place dans la communauté TROC."
+                : "Retrouvez vos cartes et vos commandes. Un compte pour votre passion."
+              : protectedPage
+                ? "Your orders, your preferences and your place in the TROC community."
+                : "Keep your cards and orders together. One account for your hobby."
+          }
+        />
         {busy && <p role="status">{t("loading")}</p>}
         {status && <p role="status">{t(status)}</p>}
         {known && !protectedPage && (

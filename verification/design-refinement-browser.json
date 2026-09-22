@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "lang": "en",
+      "theme": "dark",
+      "reducedMotion": "reduce",
+      "passed": true
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "reducedMotion": "no-preference",
+      "passed": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "reducedMotion": "reduce",
+      "passed": true
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "reducedMotion": "no-preference",
+      "passed": true
+    },
+    {
+      "lang": "fr",
+      "theme": "dark",
+      "reducedMotion": "reduce",
+      "passed": true
+    },
+    {
+      "lang": "fr",
+      "theme": "dark",
+      "reducedMotion": "no-preference",
+      "passed": true
+    },
+    {
+      "lang": "fr",
+      "theme": "light",
+      "reducedMotion": "reduce",
+      "passed": true
+    },
+    {
+      "lang": "fr",
+      "theme": "light",
+      "reducedMotion": "no-preference",
+      "passed": true
+    }
+  ]
+}

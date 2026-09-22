@@ -1,5 +1,6 @@
 /** Canadian English/French copy is centralized; reusable primitives accept labels as props. */
 export const messages = {
+  editorial: ["Editorial compositions", "Compositions éditoriales"],
   designSystem: ["Design system", "Système de design"],
   systemTitle: ["TROC Design System", "Système de design TROC"],
   description: ["The visual foundation for Canada’s trading card marketplace.", "La base visuelle du marché canadien des cartes à collectionner."],

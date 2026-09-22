@@ -178,3 +178,9 @@ Static card-art provenance and usage boundaries are documented in
 [`card-artwork.md`](card-artwork.md). Those assets are illustration-only demo
 references; reusable components receive image URLs through props, with no live
 catalog, inventory, pricing, or sales API.
+
+## Editorial composition supplement — 2026-09-22
+
+The `editorial` guide page documents `EditorialIntro`, `EditorialPanel`, `EditorialCatalogGrid`, and `EditorialIcon` from `components/ui/editorial`. These are composition supplements, not replacements for the original 46 component families. Page titles use level 1; section titles use level 2. Quiet and contrast panels use existing semantic tokens. Decorative backgrounds must not imply a real seller/location or reduce text contrast.
+
+`CardShowcase` supports an opt-in `showroom` variant: first card leads, remaining cards sit behind, at most three cards, bounded mouse perspective, no continuous loop, reduced-motion support. The original static stack remains the default. Only approved catalog art may be passed by the marketplace; guide-only demo art remains inside the guide.

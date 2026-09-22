@@ -1,3 +1,7 @@
+import {
+  EditorialIntro,
+  EditorialCatalogGrid,
+} from "@workspace/troc-design-system/components/ui/editorial";
 import { useState, lazy, Suspense } from "react";
 import type { PublicPage, Locale, ProductResult } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -109,7 +113,7 @@ export function PublicMarketplace({
       grade: page.selectedGrade ?? "",
     });
   const cards = (items: ProductResult[]) => (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 xl:grid-cols-4">
+    <EditorialCatalogGrid>
       {items.map((result) => {
         const p = result.product;
         const set = page.sets.find((s) => s.id === p.setId);
@@ -163,7 +167,7 @@ export function PublicMarketplace({
           />
         );
       })}
-    </div>
+    </EditorialCatalogGrid>
   );
   const filter = (
     key: string,
@@ -231,72 +235,94 @@ export function PublicMarketplace({
           label: t(v as CatalogMessage),
         })),
       )}
-      {filter("language", "language", page.filters.language, [
-        { value: "en", label: t("english") },
-        { value: "ja", label: t("japanese") },
-      ])}
-      {filter(
-        "variant",
-        "variant",
-        page.filters.variant,
-        [
-          ...new Set([
+      <details
+        className="sm:col-span-2 lg:col-span-4 border-t border-border pt-4"
+        open={Boolean(
+          page.filters.language ||
+          page.filters.variant ||
+          page.filters.rarity ||
+          page.filters.condition ||
+          page.filters.min !== null ||
+          page.filters.max !== null,
+        )}
+      >
+        <summary className="cursor-pointer text-sm font-semibold">
+          {locale === "fr"
+            ? "Édition, état et prix"
+            : "Printing, condition and price"}
+        </summary>
+        <div className="grid gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+          {filter("language", "language", page.filters.language, [
+            { value: "en", label: t("english") },
+            { value: "ja", label: t("japanese") },
+          ])}
+          {filter(
+            "variant",
+            "variant",
             page.filters.variant,
-            ...page.results.flatMap((r) =>
-              r.product.variants.map((v) => v.key),
-            ),
-          ]),
-        ]
-          .filter(Boolean)
-          .map((v) => ({
-            value: v,
-            label: v in catalogMessages ? t(v as CatalogMessage) : v,
-          })),
-      )}
-      {filter(
-        "rarity",
-        "rarity",
-        page.filters.rarity,
-        [
-          ...new Set([
+            [
+              ...new Set([
+                page.filters.variant,
+                ...page.results.flatMap((r) =>
+                  r.product.variants.map((v) => v.key),
+                ),
+              ]),
+            ]
+              .filter(Boolean)
+              .map((v) => ({
+                value: v,
+                label: v in catalogMessages ? t(v as CatalogMessage) : v,
+              })),
+          )}
+          {filter(
+            "rarity",
+            "rarity",
             page.filters.rarity,
-            ...page.results.flatMap((r) =>
-              r.product.variants.map((v) => v.rarity),
-            ),
-          ]),
-        ]
-          .filter(Boolean)
-          .map((v) => ({
-            value: v,
-            label: v in catalogMessages ? t(v as CatalogMessage) : v,
-          })),
-      )}
-      {filter(
-        "condition",
-        "condition",
-        page.filters.condition,
-        ["NM", "LP", "MP", "HP", "DMG"].map((v) => ({ value: v, label: v })),
-      )}
-      <label className="grid gap-2">
-        {t("min")}
-        <Input
-          type="number"
-          min={0}
-          step={1}
-          name="min"
-          defaultValue={page.filters.min ?? ""}
-        />
-      </label>
-      <label className="grid gap-2">
-        {t("max")}
-        <Input
-          type="number"
-          min={0}
-          step={1}
-          name="max"
-          defaultValue={page.filters.max ?? ""}
-        />
-      </label>
+            [
+              ...new Set([
+                page.filters.rarity,
+                ...page.results.flatMap((r) =>
+                  r.product.variants.map((v) => v.rarity),
+                ),
+              ]),
+            ]
+              .filter(Boolean)
+              .map((v) => ({
+                value: v,
+                label: v in catalogMessages ? t(v as CatalogMessage) : v,
+              })),
+          )}
+          {filter(
+            "condition",
+            "condition",
+            page.filters.condition,
+            ["NM", "LP", "MP", "HP", "DMG"].map((v) => ({
+              value: v,
+              label: v,
+            })),
+          )}
+          <label className="grid gap-2">
+            {t("min")}
+            <Input
+              type="number"
+              min={0}
+              step={1}
+              name="min"
+              defaultValue={page.filters.min ?? ""}
+            />
+          </label>
+          <label className="grid gap-2">
+            {t("max")}
+            <Input
+              type="number"
+              min={0}
+              step={1}
+              name="max"
+              defaultValue={page.filters.max ?? ""}
+            />
+          </label>
+        </div>
+      </details>
       {filter(
         "sort",
         "sort",
@@ -361,32 +387,32 @@ export function PublicMarketplace({
           </nav>
         )}
         {page.kind !== "home" && (
-          <header className="grid gap-3">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-              {title}
-            </h1>
-            {page.kind === "search" && (
-              <p className="max-w-2xl text-muted-foreground">
-                {locale === "fr"
-                  ? "Trouvez la bonne édition. Comparez les offres. Tous les prix en dollars canadiens."
-                  : "Find the right edition. Compare the offers. Every price in CAD."}
-              </p>
-            )}
-            {(page.kind === "game" || page.kind === "set") && (
-              <p className="max-w-2xl text-muted-foreground">
-                {locale === "fr"
-                  ? "Explorez les cartes, repérez vos prochaines trouvailles et comparez les offres des vendeurs."
-                  : "Explore the cards, find your next additions and compare seller offers."}
-              </p>
-            )}
-          </header>
+          <EditorialIntro
+            level={1}
+            className="troc-page-opening"
+            eyebrow={
+              page.kind === "store"
+                ? locale === "fr"
+                  ? "LES BOUTIQUES TROC"
+                  : "THE STORES OF TROC"
+                : "TROC · CAD · CANADA"
+            }
+            title={title}
+            description={
+              page.kind === "product" || page.kind === "store"
+                ? undefined
+                : locale === "fr"
+                  ? "Trouvez la bonne édition. Découvrez vos prochaines cartes et comparez les offres des vendeurs canadiens."
+                  : "Find the right edition. Discover your next cards and compare offers from Canadian sellers."
+            }
+          />
         )}
         {page.kind === "home" ? (
           <HomeSections page={page} cards={cards} href={href} />
         ) : product ? (
           <>
             <section className="grid items-start gap-8 md:grid-cols-3 md:gap-12">
-              <div className="rounded-lg bg-card p-6 md:p-8">
+              <div className="troc-product-gallery">
                 <CatalogArtwork
                   key={selected?.id ?? product.id}
                   product={product}
@@ -395,7 +421,7 @@ export function PublicMarketplace({
                   gallery
                 />
               </div>
-              <div className="grid content-start gap-6 md:col-span-2">
+              <div className="troc-product-summary grid content-start gap-6 md:col-span-2">
                 <CardMetadata
                   items={[
                     page.games.find((g) => g.id === product.gameId)?.name[
@@ -434,7 +460,7 @@ export function PublicMarketplace({
                     ),
                   ]}
                 />
-                <div className="flex flex-wrap gap-6">
+                <div className="troc-product-prices">
                   {money(page.results[0]?.lowestCents ?? null, "lowest")}
                   {money(page.results[0]?.referenceCents ?? null, "reference")}
                   {money(page.results[0]?.medianCents ?? null, "median")}
@@ -475,8 +501,16 @@ export function PublicMarketplace({
                 </details>
               </div>
             </section>
-            <section className="grid gap-4">
-              <h2 className="text-xl font-bold">{t("offers")}</h2>
+            <section className="troc-offer-list grid gap-4">
+              <EditorialIntro
+                compact
+                title={t("offers")}
+                eyebrow={
+                  locale === "fr"
+                    ? "CHOISISSEZ VOTRE VENDEUR"
+                    : "CHOOSE YOUR SELLER"
+                }
+              />
               <form
                 action={page.path}
                 className="flex flex-wrap items-end gap-4"
@@ -688,8 +722,14 @@ export function PublicMarketplace({
               </nav>
               <p className="text-sm text-muted-foreground">{t("shipping")}</p>
             </section>
-            <section className="grid gap-4">
-              <h2 className="text-xl font-bold">{t("history")}</h2>
+            <section className="troc-price-history grid gap-4">
+              <EditorialIntro
+                compact
+                title={t("history")}
+                eyebrow={
+                  locale === "fr" ? "LE PRIX EN CONTEXTE" : "PRICE IN CONTEXT"
+                }
+              />
               <Suspense fallback={<p>{t("loading")}</p>}>
                 <PriceHistory prices={page.prices} locale={locale} />
               </Suspense>
@@ -720,7 +760,23 @@ export function PublicMarketplace({
                       size="lg"
                     />
                   }
-                  banner={<SellerBanner src={page.seller.bannerUrl} />}
+                  banner={
+                    page.seller.bannerUrl ? (
+                      <SellerBanner src={page.seller.bannerUrl} />
+                    ) : (
+                      <div className="troc-store-banner-art" aria-hidden="true">
+                        {page.results.slice(0, 3).map((result) => (
+                          <div key={result.product.id}>
+                            <CatalogArtwork
+                              product={result.product}
+                              variant={result.product.variants[0]}
+                              locale={locale}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  }
                   tagline={`${page.seller.city}, ${page.seller.province}`}
                   badges={
                     page.seller.verifiedShop ? (
@@ -747,7 +803,10 @@ export function PublicMarketplace({
                     </Button>
                   }
                 />
-                <nav className="flex flex-wrap gap-2" aria-label={t("store")}>
+                <nav
+                  className="troc-store-tabs flex flex-wrap gap-2"
+                  aria-label={t("store")}
+                >
                   {["shop", "deals", "about", "reviews"].map((v) => (
                     <Button
                       key={v}

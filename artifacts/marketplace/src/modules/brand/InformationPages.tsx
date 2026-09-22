@@ -1,3 +1,7 @@
+import {
+  EditorialIntro,
+  EditorialIcon,
+} from "@workspace/troc-design-system/components/ui/editorial";
 import { useEffect } from "react";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -365,26 +369,61 @@ export function InformationPage({ path }: { path: string }) {
         id="main-content"
         className="mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-12 px-4 py-12 md:px-8 md:py-16"
       >
-        <header className="grid max-w-3xl gap-6">
-          <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {content.planned
+        <EditorialIntro
+          level={1}
+          className="troc-page-opening"
+          eyebrow={
+            content.planned
               ? pair(["On the roadmap", "À venir"])
-              : "TROC · CANADA"}
-          </p>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-            {pair(content.title)}
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            {pair(content.lead)}
-          </p>
-        </header>
-        <div className="grid gap-8 md:grid-cols-2">
+              : "TROC · CANADA"
+          }
+          title={pair(content.title)}
+          description={pair(content.lead)}
+        />
+        {path === "/founding-sellers" && (
+          <aside className="troc-founder-callout">
+            <strong>250</strong>
+            <p>
+              {pair([
+                "Founding sellers. Pro free forever, with approval.",
+                "Vendeurs fondateurs. Pro gratuit à vie, sur approbation.",
+              ])}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {pair([
+                "Applications are not open yet.",
+                "Les candidatures ne sont pas encore ouvertes.",
+              ])}
+            </p>
+          </aside>
+        )}
+        {collector && (
+          <div className="troc-roadmap-visual">
+            <div className="troc-binder-preview" aria-hidden="true">
+              {Array.from({ length: 6 }, (_, i) => (
+                <span key={i}>
+                  <EditorialIcon name="layers" />
+                </span>
+              ))}
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+              {pair([
+                "A place for every find. Collection tools are planned.",
+                "Une place pour chaque trouvaille. Outils de collection à venir.",
+              ])}
+            </p>
+          </div>
+        )}
+        <div className="troc-info-layout">
           {content.sections.map((section, i) => (
             <section
               id={path === "/help" && i === 3 ? "demo" : undefined}
               key={section.title[0]}
               className="grid content-start gap-4 border-t border-border pt-6"
             >
+              <span className="troc-info-index">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <h2 className="text-xl font-semibold">{pair(section.title)}</h2>
               <p className="max-w-prose leading-relaxed text-muted-foreground">
                 {pair(section.body)}
