@@ -384,3 +384,37 @@ export function MarketplaceJourney({
     </ol>
   );
 }
+
+/** Group optional canonical attributes without punctuation-only missing fields. */
+export function ProductFacts({
+  title,
+  items,
+  level = 3,
+}: {
+  title: string;
+  level?: 2 | 3;
+  items: { label: string; value?: ReactNode }[];
+}) {
+  const available = items.filter(
+    (item) =>
+      item.value !== null &&
+      item.value !== undefined &&
+      item.value !== "" &&
+      item.value !== false,
+  );
+  if (!available.length) return null;
+  const Heading = level === 2 ? "h2" : "h3";
+  return (
+    <section className="troc-product-facts">
+      <Heading>{title}</Heading>
+      <dl>
+        {available.map((item, index) => (
+          <div key={`${item.label}-${index}`}>
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}

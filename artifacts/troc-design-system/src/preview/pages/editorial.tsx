@@ -6,6 +6,7 @@ import {
   MarketplaceProductCard,
   MarketplaceJourney,
   ProductPurchaseSummary,
+  ProductFacts,
   GameTile,
   GameHero,
   StoreHero,
@@ -364,6 +365,16 @@ export default function EditorialPage() {
               ? "Hors livraison. Livraison regroupée simulée au panier."
               : "Shipping excluded. Combined shipping is simulated in your cart."
           }
+        />
+      </Section>
+      <Section title="ProductFacts">
+        <ProductFacts
+          title={fr ? "Identité de la carte" : "Card identity"}
+          items={[
+            { label: fr ? "Jeu" : "Game", value: "Pokémon" },
+            { label: fr ? "Numéro" : "Number", value: "#025" },
+            { label: fr ? "Illustrateur" : "Artist", value: null },
+          ]}
         />
       </Section>
       <Section title="ProductArtworkPanel">

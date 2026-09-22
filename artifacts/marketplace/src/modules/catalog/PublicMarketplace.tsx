@@ -1,8 +1,17 @@
 import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@workspace/troc-design-system/components/ui/breadcrumbs";
+import {
   MarketplaceProductCard,
   ProductPurchaseSummary,
   GameHero,
   StoreHero,
+  ProductFacts,
   PremiumEmptyState,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { ProductArtworkPanel } from "@workspace/troc-design-system/components/ui/interactive-card-stack";
@@ -27,10 +36,7 @@ import {
 } from "@workspace/troc-design-system/components/ui/select";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { HomeSections } from "../brand/HomeSections";
-import {
-  CardImage,
-  CardMetadata,
-} from "@workspace/troc-design-system/components/ui/product-presentation";
+import { CardImage } from "@workspace/troc-design-system/components/ui/product-presentation";
 import { CatalogArtwork } from "./CatalogArtwork";
 import {
   PriceBlock,
@@ -115,6 +121,8 @@ export function PublicMarketplace({
   const currentGame = page.games.find((g) => g.slug === page.filters.game);
   const currentSet = page.sets.find((s) => s.slug === page.filters.set);
   const product = page.product;
+  const productGame = page.games.find((g) => g.id === product?.gameId);
+  const productSet = page.sets.find((s) => s.id === product?.setId);
   const hasAvailableOffers = page.offers.some((offer) => offer.quantity > 0);
   const availableFrom = hasAvailableOffers
     ? (page.results[0]?.lowestCents ?? null)
@@ -460,7 +468,40 @@ export function PublicMarketplace({
             {t("demo")}
           </p>
         )}
-        {page.kind !== "home" && (
+        {product && (
+          <Breadcrumb label={locale === "fr" ? "Fil d’Ariane" : "Breadcrumb"}>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href={href("/")}>{t("home")}</BreadcrumbLink>
+              </BreadcrumbItem>
+              {productGame && (
+                <>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={href(`/games/${productGame.slug}`)}>
+                      {productGame.name[locale]}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </>
+              )}
+              {productSet && (
+                <>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={href(`/sets/${productSet.slug}`)}>
+                      {productSet.name[locale]}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </>
+              )}
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{product.name[locale]}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        )}
+        {page.kind !== "home" && !product && (
           <nav
             aria-label={t("game")}
             className="troc-catalog-navigation flex flex-wrap gap-2"
@@ -671,28 +712,57 @@ export function PublicMarketplace({
                   }
                 />
                 <section className="troc-product-summary grid content-start gap-6">
-                  <CardMetadata
+                  <ProductFacts
+                    level={2}
+                    title={
+                      locale === "fr" ? "Identité de la carte" : "Card identity"
+                    }
                     items={[
-                      page.games.find((g) => g.id === product.gameId)?.name[
-                        locale
-                      ],
-                      page.sets.find((s) => s.id === product.setId)?.name[
-                        locale
-                      ],
-                      selected?.number,
-                      t(product.type),
+                      { label: t("game"), value: productGame?.name[locale] },
+                      { label: t("set"), value: productSet?.name[locale] },
+                      {
+                        label: locale === "fr" ? "Numéro" : "Number",
+                        value: selected?.number
+                          ? `#${selected.number}`
+                          : undefined,
+                      },
+                      {
+                        label:
+                          locale === "fr" ? "Type de produit" : "Product type",
+                        value: t(product.type),
+                      },
                     ]}
                   />
-
-                  <CardMetadata
+                  <ProductFacts
+                    level={2}
+                    title={
+                      locale === "fr"
+                        ? "Détails de l’impression"
+                        : "Printing details"
+                    }
                     items={[
-                      selected?.rarity &&
-                        (selected.rarity in catalogMessages
-                          ? t(selected.rarity as CatalogMessage)
-                          : selected.rarity),
-                      selected?.artist,
-                      ...Object.values(selected?.attributes ?? {}).map((v) =>
-                        v in catalogMessages ? t(v as CatalogMessage) : v,
+                      {
+                        label: t("rarity"),
+                        value:
+                          selected?.rarity &&
+                          (selected.rarity in catalogMessages
+                            ? t(selected.rarity as CatalogMessage)
+                            : selected.rarity),
+                      },
+                      { label: t("artist"), value: selected?.artist },
+                      ...Object.entries(selected?.attributes ?? {}).map(
+                        ([key, value]) => ({
+                          label:
+                            key === "finish"
+                              ? locale === "fr"
+                                ? "Finition"
+                                : "Finish"
+                              : key,
+                          value:
+                            value in catalogMessages
+                              ? t(value as CatalogMessage)
+                              : value,
+                        }),
                       ),
                     ]}
                   />

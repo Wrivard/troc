@@ -1195,7 +1195,8 @@ main {
   }
 }
 .troc-history-compact {
-  max-width: 880px;
+  width: 100%;
+  min-width: 0;
   display: grid;
   gap: var(--space-4);
 }

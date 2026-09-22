@@ -20,3 +20,7 @@ Translated printing, available price, seller availability, explicit offer-select
 ## MarketplaceJourney and complete store artwork
 
 MarketplaceJourney renders an ordered sequence of caller-supplied id/title/description/illustration, with full-width supporting art and natural mobile stacking. The editorial guide shows a bilingual three-step example. It has no navigation, animation or commerce behavior. StoreHero optionally accepts bannerFit="contain" to preserve complete artwork with dark framing; default cover behavior remains. At narrow mobile sizes, identity and actions use the available width beneath the avatar.
+
+## ProductFacts
+
+Optional labeled canonical attributes rendered as a definition list, with caller-supplied title and heading level2/3. Empty values/groups omitted; unknown values stay caller-owned. Used for product identity and printing details; editorial guide demonstrates absent-artist behavior. No domain lookup or inferred data.
