@@ -133,6 +133,11 @@ export const commerceMessages = {
     "Account services are temporarily unavailable. Your cart stays on this device.",
     "Les services de compte sont temporairement indisponibles. Votre panier reste sur cet appareil.",
   ],
+  order_unavailable: [
+    "Order services are temporarily unavailable. Try again when the service is available.",
+    "Le service des commandes est temporairement indisponible. Réessayez lorsque le service sera rétabli.",
+  ],
+  reloadOrders: ["Reload order information", "Recharger les commandes"],
   unauthorized: [
     "Sign in to access your orders and simulated checkout.",
     "Connectez-vous pour accéder aux commandes et au paiement simulé.",
