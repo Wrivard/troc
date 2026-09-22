@@ -166,7 +166,7 @@ export function PublicMarketplace({
             price={
               result.lowestCents === null ? "—" : format(result.lowestCents)
             }
-            availability={`${result.sellerCount} ${t("sellers")} · ${result.quantity} ${t("available")}`}
+            availability={`${result.sellerCount} ${(locale === "fr" ? result.sellerCount <= 1 : result.sellerCount === 1) ? (locale === "fr" ? "vendeur" : "seller") : t("sellers")} · ${result.quantity} ${t("available")}`}
             reference={`${locale === "fr" ? "Référence" : "Reference"} ${result.referenceCents === null ? "—" : format(result.referenceCents)}`}
           />
         );
@@ -629,7 +629,7 @@ export function PublicMarketplace({
                   }
                   availability={
                     hasAvailableOffers
-                      ? `${page.results[0]?.sellerCount ?? 0} ${t("sellers")}`
+                      ? `${page.results[0]?.sellerCount ?? 0} ${(locale === "fr" ? (page.results[0]?.sellerCount ?? 0) <= 1 : page.results[0]?.sellerCount === 1) ? (locale === "fr" ? "vendeur" : "seller") : t("sellers")}`
                       : locale === "fr"
                         ? "Aucune offre disponible"
                         : "No available offers"
@@ -1251,8 +1251,8 @@ export function PublicMarketplace({
                 >
                   {page.results.length}{" "}
                   {locale === "fr"
-                    ? "produits sur cette page · prix en CAD"
-                    : "products on this page · prices in CAD"}
+                    ? `${page.results.length <= 1 ? "produit" : "produits"} sur cette page · prix en CAD`
+                    : `${page.results.length === 1 ? "product" : "products"} on this page · prices in CAD`}
                 </p>
 
                 {page.results.length ? (

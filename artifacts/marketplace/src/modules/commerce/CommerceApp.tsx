@@ -125,6 +125,25 @@ export function CommerceApp({ path }: { path: string }) {
       report(error);
     }
   };
+  const comparisonCount = (q: CartQuote) => {
+    const cards =
+      locale === "fr"
+        ? q.cards <= 1
+          ? "carte/produit"
+          : "cartes/produits"
+        : q.cards === 1
+          ? "card/product"
+          : "cards/products";
+    const sellers =
+      locale === "fr"
+        ? q.groups.length <= 1
+          ? "vendeur"
+          : "vendeurs"
+        : q.groups.length === 1
+          ? "seller"
+          : "sellers";
+    return `${q.cards} ${cards} · ${q.groups.length} ${sellers}`;
+  };
   const summary = (q: CartQuote) => [
     {
       id: "merchandise",
@@ -396,14 +415,14 @@ export function CommerceApp({ path }: { path: string }) {
                             columns={[
                               {
                                 heading: t("original"),
-                                sellersLabel: `${smart.original.cards} ${t("cards")} · ${smart.original.groups.length} ${t("sellers")}`,
+                                sellersLabel: comparisonCount(smart.original),
                                 lines: summary(smart.original),
                                 totalLabel: beforeTaxLabel,
                                 total: smart.original.totalCents / 100,
                               },
                               {
                                 heading: t("optimized"),
-                                sellersLabel: `${smart.optimized.cards} ${t("cards")} · ${smart.optimized.groups.length} ${t("sellers")}`,
+                                sellersLabel: comparisonCount(smart.optimized),
                                 lines: summary(smart.optimized),
                                 totalLabel: beforeTaxLabel,
                                 total: smart.optimized.totalCents / 100,

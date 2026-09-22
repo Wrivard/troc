@@ -56,8 +56,15 @@ export function CartGroups({
             sellerMeta={
               <>
                 <span className="text-sm">
-                  {g.cards} {locale === "fr" ? "exemplaires" : "units"} ·{" "}
-                  {t("handling")}: {g.seller.handlingDays} ·{" "}
+                  {g.cards}{" "}
+                  {locale === "fr"
+                    ? g.cards <= 1
+                      ? "exemplaire"
+                      : "exemplaires"
+                    : g.cards === 1
+                      ? "unit"
+                      : "units"}{" "}
+                  · {t("handling")}: {g.seller.handlingDays} ·{" "}
                   {g.seller.reputation
                     ? `${t("reputation")}: ${g.seller.reputation}/100`
                     : t("noReviews")}
@@ -141,7 +148,14 @@ export function CartGroups({
                   : g.lines.length === 1
                     ? "line item"
                     : "line items"}{" "}
-                · {g.cards} {locale === "fr" ? "exemplaires" : "units"}
+                · {g.cards}{" "}
+                {locale === "fr"
+                  ? g.cards <= 1
+                    ? "exemplaire"
+                    : "exemplaires"
+                  : g.cards === 1
+                    ? "unit"
+                    : "units"}
               </summary>
               {visible.map((l) => (
                 <div key={l.listingId}>
