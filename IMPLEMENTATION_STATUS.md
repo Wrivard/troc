@@ -20,8 +20,8 @@ is locked. Implementation and activation statuses are distinguished below.
 - Implemented: Pokémon-led showroom hero, illustrated game tiles, editorial discovery and affordable-card grids, shipping-savings comparison, Canadian story, store profiles, final CTA and richer footer.
 - Implemented: shared editorial intros/panels/icons/catalog grid and an opt-in showroom presentation documented in the guide. Approved logo, typography and palette preserved.
 - Implemented: grouped search refinements, product art/price/offer hierarchy, store catalog-art banners, chaptered information pages and honest planned collection presentation. EN/FR and theme preferences preserved.
-- Verified locally: type checking, lint, 59 domain tests, workspace and Vercel production builds; 400 responsive route checks, 96 art checks, 12 full commerce flows, 12 large-cart cases, 8 guide-parity cases and 8 focused motion/guide checks. Final grouped-filter regression and hosted verification are tracked in [the refinement report](docs/WORLD_CLASS_DESIGN_REFINEMENT.md).
-- Hosted deployment: pending final push/verification. No Milestone 4 implementation and no real payment/catalog-license expansion.
+- Verified locally: type checking, lint, 59 domain tests, workspace and Vercel production builds; 400 responsive route checks, 96 art checks, 12 full commerce flows, 12 large-cart cases, 8 guide-parity cases and 8 focused motion/guide checks. Grouped-filter regression, 20 live route checks and three live cart/Smart Cart cases passed; evidence is tracked in [the refinement report](docs/WORLD_CLASS_DESIGN_REFINEMENT.md).
+- Hosted deployment: Vercel success for implementation commit `1d14f16`; live URL verified. No Milestone 4 implementation and no real payment/catalog-license expansion.
 
 ## Dedicated design / UX / brand polish — 2026-09-22
 
