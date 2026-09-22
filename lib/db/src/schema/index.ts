@@ -17,4 +17,6 @@
 //   export type InsertPost = z.infer<typeof insertPostSchema>;
 //   export type Post = typeof postsTable.$inferSelect;
 
-export {}
+// Authoritative foundation schema is in ../../migrations/*.sql. Repositories use
+// parameterized pg queries. Never schema-push this empty ORM registry over it.
+export {};

@@ -1,0 +1,66 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 390,
+    "locale": "fr",
+    "theme": "dark",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 390,
+    "locale": "fr",
+    "theme": "light",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 1280,
+    "locale": "fr",
+    "theme": "dark",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  },
+  {
+    "width": 1280,
+    "locale": "fr",
+    "theme": "light",
+    "overflow": false,
+    "preferencePersistence": "passed",
+    "guidePixelComparison": "identical"
+  }
+]

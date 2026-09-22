@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./preview": "./src/App.tsx",
+    "./preview.css": "./scripts/preview.css",
     ".": "./src/generated/tokens.tsx",
     "./tokens": "./src/generated/tokens.tsx",
     "./styles.css": "./src/index.css",

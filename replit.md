@@ -1,9 +1,19 @@
 # TROC
 
 TROC is Canada’s trading card marketplace. This milestone establishes its visual
-identity and reusable design system only; no marketplace application is authorized.
+identity and reusable design system. The full guide is now APPROVED by the user.
+Milestone 1 foundation is authorized; Milestone 2 requires another explicit approval.
 
-## Current scope
+## Current foundation handoff
+
+Use `IMPLEMENTATION_STATUS.md`, `docs/FOUNDATION_ARCHITECTURE.md` and
+`docs/FOUNDATION_SETUP.md` for the current scope and commands. The marketplace consumer
+is `artifacts/marketplace`; the existing guide remains `artifacts/troc-design-system`.
+The numbered post-style-guide pack is the product source of truth. The historical
+Milestone 0 notes below describe the earlier work and do not override current user
+approval or Milestone 1 authorization.
+
+## Historical Milestone 0 scope
 
 - Review the living guide at `/style-guide` in the TROC Design System artifact.
 - The user approved the foundations and Button, Input, Textarea, Select, and

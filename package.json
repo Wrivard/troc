@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "node tests/browser.mjs",
+    "dev:api": "tsx artifacts/api-server/src/index.ts",
+    "lint": "eslint artifacts/api-server/src/modules artifacts/api-server/src/routes/foundation.ts artifacts/marketplace/src tests",
+    "dev:marketplace": "pnpm --filter @workspace/marketplace dev",
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
@@ -13,6 +18,12 @@
     "@replit/connectors-sdk": "^0.4.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "typescript-eslint": "^8.46.0",
+    "tsx": "^4.21.0",
+    "@playwright/test": "^1.56.0",
     "prettier": "^3.9.6",
     "typescript": "~5.9.3"
   }

@@ -1,0 +1,3 @@
+/* Compile the original guide styles together so Tailwind retains all preview tokens. */
+@import "@workspace/troc-design-system/styles.css";
+@import "@workspace/troc-design-system/preview.css";
