@@ -1325,3 +1325,9 @@ main {
   .troc-store-page .troc-catalog-navigation { display: none; }
 }
 #catalog-results:focus-visible { outline: 2px solid var(--color-accent); outline-offset: var(--space-2); }
+
+/* Product offer comparison: auxiliary controls stay available without dominating offers. */
+.troc-offer-controls { border-block: 1px solid var(--border); padding-block: var(--space-2); }
+.troc-offer-controls > summary { cursor: pointer; min-height: 44px; align-content: center; }
+.troc-offer-controls > summary > span + span { margin-inline-start: var(--space-3); }
+.troc-offer-controls form { padding-block: var(--space-3); }

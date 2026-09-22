@@ -325,12 +325,14 @@ export function SmartCartComparison({
 export function ProductPurchaseSummary({
   price,
   printing,
+  selection,
   availability,
   action,
   note,
 }: {
   price: ReactNode;
   printing: ReactNode;
+  selection?: ReactNode;
   availability: ReactNode;
   action: ReactNode;
   note: ReactNode;
@@ -338,6 +340,7 @@ export function ProductPurchaseSummary({
   return (
     <section className="troc-purchase-summary">
       <div className="troc-purchase-summary-printing">{printing}</div>
+      {selection}
       <div className="troc-purchase-summary-row">
         <div>
           {price}

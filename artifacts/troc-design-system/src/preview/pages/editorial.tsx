@@ -292,6 +292,22 @@ export default function EditorialPage() {
 
       <Section title="ProductPurchaseSummary">
         <ProductPurchaseSummary
+          selection={
+            <div
+              className="troc-purchase-summary-options"
+              role="group"
+              aria-label={fr ? "Langue et finition" : "Language and finish"}
+            >
+              <Button variant="secondary" aria-current="true">
+                {fr ? "Français · Standard" : "English · Standard"}
+              </Button>
+              <Button variant="secondary">
+                {fr
+                  ? "Français · Holographique inversée"
+                  : "English · Reverse holo"}
+              </Button>
+            </div>
+          }
           printing={
             fr
               ? "Français · Édition démo · #001"

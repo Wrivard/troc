@@ -537,6 +537,33 @@ export function PublicMarketplace({
                 <EditorialIntro level={1} eyebrow="TROC · CAD" title={title} />
 
                 <ProductPurchaseSummary
+                  selection={
+                    <div
+                      className="troc-purchase-summary-options"
+                      role="group"
+                      aria-label={
+                        locale === "fr"
+                          ? "Langue et finition"
+                          : "Language and finish"
+                      }
+                    >
+                      {product.variants.map((v) => (
+                        <Button asChild variant="secondary" key={v.id}>
+                          <a
+                            aria-current={
+                              v.id === selected?.id ? "true" : undefined
+                            }
+                            href={href(page.path, { variantId: v.id })}
+                          >
+                            {t(v.language === "en" ? "english" : "japanese")} ·{" "}
+                            {v.key in catalogMessages
+                              ? t(v.key as CatalogMessage)
+                              : v.key}
+                          </a>
+                        </Button>
+                      ))}
+                    </div>
+                  }
                   printing={
                     <>
                       {selected && (
@@ -620,23 +647,7 @@ export function PublicMarketplace({
                       t(product.type),
                     ]}
                   />
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => (
-                      <Button asChild variant="secondary" key={v.id}>
-                        <a
-                          aria-current={
-                            v.id === selected?.id ? "true" : undefined
-                          }
-                          href={href(page.path, { variantId: v.id })}
-                        >
-                          {t(v.language === "en" ? "english" : "japanese")} ·{" "}
-                          {v.key in catalogMessages
-                            ? t(v.key as CatalogMessage)
-                            : v.key}
-                        </a>
-                      </Button>
-                    ))}
-                  </div>
+
                   <CardMetadata
                     items={[
                       selected?.rarity &&
@@ -692,93 +703,115 @@ export function PublicMarketplace({
                         : "CHOOSE YOUR SELLER"
                     }
                   />
-                  <form
-                    action={page.path}
-                    className="flex flex-wrap items-end gap-4"
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      const params = new URLSearchParams();
-                      new FormData(event.currentTarget).forEach((v, k) => {
-                        if (v && v !== "__all") params.set(k, String(v));
-                      });
-                      window.location.assign(page.path + "?" + params);
-                    }}
-                  >
-                    <input type="hidden" name="lang" value={locale} />
-                    <input
-                      type="hidden"
-                      name="offerLimit"
-                      value={page.offerLimit}
-                    />
-                    <input
-                      type="hidden"
-                      name="variantId"
-                      value={page.selectedVariantId}
-                    />
-                    <input
-                      type="hidden"
-                      name="seller"
-                      value={page.filters.seller}
-                    />
-                    <input
-                      type="hidden"
-                      name="min"
-                      value={page.filters.min ?? ""}
-                    />
-                    <input
-                      type="hidden"
-                      name="max"
-                      value={page.filters.max ?? ""}
-                    />
-                    <label className="grid gap-2">
-                      <span>{t("offerSort")}</span>
-                      <Select name="offerSort" defaultValue={page.offerSort}>
-                        <SelectTrigger aria-label={t("offerSort")}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[
-                            ["price_asc", "priceAscending"],
-                            ["price_desc", "priceDescending"],
-                            ["quantity", "quantityDescending"],
-                          ].map(([value, label]) => (
-                            <SelectItem key={value} value={value}>
-                              {t(label as CatalogMessage)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </label>
-                    {product.type === "raw_single" &&
-                      filter(
-                        "condition",
-                        "condition",
-                        page.filters.condition,
-                        ["NM", "LP", "MP", "HP", "DMG"].map((v) => ({
-                          value: v,
-                          label: v,
-                        })),
-                      )}
-                    {product.type === "graded_card" && (
+                  <details className="troc-offer-controls">
+                    <summary>
+                      <span>
+                        {locale === "fr"
+                          ? "Trier et filtrer"
+                          : "Sort and filter"}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {t(
+                          page.offerSort === "quantity"
+                            ? "quantityDescending"
+                            : page.offerSort === "price_desc"
+                              ? "priceDescending"
+                              : "priceAscending",
+                        )}
+                        {" · "}
+                        {product.type === "raw_single"
+                          ? page.filters.condition ||
+                            (locale === "fr"
+                              ? "Tous les états"
+                              : "All conditions")
+                          : product.type === "graded_card"
+                            ? page.selectedGrade || t("chooseGrade")
+                            : t("sealed")}
+                      </span>
+                    </summary>
+                    <form
+                      action={page.path}
+                      className="flex flex-wrap items-end gap-4"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        const params = new URLSearchParams();
+                        new FormData(event.currentTarget).forEach((v, k) => {
+                          if (v && v !== "__all") params.set(k, String(v));
+                        });
+                        window.location.assign(page.path + "?" + params);
+                      }}
+                    >
+                      <input type="hidden" name="lang" value={locale} />
+                      <input
+                        type="hidden"
+                        name="offerLimit"
+                        value={page.offerLimit}
+                      />
+                      <input
+                        type="hidden"
+                        name="variantId"
+                        value={page.selectedVariantId}
+                      />
+                      <input
+                        type="hidden"
+                        name="seller"
+                        value={page.filters.seller}
+                      />
+                      <input
+                        type="hidden"
+                        name="min"
+                        value={page.filters.min ?? ""}
+                      />
+                      <input
+                        type="hidden"
+                        name="max"
+                        value={page.filters.max ?? ""}
+                      />
                       <label className="grid gap-2">
-                        {t("grade")}
-                        <Input
-                          name="grade"
-                          defaultValue={page.selectedGrade ?? ""}
-                          maxLength={20}
-                        />
+                        <span>{t("offerSort")}</span>
+                        <Select name="offerSort" defaultValue={page.offerSort}>
+                          <SelectTrigger aria-label={t("offerSort")}>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[
+                              ["price_asc", "priceAscending"],
+                              ["price_desc", "priceDescending"],
+                              ["quantity", "quantityDescending"],
+                            ].map(([value, label]) => (
+                              <SelectItem key={value} value={value}>
+                                {t(label as CatalogMessage)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </label>
-                    )}
-                    <Button type="submit">{t("apply")}</Button>
-                  </form>
-                  <p className="text-sm text-muted-foreground">
-                    {t("referenceBasis")}:{" "}
-                    {product.type === "raw_single"
-                      ? page.filters.condition || "NM"
-                      : product.type === "graded_card"
-                        ? page.selectedGrade || t("chooseGrade")
-                        : t("sealed")}
-                  </p>
+                      {product.type === "raw_single" &&
+                        filter(
+                          "condition",
+                          "condition",
+                          page.filters.condition,
+                          ["NM", "LP", "MP", "HP", "DMG"].map((v) => ({
+                            value: v,
+                            label: v,
+                          })),
+                        )}
+                      {product.type === "graded_card" && (
+                        <label className="grid gap-2">
+                          {t("grade")}
+                          <Input
+                            name="grade"
+                            defaultValue={page.selectedGrade ?? ""}
+                            maxLength={20}
+                          />
+                        </label>
+                      )}
+                      <Button type="submit" variant="secondary">
+                        {t("apply")}
+                      </Button>
+                    </form>
+                  </details>
+
                   {page.offers.length === 0 && (
                     <div className="grid gap-3">
                       <p>
@@ -982,6 +1015,14 @@ export function PublicMarketplace({
                 {money(page.results[0]?.referenceCents ?? null, "reference")}
                 {money(page.results[0]?.medianCents ?? null, "median")}
               </div>
+              <p className="text-sm text-muted-foreground">
+                {t("referenceBasis")}:{" "}
+                {product.type === "raw_single"
+                  ? page.filters.condition || "NM"
+                  : product.type === "graded_card"
+                    ? page.selectedGrade || t("chooseGrade")
+                    : t("sealed")}
+              </p>
               <p className="text-sm text-muted-foreground">
                 {t("referenceNote")}
               </p>

@@ -2061,7 +2061,7 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
 
 .troc-purchase-summary { display: grid; gap: var(--space-3); padding-block: var(--space-4); border-block: 1px solid var(--border); }
 .troc-purchase-summary-printing { font-size: var(--text-sm); color: var(--text-secondary); }
-.troc-purchase-summary-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.troc-purchase-summary-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-6); }
 .troc-purchase-summary .troc-price .troc-price-amount { font-size: var(--text-3xl); }
 .troc-purchase-summary-row p { margin-top: var(--space-2); font-size: var(--text-sm); color: var(--text-secondary); }
 .troc-purchase-summary-note { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5; }
@@ -2069,6 +2069,9 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
 @media (max-width: 420px) { .troc-purchase-summary-row { gap: var(--space-3); } .troc-purchase-summary-action { max-width: 52%; } }
 
 .troc-game-hero[data-has-art="false"] { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+
+.troc-purchase-summary-options { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.troc-purchase-summary-options [aria-current="true"] { box-shadow: inset 0 0 0 2px var(--text-primary); }
 
 /* marketplace-progress.css */
 /* Seller & shipping progress — thin wrappers over the shared Progress bar. */
