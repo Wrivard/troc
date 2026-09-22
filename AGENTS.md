@@ -1,6 +1,6 @@
 # TROC working agreements
 
-- Read MEMORY.md and the build-pack parent COORDINATION.md before edits. This
+- Read MEMORY.md and docs/COORDINATION.md (or the live build-pack parent copy) before edits. This
   checkout owns Milestone 3.5; the concurrent task owns existing-page design.
   Coordinate shared file edits and serialize main pushes/deployments.
 - Current authorized scope is Milestone 3.5 only. Preserve completed Milestones

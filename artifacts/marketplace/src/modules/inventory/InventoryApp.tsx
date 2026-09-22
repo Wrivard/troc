@@ -190,8 +190,8 @@ export function InventoryApp() {
       pair
         ? pair[fr ? 1 : 0]
         : t(
-            "Check the file or values and try again. No changes were published.",
-            "Vérifiez le fichier ou les valeurs et réessayez. Aucune modification n’a été publiée.",
+            "Check the file or values. Refresh inventory before retrying if the connection was interrupted.",
+            "Vérifiez le fichier ou les valeurs. Actualisez l’inventaire avant de réessayer si la connexion a été interrompue.",
           ),
     );
   };
@@ -727,10 +727,13 @@ export function InventoryApp() {
                     {t("CSV file", "Fichier CSV")}
                     <input
                       type="file"
+                      disabled={busy}
                       accept=".csv,text/csv"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
+                        setCsv("");
+                        setReview(null);
                         void run(async () => {
                           if (file.size > 4194304)
                             throw new Error("invalid_csv");

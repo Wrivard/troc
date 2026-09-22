@@ -16,6 +16,7 @@ The new `/seller/inventory` flow includes authorized seller selection, bounded c
 - Photo requirements use the persisted commerce threshold. New photo-required listings remain draft; bulk activation cannot bypass required photos. Price edits cannot lower the regular price below an existing sale price.
 - Mobile CSV file input exceeded the viewport; bounded its width/minimum size. Retained shared approved typography, header/footer, controls and theme/locale preferences.
 - Isolated the larger body parser to import preview requests. Tested foreign-origin rejection and fail-closed identity for payloads above the ordinary 16 KB API limit.
+- Interrupted-connection messaging does not claim a write failed when its result is uncertain. Selecting a new CSV clears the prior preview immediately, preventing accidental publication of an older file after a rejected upload.
 
 ## Validation evidence
 
