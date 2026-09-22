@@ -54,3 +54,15 @@ Merged release 512a37e05c6549e186de0b8209a8648b22222db7 into this isolated workt
 - Existing scale tests regenerated their timing evidence; these unrelated generated changes were restored to the merged release versions. No shared design/status/config/package files were edited.
 
 Test harness files (`harness.tsx`, seller-platform-server.ts, seller-platform-browser.mjs, seller-platform-build.mjs) are local development/test entrypoints only. Production wiring must import SellerPlatformApp/service/router, never harness identity code. No external emails, production migrations, push or deployment were performed.
+
+## A integration candidate — review pending
+
+The isolated integration checkout now wires the single application POST and four lazy-loaded seller/admin views. Seller middleware precedes the application POST so the common limiter covers submissions. Existing origin/auth/no-store/JSON guards remain. Legacy profile={} approvals fall back to contact_name; migration0009 uses baseline0008 locking privileges without granting primary-key updates.
+
+Local checks: 80 combined tests passed before the additional production-router regression, which also passes. Actual main.tsx browser checks pass all eight viewport/locale/theme cases and application/admin/team/denied-auth workflows. Lint/typechecks/full builds and bundled SSR smoke passed before final limiter ordering change; final candidate checks follow. These are local functional results, not production capacity or hosted authentication proof.
+
+For actual integrated routing, run seller-platform-server.ts with SELLER_INTEGRATED=1, SELLER_API_PORT=3015, SELLER_UI_PORT=5185, PORT=5185 and API_ORIGIN=http://127.0.0.1:3015. Run browser tests with SELLER_ORIGIN=http://127.0.0.1:5185. Defaults remain B-owned4311/5311; do not collide with other tasks. Identities and PGlite are local-only. Fresh process resets fixtures.
+
+Release is HELD under the mandatory reciprocal review protocol. B reviews A integration diff; C reviews seller implementation plus fixes. Hosted auth/database, representative PostgreSQL contention/load and operational activation evidence remain BLOCKED. No next milestone or production-ready claim until mandatory criteria pass.
+
+Final local candidate checks: all 81 tests and lint passed; API production/serverless bundles rebuilt after limiter ordering fix. Earlier full client/SSR build and integrated browser results remain applicable because no frontend code changed after those checks.

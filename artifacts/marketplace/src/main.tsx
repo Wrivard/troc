@@ -17,12 +17,27 @@ const InventoryApp = lazy(() =>
     default: m.InventoryApp,
   })),
 );
+const SellerPlatformApp = lazy(() =>
+  import("./modules/seller-platform/SellerPlatformApp").then((m) => ({
+    default: m.SellerPlatformApp,
+  })),
+);
 const Guide = lazy(async () => {
   await import("./style-guide.css");
   return import("@workspace/troc-design-system/preview");
 });
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = window.location.pathname.slice(base.length);
+const sellerView =
+  path === "/seller/apply"
+    ? "apply"
+    : path === "/seller/dashboard"
+      ? "dashboard"
+      : path === "/seller/team"
+        ? "team"
+        : path === "/admin/seller-applications"
+          ? "admin"
+          : null;
 if (!path.startsWith("/style-guide")) await import("./marketplace.css");
 createRoot(document.getElementById("root")!).render(
   path.startsWith("/style-guide") ? (
@@ -34,6 +49,10 @@ createRoot(document.getElementById("root")!).render(
       {path === "/seller/inventory" ? (
         <Suspense>
           <InventoryApp />
+        </Suspense>
+      ) : sellerView ? (
+        <Suspense>
+          <SellerPlatformApp view={sellerView} />
         </Suspense>
       ) : isInformationPage(path) ? (
         <InformationPage path={path} />

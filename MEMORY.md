@@ -2,6 +2,14 @@
 
 Updated: 2026-09-22. This note preserves context across conversations using this project. Update it when scope, decisions, or verified progress changes. Do not record credentials here.
 
+## Mandatory review gate and current integration — 2026-09-22
+
+The user now requires deep reciprocal milestone reviews, fixes, independent retests, realistic stress/recovery evidence and all readiness criteria before release or any next milestone. A holds B/C releases. B reviews C and A's integration; C reviews B including integration fixes; A reviews combined contracts/migrations/3.5 compatibility. Reports live in the build-pack MILESTONE-REVIEWS/{A,B,C}/. Read the latest docs/COORDINATION.md or live parent copy before acting.
+
+Bounded seller Milestone 4 is locally wired in A's isolated checkout: application, manual admin review, dashboard and owner-only team pages. Source handoff258fb92 is integrated with legacy-application compatibility, reduced grants and submission rate-limit ordering fixes. Independent reviews remain pending. Full milestone4 is not complete. No B/C main push, production migration or deployment has occurred. Final main remains512a37e.
+
+Hosted authentication/database activation and representative PostgreSQL stress evidence are BLOCKED, not passed. PGlite functional tests and test-only identities do not establish production readiness. Do not silently substitute a disabled-code release for these mandatory gates. The new design/audit pass runs separately in Troc-UX-Design and UX-AUDIT; A serializes all integration.
+
 ## Latest checkpoint — concurrent Milestone 3.5 work
 
 Latest authorization: the user explicitly asked to start later work where dependencies allow. Orchestrator `01a0c9c3-7aec-7f60-b187-f2c1fefd2db9` assigned bounded Milestone 4 seller work to `01a0c9c6-b40a-77c3-8757-22ff6dbf93fd` in `Troc-Milestone-4-Seller`, and isolated early 6.5 growth work to `01a0c9c6-db14-7200-a837-1feede59dbab` in `Troc-Growth`. Those worktrees started at `f4b830e`; they must update to the final design+3.5 release before final verification. Migration 0009 belongs to seller work, 0010 to growth. This task remains the milestone integrator, one track at a time; neither new task may push main, deploy or migrate production. This supersedes historical stop-after-3.5 language only for those bounded assignments. See docs/COORDINATION.md for details.
@@ -49,3 +57,4 @@ This conversation added memory and discovery pointers only. It has not implement
 ## Resuming in another conversation
 
 Read this file, `AGENTS.md`, `IMPLEMENTATION_STATUS.md`, and the source specifications. Recheck the working tree and current evidence before acting; this note is context, not proof that pending work has been completed. Keep the stop-after-3.5 boundary unless the user changes it.
+

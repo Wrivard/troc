@@ -8,7 +8,8 @@ import { rateLimit } from "express-rate-limit";
 import { authClient } from "../modules/auth/supabase";
 import { ensureBuyer } from "../modules/auth/service";
 import { account, savePreferences } from "../modules/users/service";
-import { submitApplication } from "../modules/sellers/service";
+import { SellerPlatformService } from "../modules/seller-platform/service";
+import { sellerPlatformRouter } from "./seller-platform";
 import { DomainError } from "../modules/shared/domain";
 import { pool } from "@workspace/db";
 import { commerceRouter, commerceQuoteRouter } from "./commerce";
@@ -110,11 +111,6 @@ router.get("/account", async (req, res) =>
 router.patch("/account/preferences", async (req, res) =>
   res.json(await savePreferences(await principal(req, res), req.body)),
 );
-router.post("/seller/applications", async (req, res) =>
-  res
-    .status(201)
-    .json(await submitApplication(await principal(req, res), req.body)),
-);
 const transactionStore = {
   transaction: async <T>(
     work: (db: import("../modules/commerce/data").Sql) => Promise<T>,
@@ -133,6 +129,14 @@ const transactionStore = {
     }
   },
 };
+const sellerPlatform = new SellerPlatformService(pool, transactionStore);
+// Run the shared seller rate limiter before the existing application POST handler.
+router.use(sellerPlatformRouter(pool, transactionStore, principal));
+router.post("/seller/applications", async (req, res) =>
+  res
+    .status(201)
+    .json(await sellerPlatform.submit(await principal(req, res), req.body)),
+);
 router.use(inventoryRouter(pool, transactionStore, principal));
 router.use(
   commerceRouter(

@@ -1,5 +1,9 @@
 # TROC implementation status
 
+## Current release hold — 2026-09-22
+
+Bounded seller Milestone 4 is locally integrated for reciprocal review; no release or production migration. Independent review, combined stress/recovery and all readiness gates are mandatory before B/C release or a next milestone. Hosted auth/database and representative PostgreSQL load validation remain BLOCKED. See docs/COORDINATION.md and MEMORY.md. Historical deployment evidence below concerns only earlier releases.
+
 ## Milestone 3.5 — seller inventory, 2026-09-22
 
 Status: **In development** for hosted activation; local implementation and audit complete. This task's implementation scope ends at 3.5. The user has separately authorized bounded Milestone 4 seller work and early Milestone 6.5 prelaunch work; see docs/COORDINATION.md. Those tracks are not yet integrated or claimed complete.
@@ -23,7 +27,7 @@ Implementation and activation statuses are distinguished below.
 | 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
 | 3.5 — Seller Inventory | implemented/audited; application deployed; hosted activation blocked | Versioned inventory, raw-single listings, reviewed CSV import and events; 20 live page checks passed |
 | Design / UX / brand polish | implemented | Bilingual marketplace composition, shared navigation/footer, existing commerce polish, explicit roadmap states; no new product milestone |
-| 4 — Seller Platform | In development in separate worktree | Bounded application/manual approval/team/dashboard scope; not integrated; broader milestone remains planned |
+| 4 — Seller Platform | In development; locally integrated for review | Bounded application/manual approval/team/dashboard scope; release held; broader milestone remains planned |
 | 4.5 — Seller API + Live Sync | Planned | Credentials, signed delivery/retries and live synchronization |
 | 5 — Collector + Trust | deferred | Not started |
 | 5.5 — Founding Seller + Referrals | Planned | Qualified contribution and configurable benefits |
@@ -164,3 +168,4 @@ Implemented: shared depth-aware card stack; whole-card marketplace links; larger
 Remaining: approved artwork for two game destinations; real seller branding/content; hosted authenticated commerce activation; planned collection/follow/notification features. Milestone 3.5 is developed separately and is not marked complete by this design pass.
 
 Release gate: 59 domain tests, typecheck, lint, full workspace build, Vercel build, 400 responsive route cases, 96 artwork cases, 12 local commerce flows, 8 motion/guide cases and 8 preference/guide-parity combinations passed. Touch, avatar bounds, keyboard card navigation and mobile heading order also passed. Production verification: 40 route cases plus 3 guest cart/Smart Cart cases passed; hosted authenticated checkout remains explicitly unavailable. See `verification/design-quality-live.json` and `DESIGN_QUALITY_REVIEW.md`.
+

@@ -156,7 +156,8 @@ export class SellerPlatformService {
         // Requested verified categories confer no badge, KYC or payout verification.
         const displayName = text(
           input.displayName ??
-            (row.profile as Record<string, unknown>).displayName,
+            (row.profile as Record<string, unknown>).displayName ??
+            row.contact_name,
         );
         await db.query(
           "INSERT INTO troc.seller_accounts(id,slug,display_name,seller_type,status) VALUES($1,$2,$3,$4,'active')",

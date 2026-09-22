@@ -68,6 +68,31 @@ test("seller platform database authorization and transitions", async (t) => {
         }),
     };
     const service = new SellerPlatformService(db as Sql, store);
+    await t.test(
+      "legacy applications can be approved without a profile display name",
+      async () => {
+        const legacy = await service.submit(p(other), input);
+        await db.query(
+          "UPDATE troc.seller_applications SET profile='{}' WHERE id=$1",
+          [legacy.id],
+        );
+        const result = await service.review(p(admin), String(legacy.id), {
+          decision: "approved",
+          note: "Legacy review",
+        });
+        const row = (
+          await db.query(
+            "SELECT display_name FROM troc.seller_accounts WHERE id=$1",
+            [result.sellerId],
+          )
+        ).rows[0];
+        assert.equal(row.display_name, input.contactName);
+        // Keep subsequent isolation assertions independent of this fixture.
+        await db.query("DELETE FROM troc.seller_applications WHERE id=$1", [
+          legacy.id,
+        ]);
+      },
+    );
     const app = await service.submit(p(owner), input);
     await t.test("duplicates and applicant isolation", async () => {
       await assert.rejects(

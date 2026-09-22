@@ -75,7 +75,11 @@ async function main() {
       code: e instanceof DomainError ? e.code : "service_unavailable",
     }),
   );
-  app.listen(4311, "127.0.0.1", () => console.log("Seller test API :4311"));
+  const apiPort = Number(process.env.SELLER_API_PORT || 4311);
+  const uiPort = Number(process.env.SELLER_UI_PORT || 5311);
+  app.listen(apiPort, "127.0.0.1", () =>
+    console.log(`Seller test API :${apiPort}`),
+  );
   const marketRequire = createRequire(
     new URL("../artifacts/marketplace/package.json", import.meta.url),
   );
@@ -88,34 +92,39 @@ async function main() {
       "$1",
     ),
     server: {
-      port: 5311,
+      port: uiPort,
       host: "127.0.0.1",
       strictPort: true,
-      proxy: { "/api": "http://127.0.0.1:4311" },
+      proxy: { "/api": `http://127.0.0.1:${apiPort}` },
     },
-    plugins: [
-      {
-        name: "seller-harness",
-        configureServer(s) {
-          s.middlewares.use(async (req, res, next) => {
-            if (
-              req.url?.startsWith("/seller/") ||
-              req.url?.startsWith("/admin/")
-            ) {
-              res.setHeader("Content-Type", "text/html");
-              res.end(
-                await s.transformIndexHtml(
-                  req.url,
-                  '<!doctype html><html lang="en"><head><title>Seller test harness</title></head><body><div id="root"></div><script type="module" src="/src/modules/seller-platform/harness.tsx"></script></body></html>',
-                ),
-              );
-            } else next();
-          });
-        },
-      },
-    ],
+    plugins:
+      process.env.SELLER_INTEGRATED === "1"
+        ? []
+        : [
+            {
+              name: "seller-harness",
+              configureServer(s) {
+                s.middlewares.use(async (req, res, next) => {
+                  if (
+                    req.url?.startsWith("/seller/") ||
+                    req.url?.startsWith("/admin/")
+                  ) {
+                    res.setHeader("Content-Type", "text/html");
+                    res.end(
+                      await s.transformIndexHtml(
+                        req.url,
+                        '<!doctype html><html lang="en"><head><title>Seller test harness</title></head><body><div id="root"></div><script type="module" src="/src/modules/seller-platform/harness.tsx"></script></body></html>',
+                      ),
+                    );
+                  } else next();
+                });
+              },
+            },
+          ],
   });
   await server.listen();
-  console.log("Seller UI harness :5311");
+  console.log(
+    `Seller UI ${process.env.SELLER_INTEGRATED === "1" ? "integrated app" : "harness"} :${uiPort}`,
+  );
 }
 void main();
