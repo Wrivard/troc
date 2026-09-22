@@ -1,0 +1,869 @@
+{
+  "origin": "http://localhost:5173",
+  "results": [
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "dark",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 10,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/magic",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 1,
+      "loaded": true,
+      "accessibility": "passed"
+    },
+    {
+      "path": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "images": 12,
+      "loaded": true,
+      "accessibility": "passed"
+    }
+  ]
+}

@@ -18,3 +18,7 @@
 ## Scope guardrail
 
 This record specifies a reusable visual component only. It does not authorize marketplace pages, business logic, APIs, persistence, optimization, checkout, authentication, or backend work.
+
+## Real-art mobile audit correction
+
+Reset the identity block flex basis when the storefront body switches to a vertical layout. The desktop 240px horizontal basis must not become a 240px empty vertical area on mobile. Existing compact/full stories cover this behavior; tokens and brand styling remain unchanged.

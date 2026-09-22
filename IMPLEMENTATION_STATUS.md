@@ -8,8 +8,8 @@ is locked. Implementation and activation statuses are distinguished below.
 | 0 — Approved style guide | implemented | Source/tokens/components preserved; visual regression matches |
 | 1 — Foundation | implemented | Code/local regression coverage; hosted activation remains blocked |
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
-| 2.5 — Marketplace polish | in progress | Home-logo navigation, image schema/resolver/gallery and price/footer polish implemented; representative live artwork awaits provider approval |
-| 3 — Low-Value Commerce | blocked | Authorized, not started: Phase A requires representative live artwork before its gate can pass |
+| 2.5 — Marketplace polish | implemented | Approved bounded sample: 159 products, 324 local responsive renditions; real-art/browser audit passed; production catalog remains unapproved |
+| 3 — Low-Value Commerce | in progress | Authorized after real-art/deployment gate; implementation and audit follow; real payments stay disabled |
 | 4 — Seller Platform | deferred | Not started |
 | 5 — Collector + Trust | deferred | Not started |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
@@ -94,3 +94,11 @@ Fixed after reviewing 900fd18...016dfc7:
 - New SQL integration tests cover manifest lifecycle, source revocation, provenance mismatch and cross-language shared-image retention. Browser fixtures prove responsive selection, loading stability, sealed containment and variant changes in 12 viewport/locale/theme combinations. These synthetic tests do not replace real-art verification.
 
 Supabase MCP: public/troc contain no application tables; security/performance advisors return no findings. Sentry has no configured project. No hosted migrations or credentials were changed. See docs/MILESTONE_2_5_AUDIT.md.
+
+## Approved sample completion — 2026-09-22
+
+The earlier demo-source blocker is resolved by explicit user approval (attachment 106718b8-c4a0-4d99-bff8-4df3c8a3c394). Imported 50 Pokémon/TCGdex, 50 Magic/Scryfall and 59 Yu-Gi-Oh!/YGOPRODeck products as a bounded demo snapshot. All 324 full-card renditions are rehosted; URLs are content-addressed with immutable cache headers. Canonical UUIDs, mappings, languages, sets, numbers and asset provenance are retained. No provider calls occur in the UI/runtime.
+
+Actual art passed 96 Playwright cases over eight routes, three widths, EN/FR and dark/light. File-level tests verify every rendition's actual width and aspect ratio. Seller-card mobile spacing was corrected in the reusable style-guide component without changing visual tokens. Both frozen installs, 51 tests, typecheck, lint, production build and Vercel build pass. One Piece/Riftbound retain permitted fallbacks; selected providers do not cleanly supply sealed samples, so those remain fictional fixtures. No production catalog, real pricing feed or payment integration is approved.
+
+See docs/DEMO_CATALOG_APPROVAL.md and verification/real-art-browser.json. Earlier Phase A blockers below/above are historical; this approval supersedes the representative-demo artwork blocker only.

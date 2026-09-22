@@ -110,6 +110,9 @@ export function PublicMarketplace({
       max: page.filters.max === null ? "" : String(page.filters.max),
       grade: page.selectedGrade ?? "",
     });
+  const homeResults = page.results.some((r) => r.product.images?.length)
+    ? page.results.filter((r) => r.product.images?.length)
+    : page.results;
   const cards = (items: ProductResult[]) => (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
       {items.map((result) => {
@@ -411,12 +414,12 @@ export function PublicMarketplace({
                   {page.demo ? t("demoSelection") : t("newest")}
                 </span>
               </div>
-              {cards(page.results.slice(0, 8))}
+              {cards(homeResults.slice(0, 8))}
             </section>
             <section className="grid gap-4">
               <h2 className="text-xl font-bold">{t("sets")}</h2>
               <div className="flex flex-wrap gap-3">
-                {page.sets.map((s) => (
+                {page.sets.slice(0, 6).map((s) => (
                   <Button asChild variant="secondary" key={s.id}>
                     <a href={href(`/sets/${s.slug}`)}>
                       {page.games.find((g) => g.id === s.gameId)?.name[locale]}{" "}
@@ -429,7 +432,7 @@ export function PublicMarketplace({
             <section className="grid gap-4">
               <h2 className="text-xl font-bold">{t("deals")}</h2>
               {cards(
-                page.results
+                homeResults
                   .filter((r) => r.lowestCents !== null && r.lowestCents < 100)
                   .slice(0, 4),
               )}
@@ -932,6 +935,9 @@ export function PublicMarketplace({
           <p className="font-semibold">{t("canada")}</p>
           <p className="text-sm text-muted-foreground">{t("canadaCopy")}</p>
           <span className="text-sm">CAD · Canada · EN / FR</span>
+          <p className="max-w-prose text-xs text-muted-foreground">
+            {t("artworkRights")}
+          </p>
         </div>
         <nav
           className="flex flex-wrap content-start gap-4"

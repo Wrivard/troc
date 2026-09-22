@@ -16,7 +16,8 @@
     "preinstall": "node scripts/require-pnpm.cjs",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "catalog:build-demo": "node scripts/demo-catalog/build.mjs"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +30,7 @@
     "@playwright/test": "^1.56.0",
     "eslint": "^9.39.0",
     "prettier": "^3.9.6",
+    "sharp": "0.34.5",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.0"

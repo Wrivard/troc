@@ -58,6 +58,7 @@
 
 @media (max-width: 640px) {
   .troc-storefront-body { flex-direction: column; }
+  .troc-storefront-main { flex-basis: auto; width: 100%; }
   .troc-storefront-aside { align-items: stretch; width: 100%; }
   .troc-storefront-actions { width: 100%; }
   .troc-storefront-actions .troc-button { flex: 1 1 auto; }

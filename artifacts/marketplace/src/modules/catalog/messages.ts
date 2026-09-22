@@ -1,4 +1,18 @@
 export const catalogMessages = {
+  artworkRights: [
+    "Card artwork belongs to its publishers and artists. Demo references do not imply endorsement.",
+    "Les visuels appartiennent aux éditeurs et aux artistes. Leur utilisation en démonstration ne constitue pas une approbation.",
+  ],
+  normal: ["Standard", "Standard"],
+  nonfoil: ["Nonfoil", "Non brillante"],
+  holo: ["Holo", "Holographique"],
+  reverse: ["Reverse holo", "Holographique inversée"],
+  etched: ["Etched foil", "Brillante gravée"],
+  firstEdition: ["First edition", "Première édition"],
+  "card-reference": [
+    "Reference artwork; set stamp may vary",
+    "Visuel de référence; le code de série peut varier",
+  ],
   offerSort: ["Sort offers", "Trier les offres"],
   priceAscending: ["Lowest price", "Prix croissant"],
   priceDescending: ["Highest price", "Prix décroissant"],
@@ -33,8 +47,8 @@ export const catalogMessages = {
     "Aucun produit correspondant. Essayez une autre recherche ou effacez les filtres.",
   ],
   demo: [
-    "Demo marketplace — fictional products, sellers and reference prices. No purchases are available.",
-    "Marché de démonstration — produits, vendeurs et prix de référence fictifs. Aucun achat n’est offert.",
+    "Demo marketplace — representative cards and test products. Sellers, prices and inventory are fictional. No purchases are available.",
+    "Marché de démonstration — cartes représentatives et produits tests. Vendeurs, prix et stocks fictifs. Aucun achat n’est offert.",
   ],
   title: ["One search. Every seller.", "Une recherche. Tous les vendeurs."],
   subtitle: [

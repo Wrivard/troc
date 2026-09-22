@@ -1,3 +1,4 @@
+import { publicDemoCatalog } from "./public-demo";
 import { PostgresCatalogAssetProvider } from "./assets";
 import { pool } from "@workspace/db";
 import type {
@@ -65,7 +66,7 @@ export class DemoCatalogRepository implements CatalogRepository {
   async images(products: Product[]) {
     return products;
   }
-  private data = demoCatalog();
+  constructor(private readonly data: CatalogSnapshot = demoCatalog()) {}
   async metadata() {
     return {
       games: this.data.games,
@@ -403,7 +404,7 @@ export class PostgresCatalogRepository implements CatalogRepository {
 export function catalogRepository(): CatalogRepository {
   const mode = process.env.CATALOG_MODE;
   if (mode === "demo" || (!mode && process.env.NODE_ENV !== "production"))
-    return new DemoCatalogRepository();
+    return new DemoCatalogRepository(publicDemoCatalog());
   if (mode !== "postgres" && mode !== undefined)
     throw new DomainError("invalid_catalog_mode", 503);
   if (!process.env.DATABASE_URL)
