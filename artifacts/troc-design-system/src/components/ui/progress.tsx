@@ -69,7 +69,7 @@ const Progress = React.forwardRef<
         className="troc-progress-track"
         value={indeterminate ? null : clamped}
         max={safeMax}
-        aria-label={hideHeader ? label : undefined}
+        aria-label={label}
         aria-valuetext={valueLabel}
         data-indeterminate={indeterminate || undefined}
         {...props}

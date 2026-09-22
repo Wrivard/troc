@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { PublicPage, Locale, ProductResult } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
@@ -39,6 +39,7 @@ import {
 import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { catalogMessages, type CatalogMessage } from "./messages";
 import { formatSourcePrice, productSelection } from "./presentation";
+import { addCart, readCart } from "../commerce/cart-storage";
 export interface PublicProps {
   page: PublicPage;
   theme?: "dark" | "light";
@@ -57,6 +58,16 @@ export function PublicMarketplace({
   const t = (key: CatalogMessage) =>
     catalogMessages[key][locale === "en" ? 0 : 1];
   const [query, setQuery] = useState(page.filters.q);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [cartMessage, setCartMessage] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+  useEffect(() => {
+    const update = () =>
+      setCartCount(readCart().reduce((n, l) => n + l.quantity, 0));
+    update();
+    window.addEventListener("troc:cart", update);
+    return () => window.removeEventListener("troc:cart", update);
+  }, []);
   const [tab, setTab] = useState(
     page.filters.max === 99 && page.kind === "store" ? "deals" : "shop",
   );
@@ -366,16 +377,21 @@ export function PublicMarketplace({
           ],
         }}
         cartLabel={t("cart")}
+        cartCount={cartCount}
         accountLabel={t("account")}
         signInLabel={t("signIn")}
         onSignIn={() => go("/sign-in")}
-        onCart={() =>
-          document
-            .getElementById("browse-only")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
+        onCart={() => go("/cart")}
       />
       <main className="mx-auto grid max-w-screen-xl gap-8 p-4 md:p-8">
+        {cartMessage && (
+          <p role="status">
+            {cartMessage}{" "}
+            <a className="underline" href={href("/cart")}>
+              {t("cart")}
+            </a>
+          </p>
+        )}
         {page.demo && (
           <p
             className="rounded-lg border border-border bg-muted p-4 text-sm"
@@ -468,7 +484,9 @@ export function PublicMarketplace({
             <section className="grid gap-3 rounded-lg border border-border p-6">
               <h2 className="text-2xl font-bold">{t("collectTitle")}</h2>
               <p>{t("collectCopy")}</p>
-              <Button disabled>{t("missing")}</Button>
+              <Button asChild>
+                <a href={href("/smart-cart")}>{t("smartCart")}</a>
+              </Button>
             </section>
             <section className="grid gap-2">
               <h2 className="text-xl font-bold">{t("canada")}</h2>
@@ -683,9 +701,29 @@ export function PublicMarketplace({
                       quantityDecrementLabel={t("less")}
                       quantityIncrementLabel={t("more")}
                       maxQuantity={offer.quantity}
-                      addToCartLabel={t("buySoon")}
-                      disabled
-                      data-disabled={false}
+                      quantity={quantities[offer.id] ?? 1}
+                      onQuantityChange={(quantity) =>
+                        setQuantities({ ...quantities, [offer.id]: quantity })
+                      }
+                      addToCartLabel={
+                        locale === "en" ? "Add to cart" : "Ajouter au panier"
+                      }
+                      onAddToCart={() => {
+                        try {
+                          addCart(offer.id, quantities[offer.id] ?? 1);
+                          setCartMessage(
+                            locale === "en"
+                              ? "Added to your cart."
+                              : "Ajouté à votre panier.",
+                          );
+                        } catch {
+                          setCartMessage(
+                            locale === "en"
+                              ? "Could not save your cart on this device."
+                              : "Impossible d’enregistrer le panier sur cet appareil.",
+                          );
+                        }
+                      }}
                     />
                     <a
                       className="underline"

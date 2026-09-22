@@ -1,0 +1,86 @@
+[
+  {
+    "width": 390,
+    "lang": "en",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 390,
+    "lang": "en",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 390,
+    "lang": "fr",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 390,
+    "lang": "fr",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 768,
+    "lang": "en",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 768,
+    "lang": "en",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 768,
+    "lang": "fr",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 768,
+    "lang": "fr",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 1280,
+    "lang": "en",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 1280,
+    "lang": "en",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 1280,
+    "lang": "fr",
+    "theme": "dark",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  },
+  {
+    "width": 1280,
+    "lang": "fr",
+    "theme": "light",
+    "flow": "product → cart → promotion → Smart Cart → checkout → buyer order → seller fulfillment",
+    "accessibility": "passed"
+  }
+]

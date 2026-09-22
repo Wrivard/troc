@@ -1,0 +1,38 @@
+[
+  {
+    "cards": 2,
+    "originalCents": 350,
+    "naiveCents": 350,
+    "optimizedCents": 205,
+    "sellersBefore": 2,
+    "sellersAfter": 1,
+    "shippingBefore": 300,
+    "shippingAfter": 150,
+    "savingsCents": 145,
+    "evaluated": 12
+  },
+  {
+    "cards": 30,
+    "originalCents": 1425,
+    "naiveCents": 1425,
+    "optimizedCents": 1122,
+    "sellersBefore": 3,
+    "sellersAfter": 1,
+    "shippingBefore": 750,
+    "shippingAfter": 400,
+    "savingsCents": 303,
+    "evaluated": 56
+  },
+  {
+    "cards": 50,
+    "originalCents": 2324,
+    "naiveCents": 2324,
+    "optimizedCents": 1203,
+    "sellersBefore": 3,
+    "sellersAfter": 1,
+    "shippingBefore": 1200,
+    "shippingAfter": 0,
+    "savingsCents": 1121,
+    "evaluated": 2500
+  }
+]

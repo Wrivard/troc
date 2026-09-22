@@ -17,7 +17,8 @@
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "catalog:build-demo": "node scripts/demo-catalog/build.mjs"
+    "catalog:build-demo": "node scripts/demo-catalog/build.mjs",
+    "commerce:seed-demo": "tsx artifacts/api-server/src/modules/commerce/seed-cli.ts"
   },
   "private": true,
   "dependencies": {

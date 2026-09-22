@@ -9,7 +9,8 @@
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: var(--space-3); flex-wrap: wrap;
 }
-.troc-cart-group-seller { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.troc-cart-group-seller { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); min-width: 0; }
+.troc-cart-group-name { flex-shrink: 0; }
 .troc-cart-group-name { margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary); }
 .troc-cart-group-meta { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
 .troc-cart-group-promotion { flex-shrink: 0; }
@@ -47,6 +48,7 @@
 .troc-cart-item-remove { display: flex; justify-content: flex-end; }
 
 @media (max-width: 640px) {
+  .troc-cart-group-seller { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
   .troc-cart-item {
     grid-template-columns: 44px minmax(0, 1fr) auto;
     grid-template-areas:

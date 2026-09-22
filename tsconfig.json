@@ -3,7 +3,9 @@
   "compileOnSave": false,
   "files": [],
   "references": [
-    { "path": "./lib/catalog" },
+    {
+      "path": "./lib/catalog"
+    },
     {
       "path": "./lib/db"
     },
@@ -12,6 +14,9 @@
     },
     {
       "path": "./lib/api-zod"
+    },
+    {
+      "path": "./lib/commerce"
     }
   ]
 }

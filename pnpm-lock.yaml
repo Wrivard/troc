@@ -200,6 +200,9 @@ importers:
       '@workspace/catalog':
         specifier: workspace:*
         version: link:../../lib/catalog
+      '@workspace/commerce':
+        specifier: workspace:*
+        version: link:../../lib/commerce
       '@workspace/db':
         specifier: workspace:*
         version: link:../../lib/db
@@ -255,6 +258,9 @@ importers:
       '@workspace/catalog':
         specifier: workspace:*
         version: link:../../lib/catalog
+      '@workspace/commerce':
+        specifier: workspace:*
+        version: link:../../lib/commerce
       '@workspace/troc-design-system':
         specifier: workspace:*
         version: link:../troc-design-system
@@ -673,6 +679,8 @@ importers:
         version: 3.25.76
 
   lib/catalog: {}
+
+  lib/commerce: {}
 
   lib/db:
     dependencies:

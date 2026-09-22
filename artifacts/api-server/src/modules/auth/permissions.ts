@@ -14,6 +14,7 @@ export type Permission =
   | "seller:manage"
   | "inventory:write"
   | "orders:fulfill"
+  | "orders:refund"
   | "messages:reply"
   | "support:read"
   | "catalog:write"
@@ -24,9 +25,15 @@ const memberPermissions: Record<SellerRole, Permission[]> = {
     "seller:manage",
     "inventory:write",
     "orders:fulfill",
+    "orders:refund",
     "messages:reply",
   ],
-  manager: ["inventory:write", "orders:fulfill", "messages:reply"],
+  manager: [
+    "inventory:write",
+    "orders:fulfill",
+    "orders:refund",
+    "messages:reply",
+  ],
   inventory: ["inventory:write"],
   fulfillment: ["orders:fulfill"],
   customer_service: ["messages:reply"],

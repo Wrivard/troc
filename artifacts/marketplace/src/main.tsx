@@ -3,6 +3,11 @@ import { lazy, Suspense } from "react";
 import { PreferencesProvider } from "@workspace/troc-design-system/hooks/use-preferences";
 import { AccountApp } from "./modules/account/AccountApp";
 import { PublicClient } from "./modules/catalog/PublicClient";
+const CommerceApp = lazy(() =>
+  import("./modules/commerce/CommerceApp").then((m) => ({
+    default: m.CommerceApp,
+  })),
+);
 const Guide = lazy(async () => {
   await import("./style-guide.css");
   return import("@workspace/troc-design-system/preview");
@@ -18,7 +23,17 @@ createRoot(document.getElementById("root")!).render(
     </Suspense>
   ) : (
     <PreferencesProvider>
-      {path.startsWith('/account')||path.startsWith('/sign-')?<AccountApp path={path}/>:<PublicClient path={path}/>}
+      {["/cart", "/smart-cart", "/checkout"].includes(path) ||
+      path.startsWith("/account/orders") ||
+      path.startsWith("/seller/orders") ? (
+        <Suspense>
+          <CommerceApp path={path} />
+        </Suspense>
+      ) : path.startsWith("/account") || path.startsWith("/sign-") ? (
+        <AccountApp path={path} />
+      ) : (
+        <PublicClient path={path} />
+      )}
     </PreferencesProvider>
   ),
 );

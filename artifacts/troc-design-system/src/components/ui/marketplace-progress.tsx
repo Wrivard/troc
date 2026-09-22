@@ -76,8 +76,8 @@ const SellerMinimumProgress = React.forwardRef<HTMLDivElement, SellerMinimumProg
     return (
       <div ref={ref} className={cn("troc-market-progress", className)} {...props}>
         <Progress
-          value={current}
-          max={minimum}
+          value={minimum <= 0 ? 1 : current}
+          max={minimum <= 0 ? 1 : minimum}
           label={label}
           valueLabel={valueText}
           size={size}

@@ -10,11 +10,19 @@ import { ensureBuyer } from "../modules/auth/service";
 import { account, savePreferences } from "../modules/users/service";
 import { submitApplication } from "../modules/sellers/service";
 import { DomainError } from "../modules/shared/domain";
+import { pool } from "@workspace/db";
+import { commerceRouter, commerceQuoteRouter } from "./commerce";
 const router = Router();
 router.use((_req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
+router.use(
+  commerceQuoteRouter(
+    pool,
+    process.env.CATALOG_MODE === "demo" && !process.env.DATABASE_URL,
+  ),
+);
 router.use((req, res, next) => {
   if (["GET", "HEAD", "OPTIONS"].includes(req.method)) return next();
   const allowed = process.env.APP_ORIGIN;
@@ -105,6 +113,29 @@ router.post("/seller/applications", async (req, res) =>
   res
     .status(201)
     .json(await submitApplication(await principal(req, res), req.body)),
+);
+router.use(
+  commerceRouter(
+    pool,
+    {
+      transaction: async (work) => {
+        const client = await pool.connect();
+        try {
+          await client.query("BEGIN");
+          const value = await work(client);
+          await client.query("COMMIT");
+          return value;
+        } catch (error) {
+          await client.query("ROLLBACK");
+          throw error;
+        } finally {
+          client.release();
+        }
+      },
+    },
+    principal,
+    process.env.CATALOG_MODE === "demo" && !process.env.DATABASE_URL,
+  ),
 );
 router.use(
   (error: unknown, _req: Request, res: Response, _next: NextFunction) => {

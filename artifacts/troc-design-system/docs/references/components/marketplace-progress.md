@@ -19,3 +19,7 @@
 ## Scope guardrail
 
 This record specifies a reusable visual component only. It does not authorize marketplace pages, business logic, APIs, persistence, optimization, checkout, authentication, or backend work.
+
+## Milestone 3 validation — 2026-09-22
+
+Commerce integration reuses this family. Shared fixes: progress bars retain accessible names with visible headers; zero-minimum progress is complete; Smart Cart savings text uses the existing primary-text token for light-theme contrast; seller-group metadata wraps on mobile. No token values or brand redesign. EN/FR dark/light browser checks and standalone/integrated guide comparisons passed.

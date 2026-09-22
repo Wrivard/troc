@@ -9,10 +9,24 @@ is locked. Implementation and activation statuses are distinguished below.
 | 1 — Foundation | implemented | Code/local regression coverage; hosted activation remains blocked |
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
 | 2.5 — Marketplace polish | implemented | Approved bounded sample: 159 products, 324 local responsive renditions; real-art/browser audit passed; production catalog remains unapproved |
-| 3 — Low-Value Commerce | in progress | Authorized after real-art/deployment gate; implementation and audit follow; real payments stay disabled |
+| 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
 | 4 — Seller Platform | deferred | Not started |
 | 5 — Collector + Trust | deferred | Not started |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
+
+## Milestone 3 — current implementation, 2026-09-22
+
+- Implemented: `/cart`, `/smart-cart`, `/checkout`, `/account/orders[/id]`, `/seller/orders[/id]`; approved components/tokens, EN/FR, persistent theme, mobile grouping and pagination.
+- Implemented: integer-cent seller minimums, best-rule promotions, non-stacking sale prices, aggregate Canadian simulation shipping, level-gated free shipping, bounded landed-cost optimization and exact-identity locks.
+- Implemented: PostgreSQL carts, immutable order snapshots, reservations, idempotent simulated payment, one fixed processing fee with exact allocation, append-only credit/reward/refund ledgers, order messages and notification outbox.
+- Implemented: buyer/seller ownership checks, dedicated refund permission, restricted backend-role integration tests, expired-checkout credit recovery, stock reduction once, cancellation restock once, bounded order-history cursors.
+- Implemented: explicit operator-only bounded demo seed preserving canonical IDs, approved asset provenance and existing inventory on reruns. No runtime seeding, mock production auth, real payment or production catalog import.
+- Implemented: demo-tagged server commerce events plus bounded, retryable, deduplicated anonymous browser metrics. Browser metrics are marked separately from authoritative checkout events.
+- Verification: 59 tests, restricted-role SQL scenarios, 12 full commerce browser flows, 12 large-cart viewport cases (5/20/50/100 lines), eight identical standalone/integrated style-guide comparisons. Final build/deployment evidence is recorded in `docs/MILESTONE_3_AUDIT.md`.
+- Blocked: hosted account/checkout activation. Vercel has no Supabase/database variables; connected Supabase has no TROC schema. Follow `docs/COMMERCE_SETUP.md`. This is not claimed as a hosted authenticated checkout pass.
+- Deferred by scope: real payment/tax/carrier integrations, full seller platform, wishlist/master-set matching, reviews and real notification delivery. Stop before Milestone 4.
+
+See `docs/MILESTONE_3_AUDIT.md` for calculation results, review fixes and limitations. Sections below retain earlier milestone evidence; historical gate statements are superseded by the approved sample completion and this current section.
 
 ## Foundation
 
@@ -66,7 +80,7 @@ full workspace production build, Vercel build, bundled serverless and bilingual 
 smoke checks all pass. **96 browser cases**, zero detected axe A/AA violations or
 uncaught page errors, plus eight pixel-identical guide comparisons.
 
-## Milestone 2.5 — polish (in progress)
+## Historical Milestone 2.5 polish record — superseded by approved sample completion
 
 - Implemented: top-left logos return to the homepage from marketplace, account and integrated style-guide pages, retaining EN/FR preference. No token/layout redesign.
 - Implemented: canonical product/variant image arrays, front/back/detail, responsive rendition dimensions and provider provenance; migration 0005_catalog_images with backend-only reads and no public writes. Not applied to hosted Supabase.
@@ -83,7 +97,7 @@ Additional polish validation: lint passed; 96 public-route accessibility/respons
 
 ## Phase A audit — Milestone 2.5
 
-Gate: **blocked**, not complete. The live demo still has 15 fictional products with missing art. Source approval for bounded TCGdex/Scryfall/YGOPRODeck samples is pending. No live-art acceptance is claimed, and Phase B/C commerce implementation/audit has not started.
+Historical gate: **was blocked**, now resolved by the approved sample completion below. At this audit point, the demo had 15 fictional products and awaited source approval; commerce had not started.
 
 Fixed after reviewing 900fd18...016dfc7:
 - Responsive image manifests now pass through the authorized, transactional importer into canonical images/renditions. IDs survive reruns/reordering; rejected imports retain prior data. Explicit imageScopes permit safe product/variant removal; a second language cannot erase shared product art.

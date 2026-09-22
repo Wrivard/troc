@@ -38,8 +38,8 @@
   color: var(--color-accent); font-weight: 700;
 }
 .troc-smart-savings-icon { width: 18px; height: 18px; flex-shrink: 0; }
-.troc-smart-savings-label { font-size: 14px; }
-.troc-smart-savings-amount { margin-left: auto; font-size: 18px; font-variant-numeric: tabular-nums; }
+.troc-smart-savings-label { font-size: 14px; color: var(--text-primary); }
+.troc-smart-savings-amount { margin-left: auto; font-size: 18px; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
 .troc-smart-explanation { font-size: 13px; }
 

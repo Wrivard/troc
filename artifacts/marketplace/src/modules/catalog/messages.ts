@@ -28,7 +28,8 @@ export const catalogMessages = {
   shop: ["Shop", "Magasiner"],
   sell: ["Sell · soon", "Vendre · bientôt"],
   collect: ["Collect · soon", "Collectionner · bientôt"],
-  cart: ["Cart · coming soon", "Panier · bientôt"],
+  cart: ["Cart", "Panier"],
+  smartCart: ["Try Smart Cart", "Essayer le panier intelligent"],
   signIn: ["Sign in", "Se connecter"],
   account: ["Account", "Compte"],
   navigation: ["Main navigation", "Navigation principale"],
@@ -67,8 +68,8 @@ export const catalogMessages = {
     "Plus de cartes. Moins de frais de livraison.",
   ],
   collectCopy: [
-    "Collection matching and Smart Cart consolidation are coming next.",
-    "La recherche de cartes manquantes et la consolidation du panier intelligent suivront.",
+    "Compare your total with Smart Cart. Consolidate sellers and save on shipping. Collection matching comes later.",
+    "Comparez votre total avec le panier intelligent. Regroupez vos achats pour économiser sur la livraison. Les outils de collection suivront.",
   ],
   canada: [
     "Built here. For collectors here.",
@@ -184,8 +185,8 @@ export const catalogMessages = {
   guide: ["Style guide", "Guide de style"],
   home: ["Home", "Accueil"],
   browseOnly: [
-    "Browsing is available now. Cart and checkout are coming in a later release.",
-    "Vous pouvez parcourir le catalogue. Le panier et la caisse suivront dans une prochaine version.",
+    "Demo marketplace: build a cart and compare shipping. Sign in for simulated checkout. No real charge.",
+    "Marché de démonstration : créez un panier et comparez la livraison. Connectez-vous pour une commande simulée. Aucun paiement réel.",
   ],
   bestOffers: [
     "Showing up to 50 lowest-priced offers for this exact variant.",

@@ -5,16 +5,25 @@
     "tsBuildInfoFile": ".tsbuildinfo",
     "outDir": "dist",
     "rootDir": "src",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "references": [
-    { "path": "../../lib/catalog" },
+    {
+      "path": "../../lib/catalog"
+    },
     {
       "path": "../../lib/db"
     },
     {
       "path": "../../lib/api-zod"
+    },
+    {
+      "path": "../../lib/commerce"
     }
   ]
 }

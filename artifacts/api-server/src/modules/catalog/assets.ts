@@ -6,6 +6,13 @@ export interface CatalogAssetProvider {
 /** Resolve approved renditions in a single batch. No arbitrary URL proxy. */
 export class PostgresCatalogAssetProvider implements CatalogAssetProvider {
   constructor(private readonly db: CatalogSqlClient) {}
+  async thumbnails(variantIds: string[]): Promise<Map<string, string>> {
+    const result = await this.db.query<{ variant_id: string; url: string }>(
+      `SELECT DISTINCT ON (v.id) v.id AS variant_id,r.url FROM troc.variants v JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_images i ON i.product_id=pr.product_id AND (i.variant_id=v.id OR i.variant_id IS NULL) JOIN troc.asset_provenance ap ON ap.id=i.provenance_id JOIN troc.asset_sources s ON s.id=ap.source_id JOIN troc.catalog_image_renditions r ON r.image_id=i.id WHERE v.id=ANY($1::uuid[]) AND s.approved_at IS NOT NULL AND i.side='front' ORDER BY v.id,(i.variant_id IS NOT NULL) DESC,i.position,r.width`,
+      [variantIds],
+    );
+    return new Map(result.rows.map((r) => [r.variant_id, r.url]));
+  }
   async images(products: Product[]): Promise<Product[]> {
     if (!products.length) return [];
     if (products.length > 48) throw new Error("asset_batch_too_large");
