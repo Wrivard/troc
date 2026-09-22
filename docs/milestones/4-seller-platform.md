@@ -66,3 +66,5 @@ For actual integrated routing, run seller-platform-server.ts with SELLER_INTEGRA
 Release is HELD under the mandatory reciprocal review protocol. B reviews A integration diff; C reviews seller implementation plus fixes. Hosted auth/database, representative PostgreSQL contention/load and operational activation evidence remain BLOCKED. No next milestone or production-ready claim until mandatory criteria pass.
 
 Final local candidate checks: all 81 tests and lint passed; API production/serverless bundles rebuilt after limiter ordering fix. Earlier full client/SSR build and integrated browser results remain applicable because no frontend code changed after those checks.
+
+A01 local follow-up: configured route-scoped hosting headers and EN/FR titles for the four new seller/admin pages. Two production-router/config regressions pass;8actual-main bilingual title/heading cases pass; lint, typecheck, marketplace client+SSR build pass. Hosted-header behavior remains unverified; B independent diff retest requested separately. C review identified C01–C04 UI pagination/detail/error-recovery/large-money issues; B owns fixes and C retest. No production readiness approval.

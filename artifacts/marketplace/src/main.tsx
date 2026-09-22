@@ -1,6 +1,9 @@
 import { createRoot } from "react-dom/client";
-import { lazy, Suspense } from "react";
-import { PreferencesProvider } from "@workspace/troc-design-system/hooks/use-preferences";
+import { lazy, Suspense, useEffect } from "react";
+import {
+  PreferencesProvider,
+  usePreferences,
+} from "@workspace/troc-design-system/hooks/use-preferences";
 import { AccountApp } from "./modules/account/AccountApp";
 import {
   InformationPage,
@@ -28,6 +31,23 @@ const Guide = lazy(async () => {
 });
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = window.location.pathname.slice(base.length);
+function SellerPageMetadata({
+  view,
+}: {
+  view: "apply" | "dashboard" | "team" | "admin";
+}) {
+  const { locale } = usePreferences();
+  useEffect(() => {
+    const titles = {
+      apply: ["Seller application", "Demande vendeur"],
+      dashboard: ["Seller dashboard", "Tableau de bord vendeur"],
+      team: ["Seller team", "Équipe vendeur"],
+      admin: ["Review seller applications", "Examiner les demandes vendeurs"],
+    };
+    document.title = `${titles[view][locale === "fr" ? 1 : 0]} · TROC`;
+  }, [view, locale]);
+  return null;
+}
 const sellerView =
   path === "/seller/apply"
     ? "apply"
@@ -52,6 +72,7 @@ createRoot(document.getElementById("root")!).render(
         </Suspense>
       ) : sellerView ? (
         <Suspense>
+          <SellerPageMetadata view={sellerView} />
           <SellerPlatformApp view={sellerView} />
         </Suspense>
       ) : isInformationPage(path) ? (

@@ -1,10 +1,37 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
+import { readFile } from "node:fs/promises";
 const require = createRequire(
   new URL("../artifacts/api-server/package.json", import.meta.url),
 );
 const express: typeof import("express") = require("express");
+test("seller hosting shells are private and noindex without changing public catalog routes", async () => {
+  const config = JSON.parse(
+    await readFile(new URL("../vercel.json", import.meta.url), "utf8"),
+  );
+  const policy = config.routes.find(
+    (route: { headers?: Record<string, string> }) =>
+      route.headers?.["X-Robots-Tag"],
+  );
+  assert.equal(policy.headers["Cache-Control"], "private, no-store");
+  assert.equal(policy.headers["X-Robots-Tag"], "noindex, noarchive");
+  const matches = new RegExp(policy.src);
+  for (const path of [
+    "/seller/apply",
+    "/seller/dashboard",
+    "/seller/team",
+    "/admin/seller-applications",
+  ])
+    assert.ok(matches.test(path));
+  for (const path of [
+    "/",
+    "/product/pokemon-northern-spark",
+    "/founding-sellers",
+    "/seller-guide",
+  ])
+    assert.equal(matches.test(path), false);
+});
 
 test("production seller wiring preserves origin, auth, no-store and submission rate limits", async () => {
   const previous = {
