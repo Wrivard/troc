@@ -24,7 +24,7 @@ try {
               .evaluate(
                 (el) => globalThis.getComputedStyle(el).backgroundColor,
               ),
-            "rgba(0, 0, 0, 0)",
+            "rgb(8, 8, 9)",
           );
         assert.equal(
           await page

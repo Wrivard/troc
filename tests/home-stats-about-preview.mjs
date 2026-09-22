@@ -41,7 +41,7 @@ try {
           await page
             .locator(".troc-home-hero")
             .evaluate((el) => globalThis.getComputedStyle(el).backgroundColor),
-          "rgba(0, 0, 0, 0)",
+          "rgb(8, 8, 9)",
         );
         await expect(page.locator(".troc-value-rail")).toHaveCount(0);
         await expect(page.locator(".troc-canada-edit")).toHaveCount(0);

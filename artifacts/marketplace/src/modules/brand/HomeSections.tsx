@@ -7,7 +7,7 @@ import {
   SellerPreviewCard,
   SmartCartComparison,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { PublicPage, ProductResult, Product } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
@@ -127,7 +127,15 @@ export function HomeSections({
   );
   return (
     <div className="troc-home-editorial">
-      <section className="troc-home-hero">
+      <section
+        className="troc-home-hero troc-cinematic-hero dark"
+        lang={page.locale}
+        style={
+          {
+            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace.webp")`,
+          } as CSSProperties
+        }
+      >
         <div className="troc-hero-copy">
           <p className="troc-editorial-eyebrow">
             {c(
@@ -148,9 +156,11 @@ export function HomeSections({
           </p>
           <p className="troc-hero-support">
             {c(
-              "Compare Canadian sellers in one place. Singles, sealed and graded. All in CAD.",
-              "Comparez les vendeurs canadiens au même endroit. Cartes à l’unité, scellées et gradées. Tout en CAD.",
+              "Compare Canadian sellers in one place. Singles, sealed and graded.",
+              "Comparez les vendeurs canadiens au même endroit. Cartes à l’unité, scellées et gradées.",
             )}
+            <br />
+            {c("All in CAD.", "Tout en CAD.")}
           </p>
           <form
             role="search"
@@ -175,7 +185,12 @@ export function HomeSections({
             <Button type="submit">{c("Search", "Chercher")}</Button>
           </form>
           <div className="troc-hero-actions">
-            {action("/search", "Explore cards", "Explorer les cartes")}
+            <Button asChild>
+              <a href={href("/search")}>
+                {c("Explore cards", "Explorer les cartes")}
+                <EditorialIcon name="forward" />
+              </a>
+            </Button>
             <a
               className="troc-editorial-text-link"
               href={href("/founding-sellers")}
@@ -184,39 +199,69 @@ export function HomeSections({
               <EditorialIcon name="arrow" />
             </a>
           </div>
-          <p className="troc-hero-signature">
-            <span aria-hidden="true" />{" "}
-            {c(
-              "Canadian sellers. Prices in CAD.",
-              "Vendeurs canadiens. Prix en CAD.",
-            )}
-          </p>
         </div>
         <div className="troc-hero-display">
-          <div className="troc-hero-display-label">
-            <span>01 / {c("THE COLLECTION", "LA COLLECTION")}</span>
-            <span>{c("YOUR NEXT FIND", "VOTRE PROCHAINE TROUVAILLE")}</span>
-          </div>
+          <span className="sr-only">
+            {c(
+              "Built for Canadians, by Canadians.",
+              "Pensé pour les Canadiens, par des Canadiens.",
+            )}
+          </span>
           <InteractiveCardStack
             label={c("Pokémon leads the collection", "Pokémon au premier plan")}
-            caption={
-              <>
-                <span>{lead?.product.name[page.locale] ?? "Pokémon"}</span>
-                <span aria-hidden="true">/</span>
-                <span>
-                  {c(
-                    "A little card. A whole world.",
-                    "Une petite carte. Tout un univers.",
-                  )}
-                </span>
-              </>
-            }
             cards={heroes.map((r) => art(r.product, true))}
           />
           <p className="troc-art-note">
             {c("Demo marketplace", "Marché de démonstration")}
           </p>
         </div>
+        <div className="troc-hero-benefits">
+          {(
+            [
+              [
+                "globe",
+                "Canada-first",
+                "Pensé pour le Canada",
+                "Canadian sellers. Prices in CAD.",
+                "Vendeurs canadiens. Prix en CAD.",
+              ],
+              [
+                "coin",
+                "All in CAD",
+                "Tout en CAD",
+                "No surprises at checkout.",
+                "Sans surprise au paiement.",
+              ],
+              [
+                "language",
+                "English & français",
+                "Français & English",
+                "A marketplace for everyone.",
+                "Un marché pour tout le monde.",
+              ],
+              [
+                "layers",
+                "Every single matters",
+                "Chaque carte compte",
+                "From commons to chase cards.",
+                "Des communes aux cartes convoitées.",
+              ],
+            ] as const
+          ).map(([icon, en, french, body, bodyFr]) => (
+            <div key={icon}>
+              <span className="troc-hero-benefit-icon" aria-hidden="true">
+                <EditorialIcon name={icon} />
+              </span>
+              <div>
+                <strong>{c(en, french)}</strong>
+                <p>{c(body, bodyFr)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="troc-hero-closing">
+          {c("COLLECTING MADE EASIER", "COLLECTIONNER, SIMPLEMENT")}
+        </p>
       </section>
       <MarketplaceStats
         label={c("TROC in numbers", "TROC en chiffres")}
