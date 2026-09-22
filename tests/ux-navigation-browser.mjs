@@ -11,7 +11,7 @@ try {
       await expect(p.locator("#password-hint")).toBeVisible();
       await p.locator('form a[href^="/sign-in"]').click();
       await expect(p).toHaveURL(new RegExp(`/sign-in\\?lang=${lang}`));
-      const shop = p.locator(".troc-site-nav a");
+      const shop = p.locator('.troc-site-nav a[href^="/search"]');
       await expect(shop).toHaveAttribute("href", `/search?lang=${lang}`);
       const popupPromise = context.waitForEvent("page");
       await shop.click({ modifiers: ["Control"] });

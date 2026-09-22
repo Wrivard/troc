@@ -52,12 +52,12 @@ export function MarketplaceHeader({
           {
             id: "sell",
             label: fr ? "Vendre" : "Sell",
-            onSelect: () => go("/sell"),
+            href: `${base}/sell?lang=${locale}`,
           },
           {
             id: "collect",
             label: fr ? "Collectionner" : "Collect",
-            onSelect: () => go("/collection"),
+            href: `${base}/collection?lang=${locale}`,
           },
         ]}
         search={{
