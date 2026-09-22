@@ -47,7 +47,7 @@ export function MarketplaceHeader({
           {
             id: "shop",
             label: fr ? "Magasiner" : "Shop",
-            onSelect: () => go("/search"),
+            href: `${base}/search?lang=${locale}`,
           },
           {
             id: "sell",

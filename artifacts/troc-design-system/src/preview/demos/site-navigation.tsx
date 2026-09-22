@@ -48,7 +48,7 @@ export default function SiteNavigationDemo() {
   ];
 
   const navItems: SiteNavItem[] = [
-    { id: "shop", label: tn("navShop"), current: nav === "shop", onSelect: () => { setNav("shop"); setLastAction(`${tn("navShop")} ${tn("navClicked")}`); } },
+    { id: "shop", label: tn("navShop"), current: nav === "shop", href: `/style-guide?lang=${locale}#page=editorial` },
     { id: "sell", label: tn("navSell"), current: nav === "sell", loading: sellLoading, onSelect: () => { setNav("sell"); setLastAction(`${tn("navSell")} ${tn("navClicked")}`); } },
     { id: "collect", label: tn("navCollect"), current: nav === "collect", disabled: collectDisabled, onSelect: () => { setNav("collect"); setLastAction(`${tn("navCollect")} ${tn("navClicked")}`); } },
   ];
