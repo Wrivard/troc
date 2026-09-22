@@ -249,24 +249,8 @@ export function PublicMarketplace({
         ?.focus(),
     );
   };
-  const filterForm = (
-    <form
-      action={`${base}${page.path}`}
-      className="troc-quality-filter grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
-      onSubmit={(event) => {
-        event.preventDefault();
-        const values = new URLSearchParams();
-        new FormData(event.currentTarget).forEach((v, k) => {
-          if (v && v !== "__all") values.set(k, String(v));
-        });
-        window.location.assign(`${base}${page.path}?${values}`);
-      }}
-    >
-      <input type="hidden" name="lang" value={locale} />
-      <label className="grid gap-2">
-        {t("searchLabel")}
-        <Input name="q" defaultValue={page.filters.q} maxLength={100} />
-      </label>
+  const refinementFields = (
+    <>
       {page.kind !== "game" &&
         filter(
           "game",
@@ -329,8 +313,8 @@ export function PublicMarketplace({
       >
         <summary className="cursor-pointer text-sm font-semibold">
           {locale === "fr"
-            ? "Édition, état et prix"
-            : "Printing, condition and price"}
+            ? "Langue, finition et autres critères"
+            : "Language, finish and more filters"}
         </summary>
         <div className="grid gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
           {filter("language", "language", page.filters.language, [
@@ -386,6 +370,10 @@ export function PublicMarketplace({
           </label>
         </div>
       </details>
+    </>
+  );
+  const resultControls = (
+    <>
       {filter(
         "sort",
         "sort",
@@ -401,6 +389,46 @@ export function PublicMarketplace({
           <a href={href(page.path)}>{t("reset")}</a>
         </Button>
       </div>
+    </>
+  );
+  const filterForm = (
+    <form
+      action={`${base}${page.path}`}
+      className={`troc-quality-filter grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ${page.kind === "search" ? "troc-search-filter-form" : ""}`}
+      onSubmit={(event) => {
+        event.preventDefault();
+        const values = new URLSearchParams();
+        new FormData(event.currentTarget).forEach((v, k) => {
+          if (v && v !== "__all") values.set(k, String(v));
+        });
+        window.location.assign(`${base}${page.path}?${values}`);
+      }}
+    >
+      <input type="hidden" name="lang" value={locale} />
+      <label className="grid gap-2">
+        {t("searchLabel")}
+        <Input name="q" defaultValue={page.filters.q} maxLength={100} />
+      </label>
+      {page.kind === "search" ? (
+        <>
+          {resultControls}
+          <details className="troc-search-more-filters">
+            <summary>
+              {locale === "fr"
+                ? "Jeu, extension, état et autres filtres"
+                : "Game, set, condition and more filters"}
+            </summary>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-4">
+              {refinementFields}
+            </div>
+          </details>
+        </>
+      ) : (
+        <>
+          {refinementFields}
+          {resultControls}
+        </>
+      )}
     </form>
   );
   return (

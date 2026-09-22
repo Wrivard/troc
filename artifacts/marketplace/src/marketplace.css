@@ -1331,3 +1331,13 @@ main {
 .troc-offer-controls > summary { cursor: pointer; min-height: 44px; align-content: center; }
 .troc-offer-controls > summary > span + span { margin-inline-start: var(--space-3); }
 .troc-offer-controls form { padding-block: var(--space-3); }
+
+/* Desktop search exposes query and sort while keeping advanced criteria available. */
+.troc-search-more-filters { grid-column: 1 / -1; }
+.troc-search-more-filters > summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: 600; }
+@media (min-width: 768px) {
+  .troc-search-page { gap: var(--space-4); }
+  .troc-search-filter-form { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto; }
+  .troc-search-page .troc-catalog-filters { padding-block: var(--space-2); }
+  .troc-search-page .troc-market-card-art .troc-card-image { max-width: 138px; margin-inline: auto; }
+}
