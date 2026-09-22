@@ -158,10 +158,10 @@ export function AccountApp({ path }: { path: string }) {
                   required
                   minLength={8}
                   maxLength={128}
-                  aria-describedby="password-hint"
+                  aria-describedby={signup ? "password-hint" : undefined}
                 />
               </label>
-              <p id="password-hint">{t("passwordHint")}</p>
+              {signup && <p id="password-hint">{t("passwordHint")}</p>}
               {signup && (
                 <>
                   <p>{t("country")}</p>
