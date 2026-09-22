@@ -1,0 +1,20 @@
+{
+  "engine": "PGlite PostgreSQL; local timings, not hosted capacity claims",
+  "timings": [
+    {
+      "count": 100,
+      "previewMs": 35,
+      "totalMs": 97
+    },
+    {
+      "count": 1000,
+      "previewMs": 97,
+      "totalMs": 499
+    },
+    {
+      "count": 10001,
+      "previewMs": 1125,
+      "totalMs": 5103
+    }
+  ]
+}

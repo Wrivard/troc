@@ -1,0 +1,78 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 390,
+    "locale": "fr",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 390,
+    "locale": "fr",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 768,
+    "locale": "fr",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 768,
+    "locale": "fr",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 1280,
+    "locale": "fr",
+    "theme": "light",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "width": 1280,
+    "locale": "fr",
+    "theme": "dark",
+    "checked": "inventory, CSV review blocks unmatched publish, accessibility, overflow, JS errors"
+  },
+  {
+    "flow": "manual publish → CSV preview/publish → stock update → unauthorized state",
+    "passed": true
+  }
+]

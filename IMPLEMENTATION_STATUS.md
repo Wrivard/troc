@@ -1,5 +1,15 @@
 # TROC implementation status
 
+## Milestone 3.5 — seller inventory, 2026-09-22
+
+Status: **In development**. The next authorized milestone is 3.5 only; earlier milestone gate language below is historical. Stop before Milestone 4.
+
+- Added source/external identifiers, versioned stock edits, canonical-only manual listings, generic CSV mapping/preview/publish, seller inventory search/filters/bulk actions and durable inventory state events.
+- Preserved canonical catalog/listing separation and all existing commerce flows. Existing inventory identifiers are unchanged.
+- Local validation: 70 tests pass, including 100/1,000/10,001-row imports and prior commerce regressions; 13 inventory browser cases, type checking, lint, full production builds and bundled SSR smoke checks pass. Combined design integration and hosted verification remain pending. See [the audit](docs/MILESTONE_3_5_AUDIT.md).
+- Hosted activation still requires the existing Supabase/database configuration plus migration 0008. Source names do not imply live integrations. Graded-card creation and real integration delivery remain outside this bounded workflow.
+- Master roadmap: [docs/product/roadmap.md](docs/product/roadmap.md). Internal docs: [docs/README.md](docs/README.md).
+
 Milestones 1 and 2 are approved. Milestone 3 is authorized **after the Milestone 2.5 audit passes**. **Stop before Milestone 4.** The approved style guide
 is locked. Implementation and activation statuses are distinguished below.
 

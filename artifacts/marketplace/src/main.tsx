@@ -12,6 +12,11 @@ const CommerceApp = lazy(() =>
     default: m.CommerceApp,
   })),
 );
+const InventoryApp = lazy(() =>
+  import("./modules/inventory/InventoryApp").then((m) => ({
+    default: m.InventoryApp,
+  })),
+);
 const Guide = lazy(async () => {
   await import("./style-guide.css");
   return import("@workspace/troc-design-system/preview");
@@ -26,7 +31,11 @@ createRoot(document.getElementById("root")!).render(
     </Suspense>
   ) : (
     <PreferencesProvider>
-      {isInformationPage(path) ? (
+      {path === "/seller/inventory" ? (
+        <Suspense>
+          <InventoryApp />
+        </Suspense>
+      ) : isInformationPage(path) ? (
         <InformationPage path={path} />
       ) : ["/cart", "/smart-cart", "/checkout"].includes(path) ||
         path.startsWith("/order-confirmation/") ||

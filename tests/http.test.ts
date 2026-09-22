@@ -32,6 +32,28 @@ test("HTTP authorization fails closed without configuration and blocks foreign o
       method: "PATCH",
     });
     assert.equal(missingOrigin.status, 403);
+    const inventoryPath = `${url}/inventory/11111111-1111-4111-8111-111111111111/imports`;
+    const inventoryBody = JSON.stringify({ csv: "x".repeat(20000) });
+    const inventoryForeign = await fetch(inventoryPath, {
+      method: "POST",
+      headers: {
+        origin: "https://evil.invalid",
+        "Content-Type": "application/json",
+      },
+      body: inventoryBody,
+    });
+    assert.equal(inventoryForeign.status, 403);
+    const inventoryUnconfigured = await fetch(inventoryPath, {
+      method: "POST",
+      headers: {
+        origin: "http://localhost:5173",
+        "Content-Type": "application/json",
+        "x-role": "admin",
+      },
+      body: inventoryBody,
+    });
+    // The bounded CSV route accepts >16 KB but still fails closed on real identity.
+    assert.equal(inventoryUnconfigured.status, 503);
   } finally {
     await new Promise<void>((resolve, reject) =>
       server.close((error) => (error ? reject(error) : resolve())),

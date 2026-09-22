@@ -12,6 +12,7 @@ import { submitApplication } from "../modules/sellers/service";
 import { DomainError } from "../modules/shared/domain";
 import { pool } from "@workspace/db";
 import { commerceRouter, commerceQuoteRouter } from "./commerce";
+import { inventoryRouter } from "./inventory";
 const router = Router();
 router.use((_req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
@@ -114,25 +115,29 @@ router.post("/seller/applications", async (req, res) =>
     .status(201)
     .json(await submitApplication(await principal(req, res), req.body)),
 );
+const transactionStore = {
+  transaction: async <T>(
+    work: (db: import("../modules/commerce/data").Sql) => Promise<T>,
+  ): Promise<T> => {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await work(client);
+      await client.query("COMMIT");
+      return result;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  },
+};
+router.use(inventoryRouter(pool, transactionStore, principal));
 router.use(
   commerceRouter(
     pool,
-    {
-      transaction: async (work) => {
-        const client = await pool.connect();
-        try {
-          await client.query("BEGIN");
-          const value = await work(client);
-          await client.query("COMMIT");
-          return value;
-        } catch (error) {
-          await client.query("ROLLBACK");
-          throw error;
-        } finally {
-          client.release();
-        }
-      },
-    },
+    transactionStore,
     principal,
     process.env.CATALOG_MODE === "demo" && !process.env.DATABASE_URL,
   ),

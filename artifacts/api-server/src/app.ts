@@ -2,7 +2,7 @@ import express, { type Express } from "express";
 import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
 import router from "./routes";
-import publicSite from './routes/public-site';
+import publicSite from "./routes/public-site";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -28,6 +28,11 @@ app.use(
 );
 app.disable("x-powered-by");
 app.use(cookieParser());
+// Only inventory CSV previews accept larger payloads; other APIs retain 16 KB limits.
+app.use(
+  /^\/api\/inventory\/[0-9a-f-]{36}\/imports$/,
+  express.json({ limit: "5mb" }),
+);
 app.use(express.json({ limit: "16kb" }));
 
 app.use("/api", router);
