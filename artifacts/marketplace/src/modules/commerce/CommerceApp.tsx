@@ -2,7 +2,7 @@ import { commerceSellerName } from "../brand/demo-store-branding";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { CartLine, CartQuote, SmartResult } from "@workspace/commerce";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -43,11 +43,31 @@ export function CommerceApp({ path }: { path: string }) {
     [credit, setCredit] = useState("0"),
     [available, setAvailable] = useState(0),
     [authenticated, setAuthenticated] = useState(false);
+  const [quoteRevision, setQuoteRevision] = useState(0);
+  const [quoteFailed, setQuoteFailed] = useState(false);
+  const [quoteStatus, setQuoteStatus] = useState<CommerceMessage | null>(null);
+  const visibleStatus = status ?? quoteStatus;
   const [checkoutKey, setCheckoutKey] = useState(() => crypto.randomUUID());
   const orderPage =
       path.startsWith("/account/orders") || path.startsWith("/seller/orders"),
     checkout = path === "/checkout",
     smartPage = path === "/smart-cart";
+  const quoteInput = useMemo(
+    () => ({
+      request: {
+        lines,
+        coupon: appliedCoupon,
+        province: checkout ? province : undefined,
+      },
+      revision: quoteRevision,
+    }),
+    [lines, appliedCoupon, province, checkout, quoteRevision],
+  );
+  const [quotedInput, setQuotedInput] = useState<typeof quoteInput | null>(
+    null,
+  );
+  const quoteFresh = quote !== null && quotedInput === quoteInput;
+  const [smartInput, setSmartInput] = useState<typeof quoteInput | null>(null);
   const report = (error: unknown) =>
     setStatus(
       error instanceof Error && error.message in commerceMessages
@@ -83,14 +103,14 @@ export function CommerceApp({ path }: { path: string }) {
     if (orderPage) return;
     let active = true;
     setBusy(true);
-    api<CartQuote>("/commerce/quote", "POST", {
-      lines,
-      coupon: appliedCoupon,
-      province: checkout ? province : undefined,
-    })
+    setQuoteFailed(false);
+    setQuoteStatus(null);
+    api<CartQuote>("/commerce/quote", "POST", quoteInput.request)
       .then((data) => {
         if (active) {
           setQuote(data);
+          setQuotedInput(quoteInput);
+          setQuoteFailed(false);
           trackCommerce("cart_view", {
             cards: data.cards,
             minimumRemainingCents: data.groups.reduce(
@@ -101,7 +121,14 @@ export function CommerceApp({ path }: { path: string }) {
         }
       })
       .catch((error) => {
-        if (active) report(error);
+        if (active) {
+          setQuoteFailed(true);
+          setQuoteStatus(
+            error instanceof Error && error.message in commerceMessages
+              ? (error.message as CommerceMessage)
+              : "error",
+          );
+        }
       })
       .finally(() => {
         if (active) setBusy(false);
@@ -109,7 +136,7 @@ export function CommerceApp({ path }: { path: string }) {
     return () => {
       active = false;
     };
-  }, [lines, appliedCoupon, province, checkout, orderPage]);
+  }, [quoteInput, orderPage]);
   const change = async (next: CartLine[]) => {
     setStatus(null);
     setSmart(null);
@@ -160,6 +187,7 @@ export function CommerceApp({ path }: { path: string }) {
     { id: "shipping", label: t("shipping"), amount: q.shippingCents / 100 },
   ];
   async function optimize() {
+    if (!quoteFresh || busy) return;
     setBusy(true);
     setStatus(null);
     try {
@@ -169,6 +197,7 @@ export function CommerceApp({ path }: { path: string }) {
         coupon: appliedCoupon,
       });
       setSmart(result);
+      setSmartInput(quoteInput);
       trackCommerce("smart_cart_completed", {
         savingsCents: result.savingsCents,
         sellersBefore: result.original.groups.length,
@@ -196,7 +225,7 @@ export function CommerceApp({ path }: { path: string }) {
     }
   }
   async function applySmart() {
-    if (!smart) return;
+    if (!smart || smartInput !== quoteInput || !quoteFresh || busy) return;
     setBusy(true);
     try {
       if (authenticated)
@@ -216,6 +245,7 @@ export function CommerceApp({ path }: { path: string }) {
   }
   async function place(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!quoteFresh || !quote?.eligible || busy) return;
     setBusy(true);
     setStatus(null);
     const values = new FormData(event.currentTarget);
@@ -326,11 +356,11 @@ export function CommerceApp({ path }: { path: string }) {
                   : "View order summary"}
               </a>
             )}
-            {status && (
+            {visibleStatus && (
               <p role="alert">
-                {t(status)}
-                {(status === "inventory_unavailable" ||
-                  status === "seller_unavailable") && (
+                {t(visibleStatus)}
+                {(visibleStatus === "inventory_unavailable" ||
+                  visibleStatus === "seller_unavailable") && (
                   <Button
                     className="ml-2"
                     variant="outline"
@@ -340,7 +370,7 @@ export function CommerceApp({ path }: { path: string }) {
                     {t("repairCart")}
                   </Button>
                 )}
-                {status === "unauthorized" && (
+                {visibleStatus === "unauthorized" && (
                   <a className="ml-2 underline" href={link("/sign-in")}>
                     {t("signIn")}
                   </a>
@@ -358,6 +388,27 @@ export function CommerceApp({ path }: { path: string }) {
               </p>
             )}
             {busy && <p role="status">{t("loading")}</p>}
+            {!!lines.length && !quoteFresh && (
+              <div className="troc-quote-recovery" role="status">
+                <p>
+                  {locale === "fr"
+                    ? "Votre sélection est conservée. Les montants précédents ne sont plus à jour; un nouveau devis est nécessaire pour poursuivre."
+                    : "Your selection is saved. Previous amounts are no longer current; refresh the estimate before continuing."}
+                </p>
+                {quoteFailed && (
+                  <Button
+                    variant="secondary"
+                    disabled={busy}
+                    onClick={() => {
+                      setQuoteStatus(null);
+                      setQuoteRevision((value) => value + 1);
+                    }}
+                  >
+                    {locale === "fr" ? "Réessayer le devis" : "Retry estimate"}
+                  </Button>
+                )}
+              </div>
+            )}
             {!lines.length ? (
               <PremiumEmptyState
                 title={
@@ -391,10 +442,10 @@ export function CommerceApp({ path }: { path: string }) {
                 <>
                   {smartPage && (
                     <>
-                      <Button disabled={busy} onClick={optimize}>
+                      <Button disabled={busy || !quoteFresh} onClick={optimize}>
                         {t("optimize")}
                       </Button>
-                      {smart && (
+                      {smart && smartInput === quoteInput && (
                         <>
                           {unchanged && (
                             <div role="status" className="grid gap-2">
@@ -465,7 +516,10 @@ export function CommerceApp({ path }: { path: string }) {
                               </a>
                             </Button>
                           ) : (
-                            <Button disabled={busy} onClick={applySmart}>
+                            <Button
+                              disabled={busy || !quoteFresh}
+                              onClick={applySmart}
+                            >
                               {t("applySmart")}
                             </Button>
                           )}
@@ -474,7 +528,12 @@ export function CommerceApp({ path }: { path: string }) {
                     </>
                   )}
                   <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-                    <CartGroups quote={quote} locale={locale} change={change} />
+                    <CartGroups
+                      quote={quote}
+                      locale={locale}
+                      change={change}
+                      readOnly={!quoteFresh}
+                    />
                     <aside
                       id="cart-summary"
                       tabIndex={-1}
@@ -483,6 +542,13 @@ export function CommerceApp({ path }: { path: string }) {
                       }
                       className="grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6"
                     >
+                      {!quoteFresh && (
+                        <p className="font-semibold" role="status">
+                          {locale === "fr"
+                            ? "Devis précédent — à actualiser"
+                            : "Previous estimate — refresh required"}
+                        </p>
+                      )}
                       <OrderTotals
                         locale={locale}
                         lines={[
@@ -577,7 +643,7 @@ export function CommerceApp({ path }: { path: string }) {
                             {t("smart")}
                           </a>
                           <Button
-                            disabled={!quote.eligible || busy}
+                            disabled={!quote.eligible || busy || !quoteFresh}
                             aria-describedby={
                               !busy &&
                               quote.groups.some(
@@ -689,7 +755,12 @@ export function CommerceApp({ path }: { path: string }) {
                       )}
                       <Button
                         type="submit"
-                        disabled={busy || !authenticated || !quote.eligible}
+                        disabled={
+                          busy ||
+                          !authenticated ||
+                          !quote.eligible ||
+                          !quoteFresh
+                        }
                       >
                         {t("pay")}
                       </Button>
