@@ -13,6 +13,7 @@ import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Checkbox } from "@workspace/troc-design-system/components/ui/selection-controls";
 import { SellerBadge } from "@workspace/troc-design-system/components/ui/seller-badges";
 import { commerceMessages, type CommerceMessage } from "./messages";
+import { catalogMessages, type CatalogMessage } from "../catalog/messages";
 export function CartGroups({
   quote,
   locale,
@@ -157,7 +158,20 @@ export function CartGroups({
                         missingLabel="TROC"
                       />
                     }
-                    metadata={`${l.listing.language.toUpperCase()} · ${l.listing.condition ?? l.listing.productType}`}
+                    metadata={[
+                      l.listing.language.toUpperCase(),
+                      l.listing.variantKey &&
+                        (Object.hasOwn(catalogMessages, l.listing.variantKey)
+                          ? catalogMessages[
+                              l.listing.variantKey as CatalogMessage
+                            ][locale === "en" ? 0 : 1]
+                          : l.listing.variantKey),
+                      l.listing.collectorNumber &&
+                        `#${l.listing.collectorNumber}`,
+                      l.listing.condition ?? l.listing.productType,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
                     unitPrice={`${money(l.unitCents)} / ${locale === "fr" ? "exemplaire" : "unit"}`}
                     lineTotal={`${locale === "fr" ? "Ligne" : "Line total"} ${money(l.totalCents)}`}
                     quantity={l.quantity}

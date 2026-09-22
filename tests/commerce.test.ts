@@ -479,11 +479,18 @@ test("PostgreSQL checkout reservations, retries, isolation, refunds and append-o
         }),
       /invalid_order_action/,
     );
-    assert.ok(
-      (await loadCommerce(db, [offer], true)).listings.some(
-        (l) => l.id === offer,
-      ),
+    await db.query(
+      "UPDATE troc.printings SET collector_number='007/100' WHERE id=$1",
+      [printing],
     );
+    for (const candidates of [false, true]) {
+      const loaded = (
+        await loadCommerce(db, [offer], candidates)
+      ).listings.find((l) => l.id === offer);
+      assert.ok(loaded);
+      assert.equal(loaded.variantKey, "normal");
+      assert.equal(loaded.collectorNumber, "007/100");
+    }
     assert.equal(
       (await orders.read(db, ownerPrincipal, child, true)).groups.length,
       1,
