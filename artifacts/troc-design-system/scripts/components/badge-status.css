@@ -1,0 +1,30 @@
+/* Badge and status — status is never colour-only; pair with icon/text. */
+.troc-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px var(--space-2); min-height: 20px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-hover); color: var(--text-secondary);
+  font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0;
+  white-space: nowrap; vertical-align: middle;
+}
+.troc-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.troc-badge--neutral { background: var(--surface-hover); color: var(--text-secondary); border-color: var(--border); }
+.troc-badge--accent { background: var(--color-accent); color: var(--color-accent-foreground); border-color: var(--color-accent); }
+.troc-badge--positive { background: transparent; color: var(--positive); border-color: var(--positive); }
+.troc-badge--warning { background: transparent; color: var(--warning); border-color: var(--warning); }
+.troc-badge--destructive { background: transparent; color: var(--danger); border-color: var(--danger); }
+.troc-badge--sponsored {
+  background: transparent; color: var(--text-muted); border-style: dashed; border-color: var(--border-strong);
+  text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px;
+}
+.troc-badge--outline { background: transparent; color: var(--text-primary); border-color: var(--border-strong); }
+
+/* Order-status composition */
+.troc-status { display: inline-flex; align-items: center; gap: 6px; }
+.troc-status-dot { width: 8px; height: 8px; border-radius: 999px; background: currentColor; flex-shrink: 0; }
+.troc-status--pending { color: var(--warning); }
+.troc-status--processing { color: var(--text-secondary); }
+.troc-status--shipped { color: var(--text-secondary); }
+.troc-status--delivered { color: var(--positive); }
+.troc-status--cancelled { color: var(--danger); }

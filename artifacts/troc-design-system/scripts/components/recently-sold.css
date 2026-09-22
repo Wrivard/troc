@@ -1,0 +1,21 @@
+/* Recently sold — compact, static reference item. No ticker animation implied. */
+.troc-recently-sold {
+  display: flex; align-items: center; gap: var(--space-3); min-width: 0;
+  box-sizing: border-box; padding: var(--space-2) var(--space-3);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  text-decoration: none;
+}
+a.troc-recently-sold:hover { border-color: var(--border-strong); }
+a.troc-recently-sold:focus-visible,
+.troc-recently-sold[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-recently-sold .troc-card-image { width: 34px; flex-shrink: 0; border-radius: var(--radius-sm); }
+.troc-recently-sold-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.troc-recently-sold-title {
+  margin: 0; font-size: var(--text-sm); font-weight: 600; line-height: 1.25;
+  color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.troc-recently-sold-meta { font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.troc-recently-sold-side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.troc-recently-sold-time { font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; }

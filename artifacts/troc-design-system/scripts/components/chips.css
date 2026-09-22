@@ -1,0 +1,47 @@
+/* Chips and filter chips — static, selectable, removable, game treatment. */
+.troc-chip-group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+.troc-chip {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: 32px; padding: 4px var(--space-3);
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  background: var(--surface); color: var(--text-primary);
+  font-size: 13px; font-weight: 500; line-height: 1.4; white-space: nowrap;
+  transition: background var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
+}
+.troc-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+button.troc-chip, .troc-chip[role="button"] { cursor: pointer; min-height: 44px; min-width: 44px; }
+button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-disabled="true"]) { background: var(--surface-hover); border-color: var(--text-muted); }
+.troc-chip:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-chip[aria-pressed="true"], .troc-chip[data-selected="true"] {
+  background: var(--color-primary); border-color: var(--color-primary); color: var(--color-primary-foreground);
+}
+.troc-chip[aria-pressed="true"]:hover:not(:disabled), .troc-chip[data-selected="true"]:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.troc-chip:disabled, .troc-chip[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
+
+.troc-chip--game { padding-left: var(--space-2); font-weight: 600; }
+.troc-chip-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-accent); flex-shrink: 0; }
+.troc-chip[aria-pressed="true"] .troc-chip-dot, .troc-chip[data-selected="true"] .troc-chip-dot { background: var(--color-primary-foreground); }
+
+.troc-chip-composite { display: inline-flex; align-items: stretch; max-width: 100%; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface); color: var(--text-primary); }
+.troc-chip-composite > .troc-chip { border: 0; border-radius: 999px 0 0 999px; background: transparent; color: inherit; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.troc-chip-composite[data-selected="true"] { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-primary-foreground); }
+.troc-chip-composite[aria-disabled="true"] { opacity: .5; }
+.troc-chip-composite > .troc-chip:disabled, .troc-chip-composite > .troc-chip[aria-disabled="true"] { opacity: 1; }
+.troc-chip-remove {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none; min-width: 44px; min-height: 44px; margin: 0;
+  border: 0; border-radius: 0 999px 999px 0; background: transparent; color: inherit;
+  cursor: pointer; opacity: .7; transition: opacity var(--motion-fast), background var(--motion-fast);
+}
+.troc-chip-remove:hover:not(:disabled) { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
+.troc-chip-remove:disabled { cursor: not-allowed; }
+.troc-chip-remove:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; opacity: 1; }
+.troc-chip-remove svg { width: 12px; height: 12px; }
+
+@media (pointer: coarse) {
+  .troc-chip { min-height: 44px; }
+}

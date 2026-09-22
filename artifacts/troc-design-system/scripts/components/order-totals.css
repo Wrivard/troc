@@ -1,0 +1,38 @@
+/* Order totals — tabular monetary summary; CAD two-decimal precision. */
+.troc-order-totals { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.troc-order-totals-lines { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.troc-order-totals-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+}
+.troc-order-totals-label {
+  margin: 0; display: flex; flex-direction: column; gap: 1px;
+  font-size: 13px; color: var(--text-secondary);
+}
+.troc-order-totals-hint { font-size: 11px; color: var(--text-muted); }
+.troc-order-totals-amount {
+  margin: 0; font-size: 13px; font-weight: 600; color: var(--text-primary);
+  font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap;
+}
+.troc-order-totals-amount--credit { color: var(--text-secondary); }
+
+.troc-order-totals-row--total {
+  margin-top: 2px; padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+.troc-order-totals-row--total .troc-order-totals-label {
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+}
+.troc-order-totals-amount--total { font-size: 18px; font-weight: 800; }
+
+.troc-order-totals-savings {
+  margin: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-accent); border-radius: var(--radius-sm);
+  color: var(--color-accent); font-weight: 700; font-size: 13px;
+}
+.troc-order-totals-savings-amount { font-variant-numeric: tabular-nums; }
+
+/* Compact layout for cart sidebars. */
+.troc-order-totals--compact { gap: var(--space-2); }
+.troc-order-totals--compact .troc-order-totals-row--total { padding-top: var(--space-2); }
+.troc-order-totals--compact .troc-order-totals-amount--total { font-size: 16px; }

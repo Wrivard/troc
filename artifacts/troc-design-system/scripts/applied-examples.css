@@ -1,0 +1,97 @@
+/* Applied & mobile guide examples — layout scaffolding only.
+   Guide-only: imported from the applied/mobile preview pages, never shipped in
+   the primitive theme. Uses tokens only; adds no new component look. */
+
+/* Bounded marketplace vignette wrapper. Everything sticky/scoped stays inside. */
+.ds-applied-vignette {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--background);
+  isolation: isolate;
+}
+.ds-applied-vignette .troc-site-header { border-bottom: 1px solid var(--border); }
+
+/* Hero strip inside the vignette: tagline + the three approved brand lines. */
+.ds-applied-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.ds-applied-hero-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--text-muted); margin: 0;
+}
+.ds-applied-hero-title {
+  margin: 0; color: var(--text-primary);
+  font-size: var(--text-3xl); font-weight: var(--font-weight-bold);
+  line-height: var(--text-3xl--line-height); letter-spacing: var(--tracking-tight);
+}
+.ds-applied-block-head h3 { font-size: var(--text-base); font-weight: var(--font-weight-semibold); }
+.ds-applied-hero-lines {
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4);
+  margin: var(--space-2) 0 0; padding: 0; list-style: none;
+  color: var(--text-secondary); font-size: 14px; font-weight: 600;
+}
+.ds-applied-hero-lines li { display: inline-flex; align-items: center; }
+
+/* Section blocks within the vignette. */
+.ds-applied-block { padding: var(--space-5); border-bottom: 1px solid var(--border); }
+.ds-applied-block:last-child { border-bottom: 0; }
+.ds-applied-block-head { margin: 0 0 var(--space-4); }
+.ds-applied-block-head h3 { margin: 0; color: var(--text-primary); font-size: 16px; }
+.ds-applied-block-head p { margin: var(--space-1) 0 0; color: var(--text-secondary); font-size: 13px; }
+
+/* Product tile grid — auto-fit so it collapses to one column on narrow frames. */
+.ds-applied-grid {
+  display: grid; gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.ds-applied-results { display: flex; flex-direction: column; gap: var(--space-3); }
+
+/* Cart summary layout: offer rows beside the progress rail. */
+.ds-applied-cart {
+  display: grid; gap: var(--space-5);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+}
+.ds-applied-cart-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.ds-applied-cart-rail {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.ds-applied-cart-seller { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.ds-applied-cart-seller-name { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+
+/* Local status line shared by both example pages. */
+.ds-applied-status {
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); align-items: center;
+  padding: var(--space-3) var(--space-5);
+  color: var(--text-secondary); font-size: 13px;
+}
+
+/* Phone stage for the mobile vignette. The phone frame reuses the real
+   troc-nav-frame--phone behaviour so it renders its mobile layout at any
+   viewport; this only positions it on the guide page. */
+.ds-applied-phones {
+  display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: flex-start;
+}
+.ds-applied-phone { flex: 1 1 320px; max-width: 390px; }
+.ds-applied-phone-caption {
+  margin: var(--space-2) 0 0; text-align: center;
+  color: var(--text-muted); font-size: 12px;
+}
+.ds-applied-phone .troc-nav-frame-body { display: flex; flex-direction: column; gap: var(--space-4); }
+
+@media (max-width: 720px) {
+  .ds-applied-cart { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-applied-vignette * { scroll-behavior: auto; }
+}

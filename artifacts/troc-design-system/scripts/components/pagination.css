@@ -1,0 +1,39 @@
+/* Pagination — semantic nav composed with Button styles. */
+.troc-pagination { display: block; }
+.troc-pagination-list {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);
+  margin: 0; padding: 0; list-style: none;
+}
+.troc-pagination-item { display: inline-flex; }
+
+/* Page links reuse the button base so hover/focus/active match Buttons. */
+.troc-pagination-link.troc-button {
+  min-width: var(--control-default); padding-inline: var(--space-2);
+}
+.troc-pagination-link[aria-current="page"].troc-button {
+  background: var(--color-primary); color: var(--color-primary-foreground); border-color: var(--color-primary);
+}
+.troc-pagination-link[aria-current="page"].troc-button:hover { background: var(--accent-hover); }
+
+.troc-pagination-ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--control-default); height: var(--control-default); color: var(--text-muted);
+}
+.troc-pagination-ellipsis svg { width: 16px; height: 16px; }
+.troc-pagination-ellipsis .sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.troc-pagination-prev .troc-button, .troc-pagination-next .troc-button { gap: 6px; }
+
+/* Compact mobile: hide numbered pages, keep prev/next + status. */
+.troc-pagination-status { color: var(--text-secondary); font-size: 13px; font-weight: 600; padding-inline: var(--space-2); }
+.troc-pagination--compact .troc-pagination-numbers { display: none; }
+.troc-pagination--compact .troc-pagination-status { display: inline-flex; }
+.troc-pagination-status { display: none; }
+
+@media (max-width: 560px) {
+  .troc-pagination:not(.troc-pagination--full) .troc-pagination-numbers { display: none; }
+  .troc-pagination:not(.troc-pagination--full) .troc-pagination-status { display: inline-flex; }
+}

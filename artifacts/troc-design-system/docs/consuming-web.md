@@ -5,6 +5,21 @@ React/Vite and other shadcn/Tailwind web consumers. If the app already contains
 a local theme or component library, also read
 `artifacts/troc-design-system/docs/migrating-web.md` before writing UI.
 
+## Workspace dependency
+
+Add the package to the consuming web app's `dependencies`:
+
+```json
+{
+  "dependencies": {
+    "@workspace/troc-design-system": "workspace:*"
+  }
+}
+```
+
+Run the workspace install after editing the manifest. Do not copy package
+source, tokens, fonts, or assets into the app.
+
 ## Theme
 
 Import this package's theme once from the app's main CSS:
@@ -13,44 +28,91 @@ Import this package's theme once from the app's main CSS:
 @import "@workspace/troc-design-system/styles.css";
 ```
 
-`styles.css` already imports Tailwind, its plugins, and this package's token
-theme. It also registers this package's component sources. Do not add a separate
-Tailwind import or a `node_modules` source path in a Tailwind v4 consumer.
-Tailwind v3 consumers keep their existing `@tailwind` directives and add
-`node_modules/@workspace/troc-design-system/src/components` to `content`.
+`styles.css` already imports Tailwind, its plugins, the generated token theme,
+the bundled font, and all reusable family styles. It also registers this
+package's component sources. Do not add a second Tailwind import or a
+`node_modules` source path in a Tailwind v4 consumer. This generated CSS input
+targets Tailwind v4; upgrade a Tailwind v3 app before adopting it rather than
+mixing v3 directives with this stylesheet.
 
 Do not import `styles.css` again from a component or route.
 
-## Pilot components and helpers
+## Components and helpers
 
-Only five web families are currently shipped: Button, Input, Textarea, Select,
-and Combobox. Import them from their `components/ui/*` paths:
+The package ships one web module for each family in the
+[46-family inventory](references/component-inventory.md). Import a family from
+its exact `components/ui/<family>` path; there is no component barrel:
 
 ```tsx
 import { Button } from "@workspace/troc-design-system/components/ui/button";
-import { Input } from "@workspace/troc-design-system/components/ui/input";
-import { Textarea } from "@workspace/troc-design-system/components/ui/textarea";
+import { PriceBlock } from "@workspace/troc-design-system/components/ui/price";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@workspace/troc-design-system/components/ui/select";
-import {
-  Combobox,
-  type ComboboxOption,
-} from "@workspace/troc-design-system/components/ui/combobox";
+  CardImage,
+  CardMetadata,
+  CardTitle,
+  ProductCard,
+} from "@workspace/troc-design-system/components/ui/product-presentation";
 import { cn } from "@workspace/troc-design-system/lib/utils";
+
+export function CardExample({ imageUrl }: { imageUrl: string }) {
+  return (
+    <ProductCard
+      image={
+        <CardImage
+          src={imageUrl}
+          alt="Pikachu, Scarlet & Violet—151"
+          missingLabel="Image unavailable"
+        />
+      }
+      title={<CardTitle>Pikachu</CardTitle>}
+      metadata={<CardMetadata items={["Scarlet & Violet—151", "173/165"]} />}
+      price={<PriceBlock amount={2.1} locale="en" label="Lowest available" />}
+      actions={<Button size="sm">View offers</Button>}
+    />
+  );
+}
 ```
 
 Use the package component whenever it provides the required family. Keep
 product-specific compositions in the app, but compose them from package
 primitives rather than recreating those primitives locally.
 
-Tooltip, Card, Toast/Toaster, `useToast`, and every other family in the future
-inventory are not shipped exports yet. Do not import them from this package
-until their inventory chunk is approved and implemented.
+The family records list the exact runtime exports, dependencies, and required
+translated labels. `Card` is not a standalone export: product tile/row
+presentation is provided by `product-presentation`. Static style-guide card art
+is not a product-data source; consumers pass their own image URL to `CardImage`.
+
+For toasts, mount both state and visual providers:
+
+```tsx
+import {
+  ToastControllerProvider,
+  Toaster,
+  useToast,
+} from "@workspace/troc-design-system/components/ui/toast";
+
+function SaveButton() {
+  const { toast } = useToast();
+  return (
+    <button onClick={() => toast({ title: "Saved" })}>
+      Save
+    </button>
+  );
+}
+
+export function ToastExample() {
+  return (
+    <ToastControllerProvider>
+      <SaveButton />
+      <Toaster closeLabel="Close notification" />
+    </ToastControllerProvider>
+  );
+}
+```
+
+Supply visible and accessibility copy through the app's i18n layer. In
+particular, Dialog, Drawer, and Toaster close labels and removable Chip labels
+are translated caller contracts.
 
 ## Preferences and messages
 
@@ -76,9 +138,18 @@ Wrap the app in `PreferencesProvider` only when it calls `usePreferences`.
 locale-aware CAD `formatPrice`. The `messages` object is keyed by `MessageKey`
 and stores English/French pairs; `Locale` is `"en" | "fr"`.
 
-The five components do not require a provider. They accept visible and
-accessible labels as props or children. Applications may supply those labels
-from `usePreferences().t`, their own i18n system, or other translated content.
+Components do not require `PreferencesProvider`; only `usePreferences` and the
+package message hooks do. Components accept visible/accessibility labels as
+props or children. Applications may supply those labels from
+`usePreferences().t`, their own i18n system, or other translated content.
+
+Additional bilingual demo-copy modules are public under exact paths such as
+`lib/messages-navigation`, `lib/messages-overlays`,
+`lib/messages-market-cards`, `lib/messages-market-economics`,
+`lib/messages-seller-foundations`, `lib/messages-cart`,
+`lib/messages-controls`, `lib/messages-feedback`, and
+`lib/messages-data`, and `lib/messages-examples`. They are optional style-guide
+copy helpers, not a requirement for using a component.
 
 ## Verify
 

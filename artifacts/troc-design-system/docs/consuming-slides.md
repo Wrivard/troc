@@ -6,9 +6,9 @@ this package as a dependency of a slides artifact, import `styles.css`, or
 copy components into it. Instead, translate this package's tokens into each
 slide document's `theme` block.
 
-The current component library is a web-only five-family pilot. No component,
-hook, or provider path is available to slide documents; future inventory
-families are documentation only until approved and shipped.
+The 46-family component library is web/DOM-only. No component, hook, provider,
+or CSS path is available to slide documents; slides translate tokens rather
+than importing package runtime code.
 
 ## Token mapping
 

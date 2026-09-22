@@ -2,10 +2,30 @@ import { ArrowUpRight, Check, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { usePreferences } from "../hooks/use-preferences";
 import { cn } from "../lib/utils";
+import { TrocLogo, type TrocLogoVariant } from "../components/ui/logo";
 
+/**
+ * Brand image helper for the style-guide pages. It now renders the reusable
+ * package logo (TrocLogo) and its bundled asset instead of maintaining a
+ * separate public-file <img>, so the guide consumes the real primitive. The
+ * helper API, `ds-brand-image` sizing class, and variants are preserved: the
+ * width-based `.ds-brand-image` rules govern the rendered size and the logo's
+ * `max-width: 100%` keeps proportions.
+ */
 export function BrandImage({ variant, className = "" }: { variant?: "dark" | "light" | "mono" | "wordmark" | "leaf"; className?: string }) {
   const { theme } = usePreferences();
-  return <img className={cn("ds-brand-image", className)} src={`${import.meta.env.BASE_URL}brand/troc-${variant ?? theme}.png`} alt="TROC" draggable={false} />;
+  // Map the helper's variants onto the logo's variant set; the leaf crop maps
+  // to the logo's compact leaf mark, and an unspecified variant follows the
+  // current theme (dark artwork on dark, light artwork on light).
+  const logoVariant: TrocLogoVariant =
+    variant === "leaf" ? "compact" : variant ?? (theme === "light" ? "light" : "dark");
+  return (
+    <TrocLogo
+      variant={logoVariant}
+      label="TROC"
+      className={cn("ds-brand-image", "ds-brand-logo", className)}
+    />
+  );
 }
 export function PageHeader({ title, description, eyebrow }: { title: string; description: string; eyebrow?: string }) {
   return <header className="ds-page-header">

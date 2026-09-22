@@ -1,0 +1,53 @@
+/* Toast — timed, dismissible notifications; status by icon + text, not colour alone. */
+.troc-toast-viewport {
+  position: fixed; z-index: var(--z-toast);
+  top: auto; bottom: var(--space-4); right: var(--space-4); left: auto;
+  display: flex; flex-direction: column; gap: var(--space-2);
+  width: 380px; max-width: calc(100vw - (var(--space-4) * 2));
+  margin: 0; padding: 0; list-style: none; outline: none;
+}
+.troc-toast {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-strong); border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated); color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+.troc-toast--neutral { border-left-color: var(--border-strong); }
+.troc-toast--success { border-left-color: var(--positive); }
+.troc-toast--warning { border-left-color: var(--warning); }
+.troc-toast--error { border-left-color: var(--danger); }
+.troc-toast-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.troc-toast-title { margin: 0; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; }
+.troc-toast-description { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.troc-toast-action {
+  flex-shrink: 0; align-self: center; min-height: var(--control-small);
+  padding: 6px var(--space-3); border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-primary);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-toast-action:hover { background: var(--surface-hover); }
+.troc-toast-close {
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; margin: -4px -6px -4px 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.troc-toast-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+.troc-toast-close svg { width: 16px; height: 16px; }
+.troc-toast[data-swipe="move"] { transform: translateX(var(--radix-toast-swipe-move-x)); }
+.troc-toast[data-swipe="cancel"] { transform: translateX(0); transition: transform var(--motion-fast); }
+.troc-toast[data-state="open"] { animation: troc-toast-in var(--motion-normal) var(--motion-easing); }
+.troc-toast[data-state="closed"] { animation: troc-toast-out var(--motion-fast) ease-in; }
+.troc-toast[data-swipe="end"] { animation: troc-toast-out var(--motion-fast) ease-out; }
+@keyframes troc-toast-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes troc-toast-out { from { opacity: 1; } to { opacity: 0; transform: translateX(16px); } }
+@media (max-width: 768px) {
+  .troc-toast-viewport { left: var(--space-4); right: var(--space-4); width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-toast[data-state="open"], .troc-toast[data-state="closed"], .troc-toast[data-swipe="end"] { animation: none; }
+}

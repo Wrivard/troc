@@ -1,0 +1,16 @@
+/* Seller & shipping progress — thin wrappers over the shared Progress bar. */
+.troc-market-progress { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.troc-market-progress-help {
+  margin: 0; font-size: 12px; line-height: 1.4; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.troc-market-progress-help--complete { color: var(--positive); font-weight: 600; }
+
+/* Add-example controls (demo) — wrap on mobile, keep tap targets usable. */
+.troc-market-progress-controls {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);
+}
+.troc-market-progress-readout {
+  font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums;
+}
+.troc-market-progress-readout strong { color: var(--text-primary); }

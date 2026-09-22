@@ -1,0 +1,25 @@
+/* Filters & sort — responsive composition of real controls; inline / drawer. */
+.troc-filter-bar {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4);
+  padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-filter-bar-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); flex: 1 1 auto; min-width: 0; }
+.troc-filter-bar-meta { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.troc-filter-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  background: var(--color-accent); color: var(--color-accent-foreground);
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.troc-filter-group { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.troc-filter-group-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.troc-filter-group-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.troc-sort-control { display: flex; align-items: center; gap: var(--space-2); }
+.troc-sort-control-label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+.troc-sort-control-icon { width: 15px; height: 15px; }
+.troc-sort-control-trigger { min-width: 168px; }
+@media (max-width: 768px) {
+  .troc-filter-bar { flex-direction: column; align-items: stretch; }
+  .troc-sort-control-trigger { width: 100%; }
+}

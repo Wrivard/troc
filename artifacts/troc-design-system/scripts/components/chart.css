@@ -1,0 +1,53 @@
+/* Chart treatment — semantic tokens, non-colour-only series, accessible data alt. */
+.troc-chart { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.troc-chart-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.troc-chart-plot { position: relative; width: 100%; min-width: 0; }
+.troc-chart-state {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  padding: var(--space-6); text-align: center; color: var(--text-secondary);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+}
+.troc-chart .recharts-cartesian-axis-tick-value { fill: var(--text-muted); font-size: 11px; }
+.troc-chart .recharts-cartesian-grid line { stroke: var(--border); }
+.troc-chart .recharts-cartesian-axis line, .troc-chart .recharts-cartesian-axis-line { stroke: var(--border-strong); }
+
+.troc-chart-tooltip {
+  min-width: 160px; padding: var(--space-2) var(--space-3);
+  background: var(--surface-elevated); color: var(--text-primary);
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md); font-size: 12px;
+}
+.troc-chart-tooltip-title { margin: 0 0 6px; font-weight: 700; }
+.troc-chart-tooltip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.troc-chart-tooltip-row { display: flex; align-items: center; gap: var(--space-2); }
+.troc-chart-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.troc-chart-tooltip-label { flex: 1 1 auto; color: var(--text-secondary); }
+.troc-chart-tooltip-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.troc-chart-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.troc-chart-legend-item { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+.troc-chart-legend-marker { position: relative; display: inline-block; width: 20px; height: 12px; color: var(--text-secondary); }
+.troc-chart-legend-marker::before { /* the line */
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0;
+  border-top: 2px solid currentColor; transform: translateY(-50%);
+}
+.troc-chart-legend-marker--dashed::before { border-top-style: dashed; }
+.troc-chart-legend-marker::after { /* the symbol */
+  content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  transform: translate(-50%, -50%); background: currentColor;
+}
+.troc-chart-legend-marker--circle::after { border-radius: 999px; }
+.troc-chart-legend-marker--square::after { border-radius: 1px; }
+.troc-chart-legend-marker--triangle::after {
+  background: none; width: 0; height: 0;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 9px solid currentColor;
+}
+
+/* Accessible data table alternative — visible, styled compactly. */
+.troc-chart-data-alt { margin: 0; }
+.troc-chart-data-alt table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.troc-chart-data-alt caption { text-align: left; padding-bottom: 6px; font-size: 12px; color: var(--text-muted); }
+.troc-chart-data-alt th, .troc-chart-data-alt td { padding: 6px var(--space-3); border-bottom: 1px solid var(--border); text-align: left; }
+.troc-chart-data-alt th[scope="col"] { color: var(--text-secondary); font-weight: 600; }
+.troc-chart-data-alt td[data-numeric], .troc-chart-data-alt th[data-numeric] { text-align: right; font-variant-numeric: tabular-nums; }

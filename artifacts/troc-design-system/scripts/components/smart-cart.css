@@ -1,0 +1,48 @@
+/* Smart Cart comparison — visual-only presentation of supplied figures. */
+.troc-smart-cart { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.troc-smart-cart-columns {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4);
+}
+.troc-smart-cart-col {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); min-width: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-smart-cart-col--recommended { border-color: var(--color-accent); }
+.troc-smart-cart-col-head {
+  display: flex; flex-direction: column; gap: 2px;
+  padding-bottom: var(--space-3); border-bottom: 1px solid var(--border);
+}
+.troc-smart-cart-col-heading {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+}
+.troc-smart-cart-col-heading svg { width: 15px; height: 15px; color: var(--color-accent); }
+.troc-smart-cart-col-sellers { font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+/* Loading + empty */
+.troc-smart-cart-col--loading { gap: var(--space-3); }
+.troc-smart-cart-col-head { min-height: 20px; }
+.troc-smart-cart-col-skeleton {
+  height: 14px; border-radius: var(--radius-sm); background: var(--surface-hover);
+}
+.troc-smart-cart--empty { padding: var(--space-6); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); text-align: center; }
+.troc-smart-cart-empty { margin: 0; font-size: 13px; color: var(--text-secondary); }
+
+/* Savings callout */
+.troc-smart-savings {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-accent); border-radius: var(--radius-md);
+  color: var(--color-accent); font-weight: 700;
+}
+.troc-smart-savings-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.troc-smart-savings-label { font-size: 14px; }
+.troc-smart-savings-amount { margin-left: auto; font-size: 18px; font-variant-numeric: tabular-nums; }
+
+.troc-smart-explanation { font-size: 13px; }
+
+@media (max-width: 560px) {
+  .troc-smart-cart-columns { grid-template-columns: minmax(0, 1fr); }
+}

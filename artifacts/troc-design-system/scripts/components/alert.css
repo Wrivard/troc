@@ -1,0 +1,29 @@
+/* Alert & banner — persistent inline messages; status by icon + text, not colour alone. */
+.troc-alert {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border); border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text-primary);
+}
+.troc-alert--neutral { border-left-color: var(--border-strong); }
+.troc-alert--success { border-left-color: var(--positive); }
+.troc-alert--warning { border-left-color: var(--warning); }
+.troc-alert--error { border-left-color: var(--danger); }
+.troc-alert-icon { flex-shrink: 0; display: inline-flex; margin-top: 1px; }
+.troc-alert-icon svg { width: 18px; height: 18px; }
+.troc-alert--neutral .troc-alert-icon { color: var(--text-secondary); }
+.troc-alert--success .troc-alert-icon { color: var(--positive); }
+.troc-alert--warning .troc-alert-icon { color: var(--warning); }
+.troc-alert--error .troc-alert-icon { color: var(--danger); }
+.troc-alert-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.troc-alert-title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; }
+.troc-alert-description { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.troc-alert-action {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-2);
+  align-self: center;
+}
+@media (max-width: 768px) {
+  .troc-alert { flex-wrap: wrap; }
+  .troc-alert-action { align-self: stretch; width: 100%; margin-top: var(--space-2); }
+}

@@ -1,0 +1,21 @@
+/* TROC logo — image-backed; proportions preserved; artwork swappable.
+   The component resolves the effective theme from its nearest theme boundary
+   (.dark / .light ancestor) and sets is-dark / is-light on the root element,
+   so nested theme regions never bleed across ancestor descendant selectors. */
+.troc-logo {
+  display: inline-flex; align-items: center; line-height: 0;
+  color: var(--text-primary); height: var(--troc-logo-height, 28px);
+}
+.troc-logo-img {
+  display: block; width: auto; height: var(--troc-logo-height, 28px); max-width: 100%;
+  object-fit: contain; user-select: none; -webkit-user-drag: none;
+}
+/* Auto variant: the resolved class reveals exactly one artwork. */
+.troc-logo--auto .troc-logo-stack { display: inline-flex; align-items: center; height: 100%; }
+.troc-logo--auto.is-dark .troc-logo-img[data-for="light"],
+.troc-logo--auto.is-light .troc-logo-img[data-for="dark"] { display: none; }
+
+.troc-logo--clearspace {
+  padding: var(--troc-logo-clearspace, 0.19em);
+  height: calc(var(--troc-logo-height, 28px) + var(--troc-logo-clearspace, 0.19em) + var(--troc-logo-clearspace, 0.19em));
+}

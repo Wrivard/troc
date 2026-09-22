@@ -1,0 +1,48 @@
+/* Seller offer row — verification, rating, condition, price, quantity,
+   shipping, promotion, and an Add-to-Cart action. Sibling controls only. */
+.troc-offer {
+  display: grid; min-width: 0; box-sizing: border-box;
+  grid-template-columns: minmax(0, 1.4fr) auto auto;
+  align-items: center; gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.troc-offer:hover,
+.troc-offer[data-preview="hover"] { border-color: var(--border-strong); }
+.troc-offer:focus-within,
+.troc-offer[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-offer[data-selected="true"] {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.troc-offer[data-unavailable="true"],
+.troc-offer[data-disabled="true"] { opacity: .6; }
+
+.troc-offer-seller { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.troc-offer-seller-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-width: 0; }
+.troc-offer-seller-name { font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); }
+.troc-offer-seller-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.troc-offer-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.troc-offer-shipping { font-size: var(--text-xs); color: var(--text-secondary); }
+
+.troc-offer-detail { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; }
+.troc-offer-promotion { display: flex; }
+.troc-offer-unavailable {
+  font-size: var(--text-xs); font-weight: 600; color: var(--danger);
+}
+
+.troc-offer-actions { display: flex; flex-direction: column; align-items: stretch; gap: var(--space-2); }
+.troc-offer-actions .troc-button { width: 100%; }
+.troc-offer-status { font-size: var(--text-xs); color: var(--text-secondary); text-align: center; }
+.troc-offer[data-loading="true"] { opacity: .85; }
+
+@media (max-width: 768px) {
+  .troc-offer {
+    grid-template-columns: 1fr;
+    align-items: stretch; gap: var(--space-3);
+  }
+  .troc-offer-detail { align-items: flex-start; text-align: left; }
+  .troc-offer-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
+}

@@ -1,0 +1,100 @@
+/* Dropdown menu — elevated action list with checkbox, radio, submenu,
+   destructive, and disabled item states. Radix drives keyboard + collision. */
+.troc-menu-content {
+  z-index: var(--z-overlay);
+  min-width: 200px;
+  max-width: calc(100vw - 24px);
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  overflow: auto;
+  padding: var(--space-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.troc-menu-label {
+  padding: 6px var(--space-3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.troc-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 7px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+.troc-menu-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.troc-menu-item--inset { padding-left: var(--space-8); }
+
+.troc-menu-item[data-highlighted] {
+  background: var(--surface-hover);
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.troc-menu-item[data-disabled] { opacity: .5; pointer-events: none; cursor: not-allowed; }
+
+.troc-menu-item--destructive { color: var(--danger); }
+.troc-menu-item--destructive[data-highlighted] {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
+.troc-menu-item--indicator { padding-left: var(--space-8); }
+.troc-menu-indicator {
+  position: absolute;
+  left: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+.troc-menu-indicator-icon { width: 16px; height: 16px; }
+.troc-menu-radio-dot { width: 8px; height: 8px; fill: currentColor; }
+
+.troc-menu-subtrigger[data-state="open"] { background: var(--surface-hover); }
+.troc-menu-chevron { margin-left: auto; color: var(--text-muted); }
+
+.troc-menu-shortcut {
+  margin-left: auto;
+  padding-left: var(--space-4);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.troc-menu-separator {
+  height: 1px;
+  margin: var(--space-1) calc(-1 * var(--space-1));
+  background: var(--border);
+}
+
+.troc-menu-content[data-state="open"] {
+  animation: troc-menu-in var(--motion-fast) var(--motion-easing);
+}
+@keyframes troc-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (pointer: coarse) {
+  .troc-menu-item { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-menu-content[data-state] { animation: none; }
+}

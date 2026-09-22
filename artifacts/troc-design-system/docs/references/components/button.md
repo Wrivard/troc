@@ -1,12 +1,12 @@
 # Button
 
 - **Normalized family:** `button`
-- **Status:** **IMPLEMENTED — verified; awaiting user visual approval.**
+- **Status:** **APPROVED — implemented, technically verified, and user-approved on 2026-09-21.**
 - **Source provenance:** Provided TROC specification only; no imported third-party component code.
 - **Source:** `src/components/ui/button.tsx`
 - **Preview:** `src/preview/demos/button.tsx`
 - **Package export:** `@workspace/troc-design-system/components/ui/button`
-- **Exports:** Button, buttonVariants
+- **Exports:** Button, buttonVariants; type: ButtonProps
 - **Implementation:** Themed scaffold composition using Radix Slot for polymorphic rendering.
 - **Dependencies:** React; @radix-ui/react-slot; class-variance-authority; cn.
 - **Required variants/states:** Primary, secondary, ghost/tertiary, outline, destructive, and icon variants; default, hover, pressed/active, focus-visible, disabled, and loading states.

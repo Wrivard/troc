@@ -1,7 +1,7 @@
 # Textarea
 
 - **Normalized family:** `textarea`
-- **Status:** **IMPLEMENTED — verified; awaiting user visual approval.**
+- **Status:** **APPROVED — implemented, technically verified, and user-approved on 2026-09-21.**
 - **Source provenance:** Provided TROC specification only; no imported third-party component code.
 - **Source:** `src/components/ui/textarea.tsx`
 - **Preview:** `src/preview/demos/textarea.tsx`

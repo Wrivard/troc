@@ -1,0 +1,36 @@
+/* State feedback — empty / error / success; meaningful icon + copy + real actions, never colour-only. */
+.troc-state {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--space-4);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); color: var(--text-primary);
+}
+.troc-state--full { padding: var(--space-10) var(--space-6); }
+.troc-state--compact {
+  flex-direction: row; align-items: center; text-align: left; flex-wrap: wrap;
+  gap: var(--space-3); padding: var(--space-4);
+}
+.troc-state-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--surface-hover);
+  color: var(--text-secondary); flex-shrink: 0;
+}
+.troc-state-icon svg { width: 22px; height: 22px; }
+.troc-state--error .troc-state-icon { color: var(--danger); border-color: var(--danger); }
+.troc-state--success .troc-state-icon { color: var(--positive); border-color: var(--positive); }
+.troc-state--compact .troc-state-icon { width: 36px; height: 36px; }
+.troc-state--compact .troc-state-icon svg { width: 18px; height: 18px; }
+.troc-state-body { display: flex; flex-direction: column; gap: var(--space-2); max-width: 42ch; }
+.troc-state--compact .troc-state-body { flex: 1 1 200px; gap: 2px; }
+.troc-state-title { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+.troc-state--compact .troc-state-title { font-size: 14px; }
+.troc-state-description { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.troc-state--compact .troc-state-description { font-size: 13px; }
+.troc-state-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.troc-state--compact .troc-state-actions { justify-content: flex-start; }
+@media (max-width: 768px) {
+  .troc-state--full { padding: var(--space-8) var(--space-4); }
+  .troc-state-actions { width: 100%; flex-direction: column; }
+  .troc-state-actions > * { width: 100%; }
+}

@@ -1,0 +1,51 @@
+/* Selection controls — Checkbox, Radio, Switch. Semantic tokens only. */
+.troc-choice {
+  display: inline-flex; align-items: flex-start; gap: var(--space-3);
+  min-height: var(--control-default); padding: 6px 0;
+  cursor: pointer; color: var(--text-primary); line-height: 1.5;
+}
+.troc-choice[data-disabled="true"] { cursor: not-allowed; opacity: .5; }
+.troc-choice-label { font-size: 14px; font-weight: 500; padding-top: 1px; }
+.troc-choice-label-hint { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+
+.troc-checkbox, .troc-radio {
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; margin-top: 1px;
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--color-primary-foreground);
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-checkbox { border-radius: var(--radius-sm); }
+.troc-radio { border-radius: 999px; }
+.troc-checkbox svg, .troc-radio svg { width: 14px; height: 14px; }
+
+.troc-checkbox:hover:not([data-disabled]), .troc-radio:hover:not([data-disabled]) { border-color: var(--text-muted); }
+.troc-checkbox[data-state="checked"], .troc-checkbox[data-state="indeterminate"],
+.troc-radio[data-state="checked"] { background: var(--color-primary); border-color: var(--color-primary); }
+.troc-checkbox:focus-visible, .troc-radio:focus-visible,
+.troc-choice[data-preview="focus"] .troc-checkbox, .troc-choice[data-preview="focus"] .troc-radio {
+  outline: 2px solid var(--focus); outline-offset: 3px;
+}
+.troc-choice[data-invalid="true"] .troc-checkbox, .troc-choice[data-invalid="true"] .troc-radio { border-color: var(--danger); }
+.troc-radio-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-primary-foreground); }
+
+.troc-radio-group { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.troc-switch {
+  position: relative; flex-shrink: 0; width: 40px; height: 24px; margin-top: 2px;
+  border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-hover);
+  cursor: pointer; transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-switch[data-state="checked"] { background: var(--color-primary); border-color: var(--color-primary); }
+.troc-switch:hover:not([data-disabled]) { border-color: var(--text-muted); }
+.troc-switch:focus-visible, .troc-choice[data-preview="focus"] .troc-switch { outline: 2px solid var(--focus); outline-offset: 3px; }
+.troc-switch-thumb {
+  display: block; width: 18px; height: 18px; border-radius: 999px; background: var(--surface);
+  box-shadow: var(--shadow-sm); transform: translateX(2px);
+  transition: transform var(--motion-fast);
+}
+.troc-switch[data-state="checked"] .troc-switch-thumb { transform: translateX(18px); background: var(--color-primary-foreground); }
+
+@media (pointer: coarse) {
+  .troc-checkbox, .troc-radio { width: 24px; height: 24px; }
+}

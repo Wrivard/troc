@@ -1,0 +1,35 @@
+/* Quantity control — Input framed by decrement/increment icon Buttons. */
+.troc-quantity {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--surface); overflow: hidden;
+}
+.troc-quantity[data-invalid="true"] { border-color: var(--danger); }
+.troc-quantity[data-disabled="true"] { opacity: .5; }
+.troc-quantity:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-quantity-step.troc-button.troc-button--icon {
+  width: var(--control-default); min-height: var(--control-default);
+  border: 0; border-radius: 0; background: transparent; color: var(--text-primary);
+}
+.troc-quantity-step.troc-button--icon:hover:not(:disabled) { background: var(--surface-hover); }
+.troc-quantity-step:disabled { opacity: .4; }
+
+.troc-quantity-field.troc-field {
+  width: 56px; min-width: 0; text-align: center;
+  border: 0; border-radius: 0; border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border); background: transparent;
+  padding-left: var(--space-1); padding-right: var(--space-1);
+  font-weight: 600; -moz-appearance: textfield;
+}
+.troc-quantity-field.troc-field:focus-visible { outline: none; }
+.troc-quantity-field::-webkit-outer-spin-button,
+.troc-quantity-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.troc-quantity--compact .troc-quantity-step.troc-button--icon { width: var(--control-small); min-height: var(--control-small); }
+.troc-quantity--compact .troc-quantity-field.troc-field { width: 44px; min-height: var(--control-small); font-size: 13px; }
+
+@media (pointer: coarse) {
+  .troc-quantity--compact .troc-quantity-step.troc-button--icon { width: var(--control-default); min-height: var(--control-default); }
+  .troc-quantity--compact .troc-quantity-field.troc-field { min-height: var(--control-default); }
+}

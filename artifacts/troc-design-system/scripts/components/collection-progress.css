@@ -1,0 +1,34 @@
+/* Collection progress — count, percentage, complete/empty/loading, compact/full.
+   Visual only; no collection backend. Built on Progress + card metadata. */
+.troc-collection {
+  display: flex; flex-direction: column; gap: var(--space-3); min-width: 0;
+  box-sizing: border-box; padding: var(--space-4);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.troc-collection-head { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
+.troc-collection-thumb {
+  flex-shrink: 0; width: 44px; border-radius: var(--radius-sm); overflow: hidden;
+}
+.troc-collection-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.troc-collection-title { margin: 0; font-size: var(--text-base); font-weight: 700; line-height: 1.3; color: var(--text-primary); }
+.troc-collection-subtitle { font-size: var(--text-xs); color: var(--text-secondary); }
+
+.troc-collection-stats { display: flex; align-items: baseline; gap: var(--space-2); }
+.troc-collection-count { font-size: var(--text-xl); font-weight: 800; line-height: 1; color: var(--text-primary); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.troc-collection-total { font-size: var(--text-sm); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.troc-collection-percent { margin-left: auto; font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.troc-collection-percent[data-complete="true"] { color: var(--positive); }
+
+.troc-collection-empty { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.45; margin: 0; }
+.troc-collection-complete { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-sm); font-weight: 600; color: var(--positive); }
+.troc-collection-complete svg { width: 16px; height: 16px; }
+
+.troc-collection--compact { padding: var(--space-3); gap: var(--space-2); }
+.troc-collection--compact .troc-collection-count { font-size: var(--text-lg); }
+
+.troc-collection-loading { display: flex; flex-direction: column; gap: var(--space-3); }
+
+@media (max-width: 768px) {
+  .troc-collection-head { flex-wrap: wrap; }
+}

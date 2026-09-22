@@ -1,7 +1,7 @@
 # Input
 
 - **Normalized family:** `input`
-- **Status:** **IMPLEMENTED — verified; awaiting user visual approval.**
+- **Status:** **APPROVED — implemented, technically verified, and user-approved on 2026-09-21.**
 - **Source provenance:** Provided TROC specification only; no imported third-party component code.
 - **Source:** `src/components/ui/input.tsx`
 - **Preview:** `src/preview/demos/input.tsx`

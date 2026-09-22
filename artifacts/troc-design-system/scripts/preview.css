@@ -5,10 +5,18 @@
 .ds-sidebar { position: fixed; inset: 0 auto 0 0; width: 238px; border-right: 1px solid var(--color-border); background: var(--color-sidebar); z-index: var(--z-sticky); }
 .ds-sidebar-inner { height: 100%; display: flex; flex-direction: column; }
 .ds-sidebar-brand { display: flex; align-items: flex-start; flex-direction: column; gap: 12px; padding: 34px 28px 24px; position: relative; }
-.ds-sidebar-brand .ds-brand-image { width: 108px; }
+.ds-sidebar-brand .ds-brand-image { width: 128px; }
 .ds-sidebar-brand > span { font-size: 11px; color: var(--text-muted); letter-spacing: .03em; }
 .ds-sidebar-brand > button { position: absolute; right: 16px; top: 20px; }
 .ds-brand-image { display: block; height: auto; object-fit: contain; }
+.ds-brand-logo.troc-logo { display: block; height: auto; }
+.ds-brand-logo .troc-logo-img { width: 100%; height: auto; }
+.ds-mobile-only { display: none; }
+.ds-desktop-only { display: block; }
+@media (max-width: 768px) {
+  .ds-desktop-only { display: none; }
+  .ds-mobile-only { display: flex; }
+}
 .ds-sidebar-search { position: relative; margin: 0 18px 18px; }
 .ds-sidebar-search > svg { position: absolute; top: 14px; left: 12px; color: var(--text-muted); pointer-events: none; }
 .ds-sidebar-search .troc-field { min-height: 42px; padding: 10px 43px 10px 34px; border-color: var(--color-border); font-size: 11px; background: var(--color-background); }
@@ -238,3 +246,15 @@
 }
 @media (pointer: coarse) { .ds-language button { min-width: 44px; } .ds-theme-control button { width: 44px; height: 44px; } .ds-specimen-label a { min-width: 44px; min-height: 44px; } }
 @media (max-width: 360px) { .ds-breadcrumb { visibility: hidden; width: 0; } .ds-topbar-controls { gap: 5px; } .ds-language { gap: 4px; } }
+
+#component-catalog { scroll-margin-top: 96px; }
+.ds-component-directory { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 24px; align-items: start; }
+.ds-directory-group { min-width: 0; padding: 20px; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-1); }
+.ds-directory-group h3 { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 14px; font-size: 14px; font-weight: 700; }
+.ds-directory-group h3 span { color: var(--text-muted); font-variant-numeric: tabular-nums; font-size: 11px; font-weight: 500; }
+.ds-directory-group ul { padding: 0; margin: 0; list-style: none; }
+.ds-directory-group li + li { border-top: 1px solid var(--border-subtle); }
+.ds-directory-group a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; color: var(--text-secondary); font-size: 12px; text-decoration: none; }
+.ds-directory-group a:hover { color: var(--text-primary); }
+.ds-directory-group a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: var(--radius-sm); }
+.ds-directory-group svg { flex: none; color: var(--text-muted); }

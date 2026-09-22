@@ -11,7 +11,7 @@
  * - src/generated/tokens.tsx  hex token object for mobile (Expo) and any other
  *                             platform, so web + mobile share one source.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -141,6 +141,12 @@ function buildCss(tokens) {
   const font = readFileSync(join(root, "docs/references/fonts/plus-jakarta-sans-latin.woff2")).toString("base64");
   css += `\n@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(data:font/woff2;base64,${font}) format('woff2'); }\n`;
   css += readFileSync(join(here, "component-styles.css"), "utf8");
+  const familyStyles = join(here, "components");
+  if (existsSync(familyStyles)) {
+    for (const file of readdirSync(familyStyles).filter((file) => file.endsWith(".css")).sort()) {
+      css += `\n/* ${file} */\n${readFileSync(join(familyStyles, file), "utf8")}`;
+    }
+  }
   const replacements = {};
 
   for (const scope of ["light", "dark"]) {

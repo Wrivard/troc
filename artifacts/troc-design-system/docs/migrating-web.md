@@ -18,8 +18,8 @@ consumption guide.
 
 ## Rewrite imports
 
-Only Button, Input, Textarea, Select, and Combobox are currently shipped web
-component families. Rewrite local imports only for those five modules:
+All 46 inventory families ship as web modules. Rewrite a local import only when
+the package family record lists the export your app uses:
 
 - `@/components/ui/<name>` →
   `@workspace/troc-design-system/components/ui/<name>`
@@ -31,23 +31,27 @@ Judge component ownership by the imported module, not by the file doing the
 import. App-specific components may remain local, but they must import shared
 primitives from this package.
 
-Do not rewrite Card, Tooltip, Toast/Toaster, `useToast`, or any other
-inventory-only family to this package: those exports are not shipped yet.
+There is no generic `Card` export. Migrate trading-card tile/row UI to
+`components/ui/product-presentation`; keep unrelated application cards local.
+Toast state uses `ToastControllerProvider`, `useToast`, and `Toaster` from
+`components/ui/toast`. Do not infer export names: use each family record or the
+source module.
 
 ## Delete superseded files
 
-- Delete package-provided files from the app's `src/components/ui/`; remove the
-  directory if it becomes empty.
+- Delete superseded package-provided files from the app's `src/components/ui/`;
+  retain app/domain compositions and remove the directory only if it is empty.
 - Delete local `src/lib/utils.ts` when it only provided `cn`.
 - Remove dependencies used only by the deleted local component library when the
   design-system package already supplies them transitively.
 
 ## Verify migration
 
-Grep for pilot `@/components/ui/` imports and `@/lib/utils`. Every
-remaining match must refer to an app-specific module or export the package does
-not provide. Run typecheck and the dev server after deleting local copies.
+Grep for `@/components/ui/` imports, `@/lib/utils`, duplicate preference hooks,
+and local theme variables. Every remaining component match must be app-specific
+or intentionally differ from the package API. Run typecheck and the dev server
+after deleting local copies.
 
-Migration is complete when no shipped pilot component, `cn`, preference hook,
-or theme token block remains duplicated locally. Keep local implementations for
-families the package has not shipped.
+Migration is complete when no package-provided primitive, `cn`, preference
+hook, or theme token block remains duplicated locally. Keep product data,
+routing, state, business logic, and domain compositions in the app.

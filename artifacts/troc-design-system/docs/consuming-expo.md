@@ -1,34 +1,49 @@
 # Consuming TROC Design System in Expo apps
 
 Read `artifacts/troc-design-system/docs/AGENTS.md` first. React Native does
-not consume the web CSS or DOM components. It can import portable tokens now;
-native theme/hooks and components require a future approved implementation. If
+not consume the web CSS, hooks, or DOM components. It can import portable
+tokens; native theme/hooks and components require a separate future
+implementation. If
 the Expo app still contains scaffolded or existing local theme/hooks/components,
 also read `artifacts/troc-design-system/docs/migrating-expo.md`.
 
-> **Current availability:** the shipped pilot is web-only: Button, Input,
-> Textarea, Select, and Combobox under `components/ui/*`. No
-> `components/native/*`, native theme, or native font hooks are shipped yet.
-> Everything below describes the future integration shape; do not use the
-> example paths as available exports.
+> **Current availability:** all 46 component families are web-only under
+> `components/ui/*`. No `components/native/*`, native theme, or native font
+> hooks are shipped. The only supported Expo import is the portable token
+> object shown below.
 
-## Native theme and fonts
+## Portable tokens
 
-No native theme or font-loader export is currently available. A future approved
-native chunk should build the shared light/dark palette, numeric radius and
-spacing conversion, and registered typography names inside this package. It
-should convert CSS lengths once from the portable token export:
+Import the generated, hex-based object:
 
 ```tsx
 import { tokens } from "@workspace/troc-design-system/tokens";
 
-const radius = tokens.radius.endsWith("rem")
-  ? Number.parseFloat(tokens.radius) * 16
-  : Number.parseFloat(tokens.radius);
+export const nativeTheme = {
+  dark: {
+    background: tokens.color.dark.background,
+    foreground: tokens.color.dark.foreground,
+    primary: tokens.color.dark.primary,
+  },
+  light: {
+    background: tokens.color.light.background,
+    foreground: tokens.color.light.foreground,
+    primary: tokens.color.light.primary,
+  },
+  spacing: Number.parseFloat(tokens.spacing) * 16,
+  radius: Number.parseFloat(tokens.radius) * 16,
+} as const;
 ```
 
-That future chunk should add documented native color and font hooks and return
-font loading/error state. Do not guess import paths before those exports ship.
+The object also contains `semantic`, `foundation`, `typeScale`, and font-family
+values. CSS lengths remain strings; convert them once at the native theme
+boundary. Do not copy literal token values into the Expo app.
+
+## Native theme and fonts
+
+No native theme or font-loader export is available. A future native chunk
+should add documented color/font hooks and return font loading/error state. Do
+not guess import paths before those exports ship.
 
 A future shared font hook must preserve the root layout's existing SplashScreen
 gating around its font loading/error result.
@@ -36,7 +51,7 @@ gating around its font loading/error result.
 ## Native components
 
 For a future native chunk, first inventory the app's visual building blocks,
-then add only approved product-agnostic families under
+then add only authorized product-agnostic families under
 `src/components/native/`.
 
 When `src/components/ui/` has a web counterpart, match its family exports, prop
@@ -44,8 +59,8 @@ names, variants, sizes, defaults, and state semantics wherever React Native
 supports them. Implement with native primitives and document platform-required
 differences in the base `AGENTS.md` inventory.
 
-After native families ship, use only their announced package paths. Do not infer
-availability from a family appearing in the reference inventory.
+After native families ship, use only their announced package paths. Web-family
+availability never implies a React Native implementation.
 
 Keep product data, navigation, state, and domain compositions in Expo. Once
 native primitives ship, app-owned compositions may use those approved exports.

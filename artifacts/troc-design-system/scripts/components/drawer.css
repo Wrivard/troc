@@ -1,0 +1,79 @@
+/* Drawer / sheet — vaul-backed accessible dialog. Bottom sheet (mobile default)
+   and left/right/top side sheets. Reuses the shared scrim and close/title
+   styling from dialog.css. Mobile-safe height; scrolls internally. */
+.troc-drawer {
+  position: fixed;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+/* Bottom sheet (default) */
+.troc-drawer[data-side="bottom"] {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.troc-drawer[data-side="top"] {
+  left: 0;
+  right: 0;
+  top: 0;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.troc-drawer[data-side="right"] {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+.troc-drawer[data-side="left"] {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.troc-drawer-handle {
+  width: 40px;
+  height: 4px;
+  margin: 0 auto var(--space-1);
+  border-radius: 999px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.troc-drawer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: var(--space-6);
+}
+.troc-drawer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .troc-drawer-footer > * { flex: 1 1 auto; }
+}

@@ -6,13 +6,17 @@ identity and reusable design system only; no marketplace application is authoriz
 ## Current scope
 
 - Review the living guide at `/style-guide` in the TROC Design System artifact.
-- The first review covers the foundations and exactly five component families:
-  Button, Input, Textarea, Select, and Combobox.
-- Ask for visual approval before implementing later inventory chunks. Stop after
-  the complete style guide for final approval before any marketplace development.
+- The user approved the foundations and Button, Input, Textarea, Select, and
+  Combobox pilot on 2026-09-21, authorizing completion of the remaining style guide.
+- The 46-family web catalog is implemented and technically verified: contract,
+  package TypeScript, production build, interaction/composition, and responsive
+  55-page browser checks passed. The 41 post-pilot families still await final
+  user visual approval.
+- Stop after the complete style guide for final approval before any marketplace
+  development.
 - Do not add authentication, databases, catalog APIs, payments, checkout,
   seller/dashboard backends, orders, shipping APIs, scanners, or Smart Cart
-  optimization. Future marketplace examples are reusable visual components only.
+  optimization. Marketplace examples are reusable visual components only.
 - Existing API and mockup-sandbox scaffolds are unrelated to this milestone and
   remain untouched.
 
@@ -37,7 +41,9 @@ identity and reusable design system only; no marketplace application is authoriz
 - `tokens.json` defines shared values; generated styles and token exports must
   not be hand-edited. Primitive styles and preview-only styles have separate inputs.
 - Source modules are `.tsx`, use package-safe relative imports, and every
-  implemented family has one lazy-loaded story.
+  completed family has one lazy-loaded story. The finished guide has 55 pages:
+  Overview, four foundations, 46 family pages, Voice, Accessibility, Mobile,
+  and one bounded Applied composition.
 
 ## Brand and review decisions
 
@@ -49,11 +55,14 @@ identity and reusable design system only; no marketplace application is authoriz
 - Plus Jakarta Sans is bundled under the Open Font License.
 - TROC Dark is the default. Explicit theme and EN/FR choices persist locally;
   browser language determines only the initial locale.
-- Clear space, minimum logo size, selected typography, contrast adjustment, and
-  French messaging remain visual/content decisions for user approval.
+- The pilot's typography, contrast treatment, and overall direction are
+  approved. Technical verification is not visual approval of the 41 new
+  families. Final French editorial/visual review, the provisional logo
+  clear-space/minimum-size guidance, and production SVG replacement remain
+  review items. No formal WCAG certification is claimed.
 
 ## Future consumption
 
-Read `docs/consuming-web.md` before using the package. Import shared tokens, styles,
-and available components rather than copying or restyling them. Only implemented
-families are available; remaining inventory entries are not working exports yet.
+Read `docs/consuming-web.md` before using the package. Import shared tokens,
+styles, and exact family exports rather than copying or restyling them. Expo and
+slides are token-only consumers; they cannot import the web/DOM families.

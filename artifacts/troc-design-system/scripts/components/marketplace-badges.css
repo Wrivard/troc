@@ -1,0 +1,35 @@
+/* Card badges — condition/language/game/set/variant; meaning never colour-only. */
+.troc-market-badge {
+  gap: 4px; max-width: 100%;
+}
+.troc-market-badge-label {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.troc-market-badge--compact {
+  padding: 1px var(--space-1); min-height: 18px; font-size: 11px;
+}
+
+/* Selected / filter-active treatment shares the accent Badge variant; the ring
+   makes selection legible beyond colour. */
+.troc-market-badge--selected {
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+
+/* Condition grade chip — the abbreviation carries the meaning, not colour. A
+   per-grade weight/opacity gives a non-colour visual gradient NM → DMG. */
+.troc-condition-grade {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; padding: 0 3px; border-radius: var(--radius-sm);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.03em;
+  background: var(--surface-hover); color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.troc-market-badge--selected .troc-condition-grade {
+  background: transparent; border-color: currentColor; color: inherit;
+}
+.troc-condition--nm .troc-condition-grade { border-style: solid; }
+.troc-condition--lp .troc-condition-grade { border-style: solid; opacity: 0.92; }
+.troc-condition--mp .troc-condition-grade { border-style: dashed; opacity: 0.86; }
+.troc-condition--hp .troc-condition-grade { border-style: dashed; opacity: 0.78; }
+.troc-condition--dmg .troc-condition-grade { border-style: dotted; opacity: 0.72; }
+.troc-condition--compact .troc-condition-grade { min-width: 18px; font-size: 9px; }

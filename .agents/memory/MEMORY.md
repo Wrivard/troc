@@ -1,1 +1,5 @@
 - [Nested theme aliases](nested-theme-aliases.md) — root-defined Tailwind color aliases can remain in the outer theme inside comparison panels.
+- [Preview JSX generics](preview-jsx-generics.md) — explicit JSX type arguments can break development instrumentation even when TypeScript and builds pass.
+- [Drawer focus defaults](drawer-focus-defaults.md) — modal appearance does not guarantee keyboard containment when the dependency disables initial focus.
+- [Unavailable cart items](unavailable-cart-items.md) — unavailability blocks purchasing and quantity changes, not removal.
+- [Bounded preview checks](bounded-preview-checks.md) — clipped frames can conceal layout failures from document-overflow checks.

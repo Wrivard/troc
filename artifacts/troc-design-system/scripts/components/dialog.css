@@ -1,0 +1,83 @@
+/* Dialog — modal surface with scrim, focus trap/return, labelled title and
+   description. Never overflows the mobile viewport: it scrolls internally. */
+.troc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgb(0 0 0 / 0.55);
+  animation: troc-overlay-in var(--motion-normal) var(--motion-easing);
+}
+@keyframes troc-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+
+.troc-dialog {
+  position: fixed;
+  z-index: var(--z-overlay);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: calc(100vw - 32px);
+  max-width: 480px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: var(--space-6);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+  animation: troc-dialog-in var(--motion-normal) var(--motion-easing);
+}
+@keyframes troc-dialog-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.troc-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: var(--space-6);
+}
+.troc-dialog-title { margin: 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; color: var(--text-primary); }
+.troc-dialog-description { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+
+.troc-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.troc-dialog-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.troc-dialog-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+.troc-dialog-close:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-dialog-close svg { width: 18px; height: 18px; }
+
+@media (max-width: 768px) {
+  .troc-dialog-footer > * { flex: 1 1 auto; }
+}
+@media (pointer: coarse) {
+  .troc-dialog-close { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-overlay, .troc-dialog { animation: none; }
+}

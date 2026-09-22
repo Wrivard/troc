@@ -1,6 +1,7 @@
 import { lazy, type ComponentType } from "react";
 import type { MessageKey } from "../lib/messages";
 import { OverviewPage } from "./foundations";
+import { AVAILABLE_GROUPS, STORY_LOADERS } from "./catalog";
 
 export type PreviewEntry = { id: string; title: MessageKey; component: ComponentType; number: string };
 export type NavGroup = { title: MessageKey; entries: PreviewEntry[] };
@@ -14,18 +15,17 @@ export const NAV_GROUPS: NavGroup[] = [
   { title: "colours", entries: [{ id: "colours", title: "palette", component: lazy(() => import("./pages/colours")), number: "02" }] },
   { title: "fonts", entries: [{ id: "typography", title: "typeScale", component: lazy(() => import("./pages/typography")), number: "03" }] },
   { title: "layout", entries: [{ id: "layout", title: "spacing", component: lazy(() => import("./pages/layout")), number: "04" }] },
-  { title: "actions", entries: [{ id: "buttons", title: "buttons", component: lazy(() => import("./demos/button")), number: "05" }] },
-  { title: "forms", entries: [
-    { id: "inputs", title: "inputs", component: lazy(() => import("./demos/input")), number: "06" },
-    { id: "textareas", title: "textareas", component: lazy(() => import("./demos/textarea")), number: "07" },
-    { id: "selects", title: "selects", component: lazy(() => import("./demos/select")), number: "08" },
-    { id: "comboboxes", title: "comboboxes", component: lazy(() => import("./demos/combobox")), number: "09" },
-  ] },
+  ...AVAILABLE_GROUPS.map((group) => ({ title: group.title, entries: group.families.map((family) => ({
+    id: family.id ?? family.slug, title: family.title,
+    component: lazy(STORY_LOADERS[`./demos/${family.slug}.tsx`]), number: "",
+  })) })),
   { title: "content", entries: [
     { id: "voice", title: "voice", component: lazy(() => import("./pages/guidance").then((m) => ({ default: m.VoicePage }))), number: "10" },
     { id: "accessibility", title: "accessibility", component: lazy(() => import("./pages/guidance").then((m) => ({ default: m.AccessibilityPage }))), number: "11" },
     { id: "mobile", title: "mobile", component: lazy(() => import("./pages/mobile")), number: "12" },
+    { id: "applied", title: "applied", component: lazy(() => import("./pages/applied")), number: "" },
   ] },
 ];
+NAV_GROUPS.flatMap((group) => group.entries).forEach((entry, index) => { entry.number = String(index + 1).padStart(2, "0"); });
 export const ALL_ENTRIES = [OVERVIEW_ENTRY, ...NAV_GROUPS.flatMap((group) => group.entries)];
 if (new Set(ALL_ENTRIES.map((entry) => entry.id)).size !== ALL_ENTRIES.length) throw new Error("Duplicate design-system page IDs.");

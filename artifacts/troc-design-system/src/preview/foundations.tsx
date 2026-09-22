@@ -9,6 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from ".
 import { usePreferences } from "../hooks/use-preferences";
 import { BrandImage, Field, games, Section } from "./parts";
 import type { MessageKey } from "../lib/messages";
+import { ComponentDirectory } from "./catalog";
 
 export function OverviewPage() {
   const { t, formatPrice } = usePreferences();
@@ -23,7 +24,7 @@ export function OverviewPage() {
   return <>
     <header className="ds-overview-header">
       <div><p className="ds-eyebrow">{t("foundations")}</p><h1>{t("overviewTitle")}</h1><p className="ds-lead">{t("overviewIntro")}</p></div>
-      <div className="ds-overview-actions"><Button asChild><a href="#page=buttons">{t("explore")}<ArrowUpRight size={16} /></a></Button><a href="#page=brand" className="ds-text-link">{t("guidelines")}<ArrowRight size={14} /></a></div>
+      <div className="ds-overview-actions"><Button asChild><a href="#component-catalog">{t("explore")}<ArrowUpRight size={16} /></a></Button><a href="#page=brand" className="ds-text-link">{t("guidelines")}<ArrowRight size={14} /></a></div>
     </header>
     <section className="ds-identity-panel dark" aria-label={t("lockedIdentity")}>
       <div className="ds-identity-top"><span>{t("lockedIdentity")}</span><span>01 — TROC</span></div>
@@ -55,6 +56,7 @@ export function OverviewPage() {
         </div>
       </div>
     </Section>
+    <ComponentDirectory />
     <section className="ds-type-preview">
       <div className="ds-aa">Aa<span>01—09</span></div>
       <div><p className="ds-eyebrow">PLUS JAKARTA SANS</p><h2>{t("typeIntro")}</h2><p>{t("typeBody")}</p><a className="ds-text-link" href="#page=typography">{t("viewType")}<ArrowUpRight size={14} /></a></div>

@@ -1,0 +1,28 @@
+/* Seller badges — trust signals; icon + text, never colour-only. */
+.troc-seller-badge { gap: 4px; max-width: 100%; }
+.troc-seller-badge-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.troc-seller-badge--compact { padding: 1px var(--space-1); min-height: 18px; font-size: 11px; }
+.troc-seller-badge--compact svg { width: 11px; height: 11px; }
+
+/* Verified variants stay factual and neutral so verification never reads like a
+   sale or a paid placement. */
+.troc-seller-badge--verified-seller { color: var(--text-secondary); }
+.troc-seller-badge--verified-seller svg { color: var(--text-secondary); }
+
+/* Top Seller uses the accent Badge variant (intentional emphasis). */
+.troc-seller-badge--top-seller svg { color: var(--color-accent-foreground); }
+
+/* Sponsored inherits the dashed sponsored Badge variant; keep the icon muted. */
+.troc-seller-badge--sponsored svg { color: var(--text-muted); }
+
+/* Meaning legend (demo) — badge in the first column, plain-language meaning next. */
+.troc-seller-badge-legend { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.troc-seller-badge-legend-row {
+  display: grid; grid-template-columns: minmax(160px, 220px) 1fr;
+  align-items: center; gap: var(--space-4);
+}
+.troc-seller-badge-legend-row dt { margin: 0; }
+.troc-seller-badge-legend-row dd { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+@media (max-width: 560px) {
+  .troc-seller-badge-legend-row { grid-template-columns: 1fr; gap: 4px; }
+}

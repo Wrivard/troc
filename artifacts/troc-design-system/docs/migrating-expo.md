@@ -5,18 +5,19 @@ Read `artifacts/troc-design-system/docs/AGENTS.md` and
 when an Expo app, including a fresh scaffold, has local theme, hooks, fonts, or
 product-agnostic component implementations.
 
-> **Not currently actionable:** this package presently ships only the five web
-> pilot families under `components/ui/*`. It does not yet ship native
-> components, native theme helpers, or native font hooks. Do not rewrite or
-> delete Expo implementations until a native chunk is approved and those exact
-> exports exist.
+> **Token-only today:** the package ships portable tokens plus 46 web/DOM
+> families. It does not ship native components, native theme helpers, or native
+> font hooks. Do not import `components/ui/*` into Expo or delete native
+> implementations until exact native replacements exist.
 
 ## Rewrite theme and font imports
 
 The steps in this section are the future migration plan, not a statement that
 the listed exports are currently available.
 
-When native exports ship, grep the Expo artifact for local colors, hooks,
+Apps may replace duplicated literal colors with values imported from
+`@workspace/troc-design-system/tokens` now, while preserving their existing
+native theme API. When native exports ship, grep the Expo artifact for hooks,
 `useFonts` calls, and direct font imports. Read every matching scaffold and app
 file before changing it. Rewrite only to exact paths announced by that approved
 native chunk, preserve SplashScreen gating, and delete local files only after
@@ -45,7 +46,7 @@ Inventory inline and app-local styled controls before migrating screens.
 - Verify the shipped native theme, fonts, and one package primitive before
   presenting the app.
 
-Until native exports ship, no Expo migration to this package is complete or
-expected. Afterwards, migration is complete when Expo imports each approved
+Until native exports ship, only token consolidation is possible. Afterwards,
+migration is complete when Expo imports each authorized
 shared primitive, theme, and hook from its documented path and retains only
 product-specific UI compositions locally.

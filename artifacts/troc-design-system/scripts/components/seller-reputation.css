@@ -1,0 +1,40 @@
+/* Seller reputation — rating, stats, level, plan; meaning never colour-only. */
+.troc-seller-rating { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 20px; }
+.troc-seller-rating-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.troc-seller-rating-score { font-size: 14px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.troc-seller-rating-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.troc-seller-rating-label { font-size: 13px; color: var(--text-secondary); }
+.troc-seller-rating-star { width: 15px; height: 15px; color: var(--text-muted); fill: none; }
+.troc-seller-rating-star--filled { color: var(--warning); fill: var(--warning); }
+.troc-seller-rating--unrated .troc-seller-rating-star { color: var(--text-muted); }
+.troc-seller-rating-stars { display: inline-flex; align-items: center; gap: 2px; }
+.troc-seller-rating-slot { position: relative; display: inline-flex; width: 15px; height: 15px; }
+.troc-seller-rating-fill { position: absolute; inset: 0; overflow: hidden; display: inline-flex; }
+.troc-seller-rating--loading { min-width: 96px; }
+.troc-seller-rating-skeleton {
+  display: block; width: 96px; height: 14px; border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-muted) 14%, transparent), transparent);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  animation: troc-seller-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes troc-seller-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.troc-seller-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-4);
+}
+.troc-seller-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.troc-seller-stat-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.troc-seller-stat-icon { display: inline-flex; }
+.troc-seller-stat-icon svg { width: 14px; height: 14px; }
+.troc-seller-stat-value { font-size: 15px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+.troc-seller-level svg, .troc-seller-plan svg { width: 12px; height: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .troc-seller-rating-skeleton { animation: none; background-image: none; }
+}

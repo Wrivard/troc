@@ -13,20 +13,26 @@ import { buildTokens } from "./scripts/build-tokens.mjs";
 function designTokensPlugin(): Plugin {
   const sources = ["tokens.json", "scripts/theme-template.css", "scripts/component-styles.css"]
     .map((file) => path.resolve(import.meta.dirname, file));
+  const familyStyles = path.resolve(import.meta.dirname, "scripts/components");
   return {
     name: "design-tokens",
     buildStart() {
       buildTokens();
       sources.forEach((file) => this.addWatchFile(file));
+      this.addWatchFile(familyStyles);
     },
     configureServer(server) {
-      server.watcher.add(sources);
-      server.watcher.on("change", (file) => {
-        if (sources.includes(path.resolve(file))) {
+      server.watcher.add([...sources, familyStyles]);
+      const regenerate = (file: string) => {
+        const absolute = path.resolve(file);
+        if (sources.includes(absolute) || (absolute.startsWith(`${familyStyles}${path.sep}`) && absolute.endsWith(".css"))) {
           buildTokens();
           server.ws.send({ type: "full-reload" });
         }
-      });
+      };
+      server.watcher.on("change", regenerate);
+      server.watcher.on("add", regenerate);
+      server.watcher.on("unlink", regenerate);
     },
   };
 }

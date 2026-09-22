@@ -1,12 +1,12 @@
 # Combobox
 
 - **Normalized family:** `combobox`
-- **Status:** **IMPLEMENTED — verified; awaiting user visual approval.**
+- **Status:** **APPROVED — implemented, technically verified, and user-approved on 2026-09-21.**
 - **Source provenance:** Provided TROC specification only; no imported third-party component code.
 - **Source:** `src/components/ui/combobox.tsx`
 - **Preview:** `src/preview/demos/combobox.tsx`
 - **Package export:** `@workspace/troc-design-system/components/ui/combobox`
-- **Exports:** Combobox, ComboboxOption
+- **Exports:** Combobox; types: ComboboxOption, ComboboxProps
 - **Implementation:** New self-contained native ARIA editable-combobox composition built with Input and Button; no exported Popover dependency.
 - **Dependencies:** React; Input; Button; cn. No Popover export or dependency in the public composition.
 - **Required variants/states:** Editable search, filtered listbox, empty results, expanded/collapsed, highlighted option, selected/filled, focus-visible, error, disabled, helper-text, keyboard navigation, and loading states.

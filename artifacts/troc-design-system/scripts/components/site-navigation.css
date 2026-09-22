@@ -1,0 +1,88 @@
+/* Site navigation — desktop SiteHeader and restrained mobile navigation.
+   Bounded examples: sticky/fixed positions are relative to the demo frame. */
+.troc-site-header {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.troc-site-header-brand { flex-shrink: 0; display: inline-flex; align-items: center; }
+.troc-site-nav { display: flex; align-items: center; gap: var(--space-1); }
+.troc-site-nav-link {
+  display: inline-flex; align-items: center; min-height: var(--control-default);
+  padding: 0 var(--space-3); border-radius: var(--radius-md);
+  color: var(--text-secondary); font-size: 14px; font-weight: 600; text-decoration: none;
+  background: transparent; border: 0; cursor: pointer;
+  transition: color var(--motion-fast), background var(--motion-fast);
+}
+.troc-site-nav-link:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-hover); }
+.troc-site-nav-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-site-nav-link:disabled { cursor: not-allowed; opacity: 0.55; }
+.troc-site-nav-link .troc-loading { width: 14px; height: 14px; margin-right: var(--space-1); }
+.troc-site-nav-link[aria-current="page"] { color: var(--text-primary); }
+.troc-site-nav-link[aria-current="page"]::after {
+  content: ""; display: block; position: absolute; left: var(--space-3); right: var(--space-3);
+}
+.troc-site-nav-link { position: relative; }
+.troc-site-nav-link[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--color-primary); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+
+.troc-site-header-search { flex: 1 1 auto; min-width: 0; max-width: 420px; margin: 0 auto; }
+.troc-site-header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); flex-shrink: 0; max-width: 100%; }
+
+.troc-site-cart { position: relative; }
+.troc-site-cart-count {
+  position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--color-primary); color: var(--color-primary-foreground);
+  font-size: 11px; font-weight: 700; line-height: 1;
+}
+.troc-site-account { display: inline-flex; align-items: center; gap: var(--space-2); }
+.troc-site-account-name { font-size: 13px; font-weight: 600; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.troc-site-avatar {
+  width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0;
+  background: var(--surface-hover); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-primary);
+}
+
+/* Mobile top bar */
+.troc-mobile-topbar {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.troc-mobile-topbar-search { order: 3; flex: 1 0 100%; min-width: 0; }
+
+/* Mobile bottom navigation — anchored to the example frame, not the viewport. */
+.troc-mobile-bottom-nav {
+  display: flex; align-items: stretch; justify-content: space-around;
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface); border-top: 1px solid var(--border);
+}
+.troc-mobile-bottom-item {
+  flex: 1 1 0; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 52px; padding: var(--space-1); border: 0; background: transparent; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; font-weight: 600; text-decoration: none;
+  border-radius: var(--radius-md); transition: color var(--motion-fast);
+}
+.troc-mobile-bottom-item svg { width: 20px; height: 20px; }
+.troc-mobile-bottom-item:hover:not(:disabled) { color: var(--text-secondary); }
+.troc-mobile-bottom-item:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-mobile-bottom-item:disabled { cursor: not-allowed; opacity: 0.55; }
+.troc-mobile-bottom-item[aria-current="page"] { color: var(--color-primary); }
+.troc-mobile-bottom-item .troc-site-cart-count { position: static; margin-left: 2px; }
+
+/* Bounded demo frame so header examples never take over the guide. */
+.troc-nav-frame {
+  position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--background);
+}
+.troc-nav-frame--phone { max-width: 390px; margin-inline: auto; min-height: 420px; display: flex; flex-direction: column; }
+.troc-nav-frame--phone .troc-mobile-bottom-nav { margin-top: auto; position: sticky; bottom: 0; }
+.troc-nav-frame-body { flex: 1 1 auto; padding: var(--space-5) var(--space-4); color: var(--text-secondary); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .troc-site-header { flex-wrap: wrap; padding: var(--space-2); }
+  .troc-site-header-search { order: 3; flex-basis: 100%; max-width: none; margin: var(--space-1) 0 0; }
+}

@@ -390,6 +390,1857 @@ button, a, input, textarea, [tabindex] { -webkit-tap-highlight-color: transparen
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+/* alert.css */
+/* Alert & banner — persistent inline messages; status by icon + text, not colour alone. */
+.troc-alert {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border); border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text-primary);
+}
+.troc-alert--neutral { border-left-color: var(--border-strong); }
+.troc-alert--success { border-left-color: var(--positive); }
+.troc-alert--warning { border-left-color: var(--warning); }
+.troc-alert--error { border-left-color: var(--danger); }
+.troc-alert-icon { flex-shrink: 0; display: inline-flex; margin-top: 1px; }
+.troc-alert-icon svg { width: 18px; height: 18px; }
+.troc-alert--neutral .troc-alert-icon { color: var(--text-secondary); }
+.troc-alert--success .troc-alert-icon { color: var(--positive); }
+.troc-alert--warning .troc-alert-icon { color: var(--warning); }
+.troc-alert--error .troc-alert-icon { color: var(--danger); }
+.troc-alert-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.troc-alert-title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; }
+.troc-alert-description { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.troc-alert-action {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-2);
+  align-self: center;
+}
+@media (max-width: 768px) {
+  .troc-alert { flex-wrap: wrap; }
+  .troc-alert-action { align-self: stretch; width: 100%; margin-top: var(--space-2); }
+}
+
+/* badge-status.css */
+/* Badge and status — status is never colour-only; pair with icon/text. */
+.troc-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px var(--space-2); min-height: 20px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-hover); color: var(--text-secondary);
+  font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0;
+  white-space: nowrap; vertical-align: middle;
+}
+.troc-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.troc-badge--neutral { background: var(--surface-hover); color: var(--text-secondary); border-color: var(--border); }
+.troc-badge--accent { background: var(--color-accent); color: var(--color-accent-foreground); border-color: var(--color-accent); }
+.troc-badge--positive { background: transparent; color: var(--positive); border-color: var(--positive); }
+.troc-badge--warning { background: transparent; color: var(--warning); border-color: var(--warning); }
+.troc-badge--destructive { background: transparent; color: var(--danger); border-color: var(--danger); }
+.troc-badge--sponsored {
+  background: transparent; color: var(--text-muted); border-style: dashed; border-color: var(--border-strong);
+  text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px;
+}
+.troc-badge--outline { background: transparent; color: var(--text-primary); border-color: var(--border-strong); }
+
+/* Order-status composition */
+.troc-status { display: inline-flex; align-items: center; gap: 6px; }
+.troc-status-dot { width: 8px; height: 8px; border-radius: 999px; background: currentColor; flex-shrink: 0; }
+.troc-status--pending { color: var(--warning); }
+.troc-status--processing { color: var(--text-secondary); }
+.troc-status--shipped { color: var(--text-secondary); }
+.troc-status--delivered { color: var(--positive); }
+.troc-status--cancelled { color: var(--danger); }
+
+/* breadcrumbs.css */
+/* Breadcrumbs — semantic nav; wraps on narrow screens. */
+.troc-breadcrumb { min-width: 0; }
+.troc-breadcrumb-list {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);
+  margin: 0; padding: 0; list-style: none;
+  font-size: 13px; line-height: 1.4; color: var(--text-muted);
+}
+.troc-breadcrumb-item { display: inline-flex; align-items: center; gap: var(--space-1); }
+
+.troc-breadcrumb-link {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 24px;
+  padding: 2px 4px; border-radius: var(--radius-sm);
+  color: var(--text-muted); font-weight: 500; text-decoration: none;
+  transition: color var(--motion-fast), background var(--motion-fast);
+}
+.troc-breadcrumb-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+.troc-breadcrumb-link:hover { color: var(--text-primary); background: var(--surface-hover); }
+.troc-breadcrumb-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-breadcrumb-page {
+  display: inline-flex; align-items: center; padding: 2px 4px;
+  color: var(--text-primary); font-weight: 600;
+}
+.troc-breadcrumb-separator { display: inline-flex; align-items: center; color: var(--text-muted); }
+.troc-breadcrumb-separator svg { width: 14px; height: 14px; }
+
+.troc-breadcrumb-ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; color: var(--text-muted);
+}
+.troc-breadcrumb-ellipsis svg { width: 16px; height: 16px; }
+.troc-breadcrumb-ellipsis .sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (pointer: coarse) {
+  .troc-breadcrumb-link { min-height: 32px; }
+}
+
+/* cart-seller-group.css */
+/* Seller-grouped cart — items, progress, combined shipping, subtotal. */
+.troc-cart-group {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); min-width: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-cart-group-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--space-3); flex-wrap: wrap;
+}
+.troc-cart-group-seller { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.troc-cart-group-name { margin: 0; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.troc-cart-group-meta { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.troc-cart-group-promotion { flex-shrink: 0; }
+
+.troc-cart-group-items { display: flex; flex-direction: column; }
+.troc-cart-group-progress { display: flex; flex-direction: column; gap: var(--space-3); padding-top: var(--space-1); }
+.troc-cart-group-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  flex-wrap: wrap; padding-top: var(--space-3); border-top: 1px solid var(--border);
+}
+.troc-cart-group-shipping { font-size: 13px; color: var(--text-secondary); }
+.troc-cart-group-subtotal { display: inline-flex; align-items: baseline; gap: var(--space-2); margin-left: auto; }
+.troc-cart-group-subtotal-label { font-size: 13px; color: var(--text-secondary); }
+
+/* Cart item row — grid so amounts/qty align across items; sub-dollar friendly. */
+.troc-cart-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto auto auto auto;
+  align-items: center; gap: var(--space-3);
+  padding: var(--space-3) 0; border-bottom: 1px solid var(--border);
+}
+.troc-cart-item:last-child { border-bottom: 0; }
+.troc-cart-item--unavailable { opacity: 0.66; }
+.troc-cart-item--loading { opacity: 0.6; }
+.troc-cart-item-image { width: 44px; }
+.troc-cart-item-image .troc-card-image { width: 44px; }
+.troc-cart-item-info { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.troc-cart-item-title { font-size: 14px; font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; }
+.troc-cart-item-meta { font-size: 12px; color: var(--text-secondary); }
+.troc-cart-item-badges { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.troc-cart-item-unavailable { margin: 2px 0 0; font-size: 12px; font-weight: 600; color: var(--warning); }
+.troc-cart-item-price { font-variant-numeric: tabular-nums; text-align: right; }
+.troc-cart-item-qty { display: flex; justify-content: center; }
+.troc-cart-item-total { font-variant-numeric: tabular-nums; text-align: right; font-weight: 700; color: var(--text-primary); min-width: 64px; }
+.troc-cart-item-remove { display: flex; justify-content: flex-end; }
+
+@media (max-width: 640px) {
+  .troc-cart-item {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "image info remove"
+      "image price total"
+      "image qty qty";
+    row-gap: var(--space-2);
+  }
+  .troc-cart-item-image { grid-area: image; align-self: start; }
+  .troc-cart-item-info { grid-area: info; }
+  .troc-cart-item-remove { grid-area: remove; align-self: start; }
+  .troc-cart-item-price { grid-area: price; text-align: left; }
+  .troc-cart-item-total { grid-area: total; }
+  .troc-cart-item-qty { grid-area: qty; justify-content: flex-start; }
+}
+
+/* chart.css */
+/* Chart treatment — semantic tokens, non-colour-only series, accessible data alt. */
+.troc-chart { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.troc-chart-figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.troc-chart-plot { position: relative; width: 100%; min-width: 0; }
+.troc-chart-state {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  padding: var(--space-6); text-align: center; color: var(--text-secondary);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+}
+.troc-chart .recharts-cartesian-axis-tick-value { fill: var(--text-muted); font-size: 11px; }
+.troc-chart .recharts-cartesian-grid line { stroke: var(--border); }
+.troc-chart .recharts-cartesian-axis line, .troc-chart .recharts-cartesian-axis-line { stroke: var(--border-strong); }
+
+.troc-chart-tooltip {
+  min-width: 160px; padding: var(--space-2) var(--space-3);
+  background: var(--surface-elevated); color: var(--text-primary);
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md); font-size: 12px;
+}
+.troc-chart-tooltip-title { margin: 0 0 6px; font-weight: 700; }
+.troc-chart-tooltip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.troc-chart-tooltip-row { display: flex; align-items: center; gap: var(--space-2); }
+.troc-chart-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.troc-chart-tooltip-label { flex: 1 1 auto; color: var(--text-secondary); }
+.troc-chart-tooltip-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.troc-chart-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.troc-chart-legend-item { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+.troc-chart-legend-marker { position: relative; display: inline-block; width: 20px; height: 12px; color: var(--text-secondary); }
+.troc-chart-legend-marker::before { /* the line */
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0;
+  border-top: 2px solid currentColor; transform: translateY(-50%);
+}
+.troc-chart-legend-marker--dashed::before { border-top-style: dashed; }
+.troc-chart-legend-marker::after { /* the symbol */
+  content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  transform: translate(-50%, -50%); background: currentColor;
+}
+.troc-chart-legend-marker--circle::after { border-radius: 999px; }
+.troc-chart-legend-marker--square::after { border-radius: 1px; }
+.troc-chart-legend-marker--triangle::after {
+  background: none; width: 0; height: 0;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 9px solid currentColor;
+}
+
+/* Accessible data table alternative — visible, styled compactly. */
+.troc-chart-data-alt { margin: 0; }
+.troc-chart-data-alt table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.troc-chart-data-alt caption { text-align: left; padding-bottom: 6px; font-size: 12px; color: var(--text-muted); }
+.troc-chart-data-alt th, .troc-chart-data-alt td { padding: 6px var(--space-3); border-bottom: 1px solid var(--border); text-align: left; }
+.troc-chart-data-alt th[scope="col"] { color: var(--text-secondary); font-weight: 600; }
+.troc-chart-data-alt td[data-numeric], .troc-chart-data-alt th[data-numeric] { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* chips.css */
+/* Chips and filter chips — static, selectable, removable, game treatment. */
+.troc-chip-group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+.troc-chip {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: 32px; padding: 4px var(--space-3);
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  background: var(--surface); color: var(--text-primary);
+  font-size: 13px; font-weight: 500; line-height: 1.4; white-space: nowrap;
+  transition: background var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast);
+}
+.troc-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+button.troc-chip, .troc-chip[role="button"] { cursor: pointer; min-height: 44px; min-width: 44px; }
+button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-disabled="true"]) { background: var(--surface-hover); border-color: var(--text-muted); }
+.troc-chip:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-chip[aria-pressed="true"], .troc-chip[data-selected="true"] {
+  background: var(--color-primary); border-color: var(--color-primary); color: var(--color-primary-foreground);
+}
+.troc-chip[aria-pressed="true"]:hover:not(:disabled), .troc-chip[data-selected="true"]:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.troc-chip:disabled, .troc-chip[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
+
+.troc-chip--game { padding-left: var(--space-2); font-weight: 600; }
+.troc-chip-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-accent); flex-shrink: 0; }
+.troc-chip[aria-pressed="true"] .troc-chip-dot, .troc-chip[data-selected="true"] .troc-chip-dot { background: var(--color-primary-foreground); }
+
+.troc-chip-composite { display: inline-flex; align-items: stretch; max-width: 100%; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface); color: var(--text-primary); }
+.troc-chip-composite > .troc-chip { border: 0; border-radius: 999px 0 0 999px; background: transparent; color: inherit; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.troc-chip-composite[data-selected="true"] { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-primary-foreground); }
+.troc-chip-composite[aria-disabled="true"] { opacity: .5; }
+.troc-chip-composite > .troc-chip:disabled, .troc-chip-composite > .troc-chip[aria-disabled="true"] { opacity: 1; }
+.troc-chip-remove {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none; min-width: 44px; min-height: 44px; margin: 0;
+  border: 0; border-radius: 0 999px 999px 0; background: transparent; color: inherit;
+  cursor: pointer; opacity: .7; transition: opacity var(--motion-fast), background var(--motion-fast);
+}
+.troc-chip-remove:hover:not(:disabled) { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
+.troc-chip-remove:disabled { cursor: not-allowed; }
+.troc-chip-remove:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; opacity: 1; }
+.troc-chip-remove svg { width: 12px; height: 12px; }
+
+@media (pointer: coarse) {
+  .troc-chip { min-height: 44px; }
+}
+
+/* collection-progress.css */
+/* Collection progress — count, percentage, complete/empty/loading, compact/full.
+   Visual only; no collection backend. Built on Progress + card metadata. */
+.troc-collection {
+  display: flex; flex-direction: column; gap: var(--space-3); min-width: 0;
+  box-sizing: border-box; padding: var(--space-4);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.troc-collection-head { display: flex; align-items: flex-start; gap: var(--space-3); min-width: 0; }
+.troc-collection-thumb {
+  flex-shrink: 0; width: 44px; border-radius: var(--radius-sm); overflow: hidden;
+}
+.troc-collection-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.troc-collection-title { margin: 0; font-size: var(--text-base); font-weight: 700; line-height: 1.3; color: var(--text-primary); }
+.troc-collection-subtitle { font-size: var(--text-xs); color: var(--text-secondary); }
+
+.troc-collection-stats { display: flex; align-items: baseline; gap: var(--space-2); }
+.troc-collection-count { font-size: var(--text-xl); font-weight: 800; line-height: 1; color: var(--text-primary); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.troc-collection-total { font-size: var(--text-sm); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.troc-collection-percent { margin-left: auto; font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.troc-collection-percent[data-complete="true"] { color: var(--positive); }
+
+.troc-collection-empty { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.45; margin: 0; }
+.troc-collection-complete { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-sm); font-weight: 600; color: var(--positive); }
+.troc-collection-complete svg { width: 16px; height: 16px; }
+
+.troc-collection--compact { padding: var(--space-3); gap: var(--space-2); }
+.troc-collection--compact .troc-collection-count { font-size: var(--text-lg); }
+
+.troc-collection-loading { display: flex; flex-direction: column; gap: var(--space-3); }
+
+@media (max-width: 768px) {
+  .troc-collection-head { flex-wrap: wrap; }
+}
+
+/* data-controls.css */
+/* Filters & sort — responsive composition of real controls; inline / drawer. */
+.troc-filter-bar {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4);
+  padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-filter-bar-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4); flex: 1 1 auto; min-width: 0; }
+.troc-filter-bar-meta { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.troc-filter-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  background: var(--color-accent); color: var(--color-accent-foreground);
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.troc-filter-group { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.troc-filter-group-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.troc-filter-group-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.troc-sort-control { display: flex; align-items: center; gap: var(--space-2); }
+.troc-sort-control-label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+.troc-sort-control-icon { width: 15px; height: 15px; }
+.troc-sort-control-trigger { min-width: 168px; }
+@media (max-width: 768px) {
+  .troc-filter-bar { flex-direction: column; align-items: stretch; }
+  .troc-sort-control-trigger { width: 100%; }
+}
+
+/* data-table.css */
+/* Data table — semantic scaffold + seller-inventory composition; scrollable, accessible. */
+.troc-table-scroll {
+  width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.troc-table-scroll:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  color: var(--text-primary); background: var(--surface);
+}
+.troc-table-caption {
+  caption-side: top; text-align: left; padding: var(--space-3) var(--space-4);
+  font-size: 12px; color: var(--text-muted);
+}
+.troc-table-head {
+  position: sticky; top: 0; z-index: 1;
+  padding: var(--space-3) var(--space-4); text-align: left; white-space: nowrap;
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  background: var(--surface-hover); border-bottom: 1px solid var(--border-strong);
+}
+.troc-table-head[data-numeric], .troc-table-cell[data-numeric] { text-align: right; font-variant-numeric: tabular-nums; }
+.troc-table-sort {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 0; padding: 4px 0; margin: -4px 0;
+  font: inherit; font-weight: 600; color: inherit; cursor: pointer;
+}
+.troc-table-sort svg { width: 14px; height: 14px; }
+.troc-table-sort-idle { color: var(--text-muted); }
+.troc-table-cell { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); vertical-align: middle; }
+.troc-table-row:last-child .troc-table-cell { border-bottom: 0; }
+.troc-table-row[data-selected] { background: var(--surface-hover); }
+.troc-table-body .troc-table-row:hover { background: var(--surface-hover); }
+.troc-table-select-col, .troc-table-action-col { width: 1%; white-space: nowrap; }
+.troc-table-checkbox {
+  width: 18px; height: 18px; accent-color: var(--color-accent); cursor: pointer;
+}
+.troc-table-checkbox:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-table-state { padding: var(--space-8) var(--space-4); text-align: center; color: var(--text-secondary); }
+@media (max-width: 640px) {
+  .troc-table { font-size: 12px; }
+  .troc-table-head, .troc-table-cell { padding: var(--space-2) var(--space-3); }
+}
+
+/* dialog.css */
+/* Dialog — modal surface with scrim, focus trap/return, labelled title and
+   description. Never overflows the mobile viewport: it scrolls internally. */
+.troc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgb(0 0 0 / 0.55);
+  animation: troc-overlay-in var(--motion-normal) var(--motion-easing);
+}
+@keyframes troc-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+
+.troc-dialog {
+  position: fixed;
+  z-index: var(--z-overlay);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: calc(100vw - 32px);
+  max-width: 480px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: var(--space-6);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+  animation: troc-dialog-in var(--motion-normal) var(--motion-easing);
+}
+@keyframes troc-dialog-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.troc-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: var(--space-6);
+}
+.troc-dialog-title { margin: 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; color: var(--text-primary); }
+.troc-dialog-description { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+
+.troc-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.troc-dialog-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.troc-dialog-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+.troc-dialog-close:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-dialog-close svg { width: 18px; height: 18px; }
+
+@media (max-width: 768px) {
+  .troc-dialog-footer > * { flex: 1 1 auto; }
+}
+@media (pointer: coarse) {
+  .troc-dialog-close { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-overlay, .troc-dialog { animation: none; }
+}
+
+/* drawer.css */
+/* Drawer / sheet — vaul-backed accessible dialog. Bottom sheet (mobile default)
+   and left/right/top side sheets. Reuses the shared scrim and close/title
+   styling from dialog.css. Mobile-safe height; scrolls internally. */
+.troc-drawer {
+  position: fixed;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+/* Bottom sheet (default) */
+.troc-drawer[data-side="bottom"] {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.troc-drawer[data-side="top"] {
+  left: 0;
+  right: 0;
+  top: 0;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.troc-drawer[data-side="right"] {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+.troc-drawer[data-side="left"] {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  overflow-y: auto;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.troc-drawer-handle {
+  width: 40px;
+  height: 4px;
+  margin: 0 auto var(--space-1);
+  border-radius: 999px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.troc-drawer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: var(--space-6);
+}
+.troc-drawer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .troc-drawer-footer > * { flex: 1 1 auto; }
+}
+
+/* dropdown-menu.css */
+/* Dropdown menu — elevated action list with checkbox, radio, submenu,
+   destructive, and disabled item states. Radix drives keyboard + collision. */
+.troc-menu-content {
+  z-index: var(--z-overlay);
+  min-width: 200px;
+  max-width: calc(100vw - 24px);
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  overflow: auto;
+  padding: var(--space-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.troc-menu-label {
+  padding: 6px var(--space-3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.troc-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 7px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+.troc-menu-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.troc-menu-item--inset { padding-left: var(--space-8); }
+
+.troc-menu-item[data-highlighted] {
+  background: var(--surface-hover);
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.troc-menu-item[data-disabled] { opacity: .5; pointer-events: none; cursor: not-allowed; }
+
+.troc-menu-item--destructive { color: var(--danger); }
+.troc-menu-item--destructive[data-highlighted] {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
+.troc-menu-item--indicator { padding-left: var(--space-8); }
+.troc-menu-indicator {
+  position: absolute;
+  left: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+.troc-menu-indicator-icon { width: 16px; height: 16px; }
+.troc-menu-radio-dot { width: 8px; height: 8px; fill: currentColor; }
+
+.troc-menu-subtrigger[data-state="open"] { background: var(--surface-hover); }
+.troc-menu-chevron { margin-left: auto; color: var(--text-muted); }
+
+.troc-menu-shortcut {
+  margin-left: auto;
+  padding-left: var(--space-4);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.troc-menu-separator {
+  height: 1px;
+  margin: var(--space-1) calc(-1 * var(--space-1));
+  background: var(--border);
+}
+
+.troc-menu-content[data-state="open"] {
+  animation: troc-menu-in var(--motion-fast) var(--motion-easing);
+}
+@keyframes troc-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (pointer: coarse) {
+  .troc-menu-item { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-menu-content[data-state] { animation: none; }
+}
+
+/* global-search.css */
+/* Global search — marketplace search built from Input + Button with an
+   ARIA combobox listbox. No search backend; suggestions are supplied. */
+.troc-global-search { position: relative; width: 100%; min-width: 0; }
+.troc-global-search-control { position: relative; display: flex; align-items: center; }
+.troc-global-search-icon {
+  position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none; display: inline-flex;
+}
+.troc-global-search-icon svg { width: 16px; height: 16px; }
+.troc-global-search-field.troc-field { padding-left: var(--space-10); padding-right: calc(var(--control-default) * 2); }
+.troc-global-search-field.troc-field[aria-busy="true"] { padding-right: calc(var(--control-default) * 2); }
+
+.troc-global-search-clear.troc-button.troc-button--icon,
+.troc-global-search-submit.troc-button.troc-button--icon {
+  position: absolute; top: 0; width: var(--control-default); border: 0; background: transparent; color: var(--text-muted);
+}
+.troc-global-search-clear.troc-button--icon { right: var(--control-default); }
+.troc-global-search-submit.troc-button--icon { right: 0; }
+.troc-global-search-clear.troc-button--icon:hover:not(:disabled),
+.troc-global-search-submit.troc-button--icon:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-hover); }
+.troc-global-search-spinner { position: absolute; top: 50%; right: calc(var(--control-default) + 12px); transform: translateY(-50%); color: var(--text-muted); display: inline-flex; }
+.troc-global-search-spinner svg { width: 16px; height: 16px; }
+
+.troc-global-search-popup {
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: var(--z-dropdown);
+  padding: var(--space-1); background: var(--surface-elevated); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md); max-height: 340px; overflow: auto;
+}
+.troc-global-search-listbox { list-style: none; margin: 0; padding: 0; }
+.troc-global-search-group-label { padding: var(--space-2) var(--space-3) var(--space-1); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+.troc-search-option {
+  display: flex; align-items: center; gap: var(--space-3); width: 100%;
+  min-height: var(--control-default); padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm); cursor: pointer;
+}
+.troc-search-option[data-active="true"] { background: var(--surface-hover); outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-search-option-thumb {
+  flex-shrink: 0; width: 28px; height: 38px; border-radius: var(--radius-sm);
+  background: var(--surface-hover); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted);
+}
+.troc-search-option-thumb svg { width: 14px; height: 14px; }
+.troc-search-option-text { display: flex; flex-direction: column; min-width: 0; }
+.troc-search-option-title { font-weight: 600; font-size: 14px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.troc-search-option-meta { font-size: 12px; color: var(--text-muted); }
+
+.troc-global-search-message { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); margin: 0; font-size: 13px; color: var(--text-muted); }
+.troc-global-search-message--error { color: var(--danger); }
+.troc-global-search-message svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* locale-switcher.css */
+/* Locale switcher — segmented control; resilient to longer French labels. */
+.troc-locale-switcher { display: inline-flex; align-items: center; }
+.troc-locale-segmented {
+  display: inline-flex; align-items: stretch; gap: 2px; padding: 2px;
+  background: var(--surface-hover); border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.troc-locale-option {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 0 var(--space-3); border: 0; border-radius: 999px;
+  background: transparent; color: var(--text-secondary);
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer; white-space: nowrap;
+  transition: color var(--motion-fast), background var(--motion-fast);
+}
+.troc-locale-option:hover:not([aria-pressed="true"]) { color: var(--text-primary); }
+.troc-locale-option:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-locale-option[aria-pressed="true"] { background: var(--surface); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+.troc-locale-option svg { width: 14px; height: 14px; }
+
+/* Compact icon-triggered menu form (used in tight spaces). */
+.troc-locale-trigger.troc-button { gap: 6px; }
+.troc-locale-trigger .troc-locale-code { font-weight: 700; letter-spacing: 0.02em; }
+
+@media (pointer: coarse) {
+  .troc-locale-option { min-height: 40px; }
+}
+
+/* logo.css */
+/* TROC logo — image-backed; proportions preserved; artwork swappable.
+   The component resolves the effective theme from its nearest theme boundary
+   (.dark / .light ancestor) and sets is-dark / is-light on the root element,
+   so nested theme regions never bleed across ancestor descendant selectors. */
+.troc-logo {
+  display: inline-flex; align-items: center; line-height: 0;
+  color: var(--text-primary); height: var(--troc-logo-height, 28px);
+}
+.troc-logo-img {
+  display: block; width: auto; height: var(--troc-logo-height, 28px); max-width: 100%;
+  object-fit: contain; user-select: none; -webkit-user-drag: none;
+}
+/* Auto variant: the resolved class reveals exactly one artwork. */
+.troc-logo--auto .troc-logo-stack { display: inline-flex; align-items: center; height: 100%; }
+.troc-logo--auto.is-dark .troc-logo-img[data-for="light"],
+.troc-logo--auto.is-light .troc-logo-img[data-for="dark"] { display: none; }
+
+.troc-logo--clearspace {
+  padding: var(--troc-logo-clearspace, 0.19em);
+  height: calc(var(--troc-logo-height, 28px) + var(--troc-logo-clearspace, 0.19em) + var(--troc-logo-clearspace, 0.19em));
+}
+
+/* marketplace-badges.css */
+/* Card badges — condition/language/game/set/variant; meaning never colour-only. */
+.troc-market-badge {
+  gap: 4px; max-width: 100%;
+}
+.troc-market-badge-label {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.troc-market-badge--compact {
+  padding: 1px var(--space-1); min-height: 18px; font-size: 11px;
+}
+
+/* Selected / filter-active treatment shares the accent Badge variant; the ring
+   makes selection legible beyond colour. */
+.troc-market-badge--selected {
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+
+/* Condition grade chip — the abbreviation carries the meaning, not colour. A
+   per-grade weight/opacity gives a non-colour visual gradient NM → DMG. */
+.troc-condition-grade {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; padding: 0 3px; border-radius: var(--radius-sm);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.03em;
+  background: var(--surface-hover); color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.troc-market-badge--selected .troc-condition-grade {
+  background: transparent; border-color: currentColor; color: inherit;
+}
+.troc-condition--nm .troc-condition-grade { border-style: solid; }
+.troc-condition--lp .troc-condition-grade { border-style: solid; opacity: 0.92; }
+.troc-condition--mp .troc-condition-grade { border-style: dashed; opacity: 0.86; }
+.troc-condition--hp .troc-condition-grade { border-style: dashed; opacity: 0.78; }
+.troc-condition--dmg .troc-condition-grade { border-style: dotted; opacity: 0.72; }
+.troc-condition--compact .troc-condition-grade { min-width: 18px; font-size: 9px; }
+
+/* marketplace-progress.css */
+/* Seller & shipping progress — thin wrappers over the shared Progress bar. */
+.troc-market-progress { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.troc-market-progress-help {
+  margin: 0; font-size: 12px; line-height: 1.4; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.troc-market-progress-help--complete { color: var(--positive); font-weight: 600; }
+
+/* Add-example controls (demo) — wrap on mobile, keep tap targets usable. */
+.troc-market-progress-controls {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);
+}
+.troc-market-progress-readout {
+  font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums;
+}
+.troc-market-progress-readout strong { color: var(--text-primary); }
+
+/* metric-stat.css */
+/* Metric / KPI — typographic data composition; change by icon + text, not colour-only. */
+.troc-metric {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); min-width: 0;
+}
+.troc-metric--compact { padding: var(--space-3); gap: var(--space-1); }
+.troc-metric-top { display: flex; align-items: center; gap: var(--space-2); }
+.troc-metric-icon { display: inline-flex; color: var(--text-muted); }
+.troc-metric-icon svg { width: 16px; height: 16px; }
+.troc-metric-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.troc-metric-value { font-size: 26px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.troc-metric--compact .troc-metric-value { font-size: 20px; }
+.troc-metric-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.troc-metric-change { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; }
+.troc-metric-change svg { width: 14px; height: 14px; }
+.troc-metric-change--up { color: var(--positive); }
+.troc-metric-change--down { color: var(--danger); }
+.troc-metric-change--neutral { color: var(--text-muted); }
+.troc-metric-meta { font-size: 12px; color: var(--text-muted); }
+.troc-metric-skeleton {
+  display: block; height: 14px; border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-muted) 14%, transparent), transparent);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  animation: troc-metric-shimmer 1.4s ease-in-out infinite;
+}
+.troc-metric-skeleton--label { width: 40%; }
+.troc-metric-skeleton--value { width: 70%; height: 24px; }
+@keyframes troc-metric-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.troc-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-4); }
+.troc-kpi--dense { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); }
+@media (prefers-reduced-motion: reduce) {
+  .troc-metric-skeleton { animation: none; background-image: none; }
+}
+
+/* notification-item.css */
+/* Notification item — read/unread, semantic tones, optional action.
+   Tone shows through an icon + label, never colour alone. */
+.troc-notification {
+  position: relative; display: flex; align-items: flex-start; gap: var(--space-3);
+  min-width: 0; box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.troc-notification:focus-within,
+.troc-notification[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-notification[data-unread="true"] { background: var(--surface-elevated); border-color: var(--border-strong); }
+
+.troc-notification-dot {
+  flex-shrink: 0; width: 8px; height: 8px; margin-top: 7px; border-radius: 999px;
+  background: var(--color-primary);
+}
+.troc-notification[data-unread="false"] .troc-notification-dot { visibility: hidden; }
+
+.troc-notification-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: var(--radius-md);
+  background: var(--surface-hover); color: var(--text-secondary);
+}
+.troc-notification-icon svg { width: 17px; height: 17px; }
+.troc-notification--info .troc-notification-icon { color: var(--text-secondary); }
+.troc-notification--success .troc-notification-icon { color: var(--positive); background: color-mix(in srgb, var(--positive) 12%, transparent); }
+.troc-notification--warning .troc-notification-icon { color: var(--warning); background: color-mix(in srgb, var(--warning) 14%, transparent); }
+.troc-notification--error .troc-notification-icon { color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, transparent); }
+
+.troc-notification-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 auto; }
+.troc-notification-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.troc-notification-title { margin: 0; font-size: var(--text-sm); font-weight: 700; line-height: 1.3; color: var(--text-primary); }
+.troc-notification[data-unread="false"] .troc-notification-title { font-weight: 600; }
+.troc-notification-time { font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.troc-notification-message { margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.45; }
+.troc-notification-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: 2px; }
+
+.troc-notification--compact { padding: var(--space-2) var(--space-3); gap: var(--space-2); }
+.troc-notification--compact .troc-notification-icon { width: 28px; height: 28px; }
+.troc-notification--compact .troc-notification-message { display: none; }
+
+/* order-totals.css */
+/* Order totals — tabular monetary summary; CAD two-decimal precision. */
+.troc-order-totals { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.troc-order-totals-lines { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.troc-order-totals-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+}
+.troc-order-totals-label {
+  margin: 0; display: flex; flex-direction: column; gap: 1px;
+  font-size: 13px; color: var(--text-secondary);
+}
+.troc-order-totals-hint { font-size: 11px; color: var(--text-muted); }
+.troc-order-totals-amount {
+  margin: 0; font-size: 13px; font-weight: 600; color: var(--text-primary);
+  font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap;
+}
+.troc-order-totals-amount--credit { color: var(--text-secondary); }
+
+.troc-order-totals-row--total {
+  margin-top: 2px; padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+.troc-order-totals-row--total .troc-order-totals-label {
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+}
+.troc-order-totals-amount--total { font-size: 18px; font-weight: 800; }
+
+.troc-order-totals-savings {
+  margin: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-accent); border-radius: var(--radius-sm);
+  color: var(--color-accent); font-weight: 700; font-size: 13px;
+}
+.troc-order-totals-savings-amount { font-variant-numeric: tabular-nums; }
+
+/* Compact layout for cart sidebars. */
+.troc-order-totals--compact { gap: var(--space-2); }
+.troc-order-totals--compact .troc-order-totals-row--total { padding-top: var(--space-2); }
+.troc-order-totals--compact .troc-order-totals-amount--total { font-size: 16px; }
+
+/* pagination.css */
+/* Pagination — semantic nav composed with Button styles. */
+.troc-pagination { display: block; }
+.troc-pagination-list {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);
+  margin: 0; padding: 0; list-style: none;
+}
+.troc-pagination-item { display: inline-flex; }
+
+/* Page links reuse the button base so hover/focus/active match Buttons. */
+.troc-pagination-link.troc-button {
+  min-width: var(--control-default); padding-inline: var(--space-2);
+}
+.troc-pagination-link[aria-current="page"].troc-button {
+  background: var(--color-primary); color: var(--color-primary-foreground); border-color: var(--color-primary);
+}
+.troc-pagination-link[aria-current="page"].troc-button:hover { background: var(--accent-hover); }
+
+.troc-pagination-ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--control-default); height: var(--control-default); color: var(--text-muted);
+}
+.troc-pagination-ellipsis svg { width: 16px; height: 16px; }
+.troc-pagination-ellipsis .sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.troc-pagination-prev .troc-button, .troc-pagination-next .troc-button { gap: 6px; }
+
+/* Compact mobile: hide numbered pages, keep prev/next + status. */
+.troc-pagination-status { color: var(--text-secondary); font-size: 13px; font-weight: 600; padding-inline: var(--space-2); }
+.troc-pagination--compact .troc-pagination-numbers { display: none; }
+.troc-pagination--compact .troc-pagination-status { display: inline-flex; }
+.troc-pagination-status { display: none; }
+
+@media (max-width: 560px) {
+  .troc-pagination:not(.troc-pagination--full) .troc-pagination-numbers { display: none; }
+  .troc-pagination:not(.troc-pagination--full) .troc-pagination-status { display: inline-flex; }
+}
+
+/* popover.css */
+/* Popover — light floating surface with focus management and outside/escape
+   dismissal. Collision-aware and clamped to the viewport on mobile. */
+.troc-popover {
+  z-index: var(--z-overlay);
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  max-height: var(--radix-popover-content-available-height);
+  overflow: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+.troc-popover:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+
+.troc-popover[data-state="open"] {
+  animation: troc-popover-in var(--motion-normal) var(--motion-easing);
+}
+@keyframes troc-popover-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .troc-popover[data-state] { animation: none; }
+}
+
+/* price.css */
+/* Marketplace price — tabular CAD typography; sub-dollar values are first-class. */
+.troc-price {
+  display: inline-flex; flex-direction: column; gap: 2px;
+  min-width: 0; vertical-align: middle;
+}
+.troc-price-label {
+  font-size: 11px; font-weight: 600; line-height: 1.3;
+  letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-muted);
+}
+.troc-price-amount {
+  font-weight: 700; line-height: 1.15; color: var(--text-primary);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+}
+
+/* Sizes */
+.troc-price--sm .troc-price-amount { font-size: 14px; }
+.troc-price--default .troc-price-amount { font-size: 18px; }
+.troc-price--lg .troc-price-amount { font-size: 26px; letter-spacing: -0.02em; }
+
+/* Reference (market) price — muted, secondary emphasis. */
+.troc-price--reference .troc-price-amount { color: var(--text-secondary); font-weight: 600; }
+
+/* Lowest available — primary emphasis, retains neutral colour. */
+.troc-price--lowest .troc-price-amount { color: var(--text-primary); }
+
+/* Unavailable. */
+.troc-price--unavailable .troc-price-amount { color: var(--text-muted); font-weight: 600; }
+
+/* Sale — current amount in intentional red beside a struck previous amount. */
+.troc-price-sale-row { display: inline-flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.troc-price-amount--sale { color: var(--color-accent); }
+.troc-price-was {
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  font-variant-numeric: tabular-nums; text-decoration-thickness: 1px;
+}
+.troc-price--lg .troc-price-was { font-size: 15px; }
+
+/* Dense row demo layout — title on the left, aligned price columns on the right. */
+.troc-price-dense-row {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-price-dense-row > :first-child { flex: 1 1 auto; }
+.troc-price-dense-row .troc-price { flex: 0 0 auto; align-items: flex-end; text-align: right; }
+@media (max-width: 560px) {
+  .troc-price-dense-row { flex-wrap: wrap; gap: var(--space-2); }
+  .troc-price-dense-row > :first-child { flex: 1 0 100%; }
+}
+
+/* product-presentation.css */
+/* Product & card presentation — tile and compact row share one family.
+   Semantic article surfaces; actions are rendered as siblings, never nested. */
+.troc-product {
+  display: flex; min-width: 0; box-sizing: border-box;
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast);
+}
+.troc-product:hover,
+.troc-product[data-preview="hover"] { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+.troc-product:focus-within,
+.troc-product[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-product[data-selected="true"] {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.troc-product[data-unavailable="true"] { opacity: .64; }
+
+/* Card image — full card shape, contained, never cropped. */
+.troc-card-image {
+  position: relative; display: block; overflow: hidden;
+  aspect-ratio: 63 / 88; width: 100%;
+  background: var(--surface-hover); border-radius: var(--radius-md);
+}
+.troc-card-image img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+.troc-card-image--missing {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  color: var(--text-muted); padding: var(--space-3);
+}
+.troc-card-image-missing-text { font-size: var(--text-xs); line-height: 1.3; }
+.troc-card-image--missing svg { width: 22px; height: 22px; margin-bottom: 6px; }
+.troc-card-image-skeleton { position: absolute; inset: 0; }
+
+.troc-card-title {
+  margin: 0; font-size: var(--text-base); font-weight: 700; line-height: 1.3;
+  color: var(--text-primary); letter-spacing: -0.01em;
+}
+.troc-card-title--sm { font-size: var(--text-sm); }
+
+.troc-card-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--space-2); min-width: 0; }
+.troc-card-metadata-item { font-size: var(--text-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.troc-card-metadata-sep { color: var(--text-muted); }
+.troc-card-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+.troc-product-availability { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); }
+.troc-product-availability-item { font-size: var(--text-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.troc-product-availability-item strong { color: var(--text-primary); font-weight: 700; }
+.troc-product-availability--out { color: var(--danger); }
+
+/* Tile variant */
+.troc-product--tile { flex-direction: column; padding: var(--space-3); gap: var(--space-3); }
+.troc-product--tile .troc-product-body { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.troc-product--tile .troc-product-actions { display: flex; flex-direction: column; gap: var(--space-2); margin-top: auto; }
+
+/* Row variant */
+.troc-product--row { flex-direction: row; align-items: center; gap: var(--space-4); padding: var(--space-3); }
+.troc-product--row .troc-card-image { width: 56px; flex-shrink: 0; border-radius: var(--radius-sm); }
+.troc-product--row .troc-product-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 auto; }
+.troc-product--row .troc-product-side { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-2); flex-shrink: 0; }
+.troc-product--row .troc-product-actions { display: flex; align-items: center; gap: var(--space-2); }
+
+@media (max-width: 768px) {
+  .troc-product--row { flex-wrap: wrap; align-items: flex-start; }
+  .troc-product--row .troc-product-side { align-items: flex-start; width: 100%; }
+  .troc-product--row .troc-product-actions { width: 100%; }
+}
+
+/* progress.css */
+/* Progress — determinate/indeterminate; always paired with a text label + value. */
+.troc-progress { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.troc-progress-header {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+  font-size: 13px; line-height: 1.4;
+}
+.troc-progress-label { font-weight: 600; color: var(--text-primary); }
+.troc-progress-value { color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+.troc-progress-track {
+  position: relative; overflow: hidden;
+  width: 100%; height: 8px; border-radius: 999px;
+  background: var(--surface-hover); border: 1px solid var(--border);
+}
+.troc-progress--compact .troc-progress-track { height: 6px; }
+.troc-progress-indicator {
+  width: 100%; height: 100%; border-radius: 999px;
+  background: var(--text-secondary);
+  transition: transform var(--motion-normal) var(--motion-easing);
+}
+.troc-progress--accent .troc-progress-indicator { background: var(--color-accent); }
+.troc-progress--positive .troc-progress-indicator { background: var(--positive); }
+.troc-progress-track[data-indeterminate] .troc-progress-indicator {
+  width: 40%; transform: none;
+  animation: troc-progress-slide 1.4s ease-in-out infinite;
+}
+@keyframes troc-progress-slide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-progress-indicator { transition: none; }
+  .troc-progress-track[data-indeterminate] .troc-progress-indicator {
+    animation: none; width: 100%; opacity: .6;
+  }
+}
+
+/* promotion.css */
+/* Promotion — badge + seller promotion card; restrained, red is intentional. */
+.troc-promotion-badge { gap: 4px; }
+.troc-promotion-badge-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Locked/expired read as inactive without relying on colour alone. */
+.troc-promotion-badge--locked { opacity: 0.9; }
+.troc-promotion-badge--expired { color: var(--text-muted); }
+
+/* Promotion card — single-surface, no card-in-card decoration. */
+.troc-promotion-card {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); min-width: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-promotion-card--active { border-color: var(--color-accent); }
+.troc-promotion-card--expired { opacity: 0.72; }
+
+.troc-promotion-card-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--space-3);
+}
+.troc-promotion-card-heading { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.troc-promotion-card-icon { display: inline-flex; color: var(--color-accent); }
+.troc-promotion-card-icon svg { width: 18px; height: 18px; }
+.troc-promotion-card-title {
+  font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--text-primary);
+}
+.troc-promotion-card-terms {
+  margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary);
+}
+.troc-promotion-card-progress { margin-top: 2px; }
+.troc-promotion-card-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-3); flex-wrap: wrap;
+}
+.troc-promotion-card-status {
+  font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text-primary);
+}
+.troc-promotion-card--expired .troc-promotion-card-status { color: var(--text-muted); }
+.troc-promotion-card-action { flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .troc-promotion-card-foot { align-items: stretch; }
+  .troc-promotion-card-action { width: 100%; }
+}
+
+/* quantity-control.css */
+/* Quantity control — Input framed by decrement/increment icon Buttons. */
+.troc-quantity {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--surface); overflow: hidden;
+}
+.troc-quantity[data-invalid="true"] { border-color: var(--danger); }
+.troc-quantity[data-disabled="true"] { opacity: .5; }
+.troc-quantity:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-quantity-step.troc-button.troc-button--icon {
+  width: var(--control-default); min-height: var(--control-default);
+  border: 0; border-radius: 0; background: transparent; color: var(--text-primary);
+}
+.troc-quantity-step.troc-button--icon:hover:not(:disabled) { background: var(--surface-hover); }
+.troc-quantity-step:disabled { opacity: .4; }
+
+.troc-quantity-field.troc-field {
+  width: 56px; min-width: 0; text-align: center;
+  border: 0; border-radius: 0; border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border); background: transparent;
+  padding-left: var(--space-1); padding-right: var(--space-1);
+  font-weight: 600; -moz-appearance: textfield;
+}
+.troc-quantity-field.troc-field:focus-visible { outline: none; }
+.troc-quantity-field::-webkit-outer-spin-button,
+.troc-quantity-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.troc-quantity--compact .troc-quantity-step.troc-button--icon { width: var(--control-small); min-height: var(--control-small); }
+.troc-quantity--compact .troc-quantity-field.troc-field { width: 44px; min-height: var(--control-small); font-size: 13px; }
+
+@media (pointer: coarse) {
+  .troc-quantity--compact .troc-quantity-step.troc-button--icon { width: var(--control-default); min-height: var(--control-default); }
+  .troc-quantity--compact .troc-quantity-field.troc-field { min-height: var(--control-default); }
+}
+
+/* recently-sold.css */
+/* Recently sold — compact, static reference item. No ticker animation implied. */
+.troc-recently-sold {
+  display: flex; align-items: center; gap: var(--space-3); min-width: 0;
+  box-sizing: border-box; padding: var(--space-2) var(--space-3);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  text-decoration: none;
+}
+a.troc-recently-sold:hover { border-color: var(--border-strong); }
+a.troc-recently-sold:focus-visible,
+.troc-recently-sold[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.troc-recently-sold .troc-card-image { width: 34px; flex-shrink: 0; border-radius: var(--radius-sm); }
+.troc-recently-sold-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.troc-recently-sold-title {
+  margin: 0; font-size: var(--text-sm); font-weight: 600; line-height: 1.25;
+  color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.troc-recently-sold-meta { font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.troc-recently-sold-side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.troc-recently-sold-time { font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; }
+
+/* selection-controls.css */
+/* Selection controls — Checkbox, Radio, Switch. Semantic tokens only. */
+.troc-choice {
+  display: inline-flex; align-items: flex-start; gap: var(--space-3);
+  min-height: var(--control-default); padding: 6px 0;
+  cursor: pointer; color: var(--text-primary); line-height: 1.5;
+}
+.troc-choice[data-disabled="true"] { cursor: not-allowed; opacity: .5; }
+.troc-choice-label { font-size: 14px; font-weight: 500; padding-top: 1px; }
+.troc-choice-label-hint { display: block; font-size: 12px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+
+.troc-checkbox, .troc-radio {
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; margin-top: 1px;
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--color-primary-foreground);
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-checkbox { border-radius: var(--radius-sm); }
+.troc-radio { border-radius: 999px; }
+.troc-checkbox svg, .troc-radio svg { width: 14px; height: 14px; }
+
+.troc-checkbox:hover:not([data-disabled]), .troc-radio:hover:not([data-disabled]) { border-color: var(--text-muted); }
+.troc-checkbox[data-state="checked"], .troc-checkbox[data-state="indeterminate"],
+.troc-radio[data-state="checked"] { background: var(--color-primary); border-color: var(--color-primary); }
+.troc-checkbox:focus-visible, .troc-radio:focus-visible,
+.troc-choice[data-preview="focus"] .troc-checkbox, .troc-choice[data-preview="focus"] .troc-radio {
+  outline: 2px solid var(--focus); outline-offset: 3px;
+}
+.troc-choice[data-invalid="true"] .troc-checkbox, .troc-choice[data-invalid="true"] .troc-radio { border-color: var(--danger); }
+.troc-radio-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-primary-foreground); }
+
+.troc-radio-group { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.troc-switch {
+  position: relative; flex-shrink: 0; width: 40px; height: 24px; margin-top: 2px;
+  border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface-hover);
+  cursor: pointer; transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-switch[data-state="checked"] { background: var(--color-primary); border-color: var(--color-primary); }
+.troc-switch:hover:not([data-disabled]) { border-color: var(--text-muted); }
+.troc-switch:focus-visible, .troc-choice[data-preview="focus"] .troc-switch { outline: 2px solid var(--focus); outline-offset: 3px; }
+.troc-switch-thumb {
+  display: block; width: 18px; height: 18px; border-radius: 999px; background: var(--surface);
+  box-shadow: var(--shadow-sm); transform: translateX(2px);
+  transition: transform var(--motion-fast);
+}
+.troc-switch[data-state="checked"] .troc-switch-thumb { transform: translateX(18px); background: var(--color-primary-foreground); }
+
+@media (pointer: coarse) {
+  .troc-checkbox, .troc-radio { width: 24px; height: 24px; }
+}
+
+/* seller-badges.css */
+/* Seller badges — trust signals; icon + text, never colour-only. */
+.troc-seller-badge { gap: 4px; max-width: 100%; }
+.troc-seller-badge-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.troc-seller-badge--compact { padding: 1px var(--space-1); min-height: 18px; font-size: 11px; }
+.troc-seller-badge--compact svg { width: 11px; height: 11px; }
+
+/* Verified variants stay factual and neutral so verification never reads like a
+   sale or a paid placement. */
+.troc-seller-badge--verified-seller { color: var(--text-secondary); }
+.troc-seller-badge--verified-seller svg { color: var(--text-secondary); }
+
+/* Top Seller uses the accent Badge variant (intentional emphasis). */
+.troc-seller-badge--top-seller svg { color: var(--color-accent-foreground); }
+
+/* Sponsored inherits the dashed sponsored Badge variant; keep the icon muted. */
+.troc-seller-badge--sponsored svg { color: var(--text-muted); }
+
+/* Meaning legend (demo) — badge in the first column, plain-language meaning next. */
+.troc-seller-badge-legend { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.troc-seller-badge-legend-row {
+  display: grid; grid-template-columns: minmax(160px, 220px) 1fr;
+  align-items: center; gap: var(--space-4);
+}
+.troc-seller-badge-legend-row dt { margin: 0; }
+.troc-seller-badge-legend-row dd { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+@media (max-width: 560px) {
+  .troc-seller-badge-legend-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* seller-offer.css */
+/* Seller offer row — verification, rating, condition, price, quantity,
+   shipping, promotion, and an Add-to-Cart action. Sibling controls only. */
+.troc-offer {
+  display: grid; min-width: 0; box-sizing: border-box;
+  grid-template-columns: minmax(0, 1.4fr) auto auto;
+  align-items: center; gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.troc-offer:hover,
+.troc-offer[data-preview="hover"] { border-color: var(--border-strong); }
+.troc-offer:focus-within,
+.troc-offer[data-preview="focus"] { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-offer[data-selected="true"] {
+  border-color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.troc-offer[data-unavailable="true"],
+.troc-offer[data-disabled="true"] { opacity: .6; }
+
+.troc-offer-seller { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.troc-offer-seller-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-width: 0; }
+.troc-offer-seller-name { font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); }
+.troc-offer-seller-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.troc-offer-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.troc-offer-shipping { font-size: var(--text-xs); color: var(--text-secondary); }
+
+.troc-offer-detail { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; }
+.troc-offer-promotion { display: flex; }
+.troc-offer-unavailable {
+  font-size: var(--text-xs); font-weight: 600; color: var(--danger);
+}
+
+.troc-offer-actions { display: flex; flex-direction: column; align-items: stretch; gap: var(--space-2); }
+.troc-offer-actions .troc-button { width: 100%; }
+.troc-offer-status { font-size: var(--text-xs); color: var(--text-secondary); text-align: center; }
+.troc-offer[data-loading="true"] { opacity: .85; }
+
+@media (max-width: 768px) {
+  .troc-offer {
+    grid-template-columns: 1fr;
+    align-items: stretch; gap: var(--space-3);
+  }
+  .troc-offer-detail { align-items: flex-start; text-align: left; }
+  .troc-offer-actions { flex-direction: row; align-items: center; flex-wrap: wrap; }
+}
+
+/* seller-reputation.css */
+/* Seller reputation — rating, stats, level, plan; meaning never colour-only. */
+.troc-seller-rating { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 20px; }
+.troc-seller-rating-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.troc-seller-rating-score { font-size: 14px; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.troc-seller-rating-count { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.troc-seller-rating-label { font-size: 13px; color: var(--text-secondary); }
+.troc-seller-rating-star { width: 15px; height: 15px; color: var(--text-muted); fill: none; }
+.troc-seller-rating-star--filled { color: var(--warning); fill: var(--warning); }
+.troc-seller-rating--unrated .troc-seller-rating-star { color: var(--text-muted); }
+.troc-seller-rating-stars { display: inline-flex; align-items: center; gap: 2px; }
+.troc-seller-rating-slot { position: relative; display: inline-flex; width: 15px; height: 15px; }
+.troc-seller-rating-fill { position: absolute; inset: 0; overflow: hidden; display: inline-flex; }
+.troc-seller-rating--loading { min-width: 96px; }
+.troc-seller-rating-skeleton {
+  display: block; width: 96px; height: 14px; border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-muted) 14%, transparent), transparent);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  animation: troc-seller-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes troc-seller-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.troc-seller-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-4);
+}
+.troc-seller-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.troc-seller-stat-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.troc-seller-stat-icon { display: inline-flex; }
+.troc-seller-stat-icon svg { width: 14px; height: 14px; }
+.troc-seller-stat-value { font-size: 15px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+.troc-seller-level svg, .troc-seller-plan svg { width: 12px; height: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .troc-seller-rating-skeleton { animation: none; background-image: none; }
+}
+
+/* seller-storefront.css */
+/* Seller storefront identity — banner, avatar, name, trust, stats, actions. */
+.troc-storefront {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); overflow: hidden; min-width: 0;
+}
+.troc-storefront-banner { position: relative; width: 100%; height: 132px; background: var(--surface-hover); }
+.troc-storefront-banner .troc-seller-banner,
+.troc-storefront-banner .troc-seller-banner img,
+.troc-storefront-banner .troc-seller-banner-skeleton { width: 100%; height: 100%; }
+.troc-storefront-banner .troc-seller-banner img { object-fit: cover; display: block; }
+
+.troc-storefront-body {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  padding: var(--space-4); flex-wrap: wrap;
+}
+.troc-storefront-banner + .troc-storefront-body { margin-top: -36px; }
+.troc-storefront-avatar { flex: 0 0 auto; }
+.troc-storefront-avatar-skel { width: 64px; height: 64px; border-radius: var(--radius-md); }
+.troc-storefront-main { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.troc-storefront-identity { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.troc-storefront-name { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.25; color: var(--text-primary); }
+.troc-storefront-tagline { margin: 0; font-size: 13px; color: var(--text-secondary); }
+.troc-storefront-trust { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
+.troc-storefront-badges { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
+.troc-storefront-stats { min-width: 0; }
+.troc-storefront-aside { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-3); }
+.troc-storefront-actions { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.troc-storefront--compact .troc-storefront-banner { height: 80px; }
+.troc-storefront--compact .troc-storefront-name { font-size: 17px; }
+
+/* Avatar */
+.troc-seller-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text-primary);
+}
+.troc-seller-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.troc-seller-avatar--fallback { background: var(--surface-hover); }
+.troc-seller-avatar-initials { font-weight: 700; letter-spacing: 0.02em; color: var(--text-secondary); }
+.troc-seller-avatar-skeleton { width: 100%; height: 100%; border-radius: inherit; }
+.troc-seller-avatar--sm { width: 40px; height: 40px; }
+.troc-seller-avatar--sm .troc-seller-avatar-initials { font-size: 14px; }
+.troc-seller-avatar--default { width: 64px; height: 64px; }
+.troc-seller-avatar--default .troc-seller-avatar-initials { font-size: 20px; }
+.troc-seller-avatar--lg { width: 88px; height: 88px; }
+.troc-seller-avatar--lg .troc-seller-avatar-initials { font-size: 28px; }
+
+/* Banner primitive (standalone use) */
+.troc-seller-banner { display: block; width: 100%; border-radius: var(--radius-md); overflow: hidden; }
+.troc-seller-banner--empty {
+  min-height: 96px; background: var(--surface-hover);
+  border: 1px solid var(--border);
+}
+.troc-seller-banner-skeleton { width: 100%; height: 100%; min-height: 80px; border-radius: inherit; }
+
+@media (max-width: 640px) {
+  .troc-storefront-body { flex-direction: column; }
+  .troc-storefront-aside { align-items: stretch; width: 100%; }
+  .troc-storefront-actions { width: 100%; }
+  .troc-storefront-actions .troc-button { flex: 1 1 auto; }
+}
+
+/* site-navigation.css */
+/* Site navigation — desktop SiteHeader and restrained mobile navigation.
+   Bounded examples: sticky/fixed positions are relative to the demo frame. */
+.troc-site-header {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+}
+.troc-site-header-brand { flex-shrink: 0; display: inline-flex; align-items: center; }
+.troc-site-nav { display: flex; align-items: center; gap: var(--space-1); }
+.troc-site-nav-link {
+  display: inline-flex; align-items: center; min-height: var(--control-default);
+  padding: 0 var(--space-3); border-radius: var(--radius-md);
+  color: var(--text-secondary); font-size: 14px; font-weight: 600; text-decoration: none;
+  background: transparent; border: 0; cursor: pointer;
+  transition: color var(--motion-fast), background var(--motion-fast);
+}
+.troc-site-nav-link:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-hover); }
+.troc-site-nav-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-site-nav-link:disabled { cursor: not-allowed; opacity: 0.55; }
+.troc-site-nav-link .troc-loading { width: 14px; height: 14px; margin-right: var(--space-1); }
+.troc-site-nav-link[aria-current="page"] { color: var(--text-primary); }
+.troc-site-nav-link[aria-current="page"]::after {
+  content: ""; display: block; position: absolute; left: var(--space-3); right: var(--space-3);
+}
+.troc-site-nav-link { position: relative; }
+.troc-site-nav-link[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--color-primary); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+
+.troc-site-header-search { flex: 1 1 auto; min-width: 0; max-width: 420px; margin: 0 auto; }
+.troc-site-header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); flex-shrink: 0; max-width: 100%; }
+
+.troc-site-cart { position: relative; }
+.troc-site-cart-count {
+  position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: var(--color-primary); color: var(--color-primary-foreground);
+  font-size: 11px; font-weight: 700; line-height: 1;
+}
+.troc-site-account { display: inline-flex; align-items: center; gap: var(--space-2); }
+.troc-site-account-name { font-size: 13px; font-weight: 600; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.troc-site-avatar {
+  width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0;
+  background: var(--surface-hover); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-primary);
+}
+
+/* Mobile top bar */
+.troc-mobile-topbar {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.troc-mobile-topbar-search { order: 3; flex: 1 0 100%; min-width: 0; }
+
+/* Mobile bottom navigation — anchored to the example frame, not the viewport. */
+.troc-mobile-bottom-nav {
+  display: flex; align-items: stretch; justify-content: space-around;
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface); border-top: 1px solid var(--border);
+}
+.troc-mobile-bottom-item {
+  flex: 1 1 0; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 52px; padding: var(--space-1); border: 0; background: transparent; cursor: pointer;
+  color: var(--text-muted); font-size: 11px; font-weight: 600; text-decoration: none;
+  border-radius: var(--radius-md); transition: color var(--motion-fast);
+}
+.troc-mobile-bottom-item svg { width: 20px; height: 20px; }
+.troc-mobile-bottom-item:hover:not(:disabled) { color: var(--text-secondary); }
+.troc-mobile-bottom-item:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-mobile-bottom-item:disabled { cursor: not-allowed; opacity: 0.55; }
+.troc-mobile-bottom-item[aria-current="page"] { color: var(--color-primary); }
+.troc-mobile-bottom-item .troc-site-cart-count { position: static; margin-left: 2px; }
+
+/* Bounded demo frame so header examples never take over the guide. */
+.troc-nav-frame {
+  position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--background);
+}
+.troc-nav-frame--phone { max-width: 390px; margin-inline: auto; min-height: 420px; display: flex; flex-direction: column; }
+.troc-nav-frame--phone .troc-mobile-bottom-nav { margin-top: auto; position: sticky; bottom: 0; }
+.troc-nav-frame-body { flex: 1 1 auto; padding: var(--space-5) var(--space-4); color: var(--text-secondary); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .troc-site-header { flex-wrap: wrap; padding: var(--space-2); }
+  .troc-site-header-search { order: 3; flex-basis: 100%; max-width: none; margin: var(--space-1) 0 0; }
+}
+
+/* skeleton.css */
+/* Loading skeleton — presentational placeholders; label the busy region at composition level. */
+.troc-skeleton {
+  display: block; border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  background-image: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text-muted) 14%, transparent), transparent);
+  background-size: 200% 100%; background-repeat: no-repeat;
+  animation: troc-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.troc-skeleton--text { height: 12px; width: 100%; }
+.troc-skeleton--text:last-child { width: 70%; }
+.troc-skeleton--avatar { width: 40px; height: 40px; border-radius: 999px; flex-shrink: 0; }
+.troc-skeleton--card { width: 100%; aspect-ratio: 3 / 4; border-radius: var(--radius-md); }
+.troc-skeleton--row { width: 100%; height: 56px; border-radius: var(--radius-md); }
+@keyframes troc-skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .troc-skeleton { animation: none; background-image: none; }
+}
+
+/* smart-cart.css */
+/* Smart Cart comparison — visual-only presentation of supplied figures. */
+.troc-smart-cart { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.troc-smart-cart-columns {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4);
+}
+.troc-smart-cart-col {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); min-width: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.troc-smart-cart-col--recommended { border-color: var(--color-accent); }
+.troc-smart-cart-col-head {
+  display: flex; flex-direction: column; gap: 2px;
+  padding-bottom: var(--space-3); border-bottom: 1px solid var(--border);
+}
+.troc-smart-cart-col-heading {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+}
+.troc-smart-cart-col-heading svg { width: 15px; height: 15px; color: var(--color-accent); }
+.troc-smart-cart-col-sellers { font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+/* Loading + empty */
+.troc-smart-cart-col--loading { gap: var(--space-3); }
+.troc-smart-cart-col-head { min-height: 20px; }
+.troc-smart-cart-col-skeleton {
+  height: 14px; border-radius: var(--radius-sm); background: var(--surface-hover);
+}
+.troc-smart-cart--empty { padding: var(--space-6); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); text-align: center; }
+.troc-smart-cart-empty { margin: 0; font-size: 13px; color: var(--text-secondary); }
+
+/* Savings callout */
+.troc-smart-savings {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-accent); border-radius: var(--radius-md);
+  color: var(--color-accent); font-weight: 700;
+}
+.troc-smart-savings-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.troc-smart-savings-label { font-size: 14px; }
+.troc-smart-savings-amount { margin-left: auto; font-size: 18px; font-variant-numeric: tabular-nums; }
+
+.troc-smart-explanation { font-size: 13px; }
+
+@media (max-width: 560px) {
+  .troc-smart-cart-columns { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* state-feedback.css */
+/* State feedback — empty / error / success; meaningful icon + copy + real actions, never colour-only. */
+.troc-state {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--space-4);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface); color: var(--text-primary);
+}
+.troc-state--full { padding: var(--space-10) var(--space-6); }
+.troc-state--compact {
+  flex-direction: row; align-items: center; text-align: left; flex-wrap: wrap;
+  gap: var(--space-3); padding: var(--space-4);
+}
+.troc-state-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--surface-hover);
+  color: var(--text-secondary); flex-shrink: 0;
+}
+.troc-state-icon svg { width: 22px; height: 22px; }
+.troc-state--error .troc-state-icon { color: var(--danger); border-color: var(--danger); }
+.troc-state--success .troc-state-icon { color: var(--positive); border-color: var(--positive); }
+.troc-state--compact .troc-state-icon { width: 36px; height: 36px; }
+.troc-state--compact .troc-state-icon svg { width: 18px; height: 18px; }
+.troc-state-body { display: flex; flex-direction: column; gap: var(--space-2); max-width: 42ch; }
+.troc-state--compact .troc-state-body { flex: 1 1 200px; gap: 2px; }
+.troc-state-title { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+.troc-state--compact .troc-state-title { font-size: 14px; }
+.troc-state-description { margin: 0; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.troc-state--compact .troc-state-description { font-size: 13px; }
+.troc-state-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; }
+.troc-state--compact .troc-state-actions { justify-content: flex-start; }
+@media (max-width: 768px) {
+  .troc-state--full { padding: var(--space-8) var(--space-4); }
+  .troc-state-actions { width: 100%; flex-direction: column; }
+  .troc-state-actions > * { width: 100%; }
+}
+
+/* tabs.css */
+/* Tabs — underline treatment; keyboard-driven Radix roving focus. */
+.troc-tabs { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+.troc-tabs-list {
+  display: flex; align-items: stretch; gap: var(--space-1);
+  border-bottom: 1px solid var(--border); overflow-x: auto;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.troc-tabs-list::-webkit-scrollbar { display: none; }
+
+.troc-tab {
+  position: relative; display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: var(--control-default); padding: 8px var(--space-3); margin-bottom: -1px;
+  border: 0; border-bottom: 2px solid transparent; background: transparent;
+  color: var(--text-muted); font-size: 14px; font-weight: 600; line-height: 1.4;
+  white-space: nowrap; cursor: pointer;
+  transition: color var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-tab svg { width: 16px; height: 16px; flex-shrink: 0; }
+.troc-tab:hover:not(:disabled) { color: var(--text-primary); }
+.troc-tab[data-state="active"] { color: var(--text-primary); border-bottom-color: var(--color-primary); }
+.troc-tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm); }
+.troc-tab:disabled { opacity: .5; cursor: not-allowed; }
+
+.troc-tab-count {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px;
+  padding: 0 5px; border-radius: 999px; background: var(--surface-hover); color: var(--text-muted);
+  font-size: 11px; font-weight: 600;
+}
+.troc-tab[data-state="active"] .troc-tab-count { background: var(--color-primary); color: var(--color-primary-foreground); }
+
+.troc-tabs-content { min-width: 0; }
+.troc-tabs-content:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: var(--radius-md); }
+
+/* theme-switcher.css */
+/* Theme switcher — TROC Dark / TROC Light; icon plus accessible text. */
+.troc-theme-switcher { display: inline-flex; align-items: center; }
+.troc-theme-segmented {
+  display: inline-flex; align-items: stretch; gap: 2px; padding: 2px;
+  background: var(--surface-hover); border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.troc-theme-option {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 0 var(--space-3); border: 0; border-radius: 999px;
+  background: transparent; color: var(--text-secondary);
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer; white-space: nowrap;
+  transition: color var(--motion-fast), background var(--motion-fast);
+}
+.troc-theme-option:hover:not([aria-pressed="true"]) { color: var(--text-primary); }
+.troc-theme-option:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.troc-theme-option[aria-pressed="true"] { background: var(--surface); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+.troc-theme-option svg { width: 15px; height: 15px; }
+
+/* Compact single-button toggle form. */
+.troc-theme-toggle.troc-button { gap: 6px; }
+
+@media (pointer: coarse) {
+  .troc-theme-option { min-height: 40px; }
+}
+
+/* toast.css */
+/* Toast — timed, dismissible notifications; status by icon + text, not colour alone. */
+.troc-toast-viewport {
+  position: fixed; z-index: var(--z-toast);
+  top: auto; bottom: var(--space-4); right: var(--space-4); left: auto;
+  display: flex; flex-direction: column; gap: var(--space-2);
+  width: 380px; max-width: calc(100vw - (var(--space-4) * 2));
+  margin: 0; padding: 0; list-style: none; outline: none;
+}
+.troc-toast {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-strong); border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated); color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+.troc-toast--neutral { border-left-color: var(--border-strong); }
+.troc-toast--success { border-left-color: var(--positive); }
+.troc-toast--warning { border-left-color: var(--warning); }
+.troc-toast--error { border-left-color: var(--danger); }
+.troc-toast-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.troc-toast-title { margin: 0; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: -0.01em; }
+.troc-toast-description { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.troc-toast-action {
+  flex-shrink: 0; align-self: center; min-height: var(--control-small);
+  padding: 6px var(--space-3); border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-primary);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.troc-toast-action:hover { background: var(--surface-hover); }
+.troc-toast-close {
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; margin: -4px -6px -4px 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--text-muted); cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.troc-toast-close:hover { background: var(--surface-hover); color: var(--text-primary); }
+.troc-toast-close svg { width: 16px; height: 16px; }
+.troc-toast[data-swipe="move"] { transform: translateX(var(--radix-toast-swipe-move-x)); }
+.troc-toast[data-swipe="cancel"] { transform: translateX(0); transition: transform var(--motion-fast); }
+.troc-toast[data-state="open"] { animation: troc-toast-in var(--motion-normal) var(--motion-easing); }
+.troc-toast[data-state="closed"] { animation: troc-toast-out var(--motion-fast) ease-in; }
+.troc-toast[data-swipe="end"] { animation: troc-toast-out var(--motion-fast) ease-out; }
+@keyframes troc-toast-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes troc-toast-out { from { opacity: 1; } to { opacity: 0; transform: translateX(16px); } }
+@media (max-width: 768px) {
+  .troc-toast-viewport { left: var(--space-4); right: var(--space-4); width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-toast[data-state="open"], .troc-toast[data-state="closed"], .troc-toast[data-swipe="end"] { animation: none; }
+}
+
+/* tooltip.css */
+/* Tooltip — compact hint on hover/focus; never the sole carrier of required
+   information. Radix handles delay, placement, and keyboard focus. */
+.troc-tooltip {
+  z-index: var(--z-overlay);
+  max-width: 240px;
+  padding: 6px var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  user-select: none;
+}
+.troc-tooltip-arrow { fill: var(--surface-elevated); }
+
+.troc-tooltip[data-state="delayed-open"],
+.troc-tooltip[data-state="instant-open"] {
+  animation: troc-tooltip-in var(--motion-fast) var(--motion-easing);
+}
+@keyframes troc-tooltip-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .troc-tooltip[data-state] { animation: none; }
+}
+
 :root, .light {
   --background: 0 0% 95.68627%;
   --color-background: #F4F4F4;

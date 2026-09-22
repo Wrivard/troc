@@ -1,0 +1,30 @@
+/* Tooltip — compact hint on hover/focus; never the sole carrier of required
+   information. Radix handles delay, placement, and keyboard focus. */
+.troc-tooltip {
+  z-index: var(--z-overlay);
+  max-width: 240px;
+  padding: 6px var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  user-select: none;
+}
+.troc-tooltip-arrow { fill: var(--surface-elevated); }
+
+.troc-tooltip[data-state="delayed-open"],
+.troc-tooltip[data-state="instant-open"] {
+  animation: troc-tooltip-in var(--motion-fast) var(--motion-easing);
+}
+@keyframes troc-tooltip-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .troc-tooltip[data-state] { animation: none; }
+}

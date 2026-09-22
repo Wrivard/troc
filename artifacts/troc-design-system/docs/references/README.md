@@ -59,4 +59,11 @@ Every file below is classified as a **spec** from the source upload:
 - `component-inventory.md` is the normalized 46-family approval index and sequential chunk plan.
 - `components/<family>.md` records each family's evidence lines, `.tsx`
   implementation/preview paths, exports, dependencies, variants, states, and
-  approval status. Pilot paths are shipped; later paths remain planned.
+  approval/implementation status.
+- `card-artwork.md` records provenance for static illustration-only demo card
+  images. They are not connected to a live catalog, inventory, pricing, or
+  sales API; reusable components receive image URLs through props.
+- `milestone-acceptance-audit.md` separates retained source/static coverage
+  from final browser/visual acceptance.
+- `milestone-completion-report.md` records what was built, package structure,
+  explicit non-spec decisions, current verification, and remaining approvals.

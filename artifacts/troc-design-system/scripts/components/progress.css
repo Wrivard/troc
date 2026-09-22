@@ -1,0 +1,35 @@
+/* Progress — determinate/indeterminate; always paired with a text label + value. */
+.troc-progress { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.troc-progress-header {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+  font-size: 13px; line-height: 1.4;
+}
+.troc-progress-label { font-weight: 600; color: var(--text-primary); }
+.troc-progress-value { color: var(--text-secondary); font-variant-numeric: tabular-nums; text-align: right; }
+.troc-progress-track {
+  position: relative; overflow: hidden;
+  width: 100%; height: 8px; border-radius: 999px;
+  background: var(--surface-hover); border: 1px solid var(--border);
+}
+.troc-progress--compact .troc-progress-track { height: 6px; }
+.troc-progress-indicator {
+  width: 100%; height: 100%; border-radius: 999px;
+  background: var(--text-secondary);
+  transition: transform var(--motion-normal) var(--motion-easing);
+}
+.troc-progress--accent .troc-progress-indicator { background: var(--color-accent); }
+.troc-progress--positive .troc-progress-indicator { background: var(--positive); }
+.troc-progress-track[data-indeterminate] .troc-progress-indicator {
+  width: 40%; transform: none;
+  animation: troc-progress-slide 1.4s ease-in-out infinite;
+}
+@keyframes troc-progress-slide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-progress-indicator { transition: none; }
+  .troc-progress-track[data-indeterminate] .troc-progress-indicator {
+    animation: none; width: 100%; opacity: .6;
+  }
+}

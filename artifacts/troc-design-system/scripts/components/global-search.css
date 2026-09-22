@@ -1,0 +1,49 @@
+/* Global search — marketplace search built from Input + Button with an
+   ARIA combobox listbox. No search backend; suggestions are supplied. */
+.troc-global-search { position: relative; width: 100%; min-width: 0; }
+.troc-global-search-control { position: relative; display: flex; align-items: center; }
+.troc-global-search-icon {
+  position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none; display: inline-flex;
+}
+.troc-global-search-icon svg { width: 16px; height: 16px; }
+.troc-global-search-field.troc-field { padding-left: var(--space-10); padding-right: calc(var(--control-default) * 2); }
+.troc-global-search-field.troc-field[aria-busy="true"] { padding-right: calc(var(--control-default) * 2); }
+
+.troc-global-search-clear.troc-button.troc-button--icon,
+.troc-global-search-submit.troc-button.troc-button--icon {
+  position: absolute; top: 0; width: var(--control-default); border: 0; background: transparent; color: var(--text-muted);
+}
+.troc-global-search-clear.troc-button--icon { right: var(--control-default); }
+.troc-global-search-submit.troc-button--icon { right: 0; }
+.troc-global-search-clear.troc-button--icon:hover:not(:disabled),
+.troc-global-search-submit.troc-button--icon:hover:not(:disabled) { color: var(--text-primary); background: var(--surface-hover); }
+.troc-global-search-spinner { position: absolute; top: 50%; right: calc(var(--control-default) + 12px); transform: translateY(-50%); color: var(--text-muted); display: inline-flex; }
+.troc-global-search-spinner svg { width: 16px; height: 16px; }
+
+.troc-global-search-popup {
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: var(--z-dropdown);
+  padding: var(--space-1); background: var(--surface-elevated); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md); max-height: 340px; overflow: auto;
+}
+.troc-global-search-listbox { list-style: none; margin: 0; padding: 0; }
+.troc-global-search-group-label { padding: var(--space-2) var(--space-3) var(--space-1); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+.troc-search-option {
+  display: flex; align-items: center; gap: var(--space-3); width: 100%;
+  min-height: var(--control-default); padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm); cursor: pointer;
+}
+.troc-search-option[data-active="true"] { background: var(--surface-hover); outline: 2px solid var(--focus); outline-offset: -2px; }
+.troc-search-option-thumb {
+  flex-shrink: 0; width: 28px; height: 38px; border-radius: var(--radius-sm);
+  background: var(--surface-hover); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted);
+}
+.troc-search-option-thumb svg { width: 14px; height: 14px; }
+.troc-search-option-text { display: flex; flex-direction: column; min-width: 0; }
+.troc-search-option-title { font-weight: 600; font-size: 14px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.troc-search-option-meta { font-size: 12px; color: var(--text-muted); }
+
+.troc-global-search-message { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); margin: 0; font-size: 13px; color: var(--text-muted); }
+.troc-global-search-message--error { color: var(--danger); }
+.troc-global-search-message svg { width: 16px; height: 16px; flex-shrink: 0; }
