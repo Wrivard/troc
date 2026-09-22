@@ -1,12 +1,15 @@
 {
   "name": "workspace",
+  "packageManager": "pnpm@9.15.0",
+  "engines": { "node": "24.x" },
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "node tests/browser.mjs",
-    "dev:api": "tsx artifacts/api-server/src/index.ts",
-    "lint": "eslint artifacts/api-server/src/modules artifacts/api-server/src/routes/foundation.ts artifacts/marketplace/src tests",
+    "dev:api": "tsx watch artifacts/api-server/src/index.ts",
+    "catalog:import-demo": "tsx artifacts/api-server/src/modules/catalog/import-cli.ts",
+    "lint": "eslint artifacts/api-server/src/modules artifacts/api-server/src/routes artifacts/marketplace/src tests",
     "dev:marketplace": "pnpm --filter @workspace/marketplace dev",
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",

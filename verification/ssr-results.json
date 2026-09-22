@@ -1,0 +1,18 @@
+[
+  {
+    "locale": "en",
+    "status": 200,
+    "serverRendered": true,
+    "canonical": true,
+    "hreflang": true,
+    "demoNoindex": true
+  },
+  {
+    "locale": "fr",
+    "status": 200,
+    "serverRendered": true,
+    "canonical": true,
+    "hreflang": true,
+    "demoNoindex": true
+  }
+]

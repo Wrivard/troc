@@ -1,4 +1,5 @@
 import type { Locale, Money } from "../shared/domain";
+import type { CatalogImportProvider, ImportRecord } from '@workspace/catalog';
 export type Page<T> = { items: T[]; nextCursor?: string };
 export type PageRequest = { cursor?: string; limit: number };
 export type Provenance = {
@@ -8,21 +9,9 @@ export type Provenance = {
   license: string;
   capturedAt: string;
 };
-export type CatalogRecord = {
-  trocVariantId?: string;
-  gameId: string;
-  setId: string;
-  productId: string;
-  printingId: string;
-  language: "en" | "ja";
-  attributes: Record<string, string>;
-  source: Provenance;
-};
-export interface CatalogProvider {
-  readonly id: string;
-  readonly licenseApproved: boolean;
-  records(page: PageRequest): Promise<Page<CatalogRecord>>;
-}
+export type CatalogRecord = ImportRecord;
+// Approval is authoritative in PostgreSQL, never a provider-supplied boolean.
+export type CatalogProvider = CatalogImportProvider;
 export type ReferencePrice = {
   variantId: string;
   condition?: string;

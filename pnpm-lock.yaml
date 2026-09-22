@@ -111,6 +111,9 @@ importers:
       '@workspace/api-zod':
         specifier: workspace:*
         version: link:../../lib/api-zod
+      '@workspace/catalog':
+        specifier: workspace:*
+        version: link:../../lib/catalog
       '@workspace/db':
         specifier: workspace:*
         version: link:../../lib/db
@@ -163,6 +166,9 @@ importers:
 
   artifacts/marketplace:
     dependencies:
+      '@workspace/catalog':
+        specifier: workspace:*
+        version: link:../../lib/catalog
       '@workspace/troc-design-system':
         specifier: workspace:*
         version: link:../troc-design-system
@@ -172,6 +178,9 @@ importers:
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
+      recharts:
+        specifier: ^2.15.4
+        version: 2.15.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@tailwindcss/vite':
         specifier: ^4.1.14
@@ -576,6 +585,8 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  lib/catalog: {}
 
   lib/db:
     dependencies:
