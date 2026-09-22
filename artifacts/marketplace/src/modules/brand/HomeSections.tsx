@@ -179,10 +179,7 @@ export function HomeSections({
             cards={heroes.map((r) => art(r.product, true))}
           />
           <p className="troc-art-note">
-            {c(
-              "Approved card imagery · Demo marketplace",
-              "Visuels approuvés · Marché de démonstration",
-            )}
+            {c("Demo marketplace", "Marché de démonstration")}
           </p>
         </div>
       </section>

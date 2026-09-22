@@ -96,7 +96,7 @@ export function GameHero({
 }) {
   const Heading = level === 1 ? "h1" : "h2";
   return (
-    <section className="troc-game-hero">
+    <section className="troc-game-hero" data-has-art={cards.length > 0}>
       <div>
         <p className="troc-editorial-eyebrow">{eyebrow}</p>
         <Heading>{title}</Heading>
@@ -104,9 +104,11 @@ export function GameHero({
         <div className="troc-game-hero-shortcuts">{shortcuts}</div>
         {action}
       </div>
-      <div className="troc-game-hero-art" aria-hidden="true">
-        <InteractiveCardStack compact cards={cards} label={title} />
-      </div>
+      {cards.length > 0 && (
+        <div className="troc-game-hero-art" aria-hidden="true">
+          <InteractiveCardStack compact cards={cards} label={title} />
+        </div>
+      )}
     </section>
   );
 }
@@ -209,6 +211,7 @@ export function SellerPreviewCard({
 }
 export function PremiumEmptyState({
   title,
+  level = 2,
   description,
   actions,
   visual,
@@ -216,10 +219,12 @@ export function PremiumEmptyState({
   ...props
 }: HTMLAttributes<HTMLElement> & {
   title: string;
+  level?: 1 | 2;
   description: ReactNode;
   actions?: ReactNode;
   visual?: ReactNode;
 }) {
+  const Heading = level === 1 ? "h1" : "h2";
   return (
     <section className={cn("troc-premium-empty", className)} {...props}>
       <div className="troc-premium-empty-visual" aria-hidden="true">
@@ -233,7 +238,7 @@ export function PremiumEmptyState({
         )}
       </div>
       <div>
-        <h2>{title}</h2>
+        <Heading>{title}</Heading>
         <p>{description}</p>
         {actions && <div className="troc-premium-empty-actions">{actions}</div>}
       </div>

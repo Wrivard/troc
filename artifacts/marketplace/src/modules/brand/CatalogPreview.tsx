@@ -11,7 +11,7 @@ export function CatalogPreview({
   kind,
 }: {
   locale: Locale;
-  kind: "binder" | "store";
+  kind: "binder" | "store" | "want-list";
 }) {
   const [page, setPage] = useState<PublicPage | null>(null);
   const fr = locale === "fr";
@@ -26,8 +26,15 @@ export function CatalogPreview({
       .catch(() => {});
     return () => controller.abort();
   }, [locale]);
+  const previewSet = page?.sets.find((set) => set.name.en === "151");
   const products =
-    page?.results.filter((r) => r.product.images?.length).slice(0, 4) ?? [];
+    page?.results
+      .filter(
+        (r) =>
+          r.product.images?.length &&
+          (kind !== "binder" || r.product.setId === previewSet?.id),
+      )
+      .slice(0, 4) ?? [];
   const art = (i: number) =>
     products[i] ? (
       <CatalogArtwork
@@ -77,6 +84,69 @@ export function CatalogPreview({
           </a>
         )}
       </div>
+    );
+  }
+  if (kind === "want-list") {
+    return (
+      <section className="troc-preview-binder">
+        <div className="troc-preview-binder-copy">
+          <p className="troc-editorial-eyebrow">
+            {fr ? "EXEMPLE DE LISTE · À VENIR" : "EXAMPLE WANT LIST · PLANNED"}
+          </p>
+          <h2>
+            {fr
+              ? "Les cartes que vous recherchez"
+              : "The cards you’re looking for"}
+          </h2>
+          <p>
+            {fr
+              ? "Une quantité, une langue, un état et un budget pour chaque carte recherchée."
+              : "A quantity, language, condition and budget for each card you want."}
+          </p>
+          <p>
+            {fr
+              ? "À venir : comparer les offres compatibles et les vendeurs qui proposent plusieurs cartes de votre liste."
+              : "Planned: compare matching offers and sellers carrying several cards on your list."}
+          </p>
+          <p className="text-sm">
+            {fr
+              ? "Exemple uniquement. Aucune liste n’est enregistrée et aucune alerte n’est activée."
+              : "Example only. No list is saved and no alerts are enabled."}
+          </p>
+        </div>
+        <div className="grid gap-4">
+          {products.slice(0, 3).map(({ product }) => (
+            <div
+              key={product.id}
+              className="flex items-center gap-4 border-b border-border pb-4"
+            >
+              <div className="w-16 shrink-0">
+                <CatalogArtwork
+                  product={product}
+                  variant={product.variants[0]}
+                  locale={locale}
+                />
+              </div>
+              <div className="grid gap-1">
+                <h3 className="font-semibold">{product.name[locale]}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {
+                    page?.sets.find((set) => set.id === product.setId)?.name[
+                      locale
+                    ]
+                  }{" "}
+                  · {product.variants[0]?.number}
+                </p>
+                <p className="text-sm">
+                  {fr
+                    ? "1 exemplaire recherché · exemple"
+                    : "1 copy wanted · example"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     );
   }
   return (

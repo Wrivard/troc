@@ -1,3 +1,5 @@
+import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
+import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { useEffect, useState } from "react";
 import type { PublicPage } from "@workspace/catalog";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
@@ -41,23 +43,73 @@ export function PublicClient({ path }: { path: string }) {
   }, [path, locale, page]);
   if (!page)
     return (
-      <main className="mx-auto grid max-w-screen-xl gap-4 p-8">
-        <h1>
-          {
-            catalogMessages[
-              error === "notFound" ? "notFound" : error ? "failed" : "loading"
-            ][locale === "en" ? 0 : 1]
-          }
-        </h1>
-        {error && (
-          <Button onClick={() => window.location.reload()}>
-            {catalogMessages.retry[locale === "en" ? 0 : 1]}
-          </Button>
-        )}
-        <a href={import.meta.env.BASE_URL}>
-          {catalogMessages.home[locale === "en" ? 0 : 1]}
-        </a>
-      </main>
+      <div className="min-h-screen bg-background text-foreground">
+        <MarketplaceHeader
+          locale={locale}
+          searchDisabled={!error}
+          theme={theme}
+          onLocale={setLocale}
+          onTheme={setTheme}
+        />
+        <main
+          id="main-content"
+          className="mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-6 px-4 py-12 md:px-8"
+        >
+          {error ? (
+            <div role="alert">
+              <PremiumEmptyState
+                level={1}
+                title={
+                  locale === "fr"
+                    ? error === "notFound"
+                      ? "Page introuvable"
+                      : "Catalogue indisponible"
+                    : error === "notFound"
+                      ? "Page not found"
+                      : "Catalog unavailable"
+                }
+                description={
+                  locale === "fr"
+                    ? error === "notFound"
+                      ? "Cette adresse ne mène à aucune page disponible. Retrouvez les cartes dans le catalogue."
+                      : "Le catalogue est temporairement indisponible. Réessayez ou revenez à l’accueil."
+                    : error === "notFound"
+                      ? "This address does not lead to an available page. Find cards in the catalog."
+                      : "The catalog is temporarily unavailable. Try again or return home."
+                }
+                actions={
+                  <>
+                    <Button onClick={() => window.location.reload()}>
+                      {catalogMessages.retry[locale === "en" ? 0 : 1]}
+                    </Button>
+                    <Button asChild variant="secondary">
+                      <a href={`${import.meta.env.BASE_URL}?lang=${locale}`}>
+                        {catalogMessages.home[locale === "en" ? 0 : 1]}
+                      </a>
+                    </Button>
+                  </>
+                }
+              />
+            </div>
+          ) : (
+            <div
+              role="status"
+              aria-live="polite"
+              className="grid gap-4 border-l-2 border-border pl-4"
+            >
+              <h1 className="text-2xl font-semibold">
+                {catalogMessages.loading[locale === "en" ? 0 : 1]}
+              </h1>
+              <p className="text-muted-foreground">
+                {locale === "fr"
+                  ? "Les cartes et les offres arrivent."
+                  : "Loading cards and offers."}
+              </p>
+            </div>
+          )}
+        </main>
+        <MarketplaceFooter locale={locale} />
+      </div>
     );
   return (
     <PublicMarketplace

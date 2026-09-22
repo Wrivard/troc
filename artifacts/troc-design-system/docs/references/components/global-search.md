@@ -16,3 +16,5 @@
 ## Scope guardrail
 
 This record specifies a reusable visual component only. It does not authorize marketplace pages, business logic, APIs, persistence, optimization, checkout, authentication, or backend work.
+
+Use `mode="plain"` when there is no suggestion provider. It renders a native search field without combobox/listbox announcements or popup, while preserving clear, submit and Enter actions. Default `mode="autocomplete"` retains supplied suggestions and keyboard selection. The guide demonstrates both modes; neither mode fetches data.

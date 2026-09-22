@@ -10,6 +10,7 @@ export type ChromeProps = {
   onLocale?: (locale: Locale) => void;
   onTheme?: (theme: "dark" | "light") => void;
   base?: string;
+  searchDisabled?: boolean;
 };
 
 export function MarketplaceHeader({
@@ -18,6 +19,7 @@ export function MarketplaceHeader({
   onLocale,
   onTheme,
   base = "",
+  searchDisabled = false,
 }: ChromeProps) {
   const fr = locale === "fr";
   const [query, setQuery] = useState("");
@@ -52,15 +54,17 @@ export function MarketplaceHeader({
           {
             id: "sell",
             label: fr ? "Vendre" : "Sell",
-            onSelect: () => go("/sell"),
+            href: `${base}/sell?lang=${locale}`,
           },
           {
             id: "collect",
             label: fr ? "Collectionner" : "Collect",
-            onSelect: () => go("/collection"),
+            href: `${base}/collection?lang=${locale}`,
           },
         ]}
         search={{
+          mode: "plain",
+          disabled: searchDisabled,
           label: fr ? "Rechercher dans le catalogue" : "Search the catalog",
           placeholder: fr ? "Cartes, extensions…" : "Cards, sets…",
           value: query,

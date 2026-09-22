@@ -502,7 +502,7 @@ export function PublicMarketplace({
               page.kind === "game"
                 ? page.sets
                     .filter((set) => set.gameId === currentGame?.id)
-                    .slice(0, 3)
+                    .slice(0, 8)
                     .map((set) => (
                       <a key={set.id} href={href("/sets/" + set.slug)}>
                         {set.name[locale]}
@@ -1185,34 +1185,7 @@ export function PublicMarketplace({
                     ? "produits sur cette page · prix en CAD"
                     : "products on this page · prices in CAD"}
                 </p>
-                {page.kind === "game" && (
-                  <section className="grid gap-4">
-                    <h2 className="text-xl font-semibold">{t("sets")}</h2>
-                    <div className="flex flex-wrap gap-2">
-                      {page.sets
-                        .filter((s) => s.gameId === currentGame?.id)
-                        .slice(0, 8)
-                        .map((s) => (
-                          <Button key={s.id} asChild variant="secondary">
-                            <a href={href("/sets/" + s.slug)}>
-                              {s.name[locale]}
-                            </a>
-                          </Button>
-                        ))}
-                    </div>
-                  </section>
-                )}
-                {page.kind === "set" && (
-                  <div className="grid gap-2 border-l-2 border-border pl-4">
-                    <h2 className="text-lg font-semibold">{t("binder")}</h2>
-                    <p>{t("owned")}</p>
-                    <a className="text-sm underline" href={href("/collection")}>
-                      {locale === "fr"
-                        ? "Découvrir les outils de collection prévus"
-                        : "Explore planned collection tools"}
-                    </a>
-                  </div>
-                )}
+
                 {page.results.length ? (
                   cards(
                     tab === "deals"
@@ -1248,10 +1221,37 @@ export function PublicMarketplace({
                     }
                   />
                 )}
+                {page.kind === "set" && page.results.length > 0 && (
+                  <div className="grid gap-2 border-l-2 border-border pl-4">
+                    <h2 className="text-lg font-semibold">{t("binder")}</h2>
+                    <p>{t("owned")}</p>
+                    <a className="text-sm underline" href={href("/collection")}>
+                      {locale === "fr"
+                        ? "Découvrir les outils de collection prévus"
+                        : "Explore planned collection tools"}
+                    </a>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-3">
                   {page.filters.cursor && (
                     <Button asChild variant="secondary">
-                      <a href={href(page.path)}>{t("first")}</a>
+                      <a
+                        href={href(
+                          page.path,
+                          Object.fromEntries(
+                            Object.entries(page.filters)
+                              .filter(
+                                ([key, value]) =>
+                                  key !== "cursor" &&
+                                  value !== null &&
+                                  value !== "",
+                              )
+                              .map(([key, value]) => [key, String(value)]),
+                          ),
+                        )}
+                      >
+                        {t("first")}
+                      </a>
                     </Button>
                   )}
                   {page.nextCursor && (

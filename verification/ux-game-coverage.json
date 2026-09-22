@@ -1,0 +1,122 @@
+[
+  {
+    "width": 390,
+    "theme": "light",
+    "game": "pokemon",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "game": "magic",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "game": "yu-gi-oh",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "game": "one-piece",
+    "renderedCards": 3
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "game": "riftbound",
+    "renderedCards": 3
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "game": "pokemon",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "game": "magic",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "game": "yu-gi-oh",
+    "renderedCards": 12
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "game": "one-piece",
+    "renderedCards": 3
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "game": "riftbound",
+    "renderedCards": 3
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "game": "pokemon",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "game": "magic",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "game": "yu-gi-oh",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "game": "one-piece",
+    "renderedCards": 3
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "game": "riftbound",
+    "renderedCards": 3
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "game": "pokemon",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "game": "magic",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "game": "yu-gi-oh",
+    "renderedCards": 12
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "game": "one-piece",
+    "renderedCards": 3
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "game": "riftbound",
+    "renderedCards": 3
+  }
+]
