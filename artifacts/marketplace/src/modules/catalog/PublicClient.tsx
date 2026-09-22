@@ -46,6 +46,7 @@ export function PublicClient({ path }: { path: string }) {
       <div className="min-h-screen bg-background text-foreground">
         <MarketplaceHeader
           locale={locale}
+          searchDisabled={!error}
           theme={theme}
           onLocale={setLocale}
           onTheme={setTheme}

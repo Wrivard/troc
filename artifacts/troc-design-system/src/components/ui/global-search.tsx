@@ -18,6 +18,8 @@ export interface GlobalSearchSuggestion {
 }
 
 export interface GlobalSearchProps {
+  /** Plain search exposes no suggestion popup or combobox semantics. */
+  mode?: "autocomplete" | "plain"
   id?: string
   /** Accessible name for the search input. */
   label: string
@@ -44,6 +46,7 @@ const GlobalSearch = React.forwardRef<HTMLInputElement, GlobalSearchProps>(
   (
     {
       id,
+      mode = "autocomplete",
       label,
       placeholder,
       value,
@@ -78,7 +81,7 @@ const GlobalSearch = React.forwardRef<HTMLInputElement, GlobalSearchProps>(
 
     const enabled = suggestions.flatMap((s, i) => (s.disabled ? [] : [i]))
     const hasQuery = value.trim().length > 0
-    const showPopup = open && hasQuery
+    const showPopup = mode === "autocomplete" && open && hasQuery
     const activeOption = active >= 0 ? suggestions[active] : undefined
 
     React.useEffect(() => {
@@ -114,10 +117,10 @@ const GlobalSearch = React.forwardRef<HTMLInputElement, GlobalSearchProps>(
     }
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "ArrowDown") {
+      if (mode === "autocomplete" && event.key === "ArrowDown") {
         event.preventDefault()
         move(1)
-      } else if (event.key === "ArrowUp") {
+      } else if (mode === "autocomplete" && event.key === "ArrowUp") {
         event.preventDefault()
         move(-1)
       } else if (event.key === "Enter") {
@@ -182,14 +185,14 @@ const GlobalSearch = React.forwardRef<HTMLInputElement, GlobalSearchProps>(
           <Input
             ref={setInputRef}
             id={inputId}
-            type="text"
-            role="combobox"
+            type={mode === "plain" ? "search" : "text"}
+            role={mode === "plain" ? "searchbox" : "combobox"}
             className="troc-global-search-field"
             aria-label={label}
-            aria-expanded={showPopup}
+            aria-expanded={mode === "autocomplete" ? showPopup : undefined}
             aria-controls={showPopup ? listId : undefined}
-            aria-autocomplete="list"
-            aria-activedescendant={activeOption ? `${listId}-${active}` : undefined}
+            aria-autocomplete={mode === "autocomplete" ? "list" : undefined}
+            aria-activedescendant={mode === "autocomplete" && activeOption ? `${listId}-${active}` : undefined}
             aria-busy={loading || undefined}
             autoComplete="off"
             placeholder={placeholder}

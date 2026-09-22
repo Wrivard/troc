@@ -20,8 +20,9 @@ const catalog: { value: string; title: string; meta: string; group: "cards" | "s
 ];
 
 export default function GlobalSearchDemo() {
-  usePreferences();
+  const { locale } = usePreferences();
   const { tn } = useNavigationMessages();
+  const [plainQuery, setPlainQuery] = useState("");
   const [query, setQuery] = useState("");
   const [state, setState] = useState<DemoState>("normal");
   const [selected, setSelected] = useState<string | null>(null);
@@ -59,6 +60,10 @@ export default function GlobalSearchDemo() {
       </div>
       <p className="ds-helper" style={{ marginTop: 16 }}>{query ? "" : tn("searchIdle")}</p>
       <p className="ds-inline-status" role="status">{selected ? `${tn("searchSelected")}: ${selected}` : ""}</p>
+    </DemoPanel></Section>
+
+    <Section title={locale === "fr" ? "Recherche sans suggestions" : "Search without suggestions"}><DemoPanel>
+      <GlobalSearch mode="plain" label={tn("searchLabel")} placeholder={tn("searchPlaceholder")} value={plainQuery} onValueChange={setPlainQuery} suggestions={[]} onSubmit={setSelected} loadingLabel={tn("searchLoading")} emptyLabel={tn("searchEmpty")} clearLabel={tn("searchClear")} submitLabel={tn("searchSubmit")} />
     </DemoPanel></Section>
 
     <Section title={tn("states")}><DemoPanel>

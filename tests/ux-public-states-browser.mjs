@@ -53,6 +53,7 @@ try {
   });
   await p.goto("http://localhost:4313/search?lang=fr");
   await expect(p.getByRole("status")).toBeVisible();
+  await expect(p.locator("header").getByRole("searchbox")).toBeDisabled();
   await expect(p.locator("header")).toBeVisible();
   release();
   await expect(p.locator(".troc-market-card").first()).toBeVisible();
