@@ -392,7 +392,7 @@ export function CommerceApp({ path }: { path: string }) {
                           )}
                           <SmartCartComparison
                             locale={locale}
-                            sellersRowLabel={t("sellers")}
+                            sellersRowLabel=""
                             columns={[
                               {
                                 heading: t("original"),
@@ -422,14 +422,20 @@ export function CommerceApp({ path }: { path: string }) {
                                     amount: Math.abs(smart.savingsCents) / 100,
                                   }
                             }
-                            explanation={`${t("shippingSaved")}: ${money(smart.shippingSavingsCents)}`}
+                            explanation={
+                              smart.shippingSavingsCents === 0
+                                ? undefined
+                                : `${t("shippingSaved")}: ${money(smart.shippingSavingsCents)}`
+                            }
                           />
                           <SmartChanges result={smart} locale={locale} />
-                          <p>
-                            {smart.substitutions.length
-                              ? `${t("substitutions")}: ${smart.substitutions.length} · ${t("difference")}: ${money(smart.substitutions.reduce((n, s) => n + s.merchandiseDifferenceCents, 0))}`
-                              : t("unchanged")}
-                          </p>
+                          {!unchanged && (
+                            <p>
+                              {smart.substitutions.length
+                                ? `${t("substitutions")}: ${smart.substitutions.length} · ${t("difference")}: ${money(smart.substitutions.reduce((n, s) => n + s.merchandiseDifferenceCents, 0))}`
+                                : t("unchanged")}
+                            </p>
+                          )}
                           {unchanged ? (
                             <Button asChild>
                               <a href={link("/cart")}>
