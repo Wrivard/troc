@@ -1,3 +1,4 @@
+import { commerceSellerName } from "../brand/demo-store-branding";
 import { useState } from "react";
 import type { CartLine, CartQuote } from "@workspace/commerce";
 import {
@@ -52,7 +53,7 @@ export function CartGroups({
             key={g.seller.id}
             id={`cart-seller-${g.seller.id}`}
             tabIndex={-1}
-            sellerName={<a href={store}>{g.seller.name}</a>}
+            sellerName={<a href={store}>{commerceSellerName(g)}</a>}
             sellerMeta={
               <>
                 <span className="text-sm">

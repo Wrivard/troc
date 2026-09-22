@@ -1,3 +1,4 @@
+import { commerceSellerName } from "../brand/demo-store-branding";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
@@ -561,7 +562,7 @@ export function CommerceApp({ path }: { path: string }) {
                                       className="underline"
                                       href={`#cart-seller-${group.seller.id}`}
                                     >
-                                      {group.seller.name} ·{" "}
+                                      {commerceSellerName(group)} ·{" "}
                                       {locale === "fr" ? "il manque" : "add"}{" "}
                                       {money(group.minimumRemainingCents)}
                                     </a>

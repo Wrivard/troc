@@ -17,7 +17,10 @@ const branding: Record<string, { name: string; asset: string }> = {
   },
 };
 export function demoStoreBranding(seller: Seller): Seller {
-  const identity = seller.demo ? branding[seller.id] : undefined;
+  const identity =
+    seller.demo && Object.hasOwn(branding, seller.id)
+      ? branding[seller.id]
+      : undefined;
   if (!identity) return seller;
   const assets = `${import.meta.env.BASE_URL}demo-store-branding/${identity.asset}`;
   return {
@@ -26,4 +29,16 @@ export function demoStoreBranding(seller: Seller): Seller {
     logoUrl: `${assets}-avatar.webp`,
     bannerUrl: `${assets}-cover.webp`,
   };
+}
+
+/** Quote display only: never infer a real or mixed seller group from cart-level demo status. */
+export function commerceSellerName(group: {
+  seller: { id: string; name: string };
+  lines: readonly { listing: { demo: boolean } }[];
+}): string {
+  return group.lines.length > 0 &&
+    group.lines.every((line) => line.listing.demo === true) &&
+    Object.hasOwn(branding, group.seller.id)
+    ? branding[group.seller.id].name
+    : group.seller.name;
 }

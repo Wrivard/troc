@@ -1,3 +1,4 @@
+import { commerceSellerName } from "../brand/demo-store-branding";
 import { useState } from "react";
 import type { SmartResult } from "@workspace/commerce";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -15,14 +16,16 @@ export function SmartChanges({
   const originals = new Map(
     result.original.groups.flatMap((g) =>
       g.lines.map(
-        (l) => [l.listingId, { line: l, seller: g.seller.name }] as const,
+        (l) =>
+          [l.listingId, { line: l, seller: commerceSellerName(g) }] as const,
       ),
     ),
   );
   const destinations = new Map(
     result.optimized.groups.flatMap((g) =>
       g.lines.map(
-        (l) => [l.listingId, { line: l, seller: g.seller.name }] as const,
+        (l) =>
+          [l.listingId, { line: l, seller: commerceSellerName(g) }] as const,
       ),
     ),
   );
