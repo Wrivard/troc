@@ -718,8 +718,8 @@ export function SellerPlatformApp({
                 </label>
                 <p id="seller-member-id-help">
                   {t(
-                    "Use the existing member’s TROC account ID, not an email address. Email invitations are not available yet.",
-                    "Utilisez l’identifiant de compte TROC du membre, et non son adresse courriel. Les invitations par courriel ne sont pas encore disponibles.",
+                    "Ask the member to copy their TROC account ID from their Account page. Use this ID, not their email address. Email invitations are not available yet.",
+                    "Demandez au membre de copier son identifiant de compte TROC depuis sa page Compte. Utilisez cet identifiant, et non son adresse courriel. Les invitations par courriel ne sont pas encore disponibles.",
                   )}
                 </p>
                 <label>
