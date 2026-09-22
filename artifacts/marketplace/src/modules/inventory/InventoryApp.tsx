@@ -5,12 +5,16 @@ import { EditorialIntro } from "@workspace/troc-design-system/components/ui/edit
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { api } from "../../api";
+import { catalogMessages, type CatalogMessage } from "../catalog/messages";
 import "./inventory.css";
 
 type Listing = {
   id: string;
   name_en: string;
   name_fr: string;
+  language?: string | null;
+  finish?: string | null;
+  collector_number?: string | null;
   condition: string;
   quantity: number;
   unit_price_cents: number;
@@ -564,10 +568,32 @@ export function InventoryApp() {
                                   )
                                 }
                               />
-                              <strong>
-                                {fr ? item.name_fr : item.name_en}
-                              </strong>{" "}
-                              · {item.condition} · {item.seller_sku}
+                              <span>
+                                <strong>
+                                  {fr ? item.name_fr : item.name_en}
+                                </strong>
+                                {" · "}
+                                {[
+                                  item.language === "en"
+                                    ? catalogMessages.english[fr ? 1 : 0]
+                                    : item.language === "ja"
+                                      ? catalogMessages.japanese[fr ? 1 : 0]
+                                      : item.language,
+                                  item.finish &&
+                                  Object.hasOwn(catalogMessages, item.finish)
+                                    ? catalogMessages[
+                                        item.finish as CatalogMessage
+                                      ][fr ? 1 : 0]
+                                    : item.finish,
+                                  item.collector_number
+                                    ? `#${item.collector_number}`
+                                    : null,
+                                  item.condition,
+                                  item.seller_sku,
+                                ]
+                                  .filter(Boolean)
+                                  .join(" · ")}
+                              </span>
                             </label>
                             <p>
                               {labels[item.status]} · {item.source_platform} ·{" "}
