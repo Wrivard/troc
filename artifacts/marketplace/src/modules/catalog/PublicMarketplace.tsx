@@ -1235,7 +1235,23 @@ export function PublicMarketplace({
                 <div className="flex flex-wrap gap-3">
                   {page.filters.cursor && (
                     <Button asChild variant="secondary">
-                      <a href={href(page.path)}>{t("first")}</a>
+                      <a
+                        href={href(
+                          page.path,
+                          Object.fromEntries(
+                            Object.entries(page.filters)
+                              .filter(
+                                ([key, value]) =>
+                                  key !== "cursor" &&
+                                  value !== null &&
+                                  value !== "",
+                              )
+                              .map(([key, value]) => [key, String(value)]),
+                          ),
+                        )}
+                      >
+                        {t("first")}
+                      </a>
                     </Button>
                   )}
                   {page.nextCursor && (
