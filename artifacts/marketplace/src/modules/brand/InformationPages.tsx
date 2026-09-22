@@ -287,6 +287,24 @@ const planned: Record<string, Pair> = {
   "/seller/plan": ["Your seller plan", "Votre forfait vendeur"],
   "/seller/buylist": ["Your buylist", "Votre liste d’achat"],
 };
+const plannedAccountCopy: Record<string, Pair> = {
+  "/account/notifications": [
+    "A place for marketplace updates is planned. No notifications or notification preferences are active on this page.",
+    "Un espace de nouvelles du marché est prévu. Aucune notification ni préférence de notification n’est active sur cette page.",
+  ],
+  "/account/wishlist": [
+    "Saving wanted cards is planned. Explore the want-list preview to see the intended experience; no cards are saved here.",
+    "L’enregistrement des cartes recherchées est prévu. Explorez l’aperçu des listes de souhaits; aucune carte n’est enregistrée ici.",
+  ],
+  "/account/price-alerts": [
+    "Price alerts are planned. No price target is saved and no alerts are sent from this page.",
+    "Les alertes de prix sont prévues. Aucun prix cible n’est enregistré et aucune alerte n’est envoyée depuis cette page.",
+  ],
+  "/account/following": [
+    "Following sellers is planned. You can browse stores today, but no seller is followed or notified from this page.",
+    "Le suivi des vendeurs est prévu. Vous pouvez explorer les boutiques, mais aucun vendeur n’est suivi ni avisé depuis cette page.",
+  ],
+};
 function plannedKey(path: string) {
   if (path.startsWith("/collection/")) return "/collection";
   if (path.startsWith("/want-lists/")) return "/want-lists";
@@ -307,30 +325,32 @@ export function InformationPage({ path }: { path: string }) {
   const content: Content = pages[path] ?? {
     title: planned[key],
     planned: true,
-    lead: wantList
-      ? [
-          "Keep track of the cards you want, with the edition and buying preferences that matter to you. Want lists are planned and are not available yet.",
-          "Rassemblez les cartes recherchées, leurs éditions et vos préférences d’achat. Les listes de souhaits sont prévues, mais pas encore disponibles.",
-        ]
-      : collector
+    lead:
+      plannedAccountCopy[path] ??
+      (wantList
         ? [
-            "A home for your collection, set progress and the cards you still want. This workspace is planned and is not available yet.",
-            "Un espace pour votre collection, votre progression et les cartes recherchées. Cet espace est prévu, mais pas encore disponible.",
+            "Keep track of the cards you want, with the edition and buying preferences that matter to you. Want lists are planned and are not available yet.",
+            "Rassemblez les cartes recherchées, leurs éditions et vos préférences d’achat. Les listes de souhaits sont prévues, mais pas encore disponibles.",
           ]
-        : credit
+        : collector
           ? [
-              "A dedicated credit history is planned. In an activated test account, available credit appears in your cart and checkout. No balance is displayed here.",
-              "L’historique détaillé du crédit est prévu. Dans un compte de test activé, le crédit disponible apparaît dans le panier et au paiement. Aucun solde n’est affiché ici.",
+              "A home for your collection, set progress and the cards you still want. This workspace is planned and is not available yet.",
+              "Un espace pour votre collection, votre progression et les cartes recherchées. Cet espace est prévu, mais pas encore disponible.",
             ]
-          : seller
+          : credit
             ? [
-                "This seller tool is planned. It is not active in the current demo. You can explore the marketplace or access existing test orders.",
-                "Cet outil vendeur est prévu. Il n’est pas actif dans la démo actuelle. Vous pouvez explorer le marché ou consulter les commandes de test existantes.",
+                "A dedicated credit history is planned. In an activated test account, available credit appears in your cart and checkout. No balance is displayed here.",
+                "L’historique détaillé du crédit est prévu. Dans un compte de test activé, le crédit disponible apparaît dans le panier et au paiement. Aucun solde n’est affiché ici.",
               ]
-            : [
-                "This account workspace is planned. It is not active in the current demo. Order-specific messages remain available inside activated test orders.",
-                "Cet espace du compte est prévu. Il n’est pas actif dans la démo actuelle. Les messages liés aux commandes restent disponibles dans les commandes de test activées.",
-              ],
+            : seller
+              ? [
+                  "This seller tool is planned. It is not active in the current demo. You can explore the marketplace or access existing test orders.",
+                  "Cet outil vendeur est prévu. Il n’est pas actif dans la démo actuelle. Vous pouvez explorer le marché ou consulter les commandes de test existantes.",
+                ]
+              : [
+                  "This account workspace is planned. It is not active in the current demo. Order-specific messages remain available inside activated test orders.",
+                  "Cet espace du compte est prévu. Il n’est pas actif dans la démo actuelle. Les messages liés aux commandes restent disponibles dans les commandes de test activées.",
+                ]),
     sections: wantList
       ? [
           {
@@ -506,13 +526,16 @@ export function InformationPage({ path }: { path: string }) {
                   ? "/seller/orders"
                   : path === "/sell"
                     ? "/founding-sellers"
-                    : wantList
-                      ? "/collection"
-                      : key === "/collection"
-                        ? "/want-lists"
-                        : path === "/help"
-                          ? "/account/orders"
-                          : "/help",
+                    : path === "/account/wishlist" ||
+                        path === "/account/price-alerts"
+                      ? "/want-lists"
+                      : wantList
+                        ? "/collection"
+                        : key === "/collection"
+                          ? "/want-lists"
+                          : path === "/help"
+                            ? "/account/orders"
+                            : "/help",
               )}
             >
               {pair(
@@ -523,13 +546,19 @@ export function InformationPage({ path }: { path: string }) {
                         "Founding seller program",
                         "Programme des vendeurs fondateurs",
                       ]
-                    : wantList
-                      ? ["Collection preview", "Aperçu de collection"]
-                      : key === "/collection"
-                        ? ["Want-list preview", "Aperçu des listes de souhaits"]
-                        : path === "/help"
-                          ? ["Your orders", "Vos commandes"]
-                          : ["Help centre", "Centre d’aide"],
+                    : path === "/account/wishlist" ||
+                        path === "/account/price-alerts"
+                      ? ["Want-list preview", "Aperçu des listes de souhaits"]
+                      : wantList
+                        ? ["Collection preview", "Aperçu de collection"]
+                        : key === "/collection"
+                          ? [
+                              "Want-list preview",
+                              "Aperçu des listes de souhaits",
+                            ]
+                          : path === "/help"
+                            ? ["Your orders", "Vos commandes"]
+                            : ["Help centre", "Centre d’aide"],
               )}
             </a>
           </Button>
