@@ -250,3 +250,10 @@ const ProductRow = React.forwardRef<HTMLElement, ProductRowProps>(
 ProductRow.displayName = "ProductRow"
 
 export { CardImage, CardTitle, CardMetadata, ProductAvailability, ProductCard, ProductRow }
+
+/** Static editorial arrangement; caller supplies approved card imagery. */
+export function CardShowcase({ cards, label }: { cards: React.ReactNode[]; label: string }) {
+  return <figure className="troc-card-showcase" aria-label={label}>
+    {cards.slice(0, 3).map((card, index) => <div key={index} className="troc-card-showcase-item">{card}</div>)}
+  </figure>;
+}

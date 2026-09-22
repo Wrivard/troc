@@ -84,7 +84,7 @@ try {
     .getAttribute("href");
   assert.ok(sameSet.includes("set=" + offer.setSlug));
   await page
-    .getByRole("link", { name: "Cartes à moins de 1 $", exact: true })
+    .locator("main").getByRole("link", { name: "Cartes à moins de 1 $", exact: true })
     .click();
   await expect(page).toHaveURL(/\/store\/.*max=99/);
   await page.goto(origin + "/cart?lang=fr&theme=light");

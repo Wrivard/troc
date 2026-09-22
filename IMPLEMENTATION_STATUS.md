@@ -10,9 +10,19 @@ is locked. Implementation and activation statuses are distinguished below.
 | 2 — Catalog + Public Marketplace | partial | Browsing/import/search/SEO implemented and audited; production data/hosted integrations blocked; limited presentation features deferred below |
 | 2.5 — Marketplace polish | implemented | Approved bounded sample: 159 products, 324 local responsive renditions; real-art/browser audit passed; production catalog remains unapproved |
 | 3 — Low-Value Commerce | implemented locally; hosted activation blocked | Cart, Smart Cart, simulated checkout/fulfillment, ledgers and audit implemented; hosted credentials/schema remain unavailable |
+| Design / UX / brand polish | implemented; final deployment verification in progress | Bilingual marketplace composition, shared navigation/footer, existing commerce polish, explicit roadmap states; no new product milestone |
 | 4 — Seller Platform | deferred | Not started |
 | 5 — Collector + Trust | deferred | Not started |
 | 6 — Admin + Demo + Leads + Future | deferred | Not started |
+
+## Dedicated design / UX / brand polish — 2026-09-22
+
+- Implemented: card-led homepage, shared marketplace header/footer, compact mobile navigation, discovery/product/storefront/account/commerce presentation refinements, bilingual about/help/condition/seller/developer information pages.
+- Implemented: clearly labeled planned-state pages for requested but unbuilt collector/account/seller routes; these are not functional feature implementations. Milestones 4–6 remain not started.
+- Preserved: approved tokens/logo/themes, catalog provider approvals, domain rules, authorization, integer-cent pricing and simulation boundaries.
+- Added to existing style-guide families: static CardShowcase and opt-in compactMobile navigation; corrected seller-banner overlap.
+- Verification: 400 responsive route checks, 12 authenticated local commerce flows, 12 large-cart cases, 96 real-art cases, 59 domain tests, eight guide comparisons and successful Vercel production build; results recorded in docs/DESIGN_POLISH_AUDIT.md.
+- Hosted authenticated checkout remains blocked on the existing activation requirements in docs/COMMERCE_SETUP.md.
 
 ## Milestone 3 — current implementation, 2026-09-22
 

@@ -86,3 +86,21 @@
   .troc-site-header { flex-wrap: wrap; padding: var(--space-2); }
   .troc-site-header-search { order: 3; flex-basis: 100%; max-width: none; margin: var(--space-1) 0 0; }
 }
+
+/* Opt-in compact composition, preserving the original default header. */
+@media (max-width: 600px) {
+  .troc-site-header[data-compact-mobile] { gap: var(--space-2); padding: var(--space-3); }
+  .troc-site-header[data-compact-mobile] .troc-site-header-brand { order: 1; margin-right: auto; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-brand img { height: 24px; width: auto; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-actions { display: contents; }
+  .troc-site-header[data-compact-mobile] .troc-locale-switcher { order: 2; }
+  .troc-site-header[data-compact-mobile] .troc-theme-switcher { order: 3; }
+  .troc-site-header[data-compact-mobile] .troc-site-nav { order: 4; flex: 1 0 calc(100% - 112px); }
+  .troc-site-header[data-compact-mobile] .troc-site-nav-link { padding-inline: var(--space-2); font-size: var(--text-xs); }
+  .troc-site-header[data-compact-mobile] .troc-site-cart { order: 5; }
+  .troc-site-header[data-compact-mobile] .troc-site-sign-in,
+  .troc-site-header[data-compact-mobile] .troc-site-account { order: 6; width: var(--control-default); min-height: var(--control-default); padding: 0; }
+  .troc-site-header[data-compact-mobile] .troc-site-sign-in-label,
+  .troc-site-header[data-compact-mobile] .troc-site-account-name { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-search { order: 7; margin: 0; }
+}

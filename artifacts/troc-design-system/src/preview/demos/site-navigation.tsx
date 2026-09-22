@@ -18,6 +18,7 @@ const catalog: GlobalSearchSuggestion[] = [
 export default function SiteNavigationDemo() {
   const { locale, setLocale, theme, setTheme } = usePreferences();
   const { tn } = useNavigationMessages();
+  const [compact, setCompact] = useState(false);
   const [query, setQuery] = useState("");
   const [mobileQuery, setMobileQuery] = useState("");
   const [nav, setNav] = useState("shop");
@@ -70,7 +71,7 @@ export default function SiteNavigationDemo() {
 
     <Section title={tn("navDesktop")}><DemoPanel>
       <div className="troc-nav-frame">
-        <SiteHeader homeHref={"/?lang=" + locale}
+        <SiteHeader compactMobile={compact} homeHref={"/?lang=" + locale}
           navItems={navItems}
           navLabel={tn("navPrimary")}
           logoLabel={tn("navBrandLabel")}
@@ -89,6 +90,7 @@ export default function SiteNavigationDemo() {
         <div className="troc-nav-frame-body">{tn("navFrameNote")}</div>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center", marginTop: 16 }}>
+        <Button variant="outline" size="sm" aria-pressed={compact} onClick={() => setCompact(!compact)}>{locale === "fr" ? "En-tête mobile compact" : "Compact mobile header"}</Button>
         <Button variant="outline" size="sm" aria-pressed={signedIn} onClick={() => setSignedIn((s) => !s)}>
           {signedIn ? tn("navSignedInAs") : tn("navSignIn")} · {tn("navToggleAccount")}
         </Button>

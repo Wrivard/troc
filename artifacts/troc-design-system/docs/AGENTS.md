@@ -72,6 +72,13 @@ Every source file in this package is a `.tsx` file, including token, utility,
 and hook modules with no JSX, so every export below is a single `*.tsx` glob. Do
 not add `.ts` files here.
 
+## Design polish additions (2026-09-22)
+
+Product presentation also exports `CardShowcase` for static layered card artwork;
+site navigation offers opt-in `compactMobile`. Both remain in their existing
+families, with updated stories and family records. Tokens and default variants
+are unchanged.
+
 ## What this package exports
 
 ```jsonc

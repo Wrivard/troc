@@ -1,3 +1,4 @@
+import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
 import type { CartLine, CartQuote, SmartResult } from "@workspace/commerce";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
@@ -10,9 +11,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@workspace/troc-design-system/components/ui/select";
-import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
-import { LocaleSwitcher } from "@workspace/troc-design-system/components/ui/locale-switcher";
-import { ThemeSwitcher } from "@workspace/troc-design-system/components/ui/theme-switcher";
 import { OrderTotals } from "@workspace/troc-design-system/components/ui/order-totals";
 import { SmartCartComparison } from "@workspace/troc-design-system/components/ui/smart-cart";
 import { api } from "../../api";
@@ -225,55 +223,62 @@ export function CommerceApp({ path }: { path: string }) {
   );
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border p-4 print:hidden">
-        <a href={link("/")} aria-label="TROC">
-          <TrocLogo height={26} />
-        </a>
-        <nav className="flex flex-wrap gap-4" aria-label="TROC">
-          {(
-            [
-              ["/cart", "cart"],
-              ["/smart-cart", "smart"],
-              ["/account/orders", "orders"],
-              ["/seller/orders", "fulfillment"],
-            ] as const
-          ).map(([url, key]) => (
-            <a key={url} className="text-sm underline" href={link(url)}>
-              {t(key)}
+      <MarketplaceHeader
+        locale={locale}
+        theme={theme}
+        onLocale={setLocale}
+        onTheme={setTheme}
+      />
+
+      <main
+        id="main-content"
+        className="mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-6 px-4 py-8 md:px-8 md:py-12"
+      >
+        <nav
+          className="flex flex-wrap gap-4 border-b border-border pb-4 text-sm"
+          aria-label={
+            locale === "fr" ? "Navigation des commandes" : "Order navigation"
+          }
+        >
+          {[
+            ["/cart", "cart"],
+            ["/smart-cart", "smart"],
+            ["/account/orders", "orders"],
+            ["/seller/orders", "fulfillment"],
+          ].map(([url, key]) => (
+            <a
+              key={url}
+              href={link(url)}
+              className="underline"
+              aria-current={path === url ? "page" : undefined}
+            >
+              {t(key as CommerceMessage)}
             </a>
           ))}
         </nav>
-        <div className="flex gap-2">
-          <LocaleSwitcher
-            value={locale}
-            onValueChange={setLocale}
-            groupLabel={locale === "en" ? "Language" : "Langue"}
-            options={[
-              { value: "en", code: "EN", label: "English" },
-              { value: "fr", code: "FR", label: "Français" },
-            ]}
-          />
-          <ThemeSwitcher
-            value={theme}
-            onValueChange={setTheme}
-            groupLabel={locale === "en" ? "Theme" : "Thème"}
-            options={[
-              { value: "dark", label: "TROC Dark" },
-              { value: "light", label: "TROC Light" },
-            ]}
-            iconOnly
-          />
-        </div>
-      </header>
-      <main className="mx-auto grid max-w-screen-xl gap-6 p-4 md:p-8">
-        <p className="text-sm text-muted-foreground">{t("demo")}</p>
+        <p className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground">
+          {t("demo")}
+        </p>
         {orderPage ? (
           <OrderPages path={path} locale={locale} />
         ) : (
           <>
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-3xl font-bold tracking-tight">
               {t(checkout ? "checkout" : smartPage ? "smart" : "cart")}
             </h1>
+            <p className="max-w-2xl leading-relaxed text-muted-foreground">
+              {locale === "fr"
+                ? checkout
+                  ? "Vérifiez votre adresse et le détail de chaque vendeur. Ce paiement est simulé : aucun montant ne sera prélevé."
+                  : smartPage
+                    ? "Comparez le coût total, livraison comprise. Vérifiez chaque changement avant de l’appliquer à votre panier."
+                    : "Vos cartes, regroupées par vendeur. Vérifiez les minimums et la livraison avant de poursuivre."
+                : checkout
+                  ? "Review your address and each seller’s order. This checkout is simulated: no money will be charged."
+                  : smartPage
+                    ? "Compare the complete cost, including shipping. Review every change before applying it to your cart."
+                    : "Your cards, grouped by seller. Check minimums and shipping before you continue."}
+            </p>
             {status && (
               <p role="alert">
                 {t(status)}
@@ -359,7 +364,7 @@ export function CommerceApp({ path }: { path: string }) {
                   )}
                   <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
                     <CartGroups quote={quote} locale={locale} change={change} />
-                    <aside className="grid gap-4">
+                    <aside className="grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6">
                       <OrderTotals
                         locale={locale}
                         lines={[
@@ -523,6 +528,7 @@ export function CommerceApp({ path }: { path: string }) {
           </>
         )}
       </main>
+      <MarketplaceFooter locale={locale} />
     </div>
   );
 }

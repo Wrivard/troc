@@ -1,10 +1,8 @@
+import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { Checkbox } from "@workspace/troc-design-system/components/ui/selection-controls";
-import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
-import { LocaleSwitcher } from "@workspace/troc-design-system/components/ui/locale-switcher";
-import { ThemeSwitcher } from "@workspace/troc-design-system/components/ui/theme-switcher";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { messages, type MessageKey } from "../../messages";
 import { api } from "../../api";
@@ -100,33 +98,18 @@ export function AccountApp({ path }: { path: string }) {
   }
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border p-6">
-        <a href={`${link("")}?lang=${locale}`} aria-label="TROC">
-          <TrocLogo />
-        </a>
-        <div className="flex flex-wrap items-center gap-4">
-          <LocaleSwitcher
-            value={locale}
-            onValueChange={setLocale}
-            groupLabel={t("language")}
-            options={[
-              { value: "en", code: "EN", label: "English" },
-              { value: "fr", code: "FR", label: "Français" },
-            ]}
-          />
-          <ThemeSwitcher
-            value={theme}
-            onValueChange={setTheme}
-            groupLabel={t("theme")}
-            options={[
-              { value: "dark", label: "TROC Dark" },
-              { value: "light", label: "TROC Light" },
-            ]}
-            iconOnly
-          />
-        </div>
-      </header>
-      <main className="mx-auto grid w-full max-w-lg gap-6 p-6" aria-busy={busy}>
+      <MarketplaceHeader
+        locale={locale}
+        theme={theme}
+        onLocale={setLocale}
+        onTheme={setTheme}
+      />
+
+      <main
+        id="main-content"
+        className="mx-auto my-12 grid w-full max-w-lg gap-6 rounded-lg border border-border bg-card p-6 md:p-8"
+        aria-busy={busy}
+      >
         <h1 className="text-2xl font-bold">
           {t(
             !known
@@ -140,6 +123,15 @@ export function AccountApp({ path }: { path: string }) {
                   : "signIn",
           )}
         </h1>
+        <p className="leading-relaxed text-muted-foreground">
+          {locale === "fr"
+            ? protectedPage
+              ? "Vos commandes, vos préférences et votre place dans la communauté TROC."
+              : "Retrouvez vos cartes et vos commandes. Un compte pour votre passion."
+            : protectedPage
+              ? "Your orders, your preferences and your place in the TROC community."
+              : "Keep your cards and orders together. One account for your hobby."}
+        </p>
         {busy && <p role="status">{t("loading")}</p>}
         {status && <p role="status">{t(status)}</p>}
         {known && !protectedPage && (
@@ -206,10 +198,8 @@ export function AccountApp({ path }: { path: string }) {
             {t("signIn")}
           </a>
         )}
-        <a className="underline" href={link("style-guide")}>
-          {t("guide")}
-        </a>
       </main>
+      <MarketplaceFooter locale={locale} />
     </div>
   );
 }

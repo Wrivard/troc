@@ -1,0 +1,25 @@
+@import "@workspace/troc-design-system/styles.css";
+/* Product composition only. Tokens and reusable controls remain in the guide. */
+.troc-skip {
+  position: absolute;
+  z-index: 100;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface);
+  color: var(--text-primary);
+  transform: translateY(-200%);
+}
+.troc-skip:focus {
+  transform: none;
+  outline: 2px solid var(--focus);
+}
+main {
+  scroll-margin-top: var(--space-4);
+}
+@media print {
+  footer,
+  .troc-skip {
+    display: none;
+  }
+}

@@ -117,9 +117,11 @@ router.get(
         rendererPromise,
         manifestPromise,
       ]);
-      const stylesheet = Object.values(manifest).find((entry) =>
-        /^assets\/index-.*\.css$/.test(entry.file),
-      )?.file;
+      const stylesheet =
+        manifest["src/marketplace.css"]?.file ??
+        Object.values(manifest).find((entry) =>
+          /^assets\/index-.*\.css$/.test(entry.file),
+        )?.file;
       if (!stylesheet) throw new Error("Missing public stylesheet");
       const title =
         page.product?.name[page.locale] ??

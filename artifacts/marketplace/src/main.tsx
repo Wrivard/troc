@@ -2,6 +2,10 @@ import { createRoot } from "react-dom/client";
 import { lazy, Suspense } from "react";
 import { PreferencesProvider } from "@workspace/troc-design-system/hooks/use-preferences";
 import { AccountApp } from "./modules/account/AccountApp";
+import {
+  InformationPage,
+  isInformationPage,
+} from "./modules/brand/InformationPages";
 import { PublicClient } from "./modules/catalog/PublicClient";
 const CommerceApp = lazy(() =>
   import("./modules/commerce/CommerceApp").then((m) => ({
@@ -14,8 +18,7 @@ const Guide = lazy(async () => {
 });
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const path = window.location.pathname.slice(base.length);
-if (!path.startsWith("/style-guide"))
-  await import("@workspace/troc-design-system/styles.css");
+if (!path.startsWith("/style-guide")) await import("./marketplace.css");
 createRoot(document.getElementById("root")!).render(
   path.startsWith("/style-guide") ? (
     <Suspense>
@@ -23,11 +26,16 @@ createRoot(document.getElementById("root")!).render(
     </Suspense>
   ) : (
     <PreferencesProvider>
-      {["/cart", "/smart-cart", "/checkout"].includes(path) ||
-      path.startsWith("/account/orders") ||
-      path.startsWith("/seller/orders") ? (
+      {isInformationPage(path) ? (
+        <InformationPage path={path} />
+      ) : ["/cart", "/smart-cart", "/checkout"].includes(path) ||
+        path.startsWith("/order-confirmation/") ||
+        path.startsWith("/account/orders") ||
+        path.startsWith("/seller/orders") ? (
         <Suspense>
-          <CommerceApp path={path} />
+          <CommerceApp
+            path={path.replace(/^\/order-confirmation\//, "/account/orders/")}
+          />
         </Suspense>
       ) : path.startsWith("/account") || path.startsWith("/sign-") ? (
         <AccountApp path={path} />

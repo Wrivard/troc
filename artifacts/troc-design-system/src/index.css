@@ -1511,6 +1511,14 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
   .troc-product--row .troc-product-actions { width: 100%; }
 }
 
+/* Static editorial depth, full artwork, no animation or new palette. */
+.troc-card-showcase { position: relative; width: 100%; max-width: 36rem; aspect-ratio: 1.2; margin: 0 auto; perspective: 1000px; isolation: isolate; }
+.troc-card-showcase-item { position: absolute; width: 43%; left: 28.5%; top: 12%; border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+.troc-card-showcase-item:nth-child(1) { transform: translateX(-49%) translateY(12%) rotate(-13deg) rotateY(8deg); z-index: 1; }
+.troc-card-showcase-item:nth-child(2) { transform: translateX(49%) translateY(8%) rotate(13deg) rotateY(-8deg); z-index: 2; }
+.troc-card-showcase-item:nth-child(3) { transform: translateY(-4%) rotate(-3deg); z-index: 3; }
+.troc-card-showcase-item:only-child { transform: none; }
+
 /* progress.css */
 /* Progress — determinate/indeterminate; always paired with a text label + value. */
 .troc-progress { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
@@ -1848,7 +1856,8 @@ a.troc-recently-sold:focus-visible,
   display: flex; align-items: flex-start; gap: var(--space-4);
   padding: var(--space-4); flex-wrap: wrap;
 }
-.troc-storefront-banner + .troc-storefront-body { margin-top: -36px; }
+.troc-storefront-banner + .troc-storefront-body { margin-top: 0; }
+.troc-storefront-banner + .troc-storefront-body .troc-storefront-avatar { margin-top: -36px; position: relative; z-index: 1; }
 .troc-storefront-avatar { flex: 0 0 auto; }
 .troc-storefront-avatar-skel { width: 64px; height: 64px; border-radius: var(--radius-md); }
 .troc-storefront-main { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
@@ -1986,6 +1995,24 @@ a.troc-recently-sold:focus-visible,
 @media (max-width: 900px) {
   .troc-site-header { flex-wrap: wrap; padding: var(--space-2); }
   .troc-site-header-search { order: 3; flex-basis: 100%; max-width: none; margin: var(--space-1) 0 0; }
+}
+
+/* Opt-in compact composition, preserving the original default header. */
+@media (max-width: 600px) {
+  .troc-site-header[data-compact-mobile] { gap: var(--space-2); padding: var(--space-3); }
+  .troc-site-header[data-compact-mobile] .troc-site-header-brand { order: 1; margin-right: auto; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-brand img { height: 24px; width: auto; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-actions { display: contents; }
+  .troc-site-header[data-compact-mobile] .troc-locale-switcher { order: 2; }
+  .troc-site-header[data-compact-mobile] .troc-theme-switcher { order: 3; }
+  .troc-site-header[data-compact-mobile] .troc-site-nav { order: 4; flex: 1 0 calc(100% - 112px); }
+  .troc-site-header[data-compact-mobile] .troc-site-nav-link { padding-inline: var(--space-2); font-size: var(--text-xs); }
+  .troc-site-header[data-compact-mobile] .troc-site-cart { order: 5; }
+  .troc-site-header[data-compact-mobile] .troc-site-sign-in,
+  .troc-site-header[data-compact-mobile] .troc-site-account { order: 6; width: var(--control-default); min-height: var(--control-default); padding: 0; }
+  .troc-site-header[data-compact-mobile] .troc-site-sign-in-label,
+  .troc-site-header[data-compact-mobile] .troc-site-account-name { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .troc-site-header[data-compact-mobile] .troc-site-header-search { order: 7; margin: 0; }
 }
 
 /* skeleton.css */

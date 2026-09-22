@@ -1,0 +1,2805 @@
+{
+  "origin": "http://localhost:5173",
+  "results": [
+    {
+      "route": "/",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 390,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 390,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 768,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 1280,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 1280,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 1920,
+      "lang": "en",
+      "theme": "dark",
+      "passed": true
+    },
+    {
+      "route": "/",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/search",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/pokemon",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/magic",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/yu-gi-oh",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/one-piece",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/games/riftbound",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sets/pokemon-151-en-5af93beb",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/product/pokemon-alakazam-ex-3c6915d3",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/store/cartes-du-nord",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sell",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/founding-sellers",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/about",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/developers",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/help",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/condition-guide",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/cart",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/smart-cart",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/checkout",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-in",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/sign-up",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/settings",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/order-confirmation/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/messages",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/notifications",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/wishlist",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/price-alerts",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/following",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/account/credit",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/collection/pokemon/demo-set",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/want-lists/demo",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/apply",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/inventory",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/orders/00000000-0000-0000-0000-000000000000",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/promotions",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/offers",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/analytics",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/storefront",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/team",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/settings",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/plan",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    },
+    {
+      "route": "/seller/buylist",
+      "width": 1920,
+      "lang": "fr",
+      "theme": "light",
+      "passed": true
+    }
+  ]
+}

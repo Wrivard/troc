@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import type { PublicPage, Locale, ProductResult } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
@@ -9,7 +9,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@workspace/troc-design-system/components/ui/select";
-import { SiteHeader } from "@workspace/troc-design-system/components/ui/site-navigation";
+import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
+import { HomeSections } from "../brand/HomeSections";
 import {
   ProductCard,
   CardImage,
@@ -18,7 +19,6 @@ import {
   ProductAvailability,
 } from "@workspace/troc-design-system/components/ui/product-presentation";
 import { CatalogArtwork } from "./CatalogArtwork";
-import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import {
   PriceBlock,
   ReferencePrice,
@@ -32,14 +32,10 @@ import {
 } from "@workspace/troc-design-system/components/ui/seller-storefront";
 import { SellerBadge } from "@workspace/troc-design-system/components/ui/seller-badges";
 import { ConditionBadge } from "@workspace/troc-design-system/components/ui/marketplace-badges";
-import {
-  ChartContainer,
-  ChartTooltip,
-} from "@workspace/troc-design-system/components/ui/chart";
-import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
+const PriceHistory = lazy(() => import("./PriceHistory"));
 import { catalogMessages, type CatalogMessage } from "./messages";
 import { formatSourcePrice, productSelection } from "./presentation";
-import { addCart, readCart } from "../commerce/cart-storage";
+import { addCart } from "../commerce/cart-storage";
 export interface PublicProps {
   page: PublicPage;
   theme?: "dark" | "light";
@@ -57,17 +53,8 @@ export function PublicMarketplace({
   const locale = page.locale;
   const t = (key: CatalogMessage) =>
     catalogMessages[key][locale === "en" ? 0 : 1];
-  const [query, setQuery] = useState(page.filters.q);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState("");
-  const [cartCount, setCartCount] = useState(0);
-  useEffect(() => {
-    const update = () =>
-      setCartCount(readCart().reduce((n, l) => n + l.quantity, 0));
-    update();
-    window.addEventListener("troc:cart", update);
-    return () => window.removeEventListener("troc:cart", update);
-  }, []);
   const [tab, setTab] = useState(
     page.filters.max === 99 && page.kind === "store" ? "deals" : "shop",
   );
@@ -121,11 +108,8 @@ export function PublicMarketplace({
       max: page.filters.max === null ? "" : String(page.filters.max),
       grade: page.selectedGrade ?? "",
     });
-  const homeResults = page.results.some((r) => r.product.images?.length)
-    ? page.results.filter((r) => r.product.images?.length)
-    : page.results;
   const cards = (items: ProductResult[]) => (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 xl:grid-cols-4">
       {items.map((result) => {
         const p = result.product;
         const set = page.sets.find((s) => s.id === p.setId);
@@ -207,7 +191,7 @@ export function PublicMarketplace({
   const filterForm = (
     <form
       action={`${base}${page.path}`}
-      className="grid gap-4 rounded-lg border border-border p-4 sm:grid-cols-2 lg:grid-cols-4"
+      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
       onSubmit={(event) => {
         event.preventDefault();
         const values = new URLSearchParams();
@@ -332,58 +316,17 @@ export function PublicMarketplace({
   );
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader
-        homeHref={href("/")}
-        logoLabel="TROC"
-        navLabel={t("navigation")}
-        navItems={[
-          {
-            id: "shop",
-            label: t("shop"),
-            current: true,
-            onSelect: () => go("/"),
-          },
-          { id: "sell", label: t("sell"), disabled: true },
-          { id: "collect", label: t("collect"), disabled: true },
-        ]}
-        search={{
-          label: t("searchLabel"),
-          placeholder: t("search"),
-          value: query,
-          onValueChange: setQuery,
-          suggestions: [],
-          onSubmit: (q) => go("/search", { q }),
-          loadingLabel: t("loading"),
-          emptyLabel: t("searchAction"),
-          clearLabel: t("clear"),
-          submitLabel: t("searchAction"),
-        }}
-        locale={{
-          value: locale,
-          onValueChange: (value) => onLocale?.(value),
-          groupLabel: t("language"),
-          options: [
-            { value: "en", code: "EN", label: "English" },
-            { value: "fr", code: "FR", label: "Français" },
-          ],
-        }}
-        theme={{
-          value: theme,
-          onValueChange: (value) => onTheme?.(value),
-          groupLabel: t("theme"),
-          options: [
-            { value: "dark", label: "TROC Dark" },
-            { value: "light", label: "TROC Light" },
-          ],
-        }}
-        cartLabel={t("cart")}
-        cartCount={cartCount}
-        accountLabel={t("account")}
-        signInLabel={t("signIn")}
-        onSignIn={() => go("/sign-in")}
-        onCart={() => go("/cart")}
+      <MarketplaceHeader
+        locale={locale}
+        theme={theme}
+        onLocale={onLocale}
+        onTheme={onTheme}
+        base={base}
       />
-      <main className="mx-auto grid max-w-screen-xl gap-8 p-4 md:p-8">
+      <main
+        id="main-content"
+        className="mx-auto grid max-w-screen-xl gap-8 px-4 pb-12 pt-6 md:px-8"
+      >
         {cartMessage && (
           <p role="status">
             {cartMessage}{" "}
@@ -394,113 +337,56 @@ export function PublicMarketplace({
         )}
         {page.demo && (
           <p
-            className="rounded-lg border border-border bg-muted p-4 text-sm"
+            className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground"
             role="note"
           >
             {t("demo")}
           </p>
         )}
-        <nav aria-label={t("game")} className="flex flex-wrap gap-2">
-          <Button asChild variant="ghost" size="sm">
-            <a href={href("/")}>{t("home")}</a>
-          </Button>
-          {page.games.map((g) => (
-            <Button
-              key={g.id}
-              asChild
-              variant={currentGame?.id === g.id ? "primary" : "secondary"}
-              size="sm"
-            >
-              <a href={href(`/games/${g.slug}`)}>{g.name[locale]}</a>
+        {page.kind !== "home" && (
+          <nav aria-label={t("game")} className="flex flex-wrap gap-2">
+            <Button asChild variant="ghost" size="sm">
+              <a href={href("/")}>{t("home")}</a>
             </Button>
-          ))}
-        </nav>
-        <header className="grid gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-          {page.kind === "home" && (
-            <p className="text-muted-foreground">{t("subtitle")}</p>
-          )}
-        </header>
+            {page.games.map((g) => (
+              <Button
+                key={g.id}
+                asChild
+                variant={currentGame?.id === g.id ? "primary" : "secondary"}
+                size="sm"
+              >
+                <a href={href(`/games/${g.slug}`)}>{g.name[locale]}</a>
+              </Button>
+            ))}
+          </nav>
+        )}
+        {page.kind !== "home" && (
+          <header className="grid gap-3">
+            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+              {title}
+            </h1>
+            {page.kind === "search" && (
+              <p className="max-w-2xl text-muted-foreground">
+                {locale === "fr"
+                  ? "Trouvez la bonne édition. Comparez les offres. Tous les prix en dollars canadiens."
+                  : "Find the right edition. Compare the offers. Every price in CAD."}
+              </p>
+            )}
+            {(page.kind === "game" || page.kind === "set") && (
+              <p className="max-w-2xl text-muted-foreground">
+                {locale === "fr"
+                  ? "Explorez les cartes, repérez vos prochaines trouvailles et comparez les offres des vendeurs."
+                  : "Explore the cards, find your next additions and compare seller offers."}
+              </p>
+            )}
+          </header>
+        )}
         {page.kind === "home" ? (
-          <>
-            <section className="grid gap-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-xl font-bold">{t("trending")}</h2>
-                <span className="text-sm text-muted-foreground">
-                  {page.demo ? t("demoSelection") : t("newest")}
-                </span>
-              </div>
-              {cards(homeResults.slice(0, 8))}
-            </section>
-            <section className="grid gap-4">
-              <h2 className="text-xl font-bold">{t("sets")}</h2>
-              <div className="flex flex-wrap gap-3">
-                {page.sets.slice(0, 6).map((s) => (
-                  <Button asChild variant="secondary" key={s.id}>
-                    <a href={href(`/sets/${s.slug}`)}>
-                      {page.games.find((g) => g.id === s.gameId)?.name[locale]}{" "}
-                      · {s.name[locale]}
-                    </a>
-                  </Button>
-                ))}
-              </div>
-            </section>
-            <section className="grid gap-4">
-              <h2 className="text-xl font-bold">{t("deals")}</h2>
-              {cards(
-                homeResults
-                  .filter((r) => r.lowestCents !== null && r.lowestCents < 100)
-                  .slice(0, 4),
-              )}
-              <Button asChild variant="outline">
-                <a href={href("/search", { max: "99", sort: "price" })}>
-                  {t("deals")}
-                </a>
-              </Button>
-            </section>
-            <section className="grid gap-4">
-              <h2 className="text-xl font-bold">{t("featured")}</h2>
-              <div className="grid gap-4 md:grid-cols-3">
-                {page.sellers.map((s) => (
-                  <SellerStorefrontHeader
-                    key={s.id}
-                    name={s.name}
-                    avatar={<SellerAvatar name={s.name} src={s.logoUrl} />}
-                    tagline={`${s.city}, ${s.province}`}
-                    compact
-                    actions={
-                      <Button asChild variant="secondary">
-                        <a href={href(`/store/${s.slug}`)}>{t("store")}</a>
-                      </Button>
-                    }
-                  />
-                ))}
-              </div>
-            </section>
-            <section className="grid gap-2 border-t border-border pt-6">
-              <h2 className="text-xl font-bold">{t("recent")}</h2>
-              <p>{t("noSales")}</p>
-            </section>
-            <section className="grid gap-3 rounded-lg border border-border p-6">
-              <h2 className="text-2xl font-bold">{t("collectTitle")}</h2>
-              <p>{t("collectCopy")}</p>
-              <Button asChild>
-                <a href={href("/smart-cart")}>{t("smartCart")}</a>
-              </Button>
-            </section>
-            <section className="grid gap-2">
-              <h2 className="text-xl font-bold">{t("canada")}</h2>
-              <p>{t("canadaCopy")}</p>
-            </section>
-            <section className="grid gap-2">
-              <h2 className="text-xl font-bold">{t("founding")}</h2>
-              <p>{t("foundingCopy")}</p>
-            </section>
-          </>
+          <HomeSections page={page} cards={cards} href={href} />
         ) : product ? (
           <>
-            <section className="grid gap-6 md:grid-cols-3">
-              <div>
+            <section className="grid items-start gap-8 md:grid-cols-3 md:gap-12">
+              <div className="rounded-lg bg-card p-6 md:p-8">
                 <CatalogArtwork
                   key={selected?.id ?? product.id}
                   product={product}
@@ -549,8 +435,8 @@ export function PublicMarketplace({
                   ]}
                 />
                 <div className="flex flex-wrap gap-6">
-                  {money(page.results[0]?.referenceCents ?? null, "reference")}
                   {money(page.results[0]?.lowestCents ?? null, "lowest")}
+                  {money(page.results[0]?.referenceCents ?? null, "reference")}
                   {money(page.results[0]?.medianCents ?? null, "median")}
                 </div>
                 <ProductAvailability
@@ -560,21 +446,33 @@ export function PublicMarketplace({
                 <p className="text-sm text-muted-foreground">
                   {t("referenceNote")}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {(
-                    [
-                      "wishlist",
-                      "want",
-                      "alert",
-                      "collection",
-                      "correction",
-                    ] as const
-                  ).map((key) => (
-                    <Button key={key} disabled variant="outline" size="sm">
-                      {t(key)}
-                    </Button>
-                  ))}
-                </div>
+                <details className="text-sm text-muted-foreground">
+                  <summary className="cursor-pointer">
+                    {locale === "fr"
+                      ? "Outils de collection · à venir"
+                      : "Collector tools · planned"}
+                  </summary>{" "}
+                  <div className="flex flex-wrap gap-2">
+                    {(
+                      [
+                        "wishlist",
+                        "want",
+                        "alert",
+                        "collection",
+                        "correction",
+                      ] as const
+                    ).map((key) => (
+                      <Button key={key} disabled variant="outline" size="sm">
+                        {t(key)}
+                      </Button>
+                    ))}
+                  </div>
+                  <a className="underline" href={href("/condition-guide")}>
+                    {locale === "fr"
+                      ? "Comprendre l’état des cartes"
+                      : "Understand card conditions"}
+                  </a>
+                </details>
               </div>
             </section>
             <section className="grid gap-4">
@@ -694,7 +592,7 @@ export function PublicMarketplace({
                           />
                         ) : undefined
                       }
-                      price={money(offer.cents, "price")}
+                      price={money(offer.cents, "offerPrice")}
                       shipping={`${t("minimum")}: ${seller.minimumCents ? format(seller.minimumCents) : t("none")} · ${t("handling")}: ${seller.handlingDays}`}
                       promotion={`${offer.quantity} ${t("available")}${offer.grade ? ` · ${t("grade")}: ${offer.grade}` : ""}`}
                       quantityLabel={t("quantity")}
@@ -792,46 +690,9 @@ export function PublicMarketplace({
             </section>
             <section className="grid gap-4">
               <h2 className="text-xl font-bold">{t("history")}</h2>
-              <ChartContainer
-                label={t("history")}
-                state={page.prices.length ? "ready" : "empty"}
-                emptySlot={<p>{t("empty")}</p>}
-                dataTable={
-                  <table>
-                    <caption>{t("history")}</caption>
-                    <thead>
-                      <tr>
-                        <th>{t("date")}</th>
-                        <th>{t("reference")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {page.prices.map((p, i) => (
-                        <tr key={i}>
-                          <td>{p.capturedAt.slice(0, 10)}</td>
-                          <td>{format(p.cents)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                }
-              >
-                <LineChart data={page.prices}>
-                  <XAxis
-                    dataKey="capturedAt"
-                    tickFormatter={(v) => String(v).slice(5, 10)}
-                  />
-                  <YAxis tickFormatter={(v) => format(Number(v))} />
-                  <Tooltip content={<ChartTooltip formatValue={format} />} />
-                  <Line
-                    dataKey="cents"
-                    name={t("reference")}
-                    stroke="var(--color-primary)"
-                    strokeWidth={2}
-                    isAnimationActive={false}
-                  />
-                </LineChart>
-              </ChartContainer>
+              <Suspense fallback={<p>{t("loading")}</p>}>
+                <PriceHistory prices={page.prices} locale={locale} />
+              </Suspense>
               {page.prices.at(-1) && (
                 <p className="text-sm text-muted-foreground">
                   {t("source")}: {page.prices.at(-1)!.provider} ·{" "}
@@ -874,7 +735,10 @@ export function PublicMarketplace({
                       {page.seller.level in catalogMessages
                         ? t(page.seller.level as CatalogMessage)
                         : page.seller.level}{" "}
-                      · {t("minimum")}: {format(page.seller.minimumCents)}
+                      · {t("minimum")}:{" "}
+                      {page.seller.minimumCents
+                        ? format(page.seller.minimumCents)
+                        : t("none")}
                     </p>
                   }
                   actions={
@@ -902,21 +766,83 @@ export function PublicMarketplace({
                     </Button>
                   ))}
                 </nav>
-                <p>{t("matches")}</p>
+                <div className="flex flex-wrap gap-6 border-y border-border py-4 text-sm">
+                  <p>
+                    {t("handling")}: {page.seller.handlingDays}
+                  </p>
+                  <p>
+                    {t("minimum")}:{" "}
+                    {page.seller.minimumCents
+                      ? format(page.seller.minimumCents)
+                      : t("none")}
+                  </p>
+                  <p>
+                    {locale === "fr"
+                      ? "Livraison regroupée par vendeur"
+                      : "Combined shipping per seller"}
+                  </p>
+                </div>
               </>
             )}
             {page.seller && tab === "about" ? (
-              <p>{page.seller.story[locale]}</p>
+              <section className="grid max-w-2xl gap-4 rounded-lg bg-card p-6">
+                <h2 className="text-xl font-semibold">{t("about")}</h2>
+                <p className="leading-relaxed text-muted-foreground">
+                  {page.seller.story[locale]}
+                </p>
+                <p className="text-sm">
+                  {page.seller.city}, {page.seller.province} · Canada
+                </p>
+              </section>
             ) : page.seller && tab === "reviews" ? (
-              <p>{t("noReviews")}</p>
+              <div className="rounded-lg bg-card p-8 text-muted-foreground">
+                {t("noReviews")}
+              </div>
             ) : (
               <>
-                {filterForm}
+                <details
+                  className="rounded-lg border border-border bg-card p-4"
+                  open={page.kind === "search" || Boolean(page.filters.q)}
+                >
+                  <summary className="cursor-pointer font-semibold">
+                    {locale === "fr"
+                      ? "Affiner les résultats"
+                      : "Refine your results"}
+                  </summary>
+                  <div className="pt-4">{filterForm}</div>
+                </details>
+                <p className="text-sm text-muted-foreground">
+                  {page.results.length}{" "}
+                  {locale === "fr"
+                    ? "produits sur cette page · prix en CAD"
+                    : "products on this page · prices in CAD"}
+                </p>
+                {page.kind === "game" && (
+                  <section className="grid gap-4">
+                    <h2 className="text-xl font-semibold">{t("sets")}</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {page.sets
+                        .filter((s) => s.gameId === currentGame?.id)
+                        .slice(0, 8)
+                        .map((s) => (
+                          <Button key={s.id} asChild variant="secondary">
+                            <a href={href("/sets/" + s.slug)}>
+                              {s.name[locale]}
+                            </a>
+                          </Button>
+                        ))}
+                    </div>
+                  </section>
+                )}
                 {page.kind === "set" && (
-                  <div className="grid gap-2">
-                    <h2 className="text-xl font-bold">{t("binder")}</h2>
+                  <div className="grid gap-2 border-l-2 border-border pl-4">
+                    <h2 className="text-lg font-semibold">{t("binder")}</h2>
                     <p>{t("owned")}</p>
-                    <Button disabled>{t("missing")}</Button>
+                    <a className="text-sm underline" href={href("/collection")}>
+                      {locale === "fr"
+                        ? "Découvrir les outils de collection prévus"
+                        : "Explore planned collection tools"}
+                    </a>
                   </div>
                 )}
                 {page.results.length ? (
@@ -928,7 +854,20 @@ export function PublicMarketplace({
                       : page.results,
                   )
                 ) : (
-                  <p role="status">{t("empty")}</p>
+                  <div
+                    role="status"
+                    className="grid justify-items-start gap-4 rounded-lg bg-card p-8"
+                  >
+                    <h2 className="text-xl font-semibold">{t("empty")}</h2>
+                    <p className="text-muted-foreground">
+                      {locale === "fr"
+                        ? "Essayez un autre nom de carte ou retirez quelques filtres."
+                        : "Try another card name or remove a few filters."}
+                    </p>
+                    <Button asChild variant="secondary">
+                      <a href={href(page.path)}>{t("reset")}</a>
+                    </Button>
+                  </div>
                 )}
                 <div className="flex flex-wrap gap-3">
                   {page.filters.cursor && (
@@ -967,31 +906,7 @@ export function PublicMarketplace({
           {t("browseOnly")}
         </p>
       </main>
-      <footer className="flex flex-wrap justify-between gap-4 border-t border-border p-6">
-        <div className="grid gap-3">
-          <TrocLogo height={26} />
-          <p className="font-semibold">{t("canada")}</p>
-          <p className="text-sm text-muted-foreground">{t("canadaCopy")}</p>
-          <span className="text-sm">CAD · Canada · EN / FR</span>
-          <p className="max-w-prose text-xs text-muted-foreground">
-            {t("artworkRights")}
-          </p>
-        </div>
-        <nav
-          className="flex flex-wrap content-start gap-4"
-          aria-label={t("navigation")}
-        >
-          <a href={href("/search")} className="underline">
-            {t("shop")}
-          </a>
-          <a href={href("/sign-in")} className="underline">
-            {t("account")}
-          </a>
-        </nav>
-        <a href={`${base}/style-guide`} className="underline">
-          {t("guide")}
-        </a>
-      </footer>
+      <MarketplaceFooter locale={locale} base={base} />
     </div>
   );
 }

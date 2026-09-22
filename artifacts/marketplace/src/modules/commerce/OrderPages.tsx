@@ -84,7 +84,7 @@ export function OrderPages({
   }
   return (
     <>
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-3xl font-bold tracking-tight">
         {t(seller ? "fulfillment" : "orders")}
       </h1>
       {busy && <p role="status">{t("loading")}</p>}
@@ -98,11 +98,28 @@ export function OrderPages({
       )}
       {!id && (
         <>
+          {!busy && !error && list.length === 0 && (
+            <section className="grid gap-3 rounded-lg bg-card p-8">
+              <h2 className="text-xl font-semibold">
+                {locale === "fr"
+                  ? "Vos commandes apparaîtront ici."
+                  : "Your orders will appear here."}
+              </h2>
+              <p className="text-muted-foreground">
+                {locale === "fr"
+                  ? "Retrouvez les articles, les statuts et les messages de chaque vendeur au même endroit."
+                  : "Find items, status updates and seller messages together in one place."}
+              </p>
+            </section>
+          )}
           <ul className="grid gap-4">
             {list.map((o) => (
-              <li key={o.id} className="border-b border-border pb-4">
+              <li
+                key={o.id}
+                className="rounded-lg border border-border bg-card p-5"
+              >
                 <a
-                  className="underline"
+                  className="flex flex-wrap gap-2 font-semibold underline"
                   href={`${seller ? "/seller" : "/account"}/orders/${o.id}?lang=${locale}`}
                 >
                   {o.id.slice(0, 8)} ·{" "}

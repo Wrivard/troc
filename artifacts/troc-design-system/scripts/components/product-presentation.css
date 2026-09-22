@@ -66,3 +66,11 @@
   .troc-product--row .troc-product-side { align-items: flex-start; width: 100%; }
   .troc-product--row .troc-product-actions { width: 100%; }
 }
+
+/* Static editorial depth, full artwork, no animation or new palette. */
+.troc-card-showcase { position: relative; width: 100%; max-width: 36rem; aspect-ratio: 1.2; margin: 0 auto; perspective: 1000px; isolation: isolate; }
+.troc-card-showcase-item { position: absolute; width: 43%; left: 28.5%; top: 12%; border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+.troc-card-showcase-item:nth-child(1) { transform: translateX(-49%) translateY(12%) rotate(-13deg) rotateY(8deg); z-index: 1; }
+.troc-card-showcase-item:nth-child(2) { transform: translateX(49%) translateY(8%) rotate(13deg) rotateY(-8deg); z-index: 2; }
+.troc-card-showcase-item:nth-child(3) { transform: translateY(-4%) rotate(-3deg); z-index: 3; }
+.troc-card-showcase-item:only-child { transform: none; }

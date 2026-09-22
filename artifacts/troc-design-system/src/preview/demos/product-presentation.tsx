@@ -1,5 +1,6 @@
 import {
   CardImage,
+  CardShowcase,
   CardMetadata,
   CardTitle,
   ProductAvailability,
@@ -39,6 +40,15 @@ export default function ProductPresentationDemo() {
     <>
       <PageHeader eyebrow={ts("eyebrow")} title={ts("ppTitle")} description={ts("ppIntro")} />
 
+
+      <Section title={locale === "fr" ? "Composition de cartes" : "Editorial card showcase"}>
+        <DemoPanel><CardShowcase label={locale === "fr" ? "Composition statique de trois cartes" : "Static three-card composition"} cards={[
+          <CardImage key="a" src={demoArtwork.charizard} alt={ts("cardCharizardTitle")} missingLabel={ts("imageMissing")} />,
+          <CardImage key="b" src={demoArtwork.pikachu} alt={ts("cardPikachuTitle")} missingLabel={ts("imageMissing")} />,
+          <CardImage key="c" missingLabel={ts("imageMissing")} alt={ts("imageMissing")} />,
+        ]} /></DemoPanel>
+        <DemoPanel><CardShowcase label={locale === "fr" ? "Une carte" : "Single-card fallback"} cards={[<CardImage key="single" src={demoArtwork.pikachu} alt={ts("cardPikachuTitle")} missingLabel={ts("imageMissing")} />]} /></DemoPanel>
+      </Section>
       <Section title={ts("ppTileTitle")}>
         <DemoPanel>
           <div className="ds-form-grid">

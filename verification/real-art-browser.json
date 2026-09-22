@@ -1,12 +1,12 @@
 {
-  "origin": "https://troc-api-server-psi.vercel.app",
+  "origin": "http://localhost:5173",
   "results": [
     {
       "path": "/",
       "width": 390,
       "lang": "en",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -78,7 +78,7 @@
       "width": 390,
       "lang": "en",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -150,7 +150,7 @@
       "width": 390,
       "lang": "fr",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -222,7 +222,7 @@
       "width": 390,
       "lang": "fr",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -294,7 +294,7 @@
       "width": 768,
       "lang": "en",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -366,7 +366,7 @@
       "width": 768,
       "lang": "en",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -438,7 +438,7 @@
       "width": 768,
       "lang": "fr",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -510,7 +510,7 @@
       "width": 768,
       "lang": "fr",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -582,7 +582,7 @@
       "width": 1280,
       "lang": "en",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -654,7 +654,7 @@
       "width": 1280,
       "lang": "en",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -726,7 +726,7 @@
       "width": 1280,
       "lang": "fr",
       "theme": "dark",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },
@@ -798,7 +798,7 @@
       "width": 1280,
       "lang": "fr",
       "theme": "light",
-      "images": 12,
+      "images": 8,
       "loaded": true,
       "accessibility": "passed"
     },

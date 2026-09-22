@@ -1,3 +1,4 @@
+// Banner overlap is reserved for the avatar; seller names remain below the banner.
 import { Crown, MapPin, TrendingUp } from "lucide-react";
 import { SellerAvatar, SellerBanner, SellerStorefrontHeader } from "../../components/ui/seller-storefront";
 import { SellerBadge } from "../../components/ui/seller-badges";

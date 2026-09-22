@@ -21,3 +21,7 @@ This record specifies a reusable visual component only. It does not authorize ma
 ## Milestone 2.5 extension
 
 SiteHeader accepts optional homeHref, supplied by the consumer with locale preserved. The branded home link reuses the unchanged approved logo; isolated component examples can omit navigation.
+
+## Design polish addition — 2026-09-22
+
+`SiteHeader.compactMobile` is opt-in. It preserves all language/theme/navigation/cart/account controls in three narrow-screen rows; the sign-in text remains available to assistive technology. The default layout remains unchanged. The navigation story includes a toggle for this variant alongside signed-in, loading and disabled states.

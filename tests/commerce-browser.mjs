@@ -106,7 +106,7 @@ try {
           .click();
         await expect(page).toHaveURL(/\/account\/orders\/[a-f0-9-]+/);
         await expect(
-          page.getByRole("heading", { level: 2 }).first(),
+          page.locator("main").getByRole("heading", { level: 2 }).first(),
         ).toBeVisible();
         await audit(page, "buyer-order");
         await page.screenshot({
@@ -131,9 +131,9 @@ try {
             exact: true,
           })
           .click();
-        await expect(page.getByRole("heading", { level: 2 })).toContainText(
-          lang === "en" ? "Shipped" : "Expédiée",
-        );
+        await expect(
+          page.locator("main").getByRole("heading", { level: 2 }),
+        ).toContainText(lang === "en" ? "Shipped" : "Expédiée");
         assert.deepEqual(errors, []);
         results.push({
           width,

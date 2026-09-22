@@ -107,6 +107,7 @@ export const catalogMessages = {
   sort: ["Sort", "Trier"],
   name: ["Name", "Nom"],
   price: ["Lowest price", "Prix le plus bas"],
+  offerPrice: ["Price per card", "Prix par carte"],
   newest: ["Newest sets", "Séries les plus récentes"],
   apply: ["Apply filters", "Appliquer les filtres"],
   reset: ["Reset filters", "Réinitialiser les filtres"],
@@ -130,8 +131,8 @@ export const catalogMessages = {
   none: ["None", "Aucun"],
   handling: ["Handling days", "Jours de traitement"],
   shipping: [
-    "Combined shipping is calculated at checkout, available in a later release.",
-    "La livraison combinée sera calculée à la caisse dans une prochaine version.",
+    "Add cards to compare combined shipping by seller in your cart. Shipping is simulated in this demo.",
+    "Ajoutez des cartes pour comparer la livraison regroupée par vendeur dans le panier. La livraison est simulée dans cette démo.",
   ],
   buySoon: ["Buying coming soon", "Achat bientôt offert"],
   quantity: ["Quantity", "Quantité"],

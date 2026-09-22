@@ -14,7 +14,8 @@
   display: flex; align-items: flex-start; gap: var(--space-4);
   padding: var(--space-4); flex-wrap: wrap;
 }
-.troc-storefront-banner + .troc-storefront-body { margin-top: -36px; }
+.troc-storefront-banner + .troc-storefront-body { margin-top: 0; }
+.troc-storefront-banner + .troc-storefront-body .troc-storefront-avatar { margin-top: -36px; position: relative; z-index: 1; }
 .troc-storefront-avatar { flex: 0 0 auto; }
 .troc-storefront-avatar-skel { width: 64px; height: 64px; border-radius: var(--radius-md); }
 .troc-storefront-main { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }

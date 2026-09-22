@@ -35,6 +35,8 @@ export interface SiteAccount {
 export interface SiteHeaderProps extends React.HTMLAttributes<HTMLElement> {
   /** Primary destinations, e.g. Shop / Sell / Collect. */
   navItems: SiteNavItem[]
+  /** Three compact rows on narrow screens; all controls remain available. */
+  compactMobile?: boolean
   /** Accessible name for the primary nav landmark. */
   navLabel: string
   /** Localized brand label for the logo. */
@@ -59,6 +61,7 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
     {
       className,
       navItems,
+      compactMobile = false,
       navLabel,
       logoLabel,
       homeHref,
@@ -77,7 +80,7 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
     },
     ref
   ) => (
-    <header ref={ref} className={cn("troc-site-header", className)} {...props}>
+    <header ref={ref} className={cn("troc-site-header", className)} data-compact-mobile={compactMobile || undefined} {...props}>
       <div className="troc-site-header-brand">
         {homeHref ? <a href={homeHref} aria-label={logoLabel}><TrocLogo variant="auto" height={26} label={logoLabel} /></a> : <TrocLogo variant="auto" height={26} label={logoLabel} />}
       </div>
@@ -125,9 +128,9 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
             <span className="troc-site-account-name">{account.name}</span>
           </Button>
         ) : (
-          <Button type="button" variant="primary" size="sm" onClick={onSignIn}>
+          <Button type="button" variant="primary" size="sm" className="troc-site-sign-in" onClick={onSignIn}>
             <LogIn aria-hidden="true" />
-            {signInLabel}
+            <span className="troc-site-sign-in-label">{signInLabel}</span>
           </Button>
         )}
       </div>
