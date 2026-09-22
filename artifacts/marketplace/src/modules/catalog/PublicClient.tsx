@@ -58,9 +58,13 @@ export function PublicClient({ path }: { path: string }) {
             <div role="alert">
               <PremiumEmptyState
                 title={
-                  catalogMessages[error === "notFound" ? "notFound" : "failed"][
-                    locale === "en" ? 0 : 1
-                  ]
+                  locale === "fr"
+                    ? error === "notFound"
+                      ? "Page introuvable"
+                      : "Catalogue indisponible"
+                    : error === "notFound"
+                      ? "Page not found"
+                      : "Catalog unavailable"
                 }
                 description={
                   locale === "fr"
