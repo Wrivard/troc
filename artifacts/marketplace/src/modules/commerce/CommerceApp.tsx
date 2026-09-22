@@ -518,6 +518,39 @@ export function CommerceApp({ path }: { path: string }) {
                           </Button>
                         </div>
                       </details>
+                      {!busy &&
+                        quote.groups.some(
+                          (group) => group.minimumRemainingCents > 0,
+                        ) && (
+                          <div
+                            id="cart-minimum-explanation"
+                            className="grid gap-2 text-sm"
+                          >
+                            <p>
+                              {locale === "fr"
+                                ? "Atteignez les minimums de ces vendeurs pour poursuivre :"
+                                : "Meet these seller minimums to continue:"}
+                            </p>
+                            <ul className="grid gap-2">
+                              {quote.groups
+                                .filter(
+                                  (group) => group.minimumRemainingCents > 0,
+                                )
+                                .map((group) => (
+                                  <li key={group.seller.id}>
+                                    <a
+                                      className="underline"
+                                      href={`#cart-seller-${group.seller.id}`}
+                                    >
+                                      {group.seller.name} ·{" "}
+                                      {locale === "fr" ? "il manque" : "add"}{" "}
+                                      {money(group.minimumRemainingCents)}
+                                    </a>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
+                        )}
                       {!checkout && (
                         <>
                           <a className="underline" href={link("/smart-cart")}>
@@ -525,6 +558,14 @@ export function CommerceApp({ path }: { path: string }) {
                           </a>
                           <Button
                             disabled={!quote.eligible || busy}
+                            aria-describedby={
+                              !busy &&
+                              quote.groups.some(
+                                (group) => group.minimumRemainingCents > 0,
+                              )
+                                ? "cart-minimum-explanation"
+                                : undefined
+                            }
                             onClick={() =>
                               window.location.assign(link("/checkout"))
                             }

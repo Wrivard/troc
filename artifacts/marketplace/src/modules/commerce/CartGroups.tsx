@@ -50,6 +50,8 @@ export function CartGroups({
         return (
           <CartSellerGroup
             key={g.seller.id}
+            id={`cart-seller-${g.seller.id}`}
+            tabIndex={-1}
             sellerName={<a href={store}>{g.seller.name}</a>}
             sellerMeta={
               <>
