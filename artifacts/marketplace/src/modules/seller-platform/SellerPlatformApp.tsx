@@ -60,10 +60,42 @@ export function SellerPlatformApp({
     [error, setError] = useState(""),
     [loadError, setLoadError] = useState(false),
     [adminPage, setAdminPage] = useState(0),
+    [sellerPage, setSellerPage] = useState(0),
+    [teamPage, setTeamPage] = useState(0),
+    [workspaceError, setWorkspaceError] = useState(false),
+    [workspaceLoaded, setWorkspaceLoaded] = useState(false),
     [busy, setBusy] = useState(false),
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
   const money = (v: string) => formatCad(v, locale);
+  function pageControls(
+    label: string,
+    page: number,
+    count: number,
+    change: (page: number) => void,
+  ) {
+    return (
+      <nav aria-label={label}>
+        <Button
+          variant="secondary"
+          disabled={busy || page === 0}
+          onClick={() => change(page - 1)}
+        >
+          {t("Previous page", "Page précédente")}
+        </Button>
+        <span>
+          {t("Page", "Page")} {page + 1}
+        </span>
+        <Button
+          variant="secondary"
+          disabled={busy || count < 50 || page >= 10000}
+          onClick={() => change(page + 1)}
+        >
+          {t("Next page", "Page suivante")}
+        </Button>
+      </nav>
+    );
+  }
   useEffect(() => {
     let cancelled = false;
     setLoaded(false);
@@ -81,7 +113,9 @@ export function SellerPlatformApp({
           );
           if (!cancelled) setApplications(data);
         } else {
-          const data = await api<Seller[]>("/seller/platform/sellers");
+          const data = await api<Seller[]>(
+            `/seller/platform/sellers?page=${sellerPage}`,
+          );
           if (!cancelled) {
             setSellers(data);
             setSeller((current) =>
@@ -108,23 +142,25 @@ export function SellerPlatformApp({
     return () => {
       cancelled = true;
     };
-  }, [view, revision, locale, adminPage]);
+  }, [view, revision, locale, adminPage, sellerPage]);
   useEffect(() => {
     let cancelled = false;
     setDashboard(null);
     setTeam([]);
+    setWorkspaceError(false);
+    setWorkspaceLoaded(false);
     if (!seller || !["team", "dashboard"].includes(view)) return;
     void (async () => {
       try {
         const data = await api<Dashboard | Member[]>(
-          `/seller/platform/${seller}/${view}`,
+          `/seller/platform/${seller}/${view}${view === "team" ? `?page=${teamPage}` : ""}`,
         );
         if (!cancelled) {
           if (view === "team") setTeam(data as Member[]);
           else setDashboard(data as Dashboard);
         }
       } catch {
-        if (!cancelled) setLoadError(true);
+        if (!cancelled) setWorkspaceError(true);
         if (!cancelled)
           setError(
             t(
@@ -132,12 +168,14 @@ export function SellerPlatformApp({
               "Cet espace vendeur est inaccessible pour votre rôle.",
             ),
           );
+      } finally {
+        if (!cancelled) setWorkspaceLoaded(true);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [seller, view, revision, locale]);
+  }, [seller, view, revision, locale, teamPage]);
   async function save(path: string, body: unknown) {
     setBusy(true);
     setError("");
@@ -509,12 +547,23 @@ export function SellerPlatformApp({
         )}
         {["dashboard", "team"].includes(view) && loaded && !loadError && (
           <>
+            {pageControls(
+              t("Seller pages", "Pages de vendeurs"),
+              sellerPage,
+              sellers.length,
+              (page) => {
+                setSeller("");
+                setTeamPage(0);
+                setSellerPage(page);
+              },
+            )}
             <label>
               {t("Seller", "Vendeur")}
               <select
                 value={seller}
                 onChange={(e) => {
                   setError("");
+                  setTeamPage(0);
                   setSeller(e.target.value);
                 }}
               >
@@ -533,14 +582,19 @@ export function SellerPlatformApp({
             {!sellers.some((s) => s.status === "active") && (
               <p>
                 {t(
-                  "No active seller workspace. Apply or wait for manual approval.",
-                  "Aucun espace vendeur actif. Soumettez une demande ou attendez l’approbation manuelle.",
+                  "No active seller workspace on this page.",
+                  "Aucun espace vendeur actif sur cette page.",
                 )}
               </p>
             )}
           </>
         )}
-        {view === "dashboard" && dashboard && !loadError && (
+        {seller && !workspaceLoaded && !loadError && (
+          <p role="status">
+            {t("Loading workspace…", "Chargement de l’espace…")}
+          </p>
+        )}
+        {view === "dashboard" && dashboard && !loadError && !workspaceError && (
           <>
             <h2>{dashboard.account.display_name}</h2>
             <dl>
@@ -592,58 +646,76 @@ export function SellerPlatformApp({
             </p>
           </>
         )}
-        {view === "team" && seller && !loadError && (
-          <>
-            <p>
-              {t(
-                "Only current owners can change membership. Add existing account IDs; no invitation email is sent.",
-                "Seuls les propriétaires actuels peuvent gérer l’équipe. Ajoutez les identifiants de comptes existants; aucun courriel d’invitation n’est envoyé.",
-              )}
-            </p>
-            {team.map((m) => (
-              <p key={m.user_id}>
-                {m.email} — {roleLabel(m.role, fr)} <code>{m.user_id}</code>
+        {view === "team" &&
+          seller &&
+          !loadError &&
+          !workspaceError &&
+          workspaceLoaded && (
+            <>
+              <p>
+                {t(
+                  "Only current owners can change membership. Add existing account IDs; no invitation email is sent.",
+                  "Seuls les propriétaires actuels peuvent gérer l’équipe. Ajoutez les identifiants de comptes existants; aucun courriel d’invitation n’est envoyé.",
+                )}
               </p>
-            ))}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const f = new FormData(e.currentTarget);
-                void save(`/seller/platform/${seller}/team`, {
-                  userId: f.get("userId"),
-                  role: f.get("role") || null,
-                });
-              }}
-            >
-              <label>
-                {t("Existing account ID", "Identifiant de compte existant")}
-                <Input name="userId" required />
-              </label>
-              <label>
-                {t("Role", "Rôle")}
-                <select name="role">
-                  {[
-                    "owner",
-                    "manager",
-                    "inventory",
-                    "fulfillment",
-                    "customer_service",
-                  ].map((r) => (
-                    <option key={r} value={r}>
-                      {roleLabel(r, fr)}
+              {pageControls(
+                t("Team pages", "Pages de l’équipe"),
+                teamPage,
+                team.length,
+                setTeamPage,
+              )}
+              {!team.length && (
+                <p>
+                  {t(
+                    "No members on this page.",
+                    "Aucun membre sur cette page.",
+                  )}
+                </p>
+              )}
+              {team.map((m) => (
+                <p key={m.user_id}>
+                  {m.email} — {roleLabel(m.role, fr)} <code>{m.user_id}</code>
+                </p>
+              ))}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const f = new FormData(e.currentTarget);
+                  void save(`/seller/platform/${seller}/team`, {
+                    userId: f.get("userId"),
+                    role: f.get("role") || null,
+                  });
+                }}
+              >
+                <label>
+                  {t("Existing account ID", "Identifiant de compte existant")}
+                  <Input name="userId" required />
+                </label>
+                <label>
+                  {t("Role", "Rôle")}
+                  <select name="role">
+                    {[
+                      "owner",
+                      "manager",
+                      "inventory",
+                      "fulfillment",
+                      "customer_service",
+                    ].map((r) => (
+                      <option key={r} value={r}>
+                        {roleLabel(r, fr)}
+                      </option>
+                    ))}
+                    <option value="">
+                      {t("Remove access", "Retirer l’accès")}
                     </option>
-                  ))}
-                  <option value="">
-                    {t("Remove access", "Retirer l’accès")}
-                  </option>
-                </select>
-              </label>
-              <Button disabled={busy} type="submit">
-                {t("Save membership", "Enregistrer le membre")}
-              </Button>
-            </form>
-          </>
-        )}
+                  </select>
+                </label>
+                <Button disabled={busy} type="submit">
+                  {t("Save membership", "Enregistrer le membre")}
+                </Button>
+              </form>
+            </>
+          )}
       </main>
       <MarketplaceFooter locale={locale} />
     </>
