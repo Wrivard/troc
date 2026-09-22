@@ -39,4 +39,10 @@ The new `/seller/inventory` flow includes authorized seller selection, bounded c
 
 Milestone work is isolated in `Troc-Milestone-3-5`; the design task works in `Troc-Brand-System`. The design task deploys first, then this task integrates its final commit and verifies the combined build/flows before any main push. Shared routing/status changes are coordinated; generated design assets and unrelated local files are not staged by this task.
 
+## Deployment and recovery
+
+The Vercel application can be deployed before hosted inventory is activated: missing authentication/database configuration fails closed, and existing public/demo commerce remains available. Apply migration 0008 through the existing checksum migration runner with migration credentials, then use the dedicated backend role for the server. Do not apply production migrations merely to make demo pages look active.
+
+Migration 0008 is additive. A UI/API rollback should revert the inventory application changes while retaining existing listing identities and data; do not drop inventory records, import review history or audit events as a rollback shortcut. If a future hosted activation fails, disable the affected workflow and investigate configuration rather than fabricating demo authentication.
+
 Stop after 3.5. Milestone 4 is not authorized.
