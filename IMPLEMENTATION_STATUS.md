@@ -2,6 +2,8 @@
 
 ## Current release hold — 2026-09-22
 
+Combined UI checkpoint `43b32b5`: reviewed seller/design handoffs integrated, account-ID guidance independently rechecked, source-derived printing metadata added to cart display. 99 tests, types, lint and production build pass; seller/public browser suites pass. Final cart metadata independent review is pending. Staging runtime/Auth/operations gates below remain held; no code beyond main `512a37e` deployed.
+
 Latest checkpoint: independent local reviews passed combined `dfd58eb`; A hardening/checksum followup `2fcc2eb` passed B review and 99 local tests. Authorized staging project `wcpsyflzqaeorxaejaqh` now has reviewed migrations 0001–0011 with matching canonical checksums. Security warnings are cleared; intentionally restricted tables retain informational RLS notices. Runtime connection, confirmed Auth fixtures, PostgreSQL concurrency and operational readiness remain unverified. Seller UX and final Design handoffs still require combined integration validation. Main is unchanged at `512a37e`; staging setup is not a release gate pass. See MEMORY.md for current details; earlier pending statements below are historical.
 
 Bounded seller Milestone 4 is locally integrated for reciprocal review; no release or production migration. Independent review, combined stress/recovery and all readiness gates are mandatory before B/C release or a next milestone. Hosted auth/database and representative PostgreSQL load validation remain BLOCKED. See docs/COORDINATION.md and MEMORY.md. Historical deployment evidence below concerns only earlier releases.
