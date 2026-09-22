@@ -87,3 +87,9 @@ The SQL emits no individual data rows. It compares exact counts plus two order-i
 Missing/changed migrations, RLS disabled, missing evidence, schema/ACL/trigger changes, ownerless active sellers, negative stock, invalid constraints and row drift fail closed. Investigate the protected inputs; do not edit ledger checksums or massage snapshots. A role lacking RLS bypass may report deceptively empty tables and is rejected. Missing native tools, TLS/identity privileges, connectivity, target authorization, backup protection/retention policy, platform recovery coverage, or a verified restore remain explicit blockers.
 
 Local validation: `node node_modules/tsx/dist/cli.mjs --test tests/staging-recovery.test.ts`. These fixtures apply all migrations to PGlite and exercise the actual schema/content SQL, while substituting native identity/TLS evidence because PGlite cannot prove it.
+
+## Independent-review corrections
+
+C-R01: snapshot comparison now requires relevant role-membership edges (including grant options and role inheritance flags) and effective schema/table access for backend/browser roles. Direct and transitive browser-role grants are regression-tested using actual PostgreSQL catalogs in PGlite. Global role provisioning is still a separate operator step; reproduce the relevant membership graph without copying passwords.
+
+C-R02: an active seller must have an owner whose user status is active. A suspended sole owner fails the invariant; restoring that user to active passes. These checks strengthen supplied-evidence validation and do not close the native restore gate.

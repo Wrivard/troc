@@ -163,9 +163,12 @@ function verifySnapshot(snapshot, expected, migrations) {
     "policies",
     "grants",
     "security",
+    "effectiveAccess",
   ])
     if (!Array.isArray(snapshot.schema[key]) || !snapshot.schema[key].length)
       fail(`Schema ${key} evidence missing.`);
+  if (!Array.isArray(snapshot.schema.memberships))
+    fail("Role membership evidence missing.");
   const expectedTables = tables.map((t) => t.name).sort();
   if (new Set(expectedTables).size !== tables.length)
     fail("Duplicate schema tables.");

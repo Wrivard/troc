@@ -161,6 +161,7 @@ test("real local schema and data evidence detects restore drift; not a native re
     await db.exec(
       "INSERT INTO troc.users(id,email) VALUES('00000000-0000-4000-8000-000000000001','synthetic@example.test')",
     );
+    await db.exec("CREATE ROLE authenticated; CREATE ROLE recovery_bridge;");
     const sql = await readFile(
       new URL("../scripts/staging-recovery/snapshot.sql", import.meta.url),
       "utf8",
@@ -200,6 +201,54 @@ test("real local schema and data evidence detects restore drift; not a native re
       "PASS",
     );
     assert.equal(source.rows.length, 67);
+    for (const grant of [
+      "GRANT troc_backend TO authenticated",
+      "GRANT troc_backend TO recovery_bridge; GRANT recovery_bridge TO authenticated",
+    ]) {
+      await db.exec(grant);
+      const escalated = await capture();
+      escalated.identity = target.identity;
+      assert.equal(
+        (
+          await db.query(
+            "SELECT has_schema_privilege('authenticated','troc','USAGE') access",
+          )
+        ).rows[0].access,
+        true,
+      );
+      assert.throws(
+        () => verifyRestore(plan(), source, escalated, migrations),
+        /schema\/security/,
+      );
+      await db.exec(
+        "REVOKE troc_backend FROM authenticated; REVOKE recovery_bridge FROM authenticated; REVOKE troc_backend FROM recovery_bridge",
+      );
+    }
+    await db.exec(
+      "INSERT INTO troc.seller_accounts(id,slug,display_name,seller_type,status) VALUES('00000000-0000-4000-8000-000000000002','restore-owner-fixture','Fixture','individual','active'); INSERT INTO troc.seller_members(seller_id,user_id,role) VALUES('00000000-0000-4000-8000-000000000002','00000000-0000-4000-8000-000000000001','owner'); UPDATE troc.users SET status='suspended' WHERE id='00000000-0000-4000-8000-000000000001';",
+    );
+    const suspended = await capture();
+    assert.equal(suspended.invariants.ownerlessActiveSellers, 1);
+    const suspendedTarget = structuredClone(suspended);
+    suspendedTarget.identity = target.identity;
+    assert.throws(
+      () => verifyRestore(plan(), suspended, suspendedTarget, migrations),
+      /invariant/,
+    );
+    await db.exec(
+      "UPDATE troc.users SET status='active' WHERE id='00000000-0000-4000-8000-000000000001'",
+    );
+    const active = await capture();
+    assert.equal(active.invariants.ownerlessActiveSellers, 0);
+    const activeTarget = structuredClone(active);
+    activeTarget.identity = target.identity;
+    assert.equal(
+      verifyRestore(plan(), active, activeTarget, migrations).status,
+      "PASS",
+    );
+    await db.exec(
+      "DELETE FROM troc.seller_members WHERE seller_id='00000000-0000-4000-8000-000000000002'; DELETE FROM troc.seller_accounts WHERE id='00000000-0000-4000-8000-000000000002'",
+    );
     for (const mutate of [
       (s) => {
         s.ledger.pop();

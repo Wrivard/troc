@@ -15,6 +15,8 @@ SELECT jsonb_build_object('kind','identity','value',jsonb_build_object(
   'bypassRls',(SELECT rolsuper OR rolbypassrls FROM pg_roles WHERE rolname=current_user)));
 
 SELECT jsonb_build_object('kind','schema','value',jsonb_build_object(
+ 'memberships',COALESCE((SELECT jsonb_agg(jsonb_build_object('role',r.rolname,'member',m.rolname,'grantor',g.rolname,'options',to_jsonb(a)-'roleid'-'member'-'grantor','roleSuper',r.rolsuper,'roleBypass',r.rolbypassrls,'roleInherit',r.rolinherit,'memberInherit',m.rolinherit) ORDER BY r.rolname,m.rolname,g.rolname) FROM pg_auth_members a JOIN pg_roles r ON r.oid=a.roleid JOIN pg_roles m ON m.oid=a.member JOIN pg_roles g ON g.oid=a.grantor WHERE EXISTS(SELECT 1 FROM pg_roles anchor WHERE anchor.rolname IN ('troc_backend','anon','authenticated') AND (pg_has_role(anchor.oid,m.oid,'MEMBER') OR pg_has_role(r.oid,anchor.oid,'MEMBER')))), '[]'::jsonb),
+ 'effectiveAccess',(SELECT jsonb_agg(jsonb_build_object('role',r.rolname,'schemaUsage',has_schema_privilege(r.oid,'troc','USAGE'),'table',c.relname,'select',has_table_privilege(r.oid,c.oid,'SELECT'),'insert',has_table_privilege(r.oid,c.oid,'INSERT'),'update',has_table_privilege(r.oid,c.oid,'UPDATE'),'delete',has_table_privilege(r.oid,c.oid,'DELETE'),'truncate',has_table_privilege(r.oid,c.oid,'TRUNCATE')) ORDER BY r.rolname,c.relname) FROM pg_roles r CROSS JOIN pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE r.rolname IN ('troc_backend','anon','authenticated') AND n.nspname='troc' AND c.relkind='r'),
  'tables',(SELECT jsonb_agg(jsonb_build_object('name',c.relname,'rls',c.relrowsecurity,'forceRls',c.relforcerowsecurity) ORDER BY c.relname) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='troc' AND c.relkind='r'),
  'columns',(SELECT jsonb_agg(to_jsonb(x) ORDER BY table_name,ordinal_position) FROM (SELECT table_name,column_name,ordinal_position,data_type,udt_name,is_nullable,column_default FROM information_schema.columns WHERE table_schema='troc') x),
  'constraints',(SELECT jsonb_agg(to_jsonb(x) ORDER BY tab,name) FROM (SELECT c.relname tab,k.conname name,k.convalidated validated,pg_get_constraintdef(k.oid) definition FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='troc') x),
@@ -27,7 +29,7 @@ SELECT jsonb_build_object('kind','schema','value',jsonb_build_object(
 ));
 SELECT jsonb_build_object('kind','ledger','value',(SELECT jsonb_agg(to_jsonb(x) ORDER BY name) FROM (SELECT name,checksum FROM public.troc_migrations) x));
 SELECT jsonb_build_object('kind','invariants','value',jsonb_build_object(
- 'ownerlessActiveSellers',(SELECT count(*) FROM troc.seller_accounts a WHERE a.status='active' AND NOT EXISTS(SELECT 1 FROM troc.seller_members m WHERE m.seller_id=a.id AND m.role='owner')),
+ 'ownerlessActiveSellers',(SELECT count(*) FROM troc.seller_accounts a WHERE a.status='active' AND NOT EXISTS(SELECT 1 FROM troc.seller_members m JOIN troc.users u ON u.id=m.user_id AND u.status='active' WHERE m.seller_id=a.id AND m.role='owner')),
  'negativeInventory',(SELECT count(*) FROM troc.listings WHERE quantity<0),
  'invalidConstraints',(SELECT count(*) FROM pg_constraint k JOIN pg_namespace n ON n.oid=k.connamespace WHERE n.nspname='troc' AND NOT k.convalidated)
 ));
