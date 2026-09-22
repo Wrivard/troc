@@ -1,3 +1,4 @@
+import process from "node:process";
 import { chromium } from "@playwright/test";
 import assert from "node:assert/strict";
 const drawer = process.argv.includes("--drawer");

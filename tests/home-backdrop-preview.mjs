@@ -21,7 +21,7 @@ try {
           assert.equal(
             await page
               .locator(selector)
-              .evaluate((el) => getComputedStyle(el).backgroundColor),
+              .evaluate((el) => globalThis.getComputedStyle(el).backgroundColor),
             "rgba(0, 0, 0, 0)",
           );
         assert.equal(
