@@ -37,7 +37,7 @@ try {
     await page.locator("[name=country]").check();
     await page.locator("[name=consent]").check();
     await page.locator("form button[type=submit]").click();
-    await page.locator("[role=status] code").waitFor();
+    await page.locator("[role=status] input[readonly]").waitFor();
     assert.equal(sessions, 1, "toggles/navigation must retain one session");
     const tokens = new Set(observations.map((e) => e.token));
     assert.equal(tokens.size, 1);
