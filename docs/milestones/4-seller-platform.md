@@ -42,3 +42,15 @@ Use direct node executables if pnpm exec wrappers fail on Windows:
 Database tests apply all migrations fresh and execute writes as troc_backend. Cover input compatibility/bounds, unauthorized/support/admin boundaries, duplicate applications/approval retries, self-review, missing/inactive users, owner-only changes, stale claims, cross-seller access, last-owner protection, revoked access, append-only transition audit, empty dashboard and exclusion of simulated/demo/refunded/other-seller orders.
 
 Remaining broader Milestone 4 scope: full promotions engine, invitations/acceptance, payout/KYC providers, advanced analytics/reputation/levels, full onboarding recovery and membership pagination. Milestone 5.5 owns configurable rewards. Hosted authentication/database activation remains subject to existing project prerequisites. This bounded slice is not the entire milestone.
+
+## Verified handoff — 2026-09-22
+
+Merged release 512a37e05c6549e186de0b8209a8648b22222db7 into this isolated worktree (merge 33f5919), with no conflicts or edits to shared source files. Seller implementation checkpoint: f3e16dd; final follow-up contains module-only visual refinements, build harness and this evidence.
+
+- Combined baseline + 0009: **79 tests passed**, including nine seller tests/subtests and existing commerce/inventory/security regressions. All migrations applied to fresh PGlite; application/approval/team transactions run as **troc_backend**, verifying migration grants and RLS policies rather than relying on migration-owner write privileges.
+- Whole existing API modules/routes, marketplace and tests lint passed. Library build/typecheck and API/marketplace no-emit typechecks passed.
+- Marketplace client + SSR and API production/serverless builds passed. Since production entrypoints deliberately do not import the seller slice yet, `node tests/seller-platform-build.mjs` separately built the actual seller UI/harness dependency graph successfully into ignored node_modules/.cache.
+- Seller browser checks passed again after merging the release: eight combinations (390/1280px × EN/FR × dark/light), no page errors/overflow; last-owner rejection, application submission, admin approval and denied-auth empty-state protection. Desktop/mobile screenshots inspected locally; temporary screenshots are not committed.
+- Existing scale tests regenerated their timing evidence; these unrelated generated changes were restored to the merged release versions. No shared design/status/config/package files were edited.
+
+Test harness files (`harness.tsx`, seller-platform-server.ts, seller-platform-browser.mjs, seller-platform-build.mjs) are local development/test entrypoints only. Production wiring must import SellerPlatformApp/service/router, never harness identity code. No external emails, production migrations, push or deployment were performed.
