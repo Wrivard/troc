@@ -1,3 +1,4 @@
+import { SmartCartDemo } from "../brand/SmartCartDemo";
 import { commerceSellerName } from "../brand/demo-store-branding";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
@@ -439,33 +440,37 @@ export function CommerceApp({
               </div>
             )}
             {!lines.length ? (
-              <PremiumEmptyState
-                title={
-                  locale === "fr"
-                    ? "Votre panier attend sa première carte."
-                    : "Your cart is ready for its first card."
-                }
-                description={
-                  locale === "fr"
-                    ? "Une commune pour compléter votre extension ou votre prochaine grande trouvaille. Commencez par les cartes."
-                    : "A common to complete your set, or your next great find. Start with the cards."
-                }
-                actions={
-                  <>
-                    <Button asChild>
-                      <a href={link("/search")}>{t("browse")}</a>
-                    </Button>
-                    <a
-                      className="troc-editorial-text-link"
-                      href={link("/want-lists")}
-                    >
-                      {locale === "fr"
-                        ? "Listes de souhaits · à venir"
-                        : "Want lists · planned"}
-                    </a>
-                  </>
-                }
-              />
+              smartPage ? (
+                <SmartCartDemo locale={locale} catalogHref={link("/search")} />
+              ) : (
+                <PremiumEmptyState
+                  title={
+                    locale === "fr"
+                      ? "Votre panier attend sa première carte."
+                      : "Your cart is ready for its first card."
+                  }
+                  description={
+                    locale === "fr"
+                      ? "Une commune pour compléter votre extension ou votre prochaine grande trouvaille. Commencez par les cartes."
+                      : "A common to complete your set, or your next great find. Start with the cards."
+                  }
+                  actions={
+                    <>
+                      <Button asChild>
+                        <a href={link("/search")}>{t("browse")}</a>
+                      </Button>
+                      <a
+                        className="troc-editorial-text-link"
+                        href={link("/want-lists")}
+                      >
+                        {locale === "fr"
+                          ? "Listes de souhaits · à venir"
+                          : "Want lists · planned"}
+                      </a>
+                    </>
+                  }
+                />
+              )
             ) : (
               quote && (
                 <>
