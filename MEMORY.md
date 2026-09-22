@@ -2,7 +2,15 @@
 
 Updated: 2026-09-22. This note preserves context across conversations using this project. Update it when scope, decisions, or verified progress changes. Do not record credentials here.
 
-## Current combined candidate — local review only
+## Current checkpoint — staging authorized, release held
+
+This section supersedes historical pending statements below. The user authorized empty Supabase project `wcpsyflzqaeorxaejaqh` for staging. A alone coordinates schema/configuration and bounded test windows. Reviewed migrations 0001–0011 are applied with canonical LF checksums; existing platform security and migration history are preserved. All 67 application tables have RLS. Security advisor warnings are cleared after 0011; 15 informational default-deny tables remain intentionally restricted. No production deployment or activation is authorized by this staging setup.
+
+Combined candidate `dfd58eb` passed independent B/C local reviews and 98 tests. A followups: `054c3a0` inventory failure copy independently passed UX review; `2fcc2eb` adds portable checksum verification and additive runtime hardening, independently passed B review and 99 local tests. Pending integration: seller UX `9cfbd01` and Design `5885b6b` plus its final handoff. Read the live parent COORDINATION.md for dispatch holds and ownership before assigning work.
+
+Real application PostgreSQL/auth/concurrency gates remain BLOCKED. The direct database endpoint resolves IPv6 but is unreachable from this host; a verified session-pooler endpoint is needed. No dedicated runtime LOGIN or confirmed Auth test users exist yet. Ignored `.env.staging` has staging public configuration and a local signing key; never copy its contents into notes or logs. MCP SQL access is not runtime-role or connection-pool evidence. Main remains `512a37e`; no subsequent code has been pushed or deployed.
+
+## Previous combined candidate — historical local review
 
 Seller fixes1be237f and growth fixesb85c786 are now combined in A's isolated checkout. Growth is wired behind explicit default-off PRELAUNCH_ENABLED/PRELAUNCH_SCHEMA_READY and existing server auth/database/signing prerequisites.97combined tests,lint,typecheck,fullbuild and bundledSSR pass; 40integrated growth responsive/axe cases,16capture/withdrawflows and EN/FR consent-journey checks pass. Independent reviews closed seller C01–C04 and growth B01–B04 locally; C05 seller/team pagination remains B-owned and must pass C retest. A's verified identity/transaction adapter is shared without changing its behavior. No production activation or release; main remains512a37e. Review evidence lives in parent MILESTONE-REVIEWS.
 
