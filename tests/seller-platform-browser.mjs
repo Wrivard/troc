@@ -41,7 +41,7 @@ try {
         await page
           .locator("input[name=userId]")
           .fill("00000000-0000-4000-8000-000000000001");
-        await page.locator("select[name=role]").selectOption("");
+        await page.locator("select[name=role]").selectOption("remove");
         await page.locator("form button").click();
         await page
           .getByRole("alert")

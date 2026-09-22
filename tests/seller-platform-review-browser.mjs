@@ -77,6 +77,10 @@ try {
             route.request().method() === "POST"
           ) {
             teamWrites++;
+            assert.equal(
+              route.request().postDataJSON().role,
+              teamWrites === 1 ? null : "owner",
+            );
             if (teamWrites === 1) {
               status = 409;
               body = { code: "last_owner" };
@@ -124,7 +128,38 @@ try {
           .waitFor();
         await page.goto(origin + "/seller/team");
         await page.locator("input[name=userId]").fill("owner");
-        await page.locator("select[name=role]").selectOption("");
+        assert.equal(await page.locator("select[name=role]").inputValue(), "");
+        await page.locator("form button").click();
+        assert.equal(
+          teamWrites,
+          0,
+          "A role must be explicitly chosen before any mutation",
+        );
+        assert.equal(
+          await page
+            .locator('a[href="/seller/team"]')
+            .getAttribute("aria-current"),
+          "page",
+        );
+        assert.equal(
+          await page
+            .getByRole("navigation", {
+              name: locale === "fr" ? "Pages de vendeurs" : "Seller pages",
+              exact: true,
+            })
+            .count(),
+          0,
+        );
+        assert.equal(
+          await page
+            .getByRole("navigation", {
+              name: locale === "fr" ? "Pages de l’équipe" : "Team pages",
+              exact: true,
+            })
+            .count(),
+          0,
+        );
+        await page.locator("select[name=role]").selectOption("remove");
         await page.locator("form button").click();
         await page.getByRole("alert").waitFor();
         assert.equal(await page.locator("input[name=userId]").count(), 1);
