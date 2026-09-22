@@ -9,9 +9,9 @@ import { analyticsPreference, journey, observe } from "./journey";
 import "./prelaunch.css";
 const version = "prelaunch-2026-09-v1";
 const link = (path: string) => `${import.meta.env.BASE_URL}early-access${path}`;
-function pathLink(path: string) {
+function pathLink(path: string, locale: string) {
   const incoming = new URLSearchParams(window.location.search),
-    out = new URLSearchParams();
+    out = new URLSearchParams({ lang: locale });
   for (const field of ["source", "ref"]) {
     const value = incoming.get(field);
     if (value) out.set(field, value.slice(0, 64));
@@ -22,6 +22,7 @@ export function PrelaunchApp({ path }: { path: string }) {
   const { locale, setLocale } = usePreferences(),
     lang = locale === "fr" ? 1 : 0;
   const t = (key: CopyKey) => copy[key][lang];
+  const localLink = (suffix: string) => pathLink(suffix, locale);
   const audience = path.endsWith("/seller") ? "seller" : "collector";
   const formPage =
     path === "/early-access/collector" || path === "/early-access/seller";
@@ -173,7 +174,7 @@ export function PrelaunchApp({ path }: { path: string }) {
   return (
     <div className="prelaunch-shell" lang={locale}>
       <header>
-        <a href={link("")} aria-label="TROC">
+        <a href={localLink("")} aria-label="TROC">
           TROC
         </a>
         <Button
@@ -216,7 +217,7 @@ export function PrelaunchApp({ path }: { path: string }) {
           </>
         ) : formPage ? (
           <>
-            <a href={link("")}>{t("back")}</a>
+            <a href={localLink("")}>{t("back")}</a>
             <h1>{t(audience)}</h1>
             <p>{t(audience === "seller" ? "sellerText" : "collectorText")}</p>
             {!receipt && (
@@ -318,7 +319,7 @@ export function PrelaunchApp({ path }: { path: string }) {
                   <h2>{t(k)}</h2>
                   <p>{t(k === "seller" ? "sellerText" : "collectorText")}</p>
                   <a
-                    href={pathLink("/" + k)}
+                    href={localLink("/" + k)}
                     onClick={(e) => {
                       if (
                         analytics &&
@@ -345,13 +346,23 @@ export function PrelaunchApp({ path }: { path: string }) {
             className="prelaunch-message"
           >
             <p>{t(message)}</p>
-            {receipt && <code>{receipt}</code>}
+            {receipt && (
+              <label>
+                {t("withdrawal")}
+                <Input
+                  readOnly
+                  value={receipt}
+                  autoComplete="off"
+                  onFocus={(event) => event.currentTarget.select()}
+                />
+              </label>
+            )}
           </div>
         )}
         <p className="prelaunch-note">{t("promise")}</p>
       </main>
       <footer>
-        <a href={link("/withdraw")}>{t("withdraw")}</a>
+        <a href={localLink("/withdraw")}>{t("withdraw")}</a>
         <p>TROC · Canada · CAD</p>
       </footer>
     </div>
