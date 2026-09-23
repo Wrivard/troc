@@ -473,8 +473,19 @@ export function HomeSections({
             <>
               {c("The card is the beginning.", "La carte, c’est le début.")}
               <br />
-              {c("The whole order matters.", "La commande complète compte.")}
+              <span className="troc-journey-headline-secondary">
+                {c("The whole order matters.", "La commande complète compte.")}
+              </span>
             </>
+          }
+          aside={
+            <span className="troc-journey-editorial-detail">
+              {c("CARDS", "CARTES")}
+              <br />
+              {c("PEOPLE", "PASSION")}
+              <br />
+              {c("TOGETHER", "ENSEMBLE")}
+            </span>
           }
           description={c(
             "TROC brings the details together, so you can get back to the cards.",

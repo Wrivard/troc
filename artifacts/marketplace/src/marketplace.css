@@ -1740,3 +1740,30 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
 @media (min-width: 768px) {
   .troc-category-section { margin-top: calc(var(--space-12) * -1); }
 }
+/* Existing buying journey: typography and neutral, aligned example panels. */
+.troc-how-edit { gap: var(--space-8); }
+.troc-how-edit > .troc-editorial-intro { max-width: none; align-items: center; }
+.troc-how-edit .troc-editorial-intro h2 { font-size: clamp(2rem, 4.1vw, 4rem); line-height: 1.12; letter-spacing: -.055em; }
+.troc-journey-headline-secondary { color: var(--text-secondary); }
+.troc-how-edit .troc-editorial-description { margin-top: var(--space-5); font-size: clamp(1rem, 1.4vw, 1.25rem); }
+.troc-journey-editorial-detail { display: block; text-align: right; font-size: 9px; line-height: 2; letter-spacing: .3em; padding: var(--space-3) var(--space-5); border-right: 1px solid var(--color-border); color: var(--text-secondary); }
+.troc-journey-editorial-detail::after { content: ""; display: block; width: 20px; height: 2px; background: var(--color-primary); margin: var(--space-3) 0 0 auto; }
+.troc-how-edit .troc-product-example { margin: 0; gap: var(--space-4); }
+.troc-how-edit .troc-example-result { gap: var(--space-5); font-size: var(--text-xl); font-weight: 600; }
+.troc-how-edit .troc-example-result > .troc-card-image { width: 128px; max-width: 40%; }
+.troc-how-edit .troc-example-result small, .troc-how-edit .troc-example-seller small { font-weight: 400; font-size: var(--text-sm); color: var(--text-secondary); }
+.troc-how-edit .troc-example-seller { min-height: 72px; font-size: var(--text-sm); gap: var(--space-3); padding-block: var(--space-4); }
+.troc-how-edit .troc-example-seller:last-child { border-bottom: 0; }
+.troc-how-edit .troc-example-seller .troc-seller-avatar { width: 48px; height: 48px; flex-shrink: 0; }
+.troc-how-edit .troc-example-order { font-size: var(--text-base); gap: var(--space-3); }
+.troc-how-edit .troc-example-order strong { border-top: 1px solid var(--color-border); padding-top: var(--space-3); }
+.troc-how-edit > .troc-art-note { margin-top: var(--space-2); }
+@media (max-width: 767px) {
+  .troc-how-edit .troc-editorial-intro-aside { display: none; }
+  .troc-how-edit .troc-example-result > .troc-card-image { width: 112px; }
+  .troc-how-edit .troc-example-result { font-size: var(--text-lg); gap: var(--space-4); }
+}
+
+.troc-how-edit .troc-product-example { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.troc-how-edit .troc-example-seller { border-bottom: 1px solid var(--color-border); }
+.troc-how-edit .troc-example-seller:last-child { border-bottom: 0; }

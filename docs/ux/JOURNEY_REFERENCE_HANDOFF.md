@@ -1,0 +1,9 @@
+# Less friction / More hobby reference refinement
+
+Follows679bd43. Full user attachment f8fea548-0a1c-446c-9a23-fb1257d6a690/Pasted text.txt read; actual reference39e1e285-1137-4690-86f9-992dec0802b1 inspected.
+
+Existing section refactored in place. Larger two-line sans headline/secondary-tone second line; restrained desktop editorial detail; shared MarketplaceJourney numbered red headings, neutral bordered panels and subgrid alignment. Existing Bulbasaur, seller identities/logos/handling, descriptions and7.22+4=11.22CAD example preserved. Removed inherited duplicate panel padding. Desktop3columns, tablet2+fullwidth third, mobile stacked; same approved theme tokens, no blue/glow/added scene.
+
+Author checks PASS: types/lint/client+SSR builds; tests/journey-refinement-preview.mjs six1672ENdark/1440FRlight/834ENdark/390FRdark/390ENlight/320FRlight cells, all3steps and original identities/price/disclosure, no overflow. Desktop panel y aligned and all244px high; tablet first2aligned, third fullwidth. Initial unequal panel top/heights found, corrected using subgrid, independently of card-content height. Actual inspected target, journey-final-review diagnostic, final unobscured journey-desktop-final.jpg and journey-mobile-final.jpg. Tablet rendering inspected in diagnostic. Full section PNGs and metrics verification/journey-refinement.json retained locally.
+
+Independent UX pending. No controller/backend changes. A retains exclusive async CommerceApp behavior. No push/deploy. Next approved sequential queue: SmartCart section, under-$1 shelf, About TROC, seller/community section. Read each full root reference brief before implementing; freeze separately.
