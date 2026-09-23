@@ -53,12 +53,18 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
     const [failed, setFailed] = React.useState(false);
     const [loaded, setLoaded] = React.useState(false);
     const imageRef = React.useRef<HTMLImageElement>(null);
+    const [artRatio, setArtRatio] = React.useState(width / height);
     React.useEffect(() => {
       setFailed(false);
       // A cached eager image can finish before passive effects run.
       const image = imageRef.current;
       setLoaded(Boolean(image?.complete && image.naturalWidth > 0));
-    }, [src, srcSet]);
+      setArtRatio(
+        image?.naturalWidth
+          ? image.naturalWidth / image.naturalHeight
+          : width / height,
+      );
+    }, [src, srcSet, width, height]);
 
     if (loading) {
       return (
@@ -106,7 +112,14 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
           alt={alt}
           loading={eager ? "eager" : "lazy"}
           decoding="async"
-          onLoad={() => setLoaded(true)}
+          style={{ "--troc-card-art-ratio": artRatio } as React.CSSProperties}
+          onLoad={(event) => {
+            setArtRatio(
+              event.currentTarget.naturalWidth /
+                event.currentTarget.naturalHeight,
+            );
+            setLoaded(true);
+          }}
           onError={() => setFailed(true)}
         />
       </span>

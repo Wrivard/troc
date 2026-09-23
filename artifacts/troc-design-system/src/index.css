@@ -2594,15 +2594,27 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
   display: block;
   overflow: hidden;
   aspect-ratio: 63 / 88;
+  container-type: size;
   width: 100%;
   background: var(--surface-hover);
   border-radius: var(--radius-md);
 }
+/* Round the image bounds, not the surrounding 63:88 layout slot. Provider
+   scans can contain opaque pixels beyond the physical card's corners. */
+.troc-card-image:has(> img) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
 .troc-card-image img {
-  width: 100%;
-  height: 100%;
+  width: min(100cqw, calc(100cqh * var(--troc-card-art-ratio, 0.715909)));
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   display: block;
+  border-radius: 4.75% / 3.4%;
 }
 .troc-card-image--missing {
   display: flex;
