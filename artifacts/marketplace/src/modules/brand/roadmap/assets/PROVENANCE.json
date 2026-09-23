@@ -1,0 +1,18 @@
+[
+  {
+    "source": "..\\assets-for-ui\\grey-leaf.png",
+    "sourceSha256": "91d7ba2da61f270ed2d09d99db71449807de72719b9779dab05dbde56cda9ef9",
+    "derivative": "grey-leaf.webp",
+    "sha256": "733cf291d98f87ba5e39f5fe7892ce38c6e76b470229a3e2e7f42b8ca2121bbf",
+    "bytes": 244674,
+    "process": "Sharp resize without enlargement; preserve alpha; WebP derivative; original unchanged"
+  },
+  {
+    "source": "..\\assets-for-ui\\small-red-leaf.png",
+    "sourceSha256": "9dcb2bf83eee6ef80dcf941d147b4ea793f19a2f4843fde91622aa9682c0a96e",
+    "derivative": "small-red-leaf.webp",
+    "sha256": "9aaced9181526e67897a4dbd00ac1054c8c9526ecd9743394fb172876f1f62f9",
+    "bytes": 3644,
+    "process": "Sharp resize without enlargement; preserve alpha; WebP derivative; original unchanged"
+  }
+]

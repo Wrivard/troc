@@ -197,6 +197,7 @@ export function MarketplaceFooter({
       title: fr ? "À propos" : "About TROC",
       links: [
         ["/about", fr ? "Notre histoire" : "Our story"],
+        ["/roadmap", fr ? "Feuille de route" : "Roadmap"],
         ["/help", fr ? "Centre d’aide" : "Help centre"],
         ["/condition-guide", fr ? "Guide d’état" : "Condition guide"],
         ["/developers", fr ? "Développeurs" : "Developers"],

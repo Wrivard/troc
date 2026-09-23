@@ -1,3 +1,4 @@
+import { RoadmapPage } from "./roadmap/RoadmapPage";
 import { CatalogPreview } from "./CatalogPreview";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { useEffect } from "react";
@@ -13,6 +14,14 @@ type Content = {
   planned?: boolean;
 };
 const pages: Record<string, Content> = {
+  "/roadmap": {
+    title: ["TROC roadmap", "Feuille de route TROC"],
+    lead: [
+      "A clear vision, one step at a time.",
+      "Une vision claire, une étape à la fois.",
+    ],
+    sections: [],
+  },
   "/about": {
     title: [
       "Built here. For collectors here.",
@@ -410,6 +419,22 @@ export function InformationPage({ path }: { path: string }) {
   }, [path, locale]);
   const href = (url: string) =>
     `${import.meta.env.BASE_URL.replace(/\/$/, "")}${url}?lang=${locale}`;
+  if (path === "/roadmap") {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <MarketplaceHeader
+          locale={locale}
+          theme={theme}
+          onLocale={setLocale}
+          onTheme={setTheme}
+        />
+        <main id="main-content">
+          <RoadmapPage locale={locale} journeyHref={href("/about")} />
+        </main>
+        <MarketplaceFooter locale={locale} />
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background text-foreground">
       <MarketplaceHeader
