@@ -1718,3 +1718,25 @@ main {
   .troc-cinematic-hero .troc-editorial-text-link { font-size: var(--text-xs); }
   .troc-hero-closing { font-size: 9px; letter-spacing: .16em; gap: var(--space-3); }
 }
+
+/* Static background texture is painted behind content, never over photographs or controls. */
+body { background-image: url("../public/home-editorial/page-grain.png"); background-repeat: repeat; }
+.troc-category-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); }
+.troc-category-heading .troc-editorial-intro { margin-bottom: 0; }
+.troc-heading-period { color: var(--color-primary); }
+.troc-category-aside { font-size: 9px; letter-spacing: .22em; line-height: 1.8; color: var(--text-secondary); padding-top: var(--space-3); border-top: 2px solid var(--color-primary); }
+.troc-category-section .troc-game-edit { margin-top: var(--space-5); }
+@media (max-width: 767px) {
+  .troc-category-aside { display: none; }
+  .troc-category-section .troc-game-edit > :first-child { grid-column: auto; min-height: 300px; }
+  .troc-category-section .troc-game-edit > :first-child .troc-destination-art { width: 76%; right: -9%; top: 8%; }
+  .troc-category-section .troc-game-edit > :first-child .troc-destination-copy { max-width: none; }
+  .troc-category-section .troc-destination--themed { min-height: 300px; padding: var(--space-4); }
+}
+@media (max-width: 359px) {
+  .troc-category-section .troc-game-edit { grid-template-columns: 1fr; }
+}.troc-category-section { gap: 0; }
+.troc-category-heading h2 { font-size: clamp(2rem, 3.8vw, 4rem); letter-spacing: -.055em; }
+@media (min-width: 768px) {
+  .troc-category-section { margin-top: calc(var(--space-12) * -1); }
+}

@@ -27,15 +27,16 @@ try {
         );
         await expect(stats.locator(".troc-metric")).toHaveCount(4);
         await expect(stats.locator(".troc-metric-value")).toHaveText([
-          "—",
-          "—",
-          "—",
-          "—",
+          `${new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA", { notation: "compact", maximumFractionDigits: 1 }).format(575000)} CAD`,
+          ...[3500000, 8200000, 2400].map((n) =>
+            new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA", {
+              notation: "compact",
+              maximumFractionDigits: 1,
+            }).format(n),
+          ),
         ]);
         await expect(stats).toContainText(
-          lang === "fr"
-            ? "Une donnée manquante ne signifie pas zéro"
-            : "Missing data is not a zero count",
+          lang === "fr" ? "Chiffres fictifs" : "Fictional figures",
         );
         assert.equal(
           await page
@@ -78,7 +79,7 @@ try {
           lang,
           theme,
           result: "PASS",
-          state: "unavailable aggregates",
+          state: "explicit illustrative demo preset",
         });
         await page.close();
       }
@@ -113,7 +114,7 @@ try {
       await stats
         .locator(".troc-stats-grid")
         .evaluate((el) => globalThis.getComputedStyle(el).borderTopWidth),
-      "1px",
+      "0px",
     );
     await stats.screenshot({
       path: `verification/stats-guide-320-${lang}.png`,
@@ -139,6 +140,7 @@ try {
       await page.route("**/api/catalog/page?**", async (route) => {
         const original = await route.fetch();
         const data = await original.json();
+        data.demo = state === "demo";
         data.stats = {
           status: state === "unavailable" ? "unavailable" : "available",
           source: state === "demo" ? "demo_snapshot" : "database",
@@ -159,18 +161,22 @@ try {
           ? ["—", "—", "—", "—"]
           : state === "zero"
             ? ["0", "0", "0", "0"]
-            : [12345, 98765, 234567, 24].map((n) =>
-                new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA").format(
-                  n,
+            : [
+                `${new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA", { notation: "compact", maximumFractionDigits: 1 }).format(575000)} CAD`,
+                ...[3500000, 8200000, 2400].map((n) =>
+                  new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA", {
+                    notation: "compact",
+                    maximumFractionDigits: 1,
+                  }).format(n),
                 ),
-              );
+              ];
       await expect(stats.locator(".troc-metric-value")).toHaveText(values);
       await expect(stats).toContainText(
         lang === "fr" ? "Exemplaires en vente" : "Listed units",
       );
       if (state === "demo") {
         await expect(stats).toContainText(
-          lang === "fr" ? "données fictives" : "sample data",
+          lang === "fr" ? "Chiffres fictifs" : "Illustrative demo figures",
         );
         await stats.screenshot({
           path: `verification/stats-projection-${lang}.png`,

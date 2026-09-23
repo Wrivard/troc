@@ -4,27 +4,36 @@ import { EditorialIcon } from "./editorial";
 import { InteractiveCardStack } from "./interactive-card-stack";
 import { MetricStat } from "./metric-stat";
 
-/** Display-only aggregates. Callers supply verified scope and formatted values. */
+/** Display-only metrics. Callers disclose provenance and format values. */
 export function MarketplaceStats({
   label,
   scope,
   source,
   unavailableLabel,
+  decoration,
   items,
 }: {
   label: string;
   scope: string;
   source: string;
   unavailableLabel: string;
+  decoration?: ReactNode;
   items: { id: string; label: string; value: string | null; detail: string }[];
 }) {
   return (
     <section className="troc-marketplace-stats" aria-label={label}>
+      {decoration && (
+        <div className="troc-stats-decoration" aria-hidden="true">
+          {decoration}
+        </div>
+      )}
+      <p className="troc-editorial-eyebrow">{label}</p>
       <p className="troc-stats-scope">{scope}</p>
       <div className="troc-stats-grid">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <MetricStat
             key={item.id}
+            data-index={String(index + 1).padStart(2, "0")}
             label={item.label}
             value={item.value ?? <span aria-label={unavailableLabel}>—</span>}
             meta={item.detail}
@@ -106,22 +115,40 @@ export function GameTile({
   name,
   description,
   art,
+  backgroundSrc,
 }: {
   href: string;
   index: string;
   name: string;
   description: string;
   art?: ReactNode;
+  backgroundSrc?: string;
 }) {
   return (
-    <a className="troc-destination" href={href}>
+    <a
+      className={cn(
+        "troc-destination",
+        backgroundSrc && "troc-destination--themed",
+      )}
+      href={href}
+    >
+      {backgroundSrc && (
+        <img
+          className="troc-destination-background"
+          src={backgroundSrc}
+          alt=""
+          loading="lazy"
+        />
+      )}
       <span className="troc-destination-index">{index}</span>
       <div className="troc-destination-art" aria-hidden="true">
-        {art ?? (
-          <div className="troc-card-back">
-            <EditorialIcon name="layers" />
-          </div>
-        )}
+        {art === null
+          ? null
+          : (art ?? (
+              <div className="troc-card-back">
+                <EditorialIcon name="layers" />
+              </div>
+            ))}
       </div>
       <div className="troc-destination-copy">
         <h3>{name}</h3>

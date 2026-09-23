@@ -3848,3 +3848,35 @@ a.troc-recently-sold:focus-visible,
 .type-price-large { font-size: 1.75rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.035em; }
 .type-price-small { font-size: 0.9375rem; line-height: 1.5; font-weight: 700; letter-spacing: -0.015em; }
 .type-table { font-size: 0.8125rem; line-height: 1.5; font-weight: 500; letter-spacing: 0; }
+
+/* Open editorial statistics: explicit provenance always remains visible. */
+.troc-marketplace-stats { position: relative; isolation: isolate; padding-block: var(--space-6); }
+.troc-marketplace-stats > .troc-editorial-eyebrow { margin-bottom: var(--space-3); }
+.troc-stats-grid { border: 0; border-radius: 0; overflow: visible; margin-top: var(--space-6); }
+.troc-stats-grid .troc-metric { position: relative; padding: 0 var(--space-8); background: transparent; gap: var(--space-2); }
+.troc-stats-grid .troc-metric:first-child { padding-left: 0; }
+.troc-stats-grid .troc-metric::before { content: attr(data-index); order: -2; color: var(--text-muted); font-size: var(--text-xs); margin-bottom: var(--space-3); }
+.troc-stats-grid .troc-metric-value { font-size: clamp(2rem, 3.2vw, 3.5rem); letter-spacing: -.055em; white-space: nowrap; }
+.troc-stats-grid .troc-metric-label { text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+.troc-stats-grid .troc-metric-footer { color: var(--text-secondary); font-size: var(--text-sm); }
+.troc-stats-source { margin-top: var(--space-5); max-width: 90ch; }
+.troc-stats-decoration { position: absolute; width: 300px; right: 0; bottom: 0; opacity: .16; z-index: -1; pointer-events: none; }
+.troc-stats-decoration img { display: block; width: 100%; }
+.troc-destination--themed { min-height: 340px; padding: var(--space-5); border: 1px solid #ffffff14; background: #111; color: #fafafa; justify-content: flex-end; }
+.troc-destination-background { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.troc-destination--themed::after { inset: 32% 0 0; background: linear-gradient(transparent, #101010e8 63%, #101010 100%); }
+.troc-destination--themed .troc-destination-index { position: relative; color: #d8aeae; margin-bottom: var(--space-2); }
+.troc-destination--themed .troc-destination-art { width: 76%; right: -9%; top: 8%; }
+.troc-destination--themed .troc-destination-art > img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 0 18px #ffffff18; }
+.troc-destination--themed .troc-destination-copy { padding-top: 0; }
+.troc-destination--themed h3 { font-size: clamp(1rem, 1.3vw, 1.3rem); letter-spacing: -.035em; }
+.troc-destination--themed p { color: #ddd; }
+.troc-destination--themed .troc-destination-copy > svg { width: 34px; height: 34px; padding: 8px; border: 1px solid var(--color-primary); border-radius: 50%; margin-top: var(--space-2); }
+@media (max-width: 767px) {
+  .troc-stats-grid { gap: var(--space-6) 0; }
+  .troc-stats-grid .troc-metric { padding: 0 var(--space-4); }
+  .troc-stats-grid .troc-metric:nth-child(odd) { padding-left: 0; }
+  .troc-stats-grid .troc-metric:nth-child(n+3) { border-top: 0; }
+  .troc-stats-grid .troc-metric-value { font-size: clamp(1.6rem, 5.8vw, 2.5rem); }
+  .troc-stats-decoration { width: 180px; opacity: .1; }
+}

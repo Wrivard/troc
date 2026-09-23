@@ -279,7 +279,14 @@ export default function EditorialPage() {
           />
         </EditorialCatalogGrid>
       </Section>
-      <Section title="GameTile">
+      <Section
+        title="GameTile"
+        description={
+          fr
+            ? "Tuile thématique : fond décoratif, dos de carte approuvé et fondu de lisibilité."
+            : "Themed tile: decorative background, approved card back and readability fade."
+        }
+      >
         <div className="grid gap-4 sm:grid-cols-2">
           <GameTile
             href="#page=editorial"
@@ -288,7 +295,13 @@ export default function EditorialPage() {
             description={
               fr ? "Unités · Scellées · Gradées" : "Singles · Sealed · Graded"
             }
-            art={pieces[0]}
+            backgroundSrc={`${import.meta.env.BASE_URL}home-editorial/pokemon-card-bg-category.webp`}
+            art={
+              <img
+                src={`${import.meta.env.BASE_URL}home-editorial/pokemon-back.webp`}
+                alt=""
+              />
+            }
           />
           <GameTile
             href="#page=editorial"

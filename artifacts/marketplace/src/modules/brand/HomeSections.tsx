@@ -47,8 +47,19 @@ export function HomeSections({
   const fr = page.locale === "fr";
   const c = (en: string, french: string) => (fr ? french : en);
   const stats = page.stats;
-  const demoStats =
-    stats?.source === "demo_snapshot" || stats?.scope === "demo_catalog";
+  const demoStats = page.demo;
+  // Approved fictional presentation preset. Never a live-data fallback or server metric.
+  const illustrative = new Intl.NumberFormat(fr ? "fr-CA" : "en-CA", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  });
+  const categoryBackgrounds: Record<string, string> = {
+    pokemon: "pokemon-card-bg-category",
+    magic: "magic-card-bg-category",
+    "yu-gi-oh": "yu-gi-yo-card-bg-category",
+    "one-piece": "one-piece-bg-category",
+    riftbound: "riftbound-bg-category",
+  };
   const metric = (
     key: "catalogProducts" | "activeListings" | "listedUnits" | "activeSellers",
   ) => {
@@ -270,54 +281,69 @@ export function HomeSections({
         </p>
       </section>
       <MarketplaceStats
-        label={c("TROC in numbers", "TROC en chiffres")}
+        label={c("MARKETPLACE AT A GLANCE", "LE MARCHÉ EN UN COUP D’ŒIL")}
+        decoration={
+          <img
+            src={`${import.meta.env.BASE_URL}home-editorial/maple-leaf.webp`}
+            alt=""
+            loading="lazy"
+          />
+        }
         scope={
-          stats?.status !== "available"
+          demoStats
             ? c(
-                "Marketplace figures · currently unavailable",
-                "Les chiffres du marché · indisponibles pour le moment",
+                "Illustrative demo figures · CAD",
+                "Chiffres fictifs de démonstration · CAD",
               )
-            : demoStats
+            : stats?.status === "available"
               ? c(
-                  "Demo catalog · sample data",
-                  "Catalogue de démonstration · données fictives",
-                )
-              : c(
                   "TROC catalog · published products and active listings",
                   "Catalogue TROC · produits publiés et offres actives",
                 )
+              : c(
+                  "Marketplace figures · currently unavailable",
+                  "Les chiffres du marché · indisponibles pour le moment",
+                )
         }
         source={
-          stats?.status !== "available"
+          demoStats
             ? c(
-                "Totals are currently unavailable. Missing data is not a zero count.",
-                "Les totaux sont indisponibles pour le moment. Une donnée manquante ne signifie pas zéro.",
+                "Fictional figures for this design preview. They do not represent real marketplace activity, sellers or transactions.",
+                "Chiffres fictifs pour cet aperçu visuel. Ils ne représentent aucune activité, aucun vendeur ni aucune transaction réels.",
               )
-            : measuredLabel +
-              (demoStats
-                ? c(
-                    "Source: complete demo catalog snapshot. These figures do not represent real sellers or transactions.",
-                    "Source : instantané complet du catalogue de démonstration. Ces chiffres ne représentent pas des vendeurs ou transactions réels.",
-                  )
-                : c(
-                    "Source: published catalog and qualifying active Canadian seller listings. Listed quantities can change and are not reserved stock.",
-                    "Source : catalogue publié et offres actives admissibles de vendeurs canadiens. Les quantités affichées peuvent changer et ne sont pas réservées.",
-                  ))
+            : stats?.status !== "available"
+              ? c(
+                  "Totals are currently unavailable. Missing data is not a zero count.",
+                  "Les totaux sont indisponibles pour le moment. Une donnée manquante ne signifie pas zéro.",
+                )
+              : measuredLabel +
+                c(
+                  "Source: published catalog and qualifying active Canadian seller listings. Listed quantities can change and are not reserved stock.",
+                  "Source : catalogue publié et offres actives admissibles de vendeurs canadiens. Les quantités affichées peuvent changer et ne sont pas réservées.",
+                )
         }
         unavailableLabel={c("Not available", "Indisponible")}
         items={[
           {
-            id: "products",
-            value: metric("catalogProducts"),
-            label: c("Catalog products", "Produits du catalogue"),
-            detail: c(
-              "Distinct canonical products",
-              "Produits canoniques distincts",
-            ),
+            id: demoStats ? "monthly-volume" : "products",
+            value: demoStats
+              ? `${illustrative.format(575000)} CAD`
+              : metric("catalogProducts"),
+            label: demoStats
+              ? c("Monthly volume", "Volume mensuel")
+              : c("Catalog products", "Produits du catalogue"),
+            detail: demoStats
+              ? c("Illustrative monthly total", "Total mensuel fictif")
+              : c(
+                  "Distinct canonical products",
+                  "Produits canoniques distincts",
+                ),
           },
           {
             id: "listings",
-            value: metric("activeListings"),
+            value: demoStats
+              ? illustrative.format(3500000)
+              : metric("activeListings"),
             label: c("Seller listings", "Offres des vendeurs"),
             detail: c(
               "Active offers, across sellers",
@@ -326,7 +352,9 @@ export function HomeSections({
           },
           {
             id: "units",
-            value: metric("listedUnits"),
+            value: demoStats
+              ? illustrative.format(8200000)
+              : metric("listedUnits"),
             label: c("Listed units", "Exemplaires en vente"),
             detail: c(
               "Quantities across active listings",
@@ -335,7 +363,9 @@ export function HomeSections({
           },
           {
             id: "sellers",
-            value: metric("activeSellers"),
+            value: demoStats
+              ? illustrative.format(2400)
+              : metric("activeSellers"),
             label: c("Active sellers", "Vendeurs actifs"),
             detail: c(
               "Sellers with available offers",
@@ -344,29 +374,64 @@ export function HomeSections({
           },
         ]}
       />
-      <section className="troc-home-section">
-        <EditorialIntro
-          eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
-          title={c("Find your world.", "Trouvez votre univers.")}
-          description={c(
-            "A new deck. A familiar favourite. Follow what you collect.",
-            "Un nouveau deck. Un grand favori. Suivez votre passion.",
-          )}
-        />
+      <section className="troc-home-section troc-category-section">
+        <div className="troc-category-heading">
+          <EditorialIntro
+            eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
+            title={
+              <>
+                {c("Find your world", "Trouvez votre univers")}
+                <span className="troc-heading-period">.</span>
+              </>
+            }
+            description={c(
+              "A new deck. A familiar favourite. Follow what you collect.",
+              "Un nouveau deck. Un grand favori. Suivez votre passion.",
+            )}
+          />
+          <p className="troc-category-aside">
+            {c("CARDS", "CARTES")}
+            <br />
+            {c("PEOPLE", "PASSION")}
+            <br />
+            {c("COMMUNITY", "COMMUNAUTÉ")}
+            <br />
+            CANADA
+          </p>
+        </div>
         <div className="troc-game-edit">
           {games.map((g, index) => {
-            const p = products.find((r) => r.product.gameId === g.id)?.product;
             return (
               <GameTile
                 key={g.id}
                 href={href(`/games/${g.slug}`)}
                 index={String(index + 1).padStart(2, "0")}
                 name={g.name[page.locale]}
-                description={c(
-                  "Singles · Sealed · Graded",
-                  "Unités · Scellées · Gradées",
-                )}
-                art={p ? art(p) : undefined}
+                description={
+                  g.slug === "riftbound"
+                    ? c(
+                        "Card-back artwork coming soon",
+                        "Visuel du dos à venir",
+                      )
+                    : c(
+                        "Singles · Sealed · Graded",
+                        "Unités · Scellées · Gradées",
+                      )
+                }
+                backgroundSrc={
+                  categoryBackgrounds[g.slug]
+                    ? `${import.meta.env.BASE_URL}home-editorial/${categoryBackgrounds[g.slug]}.webp`
+                    : undefined
+                }
+                art={
+                  g.slug !== "riftbound" && categoryBackgrounds[g.slug] ? (
+                    <img
+                      src={`${import.meta.env.BASE_URL}home-editorial/${g.slug}-back.webp`}
+                      alt=""
+                      loading="lazy"
+                    />
+                  ) : null
+                }
               />
             );
           })}
