@@ -26,6 +26,27 @@ export function MarketplaceHeader({
   cartBehavior = "drawer",
 }: ChromeProps) {
   const fr = locale === "fr";
+  const headerFrame = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const frame = headerFrame.current;
+    if (!frame) return;
+    const root = document.documentElement;
+    const previous = root.style.getPropertyValue("--troc-header-height");
+    const measure = () =>
+      root.style.setProperty(
+        "--troc-header-height",
+        frame.getBoundingClientRect().height + "px",
+      );
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(frame);
+    return () => {
+      observer.disconnect();
+      if (previous) root.style.setProperty("--troc-header-height", previous);
+      else root.style.removeProperty("--troc-header-height");
+    };
+  }, []);
+
   const [cartOpen, setCartOpen] = useState(false);
   const cartReturnFocus = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -45,7 +66,10 @@ export function MarketplaceHeader({
       `${base}${path}${path.includes("?") ? "&" : "?"}lang=${locale}`,
     );
   return (
-    <div className="print:hidden">
+    <div
+      ref={headerFrame}
+      className="troc-marketplace-header-frame print:hidden"
+    >
       <a className="troc-skip" href="#main-content">
         {fr ? "Aller au contenu" : "Skip to content"}
       </a>

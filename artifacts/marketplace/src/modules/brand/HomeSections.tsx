@@ -279,6 +279,69 @@ export function HomeSections({
           {c("COLLECTING MADE EASIER", "COLLECTIONNER, SIMPLEMENT")}
         </p>
       </section>
+      <section className="troc-home-section troc-category-section">
+        <div className="troc-category-heading">
+          <EditorialIntro
+            eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
+            title={
+              <>
+                {c("Find your world", "Trouvez votre univers")}
+                <span className="troc-heading-period">.</span>
+              </>
+            }
+            description={c(
+              "A new deck. A familiar favourite. Follow what you collect.",
+              "Un nouveau deck. Un grand favori. Suivez votre passion.",
+            )}
+          />
+          <p className="troc-category-aside">
+            {c("CARDS", "CARTES")}
+            <br />
+            {c("PEOPLE", "PASSION")}
+            <br />
+            {c("COMMUNITY", "COMMUNAUTÉ")}
+            <br />
+            CANADA
+          </p>
+        </div>
+        <div className="troc-game-edit">
+          {games.map((g, index) => {
+            return (
+              <GameTile
+                key={g.id}
+                href={href(`/games/${g.slug}`)}
+                index={String(index + 1).padStart(2, "0")}
+                name={g.name[page.locale]}
+                description={
+                  g.slug === "riftbound"
+                    ? c(
+                        "Card-back artwork coming soon",
+                        "Visuel du dos à venir",
+                      )
+                    : c(
+                        "Singles · Sealed · Graded",
+                        "Unités · Scellées · Gradées",
+                      )
+                }
+                backgroundSrc={
+                  categoryBackgrounds[g.slug]
+                    ? `${import.meta.env.BASE_URL}home-editorial/${categoryBackgrounds[g.slug]}.webp`
+                    : undefined
+                }
+                art={
+                  g.slug !== "riftbound" && categoryBackgrounds[g.slug] ? (
+                    <img
+                      src={`${import.meta.env.BASE_URL}home-editorial/${g.slug}-back.webp`}
+                      alt=""
+                      loading="lazy"
+                    />
+                  ) : null
+                }
+              />
+            );
+          })}
+        </div>
+      </section>
       <MarketplaceStats
         label={c("MARKETPLACE AT A GLANCE", "LE MARCHÉ EN UN COUP D’ŒIL")}
         decoration={
@@ -373,69 +436,6 @@ export function HomeSections({
           },
         ]}
       />
-      <section className="troc-home-section troc-category-section">
-        <div className="troc-category-heading">
-          <EditorialIntro
-            eyebrow={c("FIVE GAMES. ONE PLACE.", "CINQ JEUX. UN SEUL ENDROIT.")}
-            title={
-              <>
-                {c("Find your world", "Trouvez votre univers")}
-                <span className="troc-heading-period">.</span>
-              </>
-            }
-            description={c(
-              "A new deck. A familiar favourite. Follow what you collect.",
-              "Un nouveau deck. Un grand favori. Suivez votre passion.",
-            )}
-          />
-          <p className="troc-category-aside">
-            {c("CARDS", "CARTES")}
-            <br />
-            {c("PEOPLE", "PASSION")}
-            <br />
-            {c("COMMUNITY", "COMMUNAUTÉ")}
-            <br />
-            CANADA
-          </p>
-        </div>
-        <div className="troc-game-edit">
-          {games.map((g, index) => {
-            return (
-              <GameTile
-                key={g.id}
-                href={href(`/games/${g.slug}`)}
-                index={String(index + 1).padStart(2, "0")}
-                name={g.name[page.locale]}
-                description={
-                  g.slug === "riftbound"
-                    ? c(
-                        "Card-back artwork coming soon",
-                        "Visuel du dos à venir",
-                      )
-                    : c(
-                        "Singles · Sealed · Graded",
-                        "Unités · Scellées · Gradées",
-                      )
-                }
-                backgroundSrc={
-                  categoryBackgrounds[g.slug]
-                    ? `${import.meta.env.BASE_URL}home-editorial/${categoryBackgrounds[g.slug]}.webp`
-                    : undefined
-                }
-                art={
-                  g.slug !== "riftbound" && categoryBackgrounds[g.slug] ? (
-                    <img
-                      src={`${import.meta.env.BASE_URL}home-editorial/${g.slug}-back.webp`}
-                      alt=""
-                      loading="lazy"
-                    />
-                  ) : null
-                }
-              />
-            );
-          })}
-        </div>
-      </section>
       <section className="troc-home-section troc-discovery-edit">
         <EditorialIntro
           eyebrow={c("THE DISCOVERY EDIT / 01", "LA SÉLECTION / 01")}

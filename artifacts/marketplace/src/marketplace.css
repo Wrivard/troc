@@ -1883,3 +1883,36 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
 .troc-cart-drawer #cart-summary .troc-cart-payment-note { position: sticky; bottom: 0; background: var(--surface-elevated); padding-block: 2px; }
 .troc-cart-drawer #cart-summary > details[open] > div { max-height: 110px; overflow-y: auto; }
 .troc-cart-drawer #cart-minimum-explanation ul { max-height: 72px; overflow-y: auto; }
+/* Keep the approved header in normal flow while it stays at the viewport top. */
+.troc-marketplace-header-frame { position: sticky; top: 0; z-index: var(--z-sticky); background: var(--surface); }
+html:has(.troc-marketplace-header-frame) { scroll-padding-top: calc(var(--troc-header-height, 170px) + var(--space-4)); }
+.troc-home-editorial > .troc-category-section { margin-top: 0; }
+.troc-home-editorial > .troc-marketplace-stats { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-5); }
+.troc-home-editorial > .troc-marketplace-stats .troc-stats-decoration { width: 220px; right: 0; bottom: 0; opacity: 1; z-index: 0; }
+.troc-home-editorial > .troc-marketplace-stats .troc-stats-source { position: relative; max-width: calc(100% - 150px); min-height: 120px; }
+@media (max-width: 600px) {
+  .troc-home-editorial > .troc-marketplace-stats .troc-stats-decoration { width: 160px; }
+  .troc-home-editorial > .troc-marketplace-stats .troc-stats-source { max-width: calc(100% - 106px); min-height: 94px; }
+}
+@media (max-width: 360px) {
+  .troc-marketplace-header-frame .troc-site-header[data-compact-mobile] { gap: 6px; padding: 10px; }
+  .troc-marketplace-header-frame .troc-site-header-brand img { height: 20px; }
+  .troc-marketplace-header-frame .troc-locale-switcher button,
+  .troc-marketplace-header-frame .troc-theme-switcher button { min-width: 30px; padding-inline: 5px; }
+  .troc-marketplace-header-frame .troc-theme-switcher button { width: 30px; }
+  .troc-marketplace-header-frame .troc-site-nav { flex-basis: calc(100% - 92px); gap: 0; }
+  .troc-marketplace-header-frame .troc-site-nav-link { padding-inline: 5px; font-size: 11px; }
+  .troc-marketplace-header-frame .troc-site-cart,
+  .troc-marketplace-header-frame .troc-site-sign-in { width: 40px; min-width: 40px; padding-inline: 0; }
+}
+@media (max-width: 360px) {
+  .troc-marketplace-header-frame .troc-site-header[data-compact-mobile] .troc-site-nav { min-width: 0; flex-basis: calc(100% - 96px); }
+  .troc-marketplace-header-frame .troc-site-header[data-compact-mobile] .troc-site-cart,
+  .troc-marketplace-header-frame .troc-site-header[data-compact-mobile] .troc-site-sign-in { width: 40px; min-width: 40px; flex: 0 0 40px; padding-inline: 0; }
+}
+@media (max-width: 360px) {
+  .troc-marketplace-header-frame .troc-site-header[data-compact-mobile] .troc-site-nav-link { padding-inline: 4px; font-size: 11px; }
+}
+/* Existing page-level sticky panels sit below the persistent navigation. */
+.troc-product-sticky { top: calc(var(--troc-header-height, 0px) + var(--space-4)); }
+.troc-commerce-layout #cart-summary:not(.troc-cart-sticky-summary) { top: calc(var(--troc-header-height, 0px) + var(--space-4)); }
