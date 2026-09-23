@@ -341,6 +341,7 @@ export default function EditorialPage() {
       </Section>
       <Section title="SmartCartComparison">
         <SmartCartComparison
+          variant="panels"
           before={{ cards: 675, shipping: 750, sellers: 3 }}
           after={{ cards: 722, shipping: 400, sellers: 1 }}
           locale={fr ? "fr" : "en"}

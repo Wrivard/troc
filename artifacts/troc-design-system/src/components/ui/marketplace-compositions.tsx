@@ -343,6 +343,7 @@ export function SmartCartComparison({
   locale,
   labels,
   note,
+  variant = "plain",
 }: {
   before: { cards: number; shipping: number; sellers: number };
   after: { cards: number; shipping: number; sellers: number };
@@ -357,6 +358,8 @@ export function SmartCartComparison({
     explanation: string;
   };
   note?: ReactNode;
+  /** Bordered editorial comparison; plain preserves the local demo presentation. */
+  variant?: "plain" | "panels";
 }) {
   const money = (n: number) =>
     new Intl.NumberFormat(locale + "-CA", {
@@ -365,7 +368,9 @@ export function SmartCartComparison({
     }).format(n / 100);
   const saving = before.cards + before.shipping - after.cards - after.shipping;
   return (
-    <div className="troc-consolidation">
+    <div
+      className={`troc-consolidation${variant === "panels" ? " troc-consolidation--panels" : ""}`}
+    >
       <div className="troc-consolidation-flow">
         {[before, after].map((side, i) => (
           <div
@@ -394,6 +399,9 @@ export function SmartCartComparison({
                 <dd>{money(side.shipping)}</dd>
               </div>
             </dl>
+            {variant === "panels" && (
+              <span className="troc-consolidation-total-label">Total</span>
+            )}
             <strong className="troc-consolidation-total">
               {money(side.cards + side.shipping)}
             </strong>
@@ -407,8 +415,13 @@ export function SmartCartComparison({
         <span>{labels.save}</span>
         <strong>{money(saving)}</strong>
         <p>{labels.explanation}</p>
+        {variant === "panels" && note && (
+          <small className="troc-consolidation-note">{note}</small>
+        )}
       </div>
-      {note && <p className="troc-consolidation-note">{note}</p>}
+      {variant === "plain" && note && (
+        <p className="troc-consolidation-note">{note}</p>
+      )}
     </div>
   );
 }

@@ -1767,3 +1767,20 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
 .troc-how-edit .troc-product-example { padding: 0; border: 0; background: transparent; box-shadow: none; }
 .troc-how-edit .troc-example-seller { border-bottom: 1px solid var(--color-border); }
 .troc-how-edit .troc-example-seller:last-child { border-bottom: 0; }
+
+/* Homepage Smart Cart reference composition. */
+.troc-smart-edit { border: 1px solid hsl(var(--border)); background: var(--surface); border-radius: var(--radius-xl); box-shadow: none; padding: 0; }
+.troc-smart-edit > .troc-editorial-panel-content { padding: clamp(24px, 3vw, 48px); grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: clamp(28px, 3vw, 48px); }
+.troc-smart-story { padding-top: 24px; gap: 32px; min-width: 0; }
+.troc-smart-story .troc-editorial-intro { margin: 0; }
+.troc-smart-story h2 { font-family: var(--font-sans); font-size: clamp(2.25rem, 3.2vw, 3.5rem); font-weight: 750; line-height: 1.08; letter-spacing: -.05em; }
+.troc-smart-story .troc-editorial-description { max-width: 38rem; font-size: 17px; line-height: 1.7; }
+.troc-smart-story > .troc-button { min-height: 52px; padding-inline: 26px; box-shadow: none; }
+@media (max-width: 1100px) {
+  .troc-smart-edit > .troc-editorial-panel-content { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .troc-smart-story { padding-top: 0; }
+}
+@media (max-width: 600px) {
+  .troc-smart-edit > .troc-editorial-panel-content { padding: 20px; }
+  .troc-smart-story h2 { font-size: clamp(1.9rem, 7.5vw, 2.6rem); }
+}

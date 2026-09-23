@@ -3897,3 +3897,35 @@ a.troc-recently-sold:focus-visible,
 }
 .troc-marketplace-journey > li { display: grid; grid-template-rows: subgrid; grid-row: span 3; }
 .troc-journey-illustration { margin-top: 0; align-self: stretch; }
+/* Editorial comparison variant: independent of the interactive demo. */
+.troc-consolidation--panels .troc-consolidation-flow { gap: 40px; align-items: stretch; }
+.troc-consolidation--panels .troc-consolidation-side {
+  min-width: 0; padding: clamp(18px, 2vw, 32px); gap: 14px;
+  border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg);
+  background: var(--surface); align-content: start;
+}
+.troc-consolidation--panels .troc-consolidation-side[data-after] { border-color: color-mix(in srgb, var(--color-accent) 48%, hsl(var(--border))); }
+.troc-consolidation--panels .troc-editorial-eyebrow { font-size: 11px; letter-spacing: .14em; line-height: 1.5; }
+.troc-consolidation--panels .troc-editorial-eyebrow::before { width: 24px; }
+.troc-consolidation--panels .troc-consolidation-parcels { height: 30px; margin-top: 8px; }
+.troc-consolidation--panels .troc-consolidation-parcels svg { width: 30px; height: 30px; }
+.troc-consolidation--panels .troc-consolidation-side dl { margin-block: 6px 2px; font-size: 15px; }
+.troc-consolidation--panels .troc-consolidation-total-label { border-top: 1px solid hsl(var(--border)); padding-top: 18px; letter-spacing: .08em; color: var(--text-primary); }
+.troc-consolidation--panels .troc-consolidation-total { border: 0; padding: 0; font-size: clamp(2rem, 3.1vw, 3.5rem); line-height: 1; font-weight: 700; white-space: nowrap; }
+.troc-consolidation--panels .troc-consolidation-arrow { display: block; top: 48%; }
+.troc-consolidation--panels .troc-consolidation-result {
+  padding: 24px 28px; margin-top: 24px; grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center; gap: 16px; border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-lg); background: var(--surface);
+}
+.troc-consolidation--panels .troc-consolidation-result > strong { color: var(--color-accent); font-size: clamp(2.5rem, 3.3vw, 3.75rem); line-height: 1; white-space: nowrap; }
+.troc-consolidation--panels .troc-consolidation-result > p { grid-column: auto; border-left: 1px solid hsl(var(--border)); padding-left: 20px; }
+.troc-consolidation--panels .troc-consolidation-note { grid-column: 1 / -1; margin: 0; font-size: 12px; }
+@media (max-width: 600px) {
+  .troc-consolidation--panels .troc-consolidation-flow { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .troc-consolidation--panels .troc-consolidation-side { padding: 24px; }
+  .troc-consolidation--panels .troc-editorial-eyebrow::before { display: block; }
+  .troc-consolidation--panels .troc-consolidation-arrow { display: block; top: calc(50% - 10px); left: calc(50% - 10px); transform: rotate(90deg); }
+  .troc-consolidation--panels .troc-consolidation-result { padding: 24px; grid-template-columns: auto 1fr; }
+  .troc-consolidation--panels .troc-consolidation-result > p { grid-column: 1 / -1; border: 0; padding-left: 0; }
+}
