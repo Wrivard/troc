@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--text-primary);
+}
+.sell-harness-header {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+.sell-harness-header img,
+.sell-harness-header svg {
+  width: 120px;
+  flex-shrink: 0;
+}
+.sell-harness-header p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.sell-harness-main {
+  display: grid;
+  gap: 48px;
+  max-width: 1200px;
+  padding: 48px 32px;
+  margin: auto;
+}
+@media (max-width: 540px) {
+  .sell-harness-header {
+    padding: 16px;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .sell-harness-header img {
+    width: 88px;
+  }
+  .sell-harness-main {
+    padding: 32px 16px;
+  }
+}
