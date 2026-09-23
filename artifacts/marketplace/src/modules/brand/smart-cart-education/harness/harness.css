@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--text-primary);
+}
+.smart-education-harness-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.smart-education-harness-header svg,
+.smart-education-harness-header img {
+  width: 130px;
+}
+.smart-education-harness-main {
+  max-width: 1376px;
+  margin: auto;
+  padding: 32px;
+}
+@media (max-width: 600px) {
+  .smart-education-harness-header {
+    padding: 16px;
+  }
+  .smart-education-harness-header span {
+    max-width: 140px;
+    font-size: 10px;
+  }
+  .smart-education-harness-main {
+    padding: 24px 16px;
+  }
+}

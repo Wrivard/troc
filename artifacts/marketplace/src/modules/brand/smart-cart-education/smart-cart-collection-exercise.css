@@ -1,0 +1,178 @@
+.troc-collection-exercise {
+  margin-block: 48px;
+  padding-block: 32px;
+  border-block: 1px solid var(--color-border);
+  color: var(--text-primary);
+}
+.troc-collection-exercise header {
+  display: grid;
+  gap: 12px;
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+.troc-collection-exercise .troc-collection-exercise-kicker {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.troc-collection-exercise h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.15;
+}
+.troc-collection-exercise p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.troc-collection-exercise-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.troc-collection-exercise-set {
+  font-size: 14px;
+  margin-bottom: 16px !important;
+  font-weight: 600;
+}
+.troc-collection-exercise-set span {
+  font-size: 12px;
+  font-weight: 400;
+}
+.troc-collection-exercise-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.troc-collection-exercise-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.troc-collection-exercise-art {
+  display: block;
+  max-width: 130px;
+  width: 100%;
+  margin-inline: auto;
+}
+.troc-collection-exercise-card[data-missing="true"]
+  .troc-collection-exercise-art {
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+.troc-collection-exercise-card strong {
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.troc-collection-exercise-card small {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.troc-collection-exercise-card-status {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: auto;
+  min-height: 32px;
+}
+.troc-collection-exercise-check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.troc-collection-exercise-check button {
+  flex-shrink: 0;
+}
+.troc-collection-exercise-card[data-selected="true"] {
+  border-color: var(--border-strong);
+}
+.troc-collection-exercise-budget {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+}
+.troc-collection-exercise-budget > label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 14px;
+  font-weight: 600;
+}
+.troc-collection-exercise-budget output {
+  white-space: nowrap;
+  font-size: 20px;
+}
+.troc-collection-exercise-budget input {
+  width: 100%;
+  accent-color: var(--color-primary);
+  min-height: 32px;
+}
+.troc-collection-exercise-budget input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.troc-collection-exercise-budget > button {
+  height: auto;
+  min-height: 44px;
+  white-space: normal;
+  text-align: center;
+  padding: 10px 14px;
+  line-height: 1.4;
+}
+.troc-collection-exercise .troc-collection-exercise-note,
+.troc-collection-exercise .troc-collection-exercise-limit {
+  font-size: 12px;
+}
+.troc-collection-exercise dl {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.troc-collection-exercise dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.troc-collection-exercise dl > div:last-child {
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+  font-weight: 700;
+}
+.troc-collection-exercise .troc-collection-exercise-result {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.troc-collection-exercise .troc-collection-exercise-limit {
+  margin-top: 20px;
+}
+@media (max-width: 1023px) {
+  .troc-collection-exercise-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .troc-collection-exercise-budget {
+    max-width: none;
+  }
+}
+@media (max-width: 540px) {
+  .troc-collection-exercise-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .troc-collection-exercise-budget {
+    padding: 16px;
+  }
+  .troc-collection-exercise-card-status {
+    min-height: 0;
+  }
+}
