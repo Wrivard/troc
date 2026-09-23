@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { PublicPage, Locale } from "@workspace/catalog";
+import { demoStoreBranding, demoStoreFocalPoint } from "./demo-store-branding";
+import "./sell-store-preview.css";
 import { CatalogArtwork } from "../catalog/CatalogArtwork";
 import { StoreHero } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller-storefront";
@@ -14,6 +16,7 @@ export function CatalogPreview({
   kind: "binder" | "store" | "want-list";
 }) {
   const [page, setPage] = useState<PublicPage | null>(null);
+  const [failedBannerUrl, setFailedBannerUrl] = useState<string>();
   const fr = locale === "fr";
   useEffect(() => {
     const controller = new AbortController();
@@ -48,9 +51,23 @@ export function CatalogPreview({
       </span>
     );
   if (kind === "store") {
-    const seller = page?.sellers[0];
+    const originalSeller = page?.sellers[0];
+    const seller = originalSeller
+      ? demoStoreBranding(originalSeller)
+      : undefined;
     return (
-      <div className="troc-seller-landing-preview">
+      <div
+        className="troc-seller-landing-preview"
+        onErrorCapture={(event) => {
+          const target = event.target;
+          if (
+            seller?.bannerUrl &&
+            target instanceof HTMLImageElement &&
+            target.getAttribute("src") === seller?.bannerUrl
+          )
+            setFailedBannerUrl(seller.bannerUrl);
+        }}
+      >
         <StoreHero
           level={2}
           name={seller?.name ?? "TROC"}
@@ -58,7 +75,15 @@ export function CatalogPreview({
             fr ? "APERÇU DE BOUTIQUE · DÉMO" : "STOREFRONT PREVIEW · DEMO"
           }
           location={seller ? `${seller.city}, ${seller.province}` : "Canada"}
-          avatar={<SellerAvatar name={seller?.name ?? "TROC"} />}
+          avatar={
+            <SellerAvatar name={seller?.name ?? "TROC"} src={seller?.logoUrl} />
+          }
+          bannerSrc={
+            seller?.bannerUrl === failedBannerUrl
+              ? undefined
+              : seller?.bannerUrl
+          }
+          focalPoint={seller ? demoStoreFocalPoint(seller) : "50% 50%"}
           banner={
             <div className="troc-store-cover-cards">
               {[0, 1, 2].map((i) => (

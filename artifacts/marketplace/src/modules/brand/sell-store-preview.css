@@ -1,0 +1,17 @@
+/* Scoped to the leased /sell preview; preserve public-store and homepage frames. */
+.troc-seller-landing-preview.troc-seller-landing-preview .troc-store-cover {
+  height: auto;
+  aspect-ratio: 5 / 2;
+}
+.troc-seller-landing-preview .troc-store-cover > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--store-focal, 50% 50%);
+}
+@media (max-width: 600px) {
+  .troc-seller-landing-preview.troc-seller-landing-preview .troc-store-cover {
+    aspect-ratio: 16 / 9;
+  }
+}
