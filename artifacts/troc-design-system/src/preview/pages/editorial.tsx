@@ -58,6 +58,22 @@ export default function EditorialPage() {
             : "Hierarchy, contrast and depth using the approved tokens."
         }
       />
+      <Section title={fr ? "Ic�nes du catalogue" : "Catalog icons"}>
+        <div className="flex flex-wrap gap-6">
+          {(["grid", "compact", "list", "filter"] as const).map(
+            (name, index) => (
+              <span key={name} className="flex items-center gap-2">
+                <EditorialIcon name={name} />
+                {
+                  (fr
+                    ? ["Grande grille", "Grille compacte", "Liste", "Filtres"]
+                    : ["Large grid", "Compact grid", "List", "Filters"])[index]
+                }
+              </span>
+            ),
+          )}
+        </div>
+      </Section>
       <Section title="MarketplaceStats">
         <MarketplaceStats
           label={fr ? "Exemple de statistiques" : "Statistics example"}

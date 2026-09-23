@@ -38,6 +38,7 @@ import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { HomeSections } from "../brand/HomeSections";
 import { CardImage } from "@workspace/troc-design-system/components/ui/product-presentation";
 import { CatalogArtwork } from "./CatalogArtwork";
+import { CatalogBrowse } from "./CatalogBrowse";
 import {
   PriceBlock,
   ReferencePrice,
@@ -1286,6 +1287,95 @@ export function PublicMarketplace({
               <div className="rounded-lg bg-card p-8 text-muted-foreground">
                 {t("noReviews")}
               </div>
+            ) : page.kind === "search" ? (
+              <CatalogBrowse
+                key={`${page.path}:${JSON.stringify(page.filters)}`}
+                page={page}
+                base={base}
+                chips={
+                  activeFilters.length > 0 && (
+                    <ChipGroup
+                      className="troc-applied-filters"
+                      label={
+                        locale === "fr"
+                          ? "Filtres appliqués"
+                          : "Applied filters"
+                      }
+                    >
+                      {activeFilters.map(([key, value]) => (
+                        <Chip
+                          key={key}
+                          removeLabel={`${locale === "fr" ? "Retirer" : "Remove"} ${appliedLabel(key, value)}`}
+                          onRemove={() =>
+                            go(
+                              page.path,
+                              Object.fromEntries(
+                                Object.entries(page.filters)
+                                  .filter(
+                                    ([name, val]) =>
+                                      name !== key &&
+                                      name !== "cursor" &&
+                                      val !== null &&
+                                      val !== "",
+                                  )
+                                  .map(([name, val]) => [name, String(val)]),
+                              ),
+                            )
+                          }
+                        >
+                          {appliedLabel(key, value)}
+                        </Chip>
+                      ))}
+                    </ChipGroup>
+                  )
+                }
+                pagination={
+                  <div className="flex flex-wrap gap-3">
+                    {page.filters.cursor && (
+                      <Button asChild variant="secondary">
+                        <a
+                          href={href(
+                            page.path,
+                            Object.fromEntries(
+                              Object.entries(page.filters)
+                                .filter(
+                                  ([key, value]) =>
+                                    key !== "cursor" &&
+                                    value !== null &&
+                                    value !== "",
+                                )
+                                .map(([key, value]) => [key, String(value)]),
+                            ),
+                          )}
+                        >
+                          {t("first")}
+                        </a>
+                      </Button>
+                    )}
+                    {page.nextCursor && (
+                      <Button asChild>
+                        <a
+                          href={href(
+                            page.path,
+                            Object.fromEntries(
+                              Object.entries({
+                                ...page.filters,
+                                cursor: page.nextCursor,
+                              })
+                                .filter(([, v]) => v !== null && v !== "")
+                                .map(([k, v]) => [k, String(v)]),
+                            ),
+                          )}
+                        >
+                          {t("next")}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                }
+              >
+                {cards(page.results)}
+              </CatalogBrowse>
             ) : (
               <>
                 {activeFilters.length > 0 && (

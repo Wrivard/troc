@@ -5,6 +5,7 @@ import type { PublicPage } from "@workspace/catalog";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { PublicMarketplace } from "./PublicMarketplace";
+import { CatalogLoading } from "./CatalogBrowse";
 import { catalogMessages } from "./messages";
 declare global {
   interface Window {
@@ -91,6 +92,8 @@ export function PublicClient({ path }: { path: string }) {
                 }
               />
             </div>
+          ) : path === "/search" ? (
+            <CatalogLoading locale={locale} />
           ) : (
             <div
               role="status"

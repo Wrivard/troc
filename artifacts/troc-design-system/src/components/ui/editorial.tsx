@@ -12,6 +12,10 @@ import {
   MapPin,
   Check,
   Sparkles,
+  Grid2X2,
+  Grid3X3,
+  List,
+  SlidersHorizontal,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 
@@ -28,6 +32,10 @@ const icons = {
   pin: MapPin,
   check: Check,
   sparkle: Sparkles,
+  grid: Grid2X2,
+  compact: Grid3X3,
+  list: List,
+  filter: SlidersHorizontal,
 };
 /** One restrained icon treatment for editorial content. Decorative; labels belong to the caller. */
 export function EditorialIcon({
