@@ -1633,15 +1633,17 @@ main {
   .troc-home-shell .troc-site-header { padding-inline: clamp(32px, 3.83vw, 64px); }
   .troc-home-shell .troc-site-header-search { max-width: 540px; }
 }
-/* Supplied cinematic artwork: no recreated maple, smoke, streak or signature. */
+/* Full-bleed artwork uses the available shell width, excluding the scrollbar. */
+.troc-home-shell { container-type: inline-size; }
 .troc-home-hero.troc-cinematic-hero {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   column-gap: 32px; row-gap: var(--space-8);
-  width: 100vw; margin-inline: calc(50% - 50vw);
+  width: 100cqw; margin-inline: calc(50% - 50cqw);
   padding: clamp(3rem, 4.8vw, 5rem) max(32px, calc((100vw - 1488px) / 2)) 40px;
   background: linear-gradient(to bottom, #08080940 60%, #080809e8 83%, #080809 100%), #080809 var(--hero-image) center bottom / cover no-repeat;
   color: var(--text-primary);
-  background-size: auto, min(100vw, 1672px) auto;
+  background-size: 100% 100%, 100% auto;
+  background-position: center, center calc(72px - 12cqw);
   border-radius: 0; overflow: visible;
 }
 .troc-hero-demo-note { position: absolute; top: 16px; left: 5.5%; right: 5.5%; color: #aaaab2; font-size: 11px; line-height: 1.5; }
@@ -1693,7 +1695,7 @@ main {
   .troc-hero-closing { margin-top: var(--space-5); padding-inline: var(--space-4); }
 }
 @media (max-width: 767px) {
-  .troc-home-hero.troc-cinematic-hero { margin-inline: calc(50% - 50vw); }
+  .troc-home-hero.troc-cinematic-hero { margin-inline: calc(50% - 50cqw); }
   .troc-hero-demo-note { padding-inline: var(--space-5); }
   .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-5); }
   .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(2.75rem, 11vw, 4rem); }
@@ -1775,6 +1777,17 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
   .troc-smart-story h2 { font-size: clamp(1.9rem, 7.5vw, 2.6rem); }
 }
 
+/* Keep the card fan below the embedded signature and leave the leaf crown visible.
+   Artwork scales with the shell; the reserved vertical space follows that same scale. */
+@media (min-width: 1024px) {
+  .troc-cinematic-hero .troc-hero-display {
+    align-self: start;
+    width: 82%;
+    max-width: 610px;
+    margin-inline: 0 auto;
+    margin-top: max(130px, calc(13cqw - 35px));
+  }
+}
 /* Bounded hero scene: one artwork coordinate system, with its full height in flow. */
 .troc-home-hero.troc-cinematic-hero::before { display: none; }
 .troc-cinematic-hero .troc-hero-search input { min-width: 0; }

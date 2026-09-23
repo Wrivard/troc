@@ -143,7 +143,7 @@ export function HomeSections({
         lang={page.locale}
         style={
           {
-            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace-2x-v1.webp")`,
+            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace-v5.webp")`,
           } as CSSProperties
         }
       >
