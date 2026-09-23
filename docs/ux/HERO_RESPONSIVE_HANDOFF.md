@@ -1,0 +1,11 @@
+# Responsive hero correction
+
+Baseline6adf102, existing preview4313. Priority user bug supersedes former hero freeze/exact1672-coordinate acceptance.
+
+Reproduced real transformed overlap before changes:2560px cards bottom938.01 vs benefits740;3440px1191.45 vs740. Narrow390/767/1023/1024 and1672 had no benefits overlap. Source cause: width-growing cards over height-capped stage and reference-width compensation. User screenshot actually inspected; local baseline metrics in verification/hero-responsive-before.json, before390/2560 captures.
+
+CSS-only correction: centered1488px maximum composition,32px column gutter; art max744px with744:580 aspect-ratio reserving actual flow height; one card coordinate system at every width, no viewport compensation. Benefits in separate rows with4/2/1column reflow. Mobile/tablet section and art display backgrounds removed; desktop original supplied artwork capped1672px to prevent ultrawide scaling. No clipping workaround, asset changes, component behavior, header or routes changed. Original stack motion retained. First regression exposed2.74px copy-bound overlap at1024, corrected with the consistent gutter.
+
+Checks:31 browser cases PASS across320,359/360,390,430,767/768/769,834,1023/1024/1025,1199/1200/1201,1280,1366,1440,1672,1920,2560,3440; additionalFR/light,844x390landscape,720x450reflow and pointer motion. Real transformed rectangles remain separate from copy/benefits/closing, full cards inside viewport, no document overflow; mobile background none; keyboard search, originalCTA destinations and FR search-submit query preserved.720px case is equivalent constrained reflow, NOT a claim of actual browser200%zoom testing; independentUX should cover browser zoom/header scroll. Tests in tests/hero-responsive-preview.mjs; verification/hero-responsive-after.json. Lint/types/clientSSR PASS. Final background-only change recaptured1024/1672/3440, computed image size capped1672.
+
+Actually visually inspected after390/834/1672/3440 and final1024/3440 JPEGs, plus user failure reference. Other captures are not claimed inspected. Screenshots local only. IndependentUX retest and A integration open; no push/deploy or universal device certification.

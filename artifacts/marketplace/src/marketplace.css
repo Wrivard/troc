@@ -1635,14 +1635,14 @@ main {
 }
 /* Supplied cinematic artwork: no recreated maple, smoke, streak or signature. */
 .troc-home-hero.troc-cinematic-hero {
-  --hero-cover-compensation: clamp(0px, calc((1672px - 100vw) * .2155), 96px);
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 0; row-gap: var(--space-8);
+  column-gap: 32px; row-gap: var(--space-8);
   width: 100vw; margin-inline: calc(50% - 50vw);
-  padding: clamp(3rem, 4.8vw, 5rem) clamp(2rem, 5.5vw, 6rem) 40px;
+  padding: clamp(3rem, 4.8vw, 5rem) max(32px, calc((100vw - 1488px) / 2)) 40px;
   background: linear-gradient(to bottom, #08080940 60%, #080809e8 83%, #080809 100%), #080809 var(--hero-image) center bottom / cover no-repeat;
   color: var(--text-primary);
-  border-radius: 0; overflow: clip;
+  background-size: auto, min(100vw, 1672px) auto;
+  border-radius: 0; overflow: visible;
 }
 .troc-hero-demo-note { position: absolute; top: 16px; left: 5.5%; right: 5.5%; color: #aaaab2; font-size: 11px; line-height: 1.5; }
 .troc-cinematic-hero .troc-hero-copy { gap: var(--space-4); align-self: start; margin-top: 22px; padding: 0; max-width: 680px; }
@@ -1660,12 +1660,12 @@ main {
 .troc-cinematic-hero .troc-hero-actions { gap: var(--space-8); margin-top: var(--space-2); }
 .troc-cinematic-hero .troc-hero-actions > .troc-button { min-height: 56px; min-width: 198px; font-size: var(--text-base); padding-inline: var(--space-6); }
 .troc-cinematic-hero .troc-hero-actions .troc-editorial-text-link { font-size: var(--text-base); }
-.troc-cinematic-hero .troc-hero-display { align-self: stretch; position: relative; min-height: clamp(460px, 33.5vw, 560px); }
-.troc-cinematic-hero .troc-stack-stage { aspect-ratio: auto; height: clamp(460px, 33.5vw, 560px); }
+.troc-cinematic-hero .troc-hero-display { align-self: center; position: relative; min-height: 0; width: 100%; max-width: 744px; margin-inline: auto; }
+.troc-cinematic-hero .troc-stack-stage { aspect-ratio: 744 / 580; height: auto; }
 .troc-cinematic-hero .troc-stack-card { box-shadow: 0 28px 30px #000a, 0 0 1px 1px #ff2d3d55; }
-.troc-cinematic-hero .troc-stack-card[data-layer="0"] { width: 39%; left: 26.5%; top: calc(9.5% + var(--hero-cover-compensation)); }
-.troc-cinematic-hero .troc-stack-card[data-layer="1"] { width: 35%; left: 3.5%; top: calc(25% + var(--hero-cover-compensation)); }
-.troc-cinematic-hero .troc-stack-card[data-layer="2"] { width: 32%; left: 60%; top: calc(19% + var(--hero-cover-compensation)); }
+.troc-cinematic-hero .troc-stack-card[data-layer="0"] { width: 39%; left: 26.5%; top: 9.5%; }
+.troc-cinematic-hero .troc-stack-card[data-layer="1"] { width: 35%; left: 7%; top: 25%; }
+.troc-cinematic-hero .troc-stack-card[data-layer="2"] { width: 32%; left: 60%; top: 19%; }
 .troc-cinematic-hero .troc-stack-contact { display: none; }
 .troc-cinematic-hero .troc-art-note { position: absolute; inset: auto 0 0; margin: 0; color: #aaaab2; text-align: right; font-size: 10px; }
 .troc-hero-benefits { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: var(--space-5); }
@@ -1680,16 +1680,12 @@ main {
 .troc-hero-closing::before, .troc-hero-closing::after { content: ""; width: 34px; height: 1px; background: var(--color-accent); flex-shrink: 0; }
 
 @media (max-width: 1023px) {
-  .troc-home-hero.troc-cinematic-hero { --hero-cover-compensation: 0px; grid-template-columns: minmax(0, 1fr); gap: 0; padding: var(--space-8) 0; background: #080809; }
+  .troc-home-hero.troc-cinematic-hero { grid-template-columns: minmax(0, 1fr); gap: 0; padding: var(--space-8) 0; background: #080809; }
   .troc-hero-demo-note { position: static; padding-inline: var(--space-8); margin-bottom: var(--space-6); }
   .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-8); margin-top: 0; max-width: 720px; width: 100%; margin-inline: auto; }
   .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(3.25rem, 7.5vw, 5.5rem); line-height: 1.02; }
-  .troc-cinematic-hero .troc-hero-display { min-height: 600px; margin-top: var(--space-4); background: var(--hero-image) right center / auto 100% no-repeat; }
-  .troc-cinematic-hero .troc-interactive-stack { width: min(460px, 90%); margin-left: auto; margin-right: 16%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="0"] { top: 20%; left: 31%; width: 40%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="1"] { top: 30%; left: 8%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="2"] { top: 26%; left: 63%; width: 33%; }
-  .troc-cinematic-hero .troc-stack-stage { height: 600px; }
+  .troc-cinematic-hero .troc-hero-display { margin-top: var(--space-6); max-width: 640px; width: calc(100% - 40px); background: none; }
+  .troc-cinematic-hero .troc-interactive-stack { width: 100%; margin: 0; }
   .troc-cinematic-hero .troc-art-note { right: var(--space-5); bottom: var(--space-4); }
   .troc-hero-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--space-6) var(--space-8); row-gap: var(--space-6); }
   .troc-hero-benefits > div { padding: 0 var(--space-4); }
@@ -1702,12 +1698,6 @@ main {
   .troc-cinematic-hero .troc-hero-copy { padding-inline: var(--space-5); }
   .troc-cinematic-hero .troc-hero-copy h1, .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(2.75rem, 11vw, 4rem); }
   .troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(2rem, 9.2vw, 3.6rem); }
-  .troc-cinematic-hero .troc-interactive-stack { width: 90%; margin-inline: auto; }
-  .troc-cinematic-hero .troc-hero-display { min-height: 370px; }
-  .troc-cinematic-hero .troc-stack-stage { height: 370px; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="0"] { top: 12%; width: 44%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="1"] { top: 23%; }
-  .troc-cinematic-hero .troc-stack-card[data-layer="2"] { top: 27%; }
   .troc-hero-benefits { padding-inline: var(--space-5); gap: var(--space-5); }
   .troc-hero-benefits > div { flex-direction: column; align-items: flex-start; gap: var(--space-4); padding: 0; border: 0; }
   .troc-cinematic-hero .troc-hero-actions { gap: var(--space-4); }
@@ -1784,3 +1774,17 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
   .troc-smart-edit > .troc-editorial-panel-content { padding: 20px; }
   .troc-smart-story h2 { font-size: clamp(1.9rem, 7.5vw, 2.6rem); }
 }
+
+/* Bounded hero scene: one artwork coordinate system, with its full height in flow. */
+.troc-home-hero.troc-cinematic-hero::before { display: none; }
+.troc-cinematic-hero .troc-hero-search input { min-width: 0; }
+.troc-cinematic-hero .troc-hero-benefits { min-width: 0; }
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .troc-cinematic-hero .troc-hero-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .troc-cinematic-hero .troc-hero-benefits > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+}
+@media (max-width: 359px) {
+  .troc-cinematic-hero .troc-hero-benefits { grid-template-columns: minmax(0, 1fr); }
+  .troc-cinematic-hero .troc-hero-benefits > div { flex-direction: row; align-items: center; }
+}
+
