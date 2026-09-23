@@ -67,6 +67,13 @@ try {
     assert.equal(await exercise.locator("[data-selected=true]").count(), 0);
     await slider.focus();
     await page.keyboard.press("End");
+    await expect(
+      exercise.locator(".troc-collection-exercise-result"),
+    ).toHaveText(
+      lang === "fr"
+        ? "Sélectionnez des cartes manquantes ou essayez le budget."
+        : "Select missing cards or try the budget.",
+    );
     await choose.click();
     await expect(exercise.locator("[data-exercise-total]")).toHaveText(
       money(495),

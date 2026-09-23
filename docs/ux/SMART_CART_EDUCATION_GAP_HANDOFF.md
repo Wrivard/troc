@@ -29,3 +29,7 @@ No physical touch, screen-reader, real 200% zoom, cross-engine, live integration
 ## Review and delivery
 
 Owned preview 4316, exec session69356; start/preparation commands and fixture provenance are in the module README. Review only this extension and its slot in the frozen full page. Preserve coordinator hero/HomeSections/assets and all unrelated dirty files. No push/deploy under the current coordination gate. A owns selective integration after independent review.
+
+## Independent finding P2SC01 correction
+
+UX2 report17 reproduced a stale no-fit message after raising the budget. The budget handler now invalidates only the previous choose-result flag, preserving manual selection. Regression explicitly checks the neutral rerun prompt between Home0/Choose and End8/Choose. All four EN/FR responsive interaction/axe/storage cases passed again; TypeScript and scoped lint passed. UX2 exact-candidate retest required; original711b171 is superseded for integration.

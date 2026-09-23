@@ -167,7 +167,10 @@ export function SmartCartCollectionExercise({
             max={800}
             step={25}
             value={budget}
-            onChange={(event) => setBudget(Number(event.target.value))}
+            onChange={(event) => {
+              setBudget(Number(event.target.value));
+              setChosen(false);
+            }}
             aria-valuetext={money(budget)}
           />
           <Button type="button" variant="secondary" onClick={choose}>
