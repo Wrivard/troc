@@ -1,0 +1,86 @@
+/* Only these section roots consume the quiet editorial palette. */
+.troc-hc {
+  --hc-text: #f5f5f5;
+  --hc-muted: #b9b9bb;
+  --hc-surface: #141415;
+  --hc-border: #303032;
+  color: var(--hc-text);
+  font-family: var(--app-font-sans, sans-serif);
+  min-width: 0;
+}
+.troc-hc h2,
+.troc-hc h3,
+.troc-hc p {
+  margin: 0;
+}
+.troc-hc h2 {
+  font-family: inherit;
+  font-size: clamp(2rem, 3.7vw, 3.5rem);
+  font-weight: 750;
+  line-height: 1.13;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.troc-hc .troc-hc-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d0d0d2;
+  font-size: 0.7rem;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.troc-hc-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: #ee1233;
+  flex: 0 0 auto;
+}
+.troc-hc .troc-hc-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  min-height: 44px;
+  padding-block: 8px;
+  color: var(--hc-text);
+  border-bottom: 1px solid #79797c;
+  font-size: 0.9rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+.troc-hc a:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 5px;
+}
+.troc-hc .troc-editorial-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+.troc-hc .troc-hc-text-link:hover {
+  border-color: #ee1233;
+}
+/* Preserve the active light theme with equally neutral, readable surfaces. */
+.light .troc-hc {
+  --hc-text: #202022;
+  --hc-muted: #555559;
+  --hc-surface: #fafafa;
+  --hc-border: #d5d5d7;
+}
+.light .troc-hc .troc-hc-eyebrow {
+  color: #555559;
+}
+.light .troc-hc a:focus-visible {
+  outline-color: #202022;
+}
+.light .troc-hc .troc-hc-feature-icon {
+  background: #ededee;
+  color: #424246;
+}
+.troc-hc .troc-hc-feature-icon .troc-editorial-icon {
+  color: inherit;
+}

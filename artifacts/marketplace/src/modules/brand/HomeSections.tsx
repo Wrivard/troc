@@ -1,10 +1,11 @@
+import { AboutTrocSection } from "./home-community/AboutTrocSection";
+import { SellerCommunitySection } from "./home-community/SellerCommunitySection";
+import { SellerCtaSection } from "./home-community/SellerCtaSection";
 import { InteractiveCardStack } from "@workspace/troc-design-system/components/ui/interactive-card-stack";
 import {
   GameTile,
   MarketplaceJourney,
   MarketplaceStats,
-  MarketplacePrinciples,
-  SellerPreviewCard,
   SmartCartComparison,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import type { CSSProperties, ReactNode } from "react";
@@ -18,8 +19,6 @@ import {
   EditorialPanel,
 } from "@workspace/troc-design-system/components/ui/editorial";
 import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller-storefront";
-import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
-import { demoStoreFocalPoint } from "./demo-store-branding";
 import { imagesForVariant } from "../catalog/images";
 
 // Structural presentation input for A's CatalogStats projection (a8865e8).
@@ -673,160 +672,9 @@ export function HomeSections({
           "shelf",
         )}
       </section>
-      <section
-        className="troc-home-section troc-about-home"
-        aria-labelledby="troc-about-title"
-      >
-        <div className="troc-about-intro">
-          <p className="troc-editorial-eyebrow">
-            {c("ABOUT TROC", "À PROPOS DE TROC")}
-          </p>
-          <h2 id="troc-about-title">
-            {c(
-              "A home for the way we collect.",
-              "Une place pour notre façon de collectionner.",
-            )}
-          </h2>
-          <p>
-            {c(
-              "TROC starts with a simple idea: finding a card in Canada should make sense for the whole order, even when the card costs just a few cents.",
-              "TROC part d’une idée simple : trouver une carte au Canada devrait avoir du sens pour la commande entière, même quand la carte ne coûte que quelques sous.",
-            )}
-          </p>
-          <p>
-            {c(
-              "We’re building a marketplace that brings collectors, independent sellers and local shops together around the details that matter: the right card, a clear price and the cost of getting it home.",
-              "Nous bâtissons un marché qui réunit collectionneurs, vendeurs indépendants et boutiques autour de l’essentiel : la bonne carte, un prix clair et le coût pour la recevoir.",
-            )}
-          </p>
-          <a className="troc-editorial-text-link" href={href("/about")}>
-            {c(
-              "Discover the idea behind TROC",
-              "Découvrir l’idée derrière TROC",
-            )}
-            <EditorialIcon name="arrow" />
-          </a>
-        </div>
-        <MarketplacePrinciples
-          items={[
-            {
-              id: "canada",
-              icon: <EditorialIcon name="globe" />,
-              title: c("Canada-first", "Pensé pour le Canada"),
-              description: c(
-                "A Canadian starting point for a worldwide hobby. Find offers from sellers here, with shipping and seller minimums visible before you decide.",
-                "Un point de départ canadien pour une passion mondiale. Retrouvez des offres de vendeurs d’ici, avec la livraison et les minimums visibles avant de choisir.",
-              ),
-            },
-            {
-              id: "cad",
-              icon: <EditorialIcon name="coin" />,
-              title: c("All in CAD", "Tout en CAD"),
-              description: c(
-                "Compare in the currency you use. Card prices and order estimates are shown in Canadian dollars, so the complete cost is easier to understand.",
-                "Comparez dans votre devise. Les prix des cartes et les estimations de commande sont en dollars canadiens, pour mieux comprendre le coût complet.",
-              ),
-            },
-            {
-              id: "languages",
-              icon: <EditorialIcon name="language" />,
-              title: c("English & français", "Français & English"),
-              description: c(
-                "Choose the language that feels natural, from discovering cards to reviewing your basket. Card language stays a separate choice, because the printing matters too.",
-                "Choisissez la langue qui vous convient, de la découverte au panier. La langue de la carte reste un choix distinct : l’impression compte aussi.",
-              ),
-            },
-            {
-              id: "singles",
-              icon: <EditorialIcon name="layers" />,
-              title: c("Every single matters", "Chaque carte compte"),
-              description: c(
-                "The common that completes a set deserves a place beside the chase card. TROC is built around buying several cards and combining shipping from the same seller.",
-                "La commune qui complète une extension a sa place à côté de la carte convoitée. TROC est pensé pour acheter plusieurs cartes et regrouper la livraison d’un même vendeur.",
-              ),
-            },
-          ]}
-        />
-      </section>
-      <section className="troc-home-section">
-        <EditorialIntro
-          eyebrow={c(
-            "THE PEOPLE BEHIND THE CARDS",
-            "LES GENS DERRIÈRE LES CARTES",
-          )}
-          title={c("A hobby is better together.", "La passion se partage.")}
-          description={c(
-            "Collectors, online sellers and local hobby shops. Different stories. The same love for the cards.",
-            "Collectionneurs, vendeurs en ligne et boutiques locales. Des histoires différentes. Le même amour des cartes.",
-          )}
-        />
-        <div className="troc-community-grid">
-          {page.sellers.slice(0, 3).map((seller, i) => (
-            <SellerPreviewCard
-              key={seller.id}
-              href={href(`/store/${seller.slug}`)}
-              name={seller.name}
-              focalPoint={demoStoreFocalPoint(seller)}
-              location={`${seller.city}, ${seller.province}`}
-              avatar={<SellerAvatar name={seller.name} src={seller.logoUrl} />}
-              typeLabel={c(
-                "Canadian demo store",
-                "Boutique canadienne fictive",
-              )}
-              banner={
-                seller.bannerUrl ? (
-                  <img src={seller.bannerUrl} alt="" loading="lazy" />
-                ) : (
-                  products[i] && art(products[i].product)
-                )
-              }
-              thumbnails={products.slice(i, i + 3).map((r) => (
-                <div key={r.product.id}>{art(r.product)}</div>
-              ))}
-              detail={c(
-                `Ships in ${seller.handlingDays} ${seller.handlingDays === 1 ? "day" : "days"} · Sample cards`,
-                `Expédition en ${seller.handlingDays} ${seller.handlingDays === 1 ? "jour" : "jours"} · Exemples de cartes`,
-              )}
-              actionLabel={c("Explore store", "Explorer la boutique")}
-            />
-          ))}
-        </div>
-        <p className="troc-art-note">
-          {c(
-            "Illustrative stores. No live seller activity or endorsement is implied.",
-            "Boutiques fictives. Aucune activité réelle ni affiliation n’est revendiquée.",
-          )}
-        </p>
-      </section>
-      <section className="troc-final-edit">
-        <div className="troc-final-mark" aria-hidden="true">
-          <TrocLogo variant="compact" height={96} />
-        </div>
-        <EditorialIntro
-          eyebrow={c("BUILD TROC WITH US", "BÂTISSONS TROC ENSEMBLE")}
-          title={c(
-            "Your cards. Your store. On TROC.",
-            "Vos cartes. Votre boutique. Sur TROC.",
-          )}
-          description={c(
-            "A shared catalog. Prices in CAD. Combined shipping. Our goal: welcome 250 founding sellers to help build Canada’s card marketplace.",
-            "Un catalogue commun. Des prix en CAD. La livraison regroupée. Notre objectif : accueillir 250 vendeurs fondateurs pour bâtir le marché canadien des cartes.",
-          )}
-        />
-        <div className="troc-hero-actions">
-          {action(
-            "/founding-sellers",
-            "Become a founding seller",
-            "Devenir vendeur fondateur",
-          )}
-          {action(
-            "/sell",
-            "Explore selling on TROC",
-            "Découvrir la vente sur TROC",
-            true,
-          )}
-        </div>
-      </section>
+      <AboutTrocSection locale={page.locale} href={href} />
+      <SellerCommunitySection page={page} href={href} art={art} />
+      <SellerCtaSection locale={page.locale} href={href} demo={page.demo} />
     </div>
   );
 }

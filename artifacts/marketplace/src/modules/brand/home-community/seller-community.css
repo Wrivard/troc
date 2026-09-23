@@ -1,0 +1,169 @@
+@import "./community-base.css";
+.troc-hc-community {
+  padding-block: 24px;
+}
+.troc-hc-community-header {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 36px;
+}
+.troc-hc-community-header > p:last-child {
+  max-width: 65ch;
+  color: var(--hc-muted);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+.troc-hc-community-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+}
+.troc-hc .troc-hc-seller {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  color: var(--hc-text);
+  background: var(--hc-surface);
+  border: 1px solid var(--hc-border);
+  border-radius: 10px;
+  text-decoration: none;
+}
+.troc-hc-seller-cover {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 9px 9px 0 0;
+  overflow: hidden;
+}
+.troc-hc-seller-cover > div,
+.troc-hc-seller-cover > div > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.troc-hc-seller-cover > div > img {
+  object-fit: cover;
+  object-position: var(--hc-store-focal);
+}
+.troc-hc .troc-hc-seller-location {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  color: #f5f5f5;
+  background: #111112;
+  border: 1px solid #414143;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+.troc-hc .troc-hc-seller-location .troc-editorial-icon {
+  width: 13px;
+  height: 13px;
+  color: inherit;
+}
+.troc-hc-seller-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+.troc-hc-seller-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 56px;
+}
+.troc-hc-seller-identity > :first-child {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 7px;
+}
+.troc-hc-seller-identity > div:last-child {
+  min-width: 0;
+}
+.troc-hc-seller-identity h3 {
+  color: var(--hc-text);
+  font-family: inherit;
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.troc-hc-seller-identity p {
+  margin-top: 5px;
+  color: var(--hc-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.troc-hc .troc-hc-seller-shipping {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--hc-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+.troc-hc .troc-hc-seller-shipping .troc-editorial-icon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+.troc-hc-seller-samples {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+}
+.troc-hc-seller-samples > div {
+  width: min(64px, 28%);
+  flex-shrink: 0;
+}
+.troc-hc-seller-samples .troc-card-image {
+  width: 100%;
+}
+.troc-hc .troc-hc-seller-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--hc-border);
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+.troc-hc .troc-hc-seller-action .troc-editorial-icon {
+  color: inherit;
+}
+.troc-hc-seller:hover {
+  border-color: #727276;
+}
+.troc-hc .troc-hc-community-note {
+  margin-top: 24px;
+  color: var(--hc-muted);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+@media (max-width: 1050px) {
+  .troc-hc-community-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .troc-hc-community-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .troc-hc-seller-body {
+    padding: 20px;
+  }
+  .troc-hc-seller-identity h3 {
+    font-size: 1.125rem;
+  }
+}

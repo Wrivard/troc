@@ -1436,12 +1436,14 @@ export function PublicMarketplace({
             )}
           </>
         )}
-        <p
-          id="browse-only"
-          className="border-t border-border pt-6 text-sm text-muted-foreground"
-        >
-          {t("browseOnly")}
-        </p>
+        {page.kind !== "home" && (
+          <p
+            id="browse-only"
+            className="border-t border-border pt-6 text-sm text-muted-foreground"
+          >
+            {t("browseOnly")}
+          </p>
+        )}
       </main>
       <MarketplaceFooter locale={locale} base={base} />
     </div>

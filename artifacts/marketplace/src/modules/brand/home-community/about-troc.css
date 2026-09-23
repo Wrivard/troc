@@ -1,0 +1,90 @@
+@import "./community-base.css";
+.troc-hc-about {
+  display: grid;
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  align-items: start;
+  gap: clamp(28px, 4vw, 64px);
+  padding-block: clamp(24px, 3vw, 48px);
+}
+.troc-hc-about-story {
+  display: grid;
+  justify-items: start;
+  gap: 24px;
+}
+.troc-hc-about-story > p:not(.troc-hc-eyebrow) {
+  max-width: 52ch;
+  color: var(--hc-muted);
+  font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
+  line-height: 1.85;
+}
+.troc-hc-about-story > h2 {
+  max-width: 15ch;
+  margin-bottom: 8px;
+}
+.troc-hc-about-story > a {
+  margin-top: 8px;
+}
+.troc-hc-about-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.troc-hc-about-features > article {
+  min-width: 0;
+  padding: clamp(20px, 2vw, 28px);
+  border: 1px solid var(--hc-border);
+  border-radius: 10px;
+  background: var(--hc-surface);
+}
+.troc-hc-feature-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: #222223;
+  color: #e7e7e8;
+}
+.troc-hc-feature-icon .troc-editorial-icon {
+  width: 26px;
+  height: 26px;
+}
+.troc-hc-about-features h3 {
+  margin-bottom: 10px;
+  font-family: inherit;
+  color: var(--hc-text);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+.troc-hc-about-features p {
+  color: var(--hc-muted);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+@media (max-width: 1050px) {
+  .troc-hc-about {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .troc-hc-about-story > h2 {
+    max-width: 24ch;
+  }
+  .troc-hc-about-story > p:not(.troc-hc-eyebrow) {
+    max-width: 65ch;
+  }
+}
+@media (max-width: 600px) {
+  .troc-hc-about-features {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .troc-hc-about-story {
+    gap: 20px;
+  }
+  .troc-hc-about-features > article {
+    padding: 24px;
+  }
+}

@@ -1,0 +1,11 @@
+# Seller community handoff
+
+Dependency: About e94e694. Export `SellerCommunitySection({page,href,art})` from `./home-community/SellerCommunitySection`. page needs locale/sellers/results from the SAME already-branded homepage page; href is the existing locale-aware helper; art is HomeSections' existing Product renderer. Design1 replaces only the current people-behind-cards section. Do not remap seller data twice or reimplement CardImage. Existing demoStoreFocalPoint imported; exact16:9 framing with CardForge50%0%, others50%50%. Canonical seller IDs/slugs, source artwork, handling days, three original sample slices, copy and disclaimer preserved. Local package icon reused for shipping.
+
+Scoped3/2/1-column grid. Light preference preserved with neutral surfaces; no blue UI colors. Original store artwork retains its colors including blue CardForge. No About/shared source changes.
+
+Author: typecheck/scoped ESLint PASS.16 browser cases PASS at1440/768/390/320 × ENFR × dark/light: identity/location/disclaimer, localized store hrefs, exactly3 samples, original focal positions, every rendered image loaded, equal desktop heights/alignment, responsive grid, keyboard focus, no document overflow/page errors and no WCAG2A/AA/2.1AA axe violations. Axe initially required explicit newContext; runner corrected. Captures/results verification/home-community-seller/. Actual full-section inspection7:1440 ENdark/FRlight,768 ENdark/FRlight,390 ENdark/FRlight,320 FRdark. Remaining states captured/asserted only.
+
+Preview http://127.0.0.1:4341/?section=seller&lang=en&theme=dark. Harness snapshots actual frozen publicPage('/',params,new DemoCatalogRepository(publicDemoCatalog())):12 results/3 sellers per locale; original demoStoreBranding/imagesForVariant/CardImage. No hosted DB. Vite aliases pin frozen local design-system source. Default About preview preserved. Checks validate destination hrefs; actual navigation/integrated homepage acceptance remains required.
+
+Independent UX2 review, Design1 wiring, shared CardImage correction retest and final bundle inclusion are open gates. No release claim. Prior baseline client/SSR build passed; new module has typecheck and actual Vite rendering, no false claim of wired bundle inclusion.

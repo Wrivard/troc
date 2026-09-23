@@ -1,0 +1,139 @@
+@import "./community-base.css";
+.troc-hc-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(24px, 4vw, 64px);
+  row-gap: 36px;
+  padding: clamp(24px, 4vw, 56px);
+  border: 1px solid var(--hc-border);
+  border-radius: 10px;
+  background: var(--hc-surface);
+}
+.troc-hc-cta-copy {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.troc-hc-cta h2 {
+  font-size: clamp(2rem, 3.5vw, 3.35rem);
+}
+.troc-hc-cta h2 > span {
+  color: var(--hc-muted);
+}
+.troc-hc .troc-hc-cta-description {
+  max-width: 55ch;
+  color: var(--hc-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.troc-hc-cta-actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 4px;
+}
+.troc-hc .troc-hc-cta-actions > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid var(--hc-border);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.5;
+  text-decoration: none;
+  color: var(--hc-text);
+}
+.troc-hc .troc-hc-cta-actions > .troc-hc-cta-primary {
+  background: #d9092c;
+  border-color: #d9092c;
+  color: #fff;
+}
+.troc-hc .troc-hc-cta-actions > .troc-hc-cta-primary:hover {
+  background: #bb0927;
+  border-color: #bb0927;
+}
+.troc-hc .troc-hc-cta-actions > .troc-hc-cta-secondary:hover {
+  border-color: #727276;
+}
+.troc-hc .troc-hc-cta-actions .troc-editorial-icon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+.troc-hc .troc-hc-cta-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 0;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.troc-hc-cta-values > li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-inline: 18px;
+  border-left: 1px solid var(--hc-border);
+  color: var(--hc-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.troc-hc-cta-values > li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.troc-hc .troc-hc-cta-values .troc-editorial-icon {
+  color: inherit;
+  width: 18px;
+  height: 18px;
+}
+.troc-hc-cta-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.troc-hc .troc-hc-cta-disclaimer {
+  grid-column: 1/-1;
+  padding-top: 24px;
+  border-top: 1px solid var(--hc-border);
+  color: var(--hc-muted);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+@media (max-width: 1050px) {
+  .troc-hc-cta {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .troc-hc-cta-art {
+    width: min(100%, 380px);
+    justify-self: center;
+  }
+}
+@media (max-width: 600px) {
+  .troc-hc-cta {
+    padding: 24px 20px;
+  }
+  .troc-hc-cta-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .troc-hc .troc-hc-cta-values {
+    display: grid;
+    gap: 12px;
+  }
+  .troc-hc-cta-values > li {
+    border: 0;
+    padding: 0;
+  }
+  .troc-hc-cta-copy {
+    gap: 20px;
+  }
+}
