@@ -50,7 +50,10 @@ import { ConditionBadge } from "@workspace/troc-design-system/components/ui/mark
 const PriceHistory = lazy(() => import("./PriceHistory"));
 import { catalogMessages, type CatalogMessage } from "./messages";
 import { formatSourcePrice, productSelection } from "./presentation";
-import { demoStoreBranding } from "../brand/demo-store-branding";
+import {
+  demoStoreBranding,
+  demoStoreFocalPoint,
+} from "../brand/demo-store-branding";
 import { addCart } from "../commerce/cart-storage";
 export interface PublicProps {
   page: PublicPage;
@@ -1170,7 +1173,8 @@ export function PublicMarketplace({
                     />
                   }
                   bannerSrc={page.seller.bannerUrl}
-                  bannerFit={page.seller.demo ? "contain" : "cover"}
+                  bannerFit="cover"
+                  focalPoint={demoStoreFocalPoint(page.seller)}
                   banner={
                     <div className="troc-store-cover-cards">
                       {page.results

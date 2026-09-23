@@ -19,6 +19,7 @@ import {
 } from "@workspace/troc-design-system/components/ui/editorial";
 import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller-storefront";
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
+import { demoStoreFocalPoint } from "./demo-store-branding";
 import { imagesForVariant } from "../catalog/images";
 
 // Structural presentation input for A's CatalogStats projection (a8865e8).
@@ -132,7 +133,7 @@ export function HomeSections({
         lang={page.locale}
         style={
           {
-            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace.webp")`,
+            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace-2x-v1.webp")`,
           } as CSSProperties
         }
       >
@@ -687,6 +688,7 @@ export function HomeSections({
               key={seller.id}
               href={href(`/store/${seller.slug}`)}
               name={seller.name}
+              focalPoint={demoStoreFocalPoint(seller)}
               location={`${seller.city}, ${seller.province}`}
               avatar={<SellerAvatar name={seller.name} src={seller.logoUrl} />}
               typeLabel={c(

@@ -2178,7 +2178,22 @@ button.troc-chip:hover:not(:disabled), .troc-chip--interactive:hover:not([aria-d
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: var(--store-focal, 50% 50%);
+}
+.troc-store-cover[data-fit="cover"] {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 2;
+}
+.troc-store-cover[data-fit="cover"] > img {
+  position: absolute;
+  inset: 0;
+}
+@media (max-width: 640px) {
+  .troc-store-cover[data-fit="cover"] {
+    aspect-ratio: 16 / 9;
+  }
 }
 .troc-seller-preview-cover:has(> img) > span {
   position: static;

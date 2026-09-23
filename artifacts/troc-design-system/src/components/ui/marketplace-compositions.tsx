@@ -224,6 +224,7 @@ export function StoreHero({
   );
 }
 export function SellerPreviewCard({
+  focalPoint = "50% 50%",
   href,
   name,
   location,
@@ -243,10 +244,15 @@ export function SellerPreviewCard({
   typeLabel: string;
   detail?: ReactNode;
   actionLabel: string;
+  focalPoint?: string;
 }) {
   return (
     <a className="troc-seller-preview" href={href}>
-      <div className="troc-seller-preview-cover" aria-hidden="true">
+      <div
+        className="troc-seller-preview-cover"
+        style={{ "--store-focal": focalPoint } as CSSProperties}
+        aria-hidden="true"
+      >
         {banner}
         <span>{location}</span>
       </div>

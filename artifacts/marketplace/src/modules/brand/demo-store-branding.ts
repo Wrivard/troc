@@ -31,6 +31,12 @@ export function demoStoreBranding(seller: Seller): Seller {
   };
 }
 
+/** Display-only crop positions, scoped to the approved demo identities. */
+export function demoStoreFocalPoint(seller: Seller): string {
+  if (!seller.demo || !Object.hasOwn(branding, seller.id)) return "50% 50%";
+  return branding[seller.id].asset === "cardforge" ? "50% 0%" : "50% 50%";
+}
+
 /** Quote display only: never infer a real or mixed seller group from cart-level demo status. */
 export function commerceSellerName(group: {
   seller: { id: string; name: string };
