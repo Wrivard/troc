@@ -1,0 +1,100 @@
+@font-face {
+  font-family: "TROC Google Sans";
+  src: url("./assets/google-sans-medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+.troc-google-signin {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+.troc-google-signin-divider {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.troc-google-signin-divider::before,
+.troc-google-signin-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--color-border);
+}
+.troc-google-signin .troc-google-signin-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 28px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.troc-google-signin-consent > button {
+  flex-shrink: 0;
+}
+/* Official Google light button treatment in both app themes; never recolor the G. */
+.troc-google-signin .troc-google-signin-button {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #1f1f1f;
+  border: 1px solid #747775;
+  border-radius: 4px;
+  font-family: "TROC Google Sans", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  box-shadow: none;
+  transition: none;
+}
+.troc-google-signin .troc-google-signin-button:hover:not(:disabled) {
+  background: #f2f2f2;
+  border-color: #747775;
+  color: #1f1f1f;
+}
+.troc-google-signin .troc-google-signin-button:active:not(:disabled) {
+  background: #e8e8e8;
+}
+.troc-google-signin .troc-google-signin-button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+.troc-google-signin .troc-google-signin-button:disabled {
+  opacity: 1;
+  background: #f2f2f2;
+  color: #747775;
+  border-color: #c4c7c5;
+  cursor: not-allowed;
+}
+.troc-google-signin-button > img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  background: #fff;
+}
+.troc-google-signin-button > span {
+  flex: 1;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding-right: 30px;
+}
+.troc-google-signin-status {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}

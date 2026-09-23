@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--text-primary);
+}
+.google-harness-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+.google-harness-header svg,
+.google-harness-header img {
+  width: 120px;
+}
+.google-harness-header p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.google-harness-email {
+  display: grid;
+  gap: 16px;
+}
+.google-harness-email label {
+  display: grid;
+  gap: 8px;
+}
+.google-harness-scenarios {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--color-border);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.google-harness-scenarios > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.google-harness-scenarios output {
+  display: block;
+  margin-top: 8px;
+}
+@media (max-width: 600px) {
+  .google-harness-header {
+    padding: 12px 16px;
+    align-items: flex-start;
+  }
+  .google-harness-header p {
+    max-width: 150px;
+    font-size: 10px;
+  }
+}
