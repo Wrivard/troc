@@ -59,21 +59,6 @@ export default function CartDrawer({
             {fr ? "Ouvrir le panier complet" : "Open full cart"}
           </a>
         </DrawerHeader>
-        <details className="troc-cart-smart-invitation">
-          <summary>
-            {fr
-              ? "Moins de colis, un meilleur total ?"
-              : "Fewer parcels, a better total?"}
-          </summary>
-          <p>
-            {fr
-              ? "Smart Cart compare les offres et la livraison. Vous décidez des changements."
-              : "Smart Cart compares offers and shipping. You choose which changes to apply."}
-          </p>
-          <a href={`/smart-cart?lang=${locale}`}>
-            {fr ? "Comparer avec Smart Cart →" : "Compare with Smart Cart →"}
-          </a>
-        </details>
         <CommerceApp path="/cart" embedded />
       </DrawerContent>
     </Drawer>

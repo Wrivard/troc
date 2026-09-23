@@ -20,11 +20,13 @@ export function CartGroups({
   locale,
   change,
   readOnly = false,
+  compact = false,
 }: {
   quote: CartQuote;
   locale: "en" | "fr";
   change?: (lines: CartLine[]) => void;
   readOnly?: boolean;
+  compact?: boolean;
 }) {
   const [pages, setPages] = useState<Record<string, number>>({});
   const t = (k: CommerceMessage) =>
@@ -43,120 +45,140 @@ export function CartGroups({
     })),
   );
   return (
-    <div className="grid gap-6">
+    <div className={compact ? "troc-cart-compact-groups" : "grid gap-6"}>
       {quote.groups.map((g) => {
         const page = pages[g.seller.id] ?? 0,
           visible = g.lines.slice(page * 10, page * 10 + 10);
         const store = `/store/${g.seller.slug}?lang=${locale}`;
+        const sellerMeta = (
+          <>
+            <span className="text-sm">
+              {g.cards}{" "}
+              {locale === "fr"
+                ? g.cards <= 1
+                  ? "exemplaire"
+                  : "exemplaires"
+                : g.cards === 1
+                  ? "unit"
+                  : "units"}{" "}
+              · {t("handling")}: {g.seller.handlingDays} ·{" "}
+              {g.seller.reputation
+                ? `${t("reputation")}: ${g.seller.reputation}/100`
+                : t("noReviews")}
+            </span>
+            {g.seller.badges.map((badge) => {
+              const definitions = {
+                verified_hobby_shop: ["verified-hobby-shop", "verifiedShop"],
+                identity_verified: ["verified-seller", "verifiedSeller"],
+                top_seller: ["top-seller", "topSeller"],
+                founding_seller: ["founding-seller", "foundingSeller"],
+              } as const;
+              const value = definitions[badge as keyof typeof definitions];
+              return value ? (
+                <SellerBadge key={badge} kind={value[0]} label={t(value[1])} />
+              ) : null;
+            })}
+          </>
+        );
+        const minimumProgress =
+          g.seller.minimumCents === 0 ? (
+            <p className="text-sm">{t("noMinimum")}</p>
+          ) : (
+            <SellerMinimumProgress
+              locale={locale}
+              label={t("minimum")}
+              current={g.merchandiseCents / 100}
+              minimum={g.seller.minimumCents / 100}
+              reachedLabel={t("reached")}
+              remainingLabel={(_, text) =>
+                `${t("addMore")} ${text} ${t("fromSeller")}`
+              }
+            />
+          );
+        const promotionProgress = (
+          <div className="grid gap-2">
+            {g.discountCents > 0 && (
+              <p>
+                {t("discount")}: −{money(g.discountCents)}
+              </p>
+            )}
+            {g.nextPromotion && (
+              <p>
+                {t("promotion")}:{" "}
+                {g.nextPromotion.minimumCards
+                  ? `${g.cards} / ${g.nextPromotion.minimumCards} ${t("cards")}`
+                  : `${money(g.merchandiseCents)} / ${money(g.nextPromotion.minimumCents ?? 0)}`}{" "}
+                → {g.nextPromotion.basisPoints / 100}%
+              </p>
+            )}
+            {g.freeShippingRemainingCents !== null && (
+              <FreeShippingProgress
+                locale={locale}
+                label={t("free")}
+                current={(g.merchandiseCents - g.discountCents) / 100}
+                threshold={(g.seller.freeShippingCents ?? 0) / 100}
+                reachedLabel={t("freeReached")}
+                remainingLabel={(_, text) => `${t("addMore")} ${text}`}
+              />
+            )}
+          </div>
+        );
+        const Options = compact ? "details" : "div";
         return (
           <CartSellerGroup
             key={g.seller.id}
             id={`cart-seller-${g.seller.id}`}
             tabIndex={-1}
-            sellerName={<a href={store}>{commerceSellerName(g)}</a>}
+            sellerName={
+              <a className="troc-cart-seller-name" href={store}>
+                {commerceSellerName(g)}
+              </a>
+            }
             sellerMeta={
-              <>
-                <span className="text-sm">
-                  {g.cards}{" "}
-                  {locale === "fr"
-                    ? g.cards <= 1
-                      ? "exemplaire"
-                      : "exemplaires"
-                    : g.cards === 1
-                      ? "unit"
-                      : "units"}{" "}
-                  · {t("handling")}: {g.seller.handlingDays} ·{" "}
-                  {g.seller.reputation
-                    ? `${t("reputation")}: ${g.seller.reputation}/100`
-                    : t("noReviews")}
-                </span>
-                {g.seller.badges.map((badge) => {
-                  const definitions = {
-                    verified_hobby_shop: [
-                      "verified-hobby-shop",
-                      "verifiedShop",
-                    ],
-                    identity_verified: ["verified-seller", "verifiedSeller"],
-                    top_seller: ["top-seller", "topSeller"],
-                    founding_seller: ["founding-seller", "foundingSeller"],
-                  } as const;
-                  const value = definitions[badge as keyof typeof definitions];
-                  return value ? (
-                    <SellerBadge
-                      key={badge}
-                      kind={value[0]}
-                      label={t(value[1])}
-                    />
-                  ) : null;
-                })}
-              </>
+              compact
+                ? `${g.cards} ${locale === "fr" ? (g.cards > 1 ? "exemplaires" : "exemplaire") : g.cards === 1 ? "item" : "items"}`
+                : sellerMeta
             }
             subtotalLabel={t("merchandise")}
-            subtotal={money(g.merchandiseCents - g.discountCents)}
-            shippingLabel={`${t("shipping")}: ${money(g.shipping.cents)}${g.shipping.tracked ? " · " + t("tracking") : ""}`}
-            minimumProgress={
-              g.seller.minimumCents === 0 ? (
-                <p className="text-sm">{t("noMinimum")}</p>
-              ) : (
-                <SellerMinimumProgress
-                  locale={locale}
-                  label={t("minimum")}
-                  current={g.merchandiseCents / 100}
-                  minimum={g.seller.minimumCents / 100}
-                  reachedLabel={t("reached")}
-                  remainingLabel={(_, text) =>
-                    `${t("addMore")} ${text} ${t("fromSeller")}`
-                  }
-                />
-              )
+            subtotal={
+              compact ? undefined : money(g.merchandiseCents - g.discountCents)
             }
-            promotionProgress={
-              <div className="grid gap-2">
-                {g.discountCents > 0 && (
-                  <p>
-                    {t("discount")}: −{money(g.discountCents)}
-                  </p>
-                )}
-                {g.nextPromotion && (
-                  <p>
-                    {t("promotion")}:{" "}
-                    {g.nextPromotion.minimumCards
-                      ? `${g.cards} / ${g.nextPromotion.minimumCards} ${t("cards")}`
-                      : `${money(g.merchandiseCents)} / ${money(g.nextPromotion.minimumCents ?? 0)}`}{" "}
-                    → {g.nextPromotion.basisPoints / 100}%
-                  </p>
-                )}
-                {g.freeShippingRemainingCents !== null && (
-                  <FreeShippingProgress
-                    locale={locale}
-                    label={t("free")}
-                    current={(g.merchandiseCents - g.discountCents) / 100}
-                    threshold={(g.seller.freeShippingCents ?? 0) / 100}
-                    reachedLabel={t("freeReached")}
-                    remainingLabel={(_, text) => `${t("addMore")} ${text}`}
-                  />
-                )}
-              </div>
+            shippingLabel={
+              compact
+                ? undefined
+                : `${t("shipping")}: ${money(g.shipping.cents)}${g.shipping.tracked ? " · " + t("tracking") : ""}`
             }
+            minimumProgress={compact ? undefined : minimumProgress}
+            promotionProgress={compact ? undefined : promotionProgress}
           >
-            <details open={g.lines.length <= 10}>
+            <details className="troc-cart-lines" open={g.lines.length <= 10}>
               <summary className="cursor-pointer p-4 font-semibold">
-                {t("show")} · {g.lines.length}{" "}
-                {locale === "fr"
-                  ? g.lines.length === 1
-                    ? "référence"
-                    : "références"
-                  : g.lines.length === 1
-                    ? "line item"
-                    : "line items"}{" "}
-                · {g.cards}{" "}
-                {locale === "fr"
-                  ? g.cards <= 1
-                    ? "exemplaire"
-                    : "exemplaires"
-                  : g.cards === 1
-                    ? "unit"
-                    : "units"}
+                {compact ? (
+                  locale === "fr" ? (
+                    "Articles"
+                  ) : (
+                    "Items"
+                  )
+                ) : (
+                  <>
+                    {t("show")} · {g.lines.length}{" "}
+                    {locale === "fr"
+                      ? g.lines.length === 1
+                        ? "référence"
+                        : "références"
+                      : g.lines.length === 1
+                        ? "line item"
+                        : "line items"}{" "}
+                    · {g.cards}{" "}
+                    {locale === "fr"
+                      ? g.cards <= 1
+                        ? "exemplaire"
+                        : "exemplaires"
+                      : g.cards === 1
+                        ? "unit"
+                        : "units"}
+                  </>
+                )}
               </summary>
               {visible.map((l) => (
                 <div key={l.listingId}>
@@ -190,7 +212,11 @@ export function CartGroups({
                       .filter(Boolean)
                       .join(" · ")}
                     unitPrice={`${money(l.unitCents)} / ${locale === "fr" ? "exemplaire" : "unit"}`}
-                    lineTotal={`${locale === "fr" ? "Ligne" : "Line total"} ${money(l.totalCents)}`}
+                    lineTotal={
+                      compact
+                        ? money(l.totalCents)
+                        : `${locale === "fr" ? "Ligne" : "Line total"} ${money(l.totalCents)}`
+                    }
                     quantity={l.quantity}
                     max={Math.min(100, l.listing.quantity)}
                     quantityLabel={`${t("quantity")} ${l.listing.name[locale]}`}
@@ -209,7 +235,7 @@ export function CartGroups({
                       change?.(lines.filter((x) => x.listingId !== l.listingId))
                     }
                   />
-                  {!readOnly && (
+                  {!readOnly && !compact && (
                     <div className="flex flex-wrap gap-4 px-4 pb-3">
                       {(["lockListing", "lockSeller"] as const).map((lock) => (
                         <label
@@ -261,8 +287,59 @@ export function CartGroups({
                 </div>
               )}
             </details>
-            {!readOnly && (
-              <div className="grid gap-3 p-4">
+            {(compact || !readOnly) && (
+              <Options className="troc-cart-seller-options grid gap-3 p-4">
+                {compact && (
+                  <>
+                    <summary>
+                      {locale === "fr"
+                        ? "Options du vendeur"
+                        : "More seller options"}
+                    </summary>
+                    <div className="troc-cart-secondary-info">
+                      {sellerMeta}
+                      {minimumProgress}
+                      {promotionProgress}
+                      <p>
+                        {t("shipping")}: {money(g.shipping.cents)}
+                        {g.shipping.tracked ? " · " + t("tracking") : ""}
+                      </p>
+                    </div>
+                    {!readOnly &&
+                      g.lines.map((l) => (
+                        <div
+                          key={l.listingId}
+                          className="troc-cart-line-options"
+                        >
+                          <strong>{l.listing.name[locale]}</strong>
+                          <div className="flex flex-wrap gap-4 px-4 pb-3">
+                            {(["lockListing", "lockSeller"] as const).map(
+                              (lock) => (
+                                <label
+                                  key={lock}
+                                  className="flex items-center gap-2 text-sm"
+                                >
+                                  <Checkbox
+                                    checked={!!l[lock]}
+                                    onCheckedChange={(checked) =>
+                                      change?.(
+                                        lines.map((x) =>
+                                          x.listingId === l.listingId
+                                            ? { ...x, [lock]: checked === true }
+                                            : x,
+                                        ),
+                                      )
+                                    }
+                                  />
+                                  {t(lock)}
+                                </label>
+                              ),
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                  </>
+                )}
                 <div className="flex flex-wrap gap-4 text-sm">
                   <a className="underline" href={store + "&max=99"}>
                     {t("underDollar")}
@@ -280,7 +357,7 @@ export function CartGroups({
                 {g.minimumRemainingCents > 0 && (
                   <p className="text-sm text-muted-foreground">{t("future")}</p>
                 )}
-              </div>
+              </Options>
             )}
           </CartSellerGroup>
         );

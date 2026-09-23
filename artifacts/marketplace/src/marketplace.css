@@ -1804,3 +1804,82 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
   border-bottom: 1px solid var(--border-strong);
   white-space: normal;
 }
+/* Compact cart drawer: existing seller/items/progress primitives, scoped layout. */
+.troc-cart-drawer[data-side="right"] {
+  width: min(620px, 100vw);
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  background: var(--surface);
+}
+.troc-cart-drawer-header {
+  position: static;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: var(--space-5) var(--space-6) var(--space-4);
+  border: 0;
+  background: transparent;
+}
+.troc-cart-drawer-title .troc-dialog-title { font-size: var(--text-3xl); letter-spacing: -.04em; }
+.troc-cart-drawer-header > a { font-size: var(--text-sm); align-self: flex-start; margin-top: var(--space-2); }
+.troc-cart-drawer > .troc-cart-smart-invitation { margin: 0 var(--space-6) var(--space-3); padding: var(--space-2) var(--space-3); flex-shrink: 0; font-size: var(--text-xs); }
+.troc-cart-embedded { display: flex; flex: 1; min-height: 0; }
+.troc-cart-drawer-body { display: flex; flex: 1; flex-direction: column; min-width: 0; min-height: 0; gap: var(--space-3); }
+.troc-cart-demo-note { padding-inline: var(--space-6); font-size: 11px; line-height: 1.4; color: var(--text-muted); }
+.troc-cart-drawer-body > [role="alert"], .troc-cart-drawer-body > [role="status"] { padding-inline: var(--space-6); font-size: var(--text-sm); }
+.troc-cart-drawer .troc-premium-empty { margin: var(--space-6); overflow: auto; }
+.troc-cart-goals { display: grid; gap: var(--space-3); margin-inline: var(--space-6); padding: var(--space-3); border: 1px solid var(--color-border); border-left: 2px solid var(--color-accent); border-radius: var(--radius-md); max-height: 140px; overflow-y: auto; flex-shrink: 0; }
+.troc-cart-goals:empty { display: none; }
+.troc-cart-goals > div { display: grid; gap: var(--space-2); }
+.troc-cart-goals strong { font-size: var(--text-xs); }
+.troc-cart-goals .troc-progress-label, .troc-cart-goals .troc-progress-value { font-size: 11px; }
+.troc-cart-order-heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); margin-inline: var(--space-6); }
+.troc-cart-order-heading h2 { font-size: var(--text-lg); font-weight: 650; }
+.troc-cart-order-heading > span { font-size: var(--text-xs); color: var(--text-secondary); text-align: right; }
+.troc-cart-drawer .troc-commerce-layout { display: flex; flex-direction: column; align-items: stretch; gap: 0; flex: 1; min-height: 0; }
+.troc-cart-compact-groups { display: grid; align-content: start; gap: var(--space-3); overflow-y: auto; min-height: 80px; flex: 1; padding: 0 var(--space-6) var(--space-4); scroll-padding-block: var(--space-4); }
+.troc-cart-drawer .troc-cart-group { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--surface); box-shadow: none; padding: 0; gap: 0; }
+.troc-cart-drawer .troc-cart-group-head { padding: var(--space-3) var(--space-4) var(--space-2); border: 0; }
+.troc-cart-drawer .troc-cart-group-name { font-size: var(--text-base); }
+.troc-cart-drawer .troc-cart-group-meta { font-size: var(--text-xs); }
+.troc-cart-drawer .troc-cart-lines > summary { padding: var(--space-1) var(--space-4); color: var(--text-secondary); font-size: 11px; font-weight: 400; }
+.troc-cart-drawer .troc-cart-item { padding: var(--space-3) var(--space-4); gap: var(--space-2) var(--space-3); border: 0; grid-template-columns: 48px minmax(0,1fr) 116px 56px; grid-template-areas: "image info qty remove" "image price qty total"; }
+.troc-cart-drawer .troc-cart-item-image { width: 48px; }
+.troc-cart-drawer .troc-cart-item-title { font-size: var(--text-sm); }
+.troc-cart-drawer .troc-cart-item-meta { font-size: 10px; line-height: 1.5; }
+.troc-cart-drawer .troc-cart-item-price { font-size: var(--text-xs); }
+.troc-cart-drawer .troc-cart-item-total { font-size: var(--text-xs); text-align: right; }
+.troc-cart-drawer .troc-cart-item-remove { justify-self: end; }
+.troc-cart-drawer .troc-cart-item-qty { align-self: center; }
+.troc-cart-drawer .troc-cart-seller-options { display: block; padding: var(--space-2) var(--space-4) var(--space-3); border-top: 1px solid var(--color-border); font-size: var(--text-xs); }
+.troc-cart-seller-options > summary { cursor: pointer; color: var(--text-secondary); }
+.troc-cart-seller-options[open] > :not(summary) { margin-top: var(--space-4); }
+.troc-cart-secondary-info, .troc-cart-line-options { display: grid; gap: var(--space-3); }
+.troc-cart-line-options > div { padding: 0; }
+.troc-cart-drawer #cart-summary { position: relative; flex-shrink: 0; display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-6) max(var(--space-4), env(safe-area-inset-bottom)); border: 0; border-top: 1px solid var(--color-border); border-radius: 0; background: var(--surface-elevated); max-height: 49dvh; overflow-y: auto; }
+.troc-cart-drawer #cart-summary > details { font-size: var(--text-xs); }
+.troc-cart-drawer #cart-summary > details > summary { padding-block: var(--space-1); }
+.troc-cart-drawer .troc-cart-tax-note, .troc-cart-drawer #cart-minimum-explanation { font-size: 11px; line-height: 1.4; }
+.troc-cart-drawer #cart-minimum-explanation ul { gap: var(--space-1); }
+.troc-cart-drawer .troc-cart-smart-link { font-size: var(--text-xs); }
+.troc-cart-payment-note { font-size: 11px; line-height: 1.4; color: var(--text-secondary); text-align: center; }
+@media (max-width: 540px) {
+  .troc-cart-drawer[data-side="right"] { border-radius: 0; padding: 0; }
+  .troc-cart-drawer-header { padding: var(--space-3) var(--space-4); margin: 0; }
+  .troc-cart-drawer-title .troc-dialog-title { font-size: var(--text-2xl); }
+  .troc-cart-drawer .troc-cart-item { grid-template-columns: 40px minmax(0, 1fr) auto; grid-template-areas: "image info remove" "image price total" "image qty qty"; padding: var(--space-3); }
+  .troc-cart-drawer .troc-cart-item-image { width: 40px; }
+  .troc-cart-drawer > .troc-cart-smart-invitation, .troc-cart-goals, .troc-cart-order-heading { margin-inline: var(--space-4); }
+  .troc-cart-compact-groups, .troc-cart-demo-note, .troc-cart-drawer #cart-summary { padding-inline: var(--space-4); }
+  .troc-cart-goals { max-height: 100px; }
+  .troc-cart-order-heading h2 { font-size: var(--text-base); }
+}
+
+.troc-cart-drawer .troc-cart-group-seller { gap: 3px; }
+.troc-cart-drawer .troc-cart-seller-name { display: inline-flex; align-items: center; gap: var(--space-2); }
+.troc-cart-drawer .troc-cart-item-image .troc-card-image { width: 100%; }
+.troc-cart-drawer #cart-summary > .troc-button { position: sticky; bottom: 28px; z-index: 1; }
+.troc-cart-drawer #cart-summary .troc-cart-payment-note { position: sticky; bottom: 0; background: var(--surface-elevated); padding-block: 2px; }
+.troc-cart-drawer #cart-summary > details[open] > div { max-height: 110px; overflow-y: auto; }
+.troc-cart-drawer #cart-minimum-explanation ul { max-height: 72px; overflow-y: auto; }

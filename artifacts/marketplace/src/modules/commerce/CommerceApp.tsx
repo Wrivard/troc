@@ -1,3 +1,4 @@
+import { Progress } from "@workspace/troc-design-system/components/ui/progress";
 import { SmartCartDemo } from "../brand/SmartCartDemo";
 import { commerceSellerName } from "../brand/demo-store-branding";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
@@ -346,9 +347,17 @@ export function CommerceApp({
             ))}
           </nav>
         )}
-        <p className="border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground">
-          {t("demo")}
-        </p>
+        {(!embeddedCart || !lines.length) && (
+          <p
+            className={
+              embeddedCart
+                ? "troc-cart-demo-note"
+                : "border-l-2 border-border pl-3 text-xs leading-relaxed text-muted-foreground"
+            }
+          >
+            {t("demo")}
+          </p>
+        )}
         {orderPage ? (
           <OrderPages path={path} locale={locale} />
         ) : (
@@ -375,7 +384,7 @@ export function CommerceApp({
                 }
               />
             )}
-            {!!lines.length && quote && !checkout && (
+            {!embeddedCart && !!lines.length && quote && !checkout && (
               <a className="troc-editorial-text-link" href="#cart-summary">
                 {locale === "fr"
                   ? "Voir le récapitulatif"
@@ -561,8 +570,113 @@ export function CommerceApp({
                       )}
                     </>
                   )}
+                  {embeddedCart && quoteFresh && (
+                    <div className="troc-cart-goals">
+                      {quote.groups
+                        .filter(
+                          (g) =>
+                            g.minimumRemainingCents > 0 ||
+                            g.freeShippingRemainingCents !== null ||
+                            g.nextPromotion,
+                        )
+                        .map((g) => (
+                          <div key={g.seller.id}>
+                            <strong>{commerceSellerName(g)}</strong>
+                            {g.minimumRemainingCents > 0 ? (
+                              <Progress
+                                size="compact"
+                                tone="accent"
+                                label={t("minimum")}
+                                value={g.merchandiseCents}
+                                max={g.seller.minimumCents}
+                                valueLabel={
+                                  t("addMore") +
+                                  " " +
+                                  money(g.minimumRemainingCents)
+                                }
+                              />
+                            ) : g.freeShippingRemainingCents !== null ? (
+                              <Progress
+                                size="compact"
+                                tone="accent"
+                                label={t("free")}
+                                value={g.merchandiseCents - g.discountCents}
+                                max={g.seller.freeShippingCents ?? 0}
+                                valueLabel={
+                                  g.freeShippingRemainingCents === 0
+                                    ? t("freeReached")
+                                    : t("addMore") +
+                                      " " +
+                                      money(g.freeShippingRemainingCents)
+                                }
+                              />
+                            ) : (
+                              g.nextPromotion && (
+                                <Progress
+                                  size="compact"
+                                  tone="accent"
+                                  label={
+                                    t("promotion") +
+                                    " · " +
+                                    g.nextPromotion.basisPoints / 100 +
+                                    "%"
+                                  }
+                                  value={
+                                    g.nextPromotion.minimumCards
+                                      ? g.cards
+                                      : g.merchandiseCents
+                                  }
+                                  max={
+                                    g.nextPromotion.minimumCards ??
+                                    g.nextPromotion.minimumCents ??
+                                    0
+                                  }
+                                  valueLabel={
+                                    g.nextPromotion.minimumCards
+                                      ? g.cards +
+                                        " / " +
+                                        g.nextPromotion.minimumCards +
+                                        " " +
+                                        t("cards")
+                                      : money(g.merchandiseCents) +
+                                        " / " +
+                                        money(g.nextPromotion.minimumCents ?? 0)
+                                  }
+                                />
+                              )
+                            )}
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                  {embeddedCart && (
+                    <div className="troc-cart-order-heading">
+                      <h2>
+                        {locale === "fr" ? "Votre commande" : "Order summary"}
+                      </h2>
+                      <span>
+                        {quote.groups.length}{" "}
+                        {locale === "fr"
+                          ? quote.groups.length > 1
+                            ? "vendeurs"
+                            : "vendeur"
+                          : quote.groups.length === 1
+                            ? "seller"
+                            : "sellers"}{" "}
+                        · {quote.cards}{" "}
+                        {locale === "fr"
+                          ? quote.cards > 1
+                            ? "cartes"
+                            : "carte"
+                          : quote.cards === 1
+                            ? "card"
+                            : "cards"}
+                      </span>
+                    </div>
+                  )}
                   <div className="troc-commerce-layout grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
                     <CartGroups
+                      compact={embeddedCart}
                       quote={quote}
                       locale={locale}
                       change={change}
@@ -574,7 +688,11 @@ export function CommerceApp({
                       aria-label={
                         locale === "fr" ? "Récapitulatif" : "Order summary"
                       }
-                      className="grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6"
+                      className={
+                        embeddedCart
+                          ? "troc-cart-sticky-summary"
+                          : "grid gap-4 rounded-lg border border-border bg-card p-4 lg:sticky lg:top-6"
+                      }
                     >
                       {!quoteFresh && (
                         <p className="font-semibold" role="status">
@@ -586,12 +704,23 @@ export function CommerceApp({
                       <OrderTotals
                         locale={locale}
                         lines={[
-                          ...summary(quote),
-                          {
-                            id: "tax",
-                            label: t("tax"),
-                            amount: checkout ? quote.taxCents / 100 : null,
-                          },
+                          ...summary(quote).filter(
+                            (line) =>
+                              !embeddedCart ||
+                              line.id !== "discount" ||
+                              line.amount !== 0,
+                          ),
+                          ...(!embeddedCart
+                            ? [
+                                {
+                                  id: "tax",
+                                  label: t("tax"),
+                                  amount: checkout
+                                    ? quote.taxCents / 100
+                                    : null,
+                                },
+                              ]
+                            : []),
                           ...(checkout
                             ? [
                                 {
@@ -607,10 +736,14 @@ export function CommerceApp({
                         total={(quote.totalCents - used) / 100}
                       />
                       {!checkout && (
-                        <p className="text-sm text-muted-foreground">
+                        <p className="troc-cart-tax-note text-sm text-muted-foreground">
                           {locale === "fr"
-                            ? "Les taxes seront estimées au paiement simulé, selon votre province."
-                            : "Taxes will be estimated at simulated checkout, based on your province."}
+                            ? embeddedCart
+                              ? "Taxes estimées au paiement simulé."
+                              : "Les taxes seront estimées au paiement simulé, selon votre province."
+                            : embeddedCart
+                              ? "Taxes estimated at simulated checkout."
+                              : "Taxes will be estimated at simulated checkout, based on your province."}
                         </p>
                       )}
                       <details>
@@ -648,8 +781,12 @@ export function CommerceApp({
                           >
                             <p>
                               {locale === "fr"
-                                ? "Atteignez les minimums de ces vendeurs pour poursuivre :"
-                                : "Meet these seller minimums to continue:"}
+                                ? embeddedCart
+                                  ? "Minimums requis :"
+                                  : "Atteignez les minimums de ces vendeurs pour poursuivre :"
+                                : embeddedCart
+                                  ? "Required seller minimums:"
+                                  : "Meet these seller minimums to continue:"}
                             </p>
                             <ul className="grid gap-2">
                               {quote.groups
@@ -673,7 +810,10 @@ export function CommerceApp({
                         )}
                       {!checkout && (
                         <>
-                          <a className="underline" href={link("/smart-cart")}>
+                          <a
+                            className="troc-cart-smart-link underline"
+                            href={link("/smart-cart")}
+                          >
                             {t("smart")}
                           </a>
                           <Button
@@ -690,9 +830,20 @@ export function CommerceApp({
                               window.location.assign(link("/checkout"))
                             }
                           >
-                            {t("checkout")}
+                            {embeddedCart
+                              ? locale === "fr"
+                                ? "Vérifier la commande →"
+                                : "Review order →"
+                              : t("checkout")}
                           </Button>
                         </>
+                      )}
+                      {embeddedCart && (
+                        <p className="troc-cart-payment-note">
+                          {locale === "fr"
+                            ? "Panier de démonstration. Aucun paiement ne sera prélevé."
+                            : "This is a demo cart. No payment will be charged."}
+                        </p>
                       )}
                     </aside>
                   </div>
