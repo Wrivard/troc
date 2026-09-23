@@ -1,0 +1,239 @@
+/* Isolated presentation; host owns placement in its header and all search data. */
+.troc-search-presentation {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+.troc-search-presentation-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.troc-search-presentation-control > svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.troc-search-presentation-control > input {
+  width: 100%;
+  height: 44px;
+  padding: 0 48px 0 42px;
+  background: var(--surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.troc-search-presentation-control > input:focus-visible {
+  border-color: var(--focus);
+  outline: 1px solid var(--focus);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+.troc-search-presentation-clear {
+  position: absolute;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  color: var(--text-secondary);
+}
+.troc-search-presentation-popup {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 8px);
+  inset-inline: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  scrollbar-gutter: stable;
+}
+.troc-search-presentation-popup a {
+  color: inherit;
+  text-decoration: none;
+}
+.troc-search-presentation-popup a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.troc-search-presentation-popup [role="option"][aria-selected="true"],
+.troc-search-presentation-popup [role="option"]:hover {
+  background: var(--surface-hover);
+}
+.troc-search-presentation-popup [role="option"][aria-selected="true"] {
+  box-shadow: inset 2px 0 var(--color-primary);
+}
+.troc-search-presentation-all {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--surface-hover);
+}
+.troc-search-presentation-all > span:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.troc-search-presentation-all strong {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.troc-search-presentation-popup small {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+.troc-search-presentation-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px 0 16px;
+  min-height: 44px;
+  border-top: 1px solid var(--color-border);
+}
+.troc-search-presentation-heading > span {
+  font-size: 12px;
+  font-weight: 650;
+}
+.troc-search-presentation-heading a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.troc-search-presentation-heading svg,
+.troc-search-presentation-result > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+.troc-search-presentation-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  min-height: 84px;
+}
+.troc-search-presentation-result + .troc-search-presentation-result {
+  border-top: 1px solid var(--color-border);
+}
+.troc-search-presentation-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  flex: 0 0 42px;
+  min-height: 52px;
+  color: var(--text-muted);
+}
+.troc-search-presentation-thumb .troc-card-image {
+  width: 42px;
+  background: transparent;
+}
+.troc-search-presentation-thumb > svg {
+  width: 24px;
+  height: 24px;
+}
+.troc-search-presentation-copy {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.troc-search-presentation-copy strong {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.troc-search-presentation-copy strong,
+.troc-search-presentation-copy small {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.troc-search-presentation-price {
+  display: grid;
+  gap: 1px;
+  text-align: right;
+  flex-shrink: 0;
+  max-width: 100px;
+}
+.troc-search-presentation-price strong {
+  font-size: 15px;
+}
+.troc-search-presentation-price small {
+  font-size: 10px;
+}
+.troc-search-presentation-state {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.troc-search-presentation-state strong {
+  color: var(--text-primary);
+}
+.troc-search-presentation-state p {
+  margin: 0;
+}
+.troc-search-presentation-state .troc-skeleton {
+  height: 48px;
+}
+.troc-search-presentation-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--color-border);
+  color: var(--text-muted);
+  font-size: 10px;
+}
+@media (max-width: 420px) {
+  .troc-search-presentation-result {
+    gap: 8px;
+    padding: 10px;
+  }
+  .troc-search-presentation-copy strong {
+    font-size: 12px;
+  }
+  .troc-search-presentation-popup small {
+    font-size: 11px;
+  }
+  .troc-search-presentation-price {
+    max-width: 76px;
+  }
+  .troc-search-presentation-price strong {
+    font-size: 13px;
+  }
+  .troc-search-presentation-price small {
+    font-size: 10px;
+  }
+  .troc-search-presentation-result > svg {
+    display: none;
+  }
+  .troc-search-presentation-all,
+  .troc-search-presentation-state {
+    padding: 12px;
+  }
+}

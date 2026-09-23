@@ -1,0 +1,261 @@
+{
+  "card": [
+    {
+      "product": {
+        "id": "46209e5b-2cb3-4ae2-9315-2277968f65c5",
+        "slug": "yu-gi-oh-a-hero-emerges-46209e5b",
+        "name": {
+          "en": "A Hero Emerges",
+          "fr": "A Hero Emerges"
+        },
+        "gameId": "00000000-0000-4000-8001-000000000002",
+        "setId": "c3eb6216-62a9-4259-8bd4-b9f8410eb527",
+        "type": "raw_single",
+        "variants": [
+          {
+            "id": "d4858f76-efdc-44ea-b565-79bef403a3c2",
+            "printingId": "fc35539d-a173-4a12-a1c3-55ee2521dc43",
+            "language": "en",
+            "key": "standard",
+            "attributes": {
+              "finish": "standard",
+              "artworkScope": "card-reference"
+            },
+            "number": "BP02-EN179",
+            "rarity": "Common",
+            "artist": "",
+            "images": [
+              {
+                "id": "c338f7bc-2af5-4961-b74b-946c3a997077",
+                "side": "front",
+                "url": "/catalog-art/ba3b8bf42c735b64d97d-600.webp",
+                "sources": [
+                  {
+                    "url": "/catalog-art/bcd32cf1cfcb141839cf-245.webp",
+                    "width": 245
+                  },
+                  {
+                    "url": "/catalog-art/ba3b8bf42c735b64d97d-600.webp",
+                    "width": 600
+                  }
+                ],
+                "width": 600,
+                "height": 875,
+                "provenance": {
+                  "provider": "ygoprodeck",
+                  "externalId": "21597117",
+                  "sourceUrl": "https://images.ygoprodeck.com/images/cards/21597117.jpg",
+                  "license": "User-approved bounded demo/development sample only; publisher rights retained",
+                  "capturedAt": "2026-09-22T11:47:23.052Z"
+                }
+              }
+            ]
+          }
+        ],
+        "aliases": [
+          "A Hero Emerges",
+          "Battle Pack 2: War of the Giants",
+          "BP02-EN179"
+        ],
+        "imageUrl": null,
+        "images": [
+          {
+            "id": "c338f7bc-2af5-4961-b74b-946c3a997077",
+            "side": "front",
+            "url": "/catalog-art/ba3b8bf42c735b64d97d-600.webp",
+            "sources": [
+              {
+                "url": "/catalog-art/bcd32cf1cfcb141839cf-245.webp",
+                "width": 245
+              },
+              {
+                "url": "/catalog-art/ba3b8bf42c735b64d97d-600.webp",
+                "width": 600
+              }
+            ],
+            "width": 600,
+            "height": 875,
+            "provenance": {
+              "provider": "ygoprodeck",
+              "externalId": "21597117",
+              "sourceUrl": "https://images.ygoprodeck.com/images/cards/21597117.jpg",
+              "license": "User-approved bounded demo/development sample only; publisher rights retained",
+              "capturedAt": "2026-09-22T11:47:23.052Z"
+            }
+          }
+        ],
+        "demo": true
+      },
+      "demo": true,
+      "lowestCents": 5,
+      "medianCents": 10,
+      "referenceCents": 15,
+      "quantity": 90,
+      "sellerCount": 3
+    }
+  ],
+  "products": [
+    {
+      "product": {
+        "id": "00000000-0000-4000-8003-000000000001",
+        "slug": "pokemon-collectors-box",
+        "gameId": "00000000-0000-4000-8001-000000000000",
+        "setId": "00000000-0000-4000-8002-000000000000",
+        "name": {
+          "en": "Collector’s Box",
+          "fr": "Coffret de collection"
+        },
+        "type": "sealed",
+        "aliases": ["demo pokemon", "northern light"],
+        "imageUrl": null,
+        "variants": [
+          {
+            "id": "00000000-0000-4000-8004-000000000003",
+            "printingId": "00000000-0000-4000-8005-000000000003",
+            "language": "en",
+            "key": "standard",
+            "attributes": {
+              "finish": "standard"
+            },
+            "number": "002",
+            "rarity": "special",
+            "artist": "TROC demo fixture"
+          }
+        ]
+      },
+      "demo": true,
+      "lowestCents": 4600,
+      "medianCents": 4700,
+      "referenceCents": 5250,
+      "quantity": 39,
+      "sellerCount": 3
+    },
+    {
+      "product": {
+        "id": "00000000-0000-4000-8003-000000000004",
+        "slug": "magic-collectors-box",
+        "gameId": "00000000-0000-4000-8001-000000000001",
+        "setId": "00000000-0000-4000-8002-000000000001",
+        "name": {
+          "en": "Collector’s Box",
+          "fr": "Coffret de collection"
+        },
+        "type": "sealed",
+        "aliases": ["demo magic", "northern light"],
+        "imageUrl": null,
+        "variants": [
+          {
+            "id": "00000000-0000-4000-8004-000000000012",
+            "printingId": "00000000-0000-4000-8005-000000000012",
+            "language": "en",
+            "key": "standard",
+            "attributes": {
+              "finish": "standard"
+            },
+            "number": "005",
+            "rarity": "special",
+            "artist": "TROC demo fixture"
+          }
+        ]
+      },
+      "demo": true,
+      "lowestCents": 4900,
+      "medianCents": 5000,
+      "referenceCents": 5550,
+      "quantity": 39,
+      "sellerCount": 3
+    }
+  ],
+  "games": [
+    {
+      "id": "00000000-0000-4000-8001-000000000000",
+      "slug": "pokemon",
+      "name": {
+        "en": "Pokémon",
+        "fr": "Pokémon"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8001-000000000001",
+      "slug": "magic",
+      "name": {
+        "en": "Magic: The Gathering",
+        "fr": "Magic: The Gathering"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8001-000000000002",
+      "slug": "yu-gi-oh",
+      "name": {
+        "en": "Yu-Gi-Oh!",
+        "fr": "Yu-Gi-Oh!"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8001-000000000003",
+      "slug": "one-piece",
+      "name": {
+        "en": "One Piece",
+        "fr": "One Piece"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8001-000000000004",
+      "slug": "riftbound",
+      "name": {
+        "en": "Riftbound",
+        "fr": "Riftbound"
+      }
+    }
+  ],
+  "sets": [
+    {
+      "id": "c3eb6216-62a9-4259-8bd4-b9f8410eb527",
+      "gameId": "00000000-0000-4000-8001-000000000002",
+      "slug": "yu-gi-oh-battle-pack-2-war-of-the-giants-en-c3eb6216",
+      "name": {
+        "en": "Battle Pack 2: War of the Giants",
+        "fr": "Battle Pack 2: War of the Giants"
+      },
+      "releasedOn": null
+    }
+  ],
+  "sellers": [
+    {
+      "name": "Cartes du Nord",
+      "slug": "cartes-du-nord",
+      "city": "Montréal",
+      "province": "QC",
+      "id": "00000000-0000-4000-8006-000000000000",
+      "story": {
+        "en": "A fictional Canadian seller for exploring the TROC marketplace. No orders or customer reviews have been generated.",
+        "fr": "Un vendeur canadien fictif pour explorer TROC. Aucune commande ni aucun avis client n’a été généré."
+      },
+      "level": "new",
+      "minimumCents": 0,
+      "handlingDays": 1,
+      "demo": true,
+      "logoUrl": null,
+      "bannerUrl": null,
+      "verifiedShop": false
+    },
+    {
+      "name": "Maple Singles",
+      "slug": "maple-singles",
+      "city": "Toronto",
+      "province": "ON",
+      "id": "00000000-0000-4000-8006-000000000001",
+      "story": {
+        "en": "A fictional Canadian seller for exploring the TROC marketplace. No orders or customer reviews have been generated.",
+        "fr": "Un vendeur canadien fictif pour explorer TROC. Aucune commande ni aucun avis client n’a été généré."
+      },
+      "level": "established",
+      "minimumCents": 200,
+      "handlingDays": 2,
+      "demo": true,
+      "logoUrl": null,
+      "bannerUrl": null,
+      "verifiedShop": false
+    }
+  ]
+}
