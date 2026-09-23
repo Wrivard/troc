@@ -1,0 +1,176 @@
+.troc-cover-editor {
+  color: var(--text-primary);
+}
+.troc-cover-editor header {
+  max-width: 700px;
+  margin-bottom: 36px;
+}
+.troc-cover-editor-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.troc-cover-editor h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.12;
+  margin-bottom: 16px;
+}
+.troc-cover-editor header > p:last-child {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.troc-cover-editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+.troc-cover-editor-previews {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+.troc-cover-editor-preview {
+  min-width: 0;
+  margin: 0;
+}
+.troc-cover-editor-preview:last-child {
+  max-width: 390px;
+  width: 100%;
+}
+.troc-cover-editor-preview figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.troc-cover-editor-preview figcaption span {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.troc-cover-editor-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  outline: 1px solid var(--color-border);
+}
+.troc-cover-editor-frame img {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+  display: block;
+}
+.troc-cover-editor-controls {
+  border: 1px solid var(--color-border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.troc-cover-editor h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.troc-cover-editor-file {
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.troc-cover-editor-hint {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.troc-cover-editor-source {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+}
+.troc-cover-editor fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.troc-cover-editor legend {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.troc-cover-editor fieldset label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+.troc-cover-editor fieldset label > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.troc-cover-editor input[type="range"] {
+  width: 100%;
+  min-height: 32px;
+  accent-color: var(--color-primary);
+}
+.troc-cover-editor input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+.troc-cover-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--color-border);
+  padding-top: 20px;
+}
+.troc-cover-editor button {
+  white-space: normal;
+  height: auto;
+  min-height: 44px;
+  padding-block: 10px;
+  line-height: 1.4;
+}
+.troc-cover-editor-error {
+  color: var(--text-primary);
+  border-left: 3px solid var(--color-primary);
+  padding: 8px 12px;
+  background: var(--surface-hover);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.troc-cover-editor [role="status"] {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.troc-cover-editor [role="status"]:empty {
+  display: none;
+}
+@media (max-width: 900px) {
+  .troc-cover-editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .troc-cover-editor-preview:last-child {
+    max-width: 390px;
+  }
+}
+@media (max-width: 540px) {
+  .troc-cover-editor-controls {
+    padding: 16px;
+  }
+  .troc-cover-editor-actions > button {
+    flex: 1;
+  }
+}
