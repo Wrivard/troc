@@ -3929,3 +3929,96 @@ a.troc-recently-sold:focus-visible,
   .troc-consolidation--panels .troc-consolidation-result { padding: 24px; grid-template-columns: auto 1fr; }
   .troc-consolidation--panels .troc-consolidation-result > p { grid-column: 1 / -1; border: 0; padding-left: 0; }
 }
+
+/* Opt-in marketplace shelf: neutral tiles with complete artwork and aligned pricing. */
+.troc-editorial-catalog--shelf {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+.troc-editorial-catalog--shelf .troc-market-card {
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  background: var(--surface);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.troc-editorial-catalog--shelf .troc-market-card-art {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.troc-editorial-catalog--shelf .troc-market-card-copy {
+  padding: var(--space-6) 0 0;
+  gap: var(--space-3);
+}
+.troc-editorial-catalog--shelf .troc-market-card h3 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+}
+.troc-editorial-catalog--shelf .troc-market-card-meta {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.troc-editorial-catalog--shelf .troc-market-card-price {
+  border-top: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  padding-top: var(--space-4);
+  gap: var(--space-3);
+}
+.troc-editorial-catalog--shelf .troc-market-card-price strong {
+  font-size: clamp(1.875rem, 2.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.troc-editorial-catalog--shelf .troc-market-card-availability {
+  position: relative;
+  padding-right: 52px;
+  min-height: 24px;
+  font-size: var(--text-sm);
+}
+.troc-editorial-catalog--shelf .troc-market-card-availability svg {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -22px;
+  width: 44px;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 18%, transparent);
+  border-radius: 50%;
+  background: var(--surface-hover);
+}
+.troc-editorial-catalog--shelf .troc-market-card-reference {
+  border: 0;
+  padding: 0;
+  font-size: var(--text-sm);
+}
+@media (min-width: 600px) {
+  .troc-editorial-catalog--shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1100px) {
+  .troc-editorial-catalog--shelf { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .troc-editorial-catalog--shelf .troc-market-card:hover {
+    transform: none;
+    border-color: var(--text-muted);
+    background: var(--surface-hover);
+  }
+  .troc-editorial-catalog--shelf .troc-market-card:hover .troc-market-card-art {
+    background: transparent;
+  }
+  .troc-editorial-catalog--shelf .troc-market-card:hover img {
+    transform: translateY(-2px);
+  }
+  .troc-editorial-catalog--shelf .troc-market-card:hover .troc-market-card-availability svg {
+    transform: translateX(2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .troc-editorial-catalog--shelf .troc-market-card,
+  .troc-editorial-catalog--shelf .troc-market-card img,
+  .troc-editorial-catalog--shelf .troc-market-card-availability svg { transition: none; }
+  .troc-editorial-catalog--shelf .troc-market-card:hover img,
+  .troc-editorial-catalog--shelf .troc-market-card:hover .troc-market-card-availability svg { transform: none; }
+}

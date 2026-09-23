@@ -41,7 +41,7 @@ export function HomeSections({
   href,
 }: {
   page: PublicPage & { stats?: HomeStats };
-  cards: (items: ProductResult[]) => ReactNode;
+  cards: (items: ProductResult[], presentation?: "shelf") => ReactNode;
   href: (path: string, params?: Record<string, string>) => string;
 }) {
   const fr = page.locale === "fr";
@@ -670,6 +670,7 @@ export function HomeSections({
                   .some((f) => f.product.id === r.product.id),
             )
             .slice(0, 4),
+          "shelf",
         )}
       </section>
       <section

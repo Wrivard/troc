@@ -151,8 +151,12 @@ export function PublicMarketplace({
       max: page.filters.max === null ? "" : String(page.filters.max),
       grade: page.selectedGrade ?? "",
     });
-  const cards = (items: ProductResult[]) => (
-    <EditorialCatalogGrid>
+  const cards = (items: ProductResult[], presentation?: "shelf") => (
+    <EditorialCatalogGrid
+      className={
+        presentation === "shelf" ? "troc-editorial-catalog--shelf" : undefined
+      }
+    >
       {items.map((result) => {
         const p = result.product;
         const set = page.sets.find((s) => s.id === p.setId);

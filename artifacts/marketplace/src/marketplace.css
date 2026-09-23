@@ -1788,3 +1788,19 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
   .troc-cinematic-hero .troc-hero-benefits > div { flex-direction: row; align-items: center; }
 }
 
+
+/* Under-$1 editorial shelf. Shared tile styling lives in the design system. */
+.troc-small-edit { gap: var(--space-8); }
+.troc-small-edit .troc-editorial-intro-copy { max-width: 52rem; }
+.troc-small-edit .troc-editorial-intro h2 {
+  font-size: clamp(2rem, 3.6vw, 3.75rem);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+.troc-small-edit .troc-editorial-description { max-width: 48rem; }
+.troc-small-edit .troc-editorial-text-link {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-strong);
+  white-space: normal;
+}

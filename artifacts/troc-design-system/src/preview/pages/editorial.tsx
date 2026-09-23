@@ -254,8 +254,8 @@ export default function EditorialPage() {
           label={fr ? "Cartes interactives" : "Interactive cards"}
         />
       </Section>
-      <Section title="MarketplaceProductCard">
-        <EditorialCatalogGrid>
+      <Section title="MarketplaceProductCard · shelf">
+        <EditorialCatalogGrid className="troc-editorial-catalog--shelf">
           <MarketplaceProductCard
             href="#page=editorial"
             name="Pikachu"
