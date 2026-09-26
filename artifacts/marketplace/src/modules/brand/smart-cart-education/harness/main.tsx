@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { SmartCartCollectionExercise } from "../SmartCartCollectionExercise";
-import { SmartCartFeaturePage } from "./baseline/SmartCartFeaturePage";
-import { SmartCartDemo } from "./baseline/SmartCartDemo";
+import { SmartCartFeaturePage } from "../../smart-cart-feature/SmartCartFeaturePage";
+import { SmartCartDemo } from "../../SmartCartDemo";
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import fixtures from "./fixtures.json";
 import "@workspace/troc-design-system/styles.css";

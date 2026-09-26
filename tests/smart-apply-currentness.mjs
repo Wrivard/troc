@@ -1,4 +1,4 @@
-import process from "node:process";
+
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 
@@ -120,3 +120,4 @@ try {
   fs.writeFileSync("docs/evidence/smart-apply-currentness/check.json",JSON.stringify(results,null,2));
   console.log(results);
 } finally { await browser.close(); }
+

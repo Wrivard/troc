@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { GoogleSignInPresentation } from "../GoogleSignInPresentation";
-import { SignInLayout } from "./baseline/SignInLayout";
+import { SignInLayout } from "../../sign-in-presentation/SignInLayout";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";

@@ -20,6 +20,13 @@ export default ts.config(
         console: "readonly",
         document: "readonly",
         innerWidth: "readonly",
+        // These Node-driven Playwright probes also execute callbacks in a browser.
+        localStorage: "readonly",
+        scrollTo: "readonly",
+        getComputedStyle: "readonly",
+        fetch: "readonly",
+        crypto: "readonly",
+        process: "readonly",
       },
     },
   },
