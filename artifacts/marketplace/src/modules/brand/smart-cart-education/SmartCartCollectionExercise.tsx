@@ -72,8 +72,8 @@ export function SmartCartCollectionExercise({
         </h2>
         <p>
           {fr
-            ? "Explorez un extrait de quatre cartes avec une carte déjà possédée dans l’exemple. Cette simulation est distincte de la comparaison ci-dessus; elle ne lit ni ne modifie votre collection ou votre panier."
-            : "Explore a four-card excerpt with one card already owned in the example. This simulation is separate from the comparison above; it never reads or changes your collection or cart."}
+            ? "Explorez un extrait de quatre cartes avec une carte déjà possédée dans l’exemple. Cette simulation ne lit ni ne modifie votre collection ou votre panier."
+            : "Explore a four-card excerpt with one card already owned in the example. This simulation never reads or changes your collection or cart."}
         </p>
       </header>
       <div className="troc-collection-exercise-layout">

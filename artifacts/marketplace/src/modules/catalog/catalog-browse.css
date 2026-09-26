@@ -110,8 +110,12 @@ main.troc-search-page .troc-search-heading h1 {
   cursor: pointer;
   color: var(--text-secondary);
 }
-.troc-browse-option span {
-  overflow-wrap: anywhere;
+.troc-browse-option > .troc-filter-option-label {
+  min-width: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .troc-browse-option:has([data-state="checked"]) {
   color: var(--text-primary);
@@ -303,15 +307,23 @@ main.troc-search-page .troc-search-heading h1 {
 .troc-browse-drawer.troc-drawer {
   width: min(420px, 100%);
   max-width: 100%;
-  overflow-y: auto;
+  height: 100dvh;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
 }
-.troc-browse-drawer .troc-browse-panel {
-  padding: 0 24px;
-}
-.troc-browse-drawer .troc-browse-apply {
-  background: var(--surface);
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
-}
+.troc-browse-drawer > .troc-drawer-header { flex: none; padding: 24px 64px 20px 24px; }
+.troc-browse-drawer-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: 12px; }
+.troc-browse-drawer .troc-browse-panel { padding: 0 24px 20px; }
+.troc-browse-drawer-footer { flex: none; padding: 16px 24px max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--color-border); background: var(--surface-elevated); }
+.troc-browse-drawer-footer > button { width: 100%; min-height: 48px; }
+.troc-browse-drawer .troc-dialog-close { width: 44px; height: 44px; top: 12px; right: 12px; }
+.troc-browse-drawer .troc-browse-option { min-height: 44px; }
+.troc-browse-drawer .troc-browse-group summary { min-height: 44px; display: list-item; align-content: center; }
+.troc-browse-drawer .troc-filter-selected { top: 19px; }
+.troc-browse-drawer .troc-set-tools button, .troc-browse-drawer .troc-set-more { min-height: 44px; }
+.troc-browse-drawer .troc-browse-filter-heading a { min-height: 44px; display: inline-flex; align-items: center; }
+.troc-browse-drawer input { font-size: 16px; }
 @media (min-width: 1800px) {
   .troc-browse[data-view="compact"] .troc-editorial-catalog {
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -415,16 +427,56 @@ main.troc-search-page .troc-search-heading h1 {
   justify-content: center;
 }
 
-.troc-browse-loading h1 {
-  margin-bottom: 24px;
+/* Compact rows retain full accessible names and explicit touch disclosure. */
+.troc-browse-option { min-width: 0; min-height: 40px; padding: 6px 8px; border-radius: var(--radius-sm); }
+.troc-browse-option:hover { background: var(--surface-hover); }
+.troc-browse-option:has([data-state="checked"]) { background: var(--surface-hover); box-shadow: inset 2px 0 var(--color-primary); }
+.troc-browse-option:focus-within { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.troc-browse-option[data-full-names="true"] { align-items: flex-start; }
+.troc-browse-option[data-full-names="true"] > .troc-filter-option-label { white-space: normal; overflow-wrap: anywhere; line-height: 1.45; }
+.troc-browse-option[data-full-names="true"] > button { margin-top: 2px; }
+.troc-browse-group summary { position: relative; padding-right: 18px; }
+.troc-filter-selected { position: absolute; right: 4px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
+.troc-set-tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--text-muted); font-size: 12px; }
+.troc-set-tools button { min-height: 36px; padding: 4px 6px; color: var(--text-secondary); border-radius: var(--radius-sm); text-decoration: underline; text-underline-offset: 3px; }
+.troc-set-tools button[aria-pressed="true"] { color: var(--text-primary); background: var(--surface-hover); }
+.troc-set-tools button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.troc-set-more { width: 100%; margin-top: 8px; }
+.troc-filter-tooltip { max-width: min(320px, calc(100vw - 32px)); white-space: normal; overflow-wrap: anywhere; }
+@media (pointer: coarse) { .troc-browse-option, .troc-set-tools button { min-height: 44px; } }
+
+.troc-browse-drawer .troc-chip-remove { min-width: 44px; min-height: 44px; flex-shrink: 0; }
+.troc-browse-drawer .troc-chip-composite { max-width: 100%; }
+.troc-browse-drawer .troc-chip-composite > .troc-chip { min-width: 0; }
+.troc-browse-drawer .troc-chip-composite > .troc-chip > span { overflow-wrap: anywhere; }
+
+.troc-browse-results-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.troc-browse-results-heading > p { margin: 0; font-size: 13px; color: var(--text-secondary); }
+.troc-browse-page-size { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-secondary); }
+.troc-browse-page-size button { width: 90px; min-height: 44px; }
+
+/* Loading geometry follows the live catalogue/product containers. */
+.troc-loading-search { flex: 1; height: 44px; min-width: 0; }
+.troc-loading-options { display: grid; gap: 18px; padding: 24px 0 8px; }
+.troc-loading-options > div { display: flex; gap: 12px; align-items: center; }
+.troc-loading-filters .troc-browse-group { padding: 20px 0; }
+.troc-loading-card-image { width: 100%; max-width: 180px; aspect-ratio: 63 / 88; }
+.troc-loading-product-image { width: 100%; aspect-ratio: 63 / 88; }
+.troc-loading-summary { display: grid; gap: 20px; padding: 24px 0; }
+.troc-product-loading .troc-editorial-intro { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; align-items: start; gap: 14px; }
+@media(max-width:1023px) { .troc-loading-filters { display: none; } }
+@media(max-width:1023px) { .troc-browse-loading .troc-browse-toolbar { flex-wrap: wrap; } .troc-loading-search { flex-basis: 100%; } }
+.troc-browse-loading .troc-loading-card-image, .troc-product-loading .troc-loading-product-image { height: auto; }
+.troc-browse-loading .troc-market-card-meta { display: grid; align-content: start; gap: 5px; }
+.troc-browse-loading .troc-market-card-availability { display: flex; justify-content: space-between; }
+.troc-browse-loading .troc-browse-results-heading { min-height: 46px; }
+@media(max-width:767px) { .troc-browse-loading .troc-browse-results-heading { min-height: 50px; } }
+.troc-browse-loading .troc-market-card-price { min-height: 52px; }
+@media(max-width:767px) {
+ .troc-loading-breadcrumb { min-height: 52px; }
+ .troc-product-loading .troc-purchase-summary { min-height: 324px; }
+ .troc-browse-loading[data-view="large"] .troc-market-card-copy { min-height: 230px; }
 }
-.troc-browse-loading .troc-skeleton--card {
-  height: 320px;
-}
-.troc-browse-loading[data-view="compact"] .troc-skeleton--card {
-  height: 240px;
-}
-.troc-browse-loading .troc-skeleton--row {
-  height: 100px;
-  margin-bottom: 12px;
-}
+
+@media(min-width:768px) { .troc-browse-loading[data-view="compact"] .troc-market-card-price { min-height: 43px; } }
+@media(max-width:767px) { .troc-browse-loading[data-view="list"] .troc-market-card-price { min-height: 37px; } }

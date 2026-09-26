@@ -1,7 +1,8 @@
+import { invalidateCatalogReferences } from "../artifacts/api-server/src/modules/catalog/reference-cache";
 import { PostgresCatalogAssetProvider } from "../artifacts/api-server/src/modules/catalog/assets";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { PGlite } from "@electric-sql/pglite";
 import { pg_trgm } from "@electric-sql/pglite/contrib/pg_trgm";
 import {
@@ -118,16 +119,14 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
     memberships: [],
   };
   try {
-    for (const name of [
-      "0001_foundation",
-      "0002_backend_access",
-      "0003_catalog",
-      "0005_catalog_images",
-      "0006_catalog_image_integrity",
-    ])
+    for (const name of (
+      await readdir(new URL("../lib/db/migrations/", import.meta.url))
+    )
+      .filter((n) => n.endsWith(".sql"))
+      .sort())
       await db.exec(
         await readFile(
-          new URL(`../lib/db/migrations/${name}.sql`, import.meta.url),
+          new URL("../lib/db/migrations/" + name, import.meta.url),
           "utf8",
         ),
       );
@@ -214,7 +213,7 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
         await db.query("DELETE FROM troc.asset_sources WHERE id=$1", [source]);
         assert.deepEqual(await assets.images([]), []);
         await assert.rejects(
-          assets.images(Array.from({ length: 49 }, () => product)),
+          assets.images(Array.from({ length: 249 }, () => product)),
           /asset_batch_too_large/,
         );
       },
@@ -246,6 +245,18 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
         );
       },
     );
+    await t.test("existing printing number and finish cannot be silently reassigned", async()=>{
+      const valid=(await provider.records({limit:200})).items[0];
+      const before=(await db.query('SELECT p.id,p.collector_number,v.id AS variant_id,v.attributes FROM troc.printings p JOIN troc.variants v ON v.printing_id=p.id ORDER BY v.id')).rows;
+      for(const [index,changed] of [
+        {...valid,printing:{...valid.printing,number:'WRONG-999'}},
+        {...valid,variant:{...valid.variant,attributes:{...valid.variant.attributes,finish:'wrong-finish'}}}
+      ].entries()){
+        const result=await runImport(sql,{id:provider.id,records:async()=>({items:[changed]})},principal,'identity-rejection-'+index);
+        assert.equal(result.succeeded,0);assert.equal(result.failed,1);
+      }
+      assert.deepEqual((await db.query('SELECT p.id,p.collector_number,v.id AS variant_id,v.attributes FROM troc.printings p JOIN troc.variants v ON v.printing_id=p.id ORDER BY v.id')).rows,before);
+    });
     await t.test(
       "per-row failures retain successful rows and reject unlicensed images",
       async () => {
@@ -476,6 +487,35 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
         );
       },
     );
+    await t.test("sale prices drive public filters summaries and offer ordering", async () => {
+      const repo = new PostgresCatalogRepository(sql);
+      const product = (await repo.search(filters("type=raw_single"))).items[0].product;
+      const variantId = [...product.variants].sort((a,b)=>a.id.localeCompare(b.id))[0].id;
+      const seller = (await db.query<{id:string}>("SELECT id FROM troc.seller_accounts WHERE slug='test-public'")).rows[0].id;
+      await db.exec("BEGIN");
+      try {
+        await db.query("UPDATE troc.listings SET status='archived' WHERE variant_id=$1",[variantId]);
+        await db.query("INSERT INTO troc.listings(seller_id,variant_id,condition,unit_price_cents,sale_cents,quantity,status) VALUES($1,$2,'NM',1000,400,2,'active'),($1,$2,'NM',600,null,3,'active')",[seller,variantId]);
+        const detail = await repo.detail(product,variantId);
+        assert.deepEqual(detail.offers.map(o=>o.cents),[400,600]);
+        assert.equal(detail.summary.lowestCents,400);
+        assert.equal(detail.summary.medianCents,500);
+        const bounded = await repo.detail(product,variantId,{filters:filters("min=400&max=400"),sort:"price_desc",page:1,limit:20,grade:null});
+        assert.equal(bounded.offers.length,1);
+        assert.equal(bounded.offers[0].cents,400);
+        const search = await repo.search(filters("min=400&max=400&sort=price&limit=248"));
+        const found = search.items.find(r=>r.product.id===product.id);
+        assert.ok(found);
+        assert.equal(found.lowestCents,400);
+        for (const locale of ["en","fr"] as const) {
+          const suggestions = await repo.suggest(product.name[locale],locale);
+          const suggestion = suggestions.groups.flatMap(g=>g.results).find(r=>r.id===product.id);
+          assert.ok(suggestion);
+          assert.equal(suggestion.lowestCents,400);
+        }
+      } finally { await db.exec("ROLLBACK"); }
+    });
+
     await t.test(
       "real products retain demo disclosure from inventory and reference history",
       async () => {
@@ -516,7 +556,7 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
           (await publicPage("/search", new URLSearchParams(), repo)).demo,
           true,
         );
-        await db.query("DELETE FROM troc.listings WHERE id=$1", [listing]);
+        await db.query("UPDATE troc.listings SET status='archived' WHERE id=$1", [listing]);
         assert.equal(
           (
             await publicPage(
@@ -561,6 +601,9 @@ test("catalog importer enforces licenses, reruns, provenance and row isolation",
           "INSERT INTO troc.set_releases(game_id,slug,name_en,name_fr,released_on) SELECT $1,'padding-'||n,'Padding '||n,'Supplément '||n,'2030-01-01'::date FROM generate_series(1,101) n",
           [product.gameId],
         );
+        // Only browsable sets belong in facets; model 101 published set documents.
+        await db.query("WITH added AS (INSERT INTO troc.catalog_products(game_id,set_id,slug,name_en,name_fr,product_type) SELECT game_id,id,'card-'||slug,name_en,name_fr,'raw_single' FROM troc.set_releases WHERE slug LIKE 'padding-%' RETURNING id,set_id,game_id) INSERT INTO troc.catalog_documents(product_id,search_text,document) SELECT id,'padding',jsonb_build_object('id',id,'setId',set_id,'gameId',game_id,'variants','[]'::jsonb,'images','[]'::jsonb) FROM added");
+        invalidateCatalogReferences(); // Fixture models a completed catalogue publication.
         assert.equal(
           (await repo.metadata(filters())).sets.some(
             (s) => s.id === product.setId,

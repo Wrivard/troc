@@ -23,12 +23,14 @@ type Preferences = {
 };
 const PreferencesContext = createContext<Preferences | null>(null);
 
-export function PreferencesProvider({ children }: { children: ReactNode }) {
+export function PreferencesProvider({ children, initialTheme, initialLocale }: { children: ReactNode; initialTheme?: Theme; initialLocale?: Locale }) {
   const [theme, setThemeValue] = useState<Theme>(() => {
+    if (initialTheme) return initialTheme;
     const linked = new URLSearchParams(window.location.search).get("theme");
     return (linked === "dark" || linked === "light" ? linked : readPreference("troc.theme")) === "light" ? "light" : "dark";
   });
   const [locale, setLocaleValue] = useState<Locale>(() => {
+    if (initialLocale) return initialLocale;
     const linked = new URLSearchParams(window.location.search).get("lang");
     const saved = linked === "en" || linked === "fr" ? linked : readPreference("troc.locale");
     return saved === "en" || saved === "fr" ? saved : navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en";

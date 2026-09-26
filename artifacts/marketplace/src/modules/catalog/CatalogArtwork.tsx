@@ -8,15 +8,23 @@ export function CatalogArtwork({
   variant,
   locale,
   gallery = false,
+  eager = false,
+  thumbnailSize,
 }: {
   product: Product;
   variant?: Variant;
   locale: Locale;
   gallery?: boolean;
+  eager?: boolean;
+  thumbnailSize?: string;
 }) {
   const images = imagesForVariant(product, variant);
-  const [index, setIndex] = useState(0);
-  const image = images[index] ?? images[0];
+  const [selection, setSelection] = useState<{ productId: string; variantId: string | undefined; imageId: string } | null>(null);
+  const selectedImage = selection?.productId === product.id && selection.variantId === variant?.id
+    ? images.find((entry) => entry.id === selection.imageId) : undefined;
+  // Selection belongs to exact identities, never a position in a changing list.
+  if (selection && !selectedImage) setSelection(null);
+  const image = selectedImage ?? images[0];
   const side = (value: string) =>
     locale === "fr"
       ? ({ front: "Recto", back: "Verso", detail: "Détail" }[value] ?? value)
@@ -35,11 +43,11 @@ export function CatalogArtwork({
         sizes={
           gallery
             ? "(min-width: 768px) 380px, 90vw"
-            : "(min-width: 1280px) 280px, (min-width: 768px) 30vw, 45vw"
+            : thumbnailSize ?? "(min-width: 1280px) 280px, (min-width: 768px) 30vw, 45vw"
         }
         width={image?.width}
         height={image?.height}
-        eager={gallery}
+        eager={gallery || eager}
         alt={label}
         missingLabel={
           locale === "fr" ? "Visuel à venir" : "Artwork coming soon"
@@ -53,9 +61,9 @@ export function CatalogArtwork({
                 <Button
                   key={entry.id}
                   size="sm"
-                  variant={index === i ? "primary" : "secondary"}
-                  aria-pressed={index === i}
-                  onClick={() => setIndex(i)}
+                  variant={image?.id === entry.id ? "primary" : "secondary"}
+                  aria-pressed={image?.id === entry.id}
+                  onClick={() => setSelection({ productId: product.id, variantId: variant?.id, imageId: entry.id })}
                 >
                   {side(entry.side)}{" "}
                   {images.filter((x) => x.side === entry.side).length > 1
@@ -86,3 +94,4 @@ export function CatalogArtwork({
     </div>
   );
 }
+

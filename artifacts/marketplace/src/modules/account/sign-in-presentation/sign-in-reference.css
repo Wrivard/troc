@@ -1,0 +1,153 @@
+/* Reference-inspired compact sign-in column; signup retains its step layout. */
+.wl-site .wl-page.signin-reference .troc-signin-form-side {
+  justify-content: center;
+  padding: 72px 32px 100px;
+  min-height: calc(100svh - var(--troc-header-height, 88px));
+}
+.wl-site .wl-page.signin-reference .troc-signin-form-content {
+  max-width: 384px;
+  width: 100%;
+}
+.wl-site .wl-page.signin-reference .troc-signin-layout h1 {
+  font-size: 28px;
+  font-weight: 550;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin: 0 0 10px;
+}
+.wl-site .wl-page.signin-reference .troc-signin-support {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.wl-site .wl-page.signin-reference .troc-signin-support br {
+  display: none;
+}
+.wl-site .wl-page.signin-reference .troc-signin-form-slot {
+  margin-top: 36px;
+  padding-top: 0;
+}
+.wl-site .wl-page.signin-reference .wl-login {
+  margin-top: 0;
+  gap: 22px;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin {
+  margin: 0;
+  gap: 12px;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-button {
+  background: #fff;
+  border: 1px solid #747775;
+  border-radius: 9px;
+  min-height: 44px;
+  justify-content: center;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-button,
+.wl-site .wl-page.signin-reference .troc-google-signin-button span {
+  color: #1f1f1f !important;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-button:hover:not(:disabled) {
+  background: #f2f2f2;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-button img {
+  background: transparent;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-button > span {
+  flex: none;
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-status {
+  font-size: 12px;
+  color: var(--wl-muted);
+}
+.wl-site .wl-page.signin-reference .troc-google-signin-consent {
+  font-size: 12px;
+  min-height: 20px;
+}
+.wl-site .wl-page.signin-reference .wl-login form {
+  gap: 20px;
+}
+.wl-site .wl-page.signin-reference .wl-login label {
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+}
+.wl-site .wl-page.signin-reference .wl-login input {
+  min-height: 40px;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 14px;
+}
+.signin-divider {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--wl-muted);
+  font-size: 12px;
+}
+.signin-divider::before,
+.signin-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--wl-line);
+}
+.signin-password-field {
+  display: grid;
+  gap: 8px;
+}
+.signin-password-control {
+  position: relative;
+}
+.wl-site .wl-page.signin-reference .signin-password-control input {
+  padding-right: 46px;
+}
+.wl-site .wl-page.signin-reference .signin-reveal {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  min-height: 36px;
+  height: 36px;
+  width: 36px;
+  padding: 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--wl-muted);
+}
+.wl-site .wl-page.signin-reference .wl-login form > button[type="submit"] {
+  min-height: 44px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+.wl-site .wl-page.signin-reference .wl-login .signin-register a {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--wl-text);
+  text-underline-offset: 3px;
+}
+.signin-register-prompt {
+  color: var(--wl-muted);
+  display: inline-block;
+  text-decoration: none;
+}
+.wl-site .wl-page.signin-reference .troc-signin-signature {
+  justify-content: center;
+  font-size: 10px;
+}
+@media (max-width: 800px) {
+  .wl-site .wl-page.signin-reference .troc-signin-form-side {
+    min-height: auto;
+    padding: 56px 28px 88px;
+  }
+}
+@media (max-width: 400px) {
+  .wl-site .wl-page.signin-reference .troc-signin-form-side {
+    padding: 44px 24px 80px;
+  }
+}
+
+.wl-site .wl-page.signin-reference .wl-login form > button[type="submit"] { color: #fff !important; }
+.signin-register-prompt { margin-inline-end: 4px; }
+
+.signin-register { display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:6px; font-size:13px; }

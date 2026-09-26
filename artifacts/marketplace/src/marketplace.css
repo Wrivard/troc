@@ -1630,8 +1630,8 @@ main {
 @media (max-width: 1023px) { .troc-about-home { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); } }
 .troc-home-page { padding-top: 0; }
 @media (min-width: 1200px) {
-  .troc-home-shell .troc-site-header { padding-inline: clamp(32px, 3.83vw, 64px); }
-  .troc-home-shell .troc-site-header-search { max-width: 540px; }
+  .troc-marketplace-header-frame .troc-site-header { padding-inline: clamp(32px, 3.83vw, 64px); }
+  .troc-marketplace-header-frame .troc-site-header-search { max-width: 540px; }
 }
 /* Full-bleed artwork uses the available shell width, excluding the scrollbar. */
 .troc-home-shell { container-type: inline-size; }
@@ -1777,15 +1777,15 @@ body { background-image: url("../public/home-editorial/page-grain.png"); backgro
   .troc-smart-story h2 { font-size: clamp(1.9rem, 7.5vw, 2.6rem); }
 }
 
-/* Keep the card fan below the embedded signature and leave the leaf crown visible.
+/* Align the raised card fan with the leaf and reserve space beside the signature.
    Artwork scales with the shell; the reserved vertical space follows that same scale. */
 @media (min-width: 1024px) {
   .troc-cinematic-hero .troc-hero-display {
     align-self: start;
-    width: 82%;
+    width: 68%;
     max-width: 610px;
     margin-inline: 0 auto;
-    margin-top: max(130px, calc(13cqw - 35px));
+    margin-top: calc(max(0px, 7cqw - 100px) + clamp(28px, 3cqw, 56px));
   }
 }
 /* Bounded hero scene: one artwork coordinate system, with its full height in flow. */
@@ -1929,3 +1929,67 @@ html:has(.troc-marketplace-header-frame) { scroll-padding-top: calc(var(--troc-h
 /* Existing page-level sticky panels sit below the persistent navigation. */
 .troc-product-sticky { top: calc(var(--troc-header-height, 0px) + var(--space-4)); }
 .troc-commerce-layout #cart-summary:not(.troc-cart-sticky-summary) { top: calc(var(--troc-header-height, 0px) + var(--space-4)); }
+
+
+.troc-history-values summary { cursor: pointer; width: fit-content; padding: var(--space-2) 0; font-size: var(--text-sm); color: var(--text-secondary); }
+.troc-history-values summary:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; border-radius: 2px; }
+.troc-history-values[open] summary { margin-bottom: var(--space-3); }
+
+/* Short windows: one scroll region instead of competing items/totals panels. */
+@media (max-height: 650px) {
+ .troc-cart-drawer .troc-cart-drawer-body { overflow-y: auto; overscroll-behavior: contain; }
+ .troc-cart-drawer .troc-commerce-layout { flex: 0 0 auto; }
+ .troc-cart-drawer .troc-cart-compact-groups { flex: none; overflow: visible; }
+ .troc-cart-drawer #cart-summary { max-height: none; overflow: visible; }
+ .troc-cart-drawer #cart-summary > .troc-button,
+ .troc-cart-drawer #cart-summary .troc-cart-payment-note { position: static; }
+ .troc-cart-drawer .troc-cart-goals { max-height: none; overflow: visible; }
+}
+
+/* A tall card must remain scrollable when the viewport cannot contain it. */
+@media (max-height: 820px) {
+  .troc-product-sticky { position: static; }
+}
+
+/* Stats motion is optional; provenance stays stationary and readable. */
+.troc-stats-motion { display: block; margin-top: 1rem; min-height: 44px; padding: .5rem .75rem; border: 1px solid var(--color-border); border-radius: .5rem; font-size: .875rem; }
+.troc-stats-motion:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.troc-stats-marquee { overflow: hidden; }
+.troc-stats-track { display: flex; width: max-content; animation: troc-stats-scroll 45s linear infinite; }
+.troc-stats-track > .troc-stats-grid { display: flex; flex: none; gap: 0; }
+.troc-stats-track .troc-metric { flex: 0 0 18rem; width: 18rem; padding: 0 2rem; }
+.troc-stats-track .troc-metric:first-child { padding-left: 2rem; }
+.troc-stats-marquee:hover .troc-stats-track { animation-play-state: paused; }
+.troc-stats-marquee[data-paused="true"] .troc-stats-track { animation-play-state: paused; }
+@keyframes troc-stats-scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+ .troc-stats-motion, .troc-stats-track > .troc-stats-copy { display: none; }
+ .troc-stats-track { display: block; width: auto; animation: none; }
+ .troc-stats-track > .troc-stats-grid { display: grid; }
+ .troc-stats-track .troc-metric { width: auto; padding: 0 1rem; }
+}
+
+.troc-stats-marquee[data-paused="true"], .troc-stats-marquee:focus-within { overflow-x: auto; }
+.troc-stats-marquee[data-paused="true"] .troc-stats-track, .troc-stats-marquee:focus-within .troc-stats-track { animation: none; }
+.troc-stats-marquee[data-paused="true"] .troc-stats-copy, .troc-stats-marquee:focus-within .troc-stats-copy { display: none; }
+.troc-stats-marquee:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) { .troc-stats-track > .troc-stats-grid.troc-stats-copy { display: none; } }
+
+@media (prefers-reduced-motion: reduce) and (max-width: 480px) {
+ .troc-stats-track > .troc-stats-grid { grid-template-columns: minmax(0, 1fr); }
+ .troc-stats-track .troc-metric, .troc-stats-track .troc-metric:first-child { padding-inline: 0; border-left: 0; }
+}
+
+/* Keep the bilingual savings label and amount inside narrow comparison panels. */
+@media (max-width: 420px) {
+  .troc-smart-edit .troc-consolidation-result { grid-template-columns: minmax(0, 1fr); }
+  .troc-smart-edit .troc-consolidation-result > strong { overflow-wrap: anywhere; }
+}
+/* Reserve two readable availability lines so shelf prices align across a row. */
+@media (min-width: 600px) {
+  .troc-small-edit .troc-editorial-catalog--shelf .troc-market-card-availability {
+    line-height: 1.5;
+    min-height: 3em;
+  }
+}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { ReactNode, CSSProperties, HTMLAttributes } from "react";
 import { cn } from "../../lib/utils";
 import { EditorialIcon } from "./editorial";
@@ -10,6 +11,7 @@ export function MarketplaceStats({
   scope,
   source,
   unavailableLabel,
+  motion,
   decoration,
   items,
 }: {
@@ -17,9 +19,11 @@ export function MarketplaceStats({
   scope: string;
   source: string;
   unavailableLabel: string;
+  motion?: { pause: string; resume: string };
   decoration?: ReactNode;
   items: { id: string; label: string; value: string | null; detail: string }[];
 }) {
+  const [paused, setPaused] = useState(false);
   return (
     <section className="troc-marketplace-stats" aria-label={label}>
       {decoration && (
@@ -29,16 +33,50 @@ export function MarketplaceStats({
       )}
       <p className="troc-editorial-eyebrow">{label}</p>
       <p className="troc-stats-scope">{scope}</p>
-      <div className="troc-stats-grid">
-        {items.map((item, index) => (
-          <MetricStat
-            key={item.id}
-            data-index={String(index + 1).padStart(2, "0")}
-            label={item.label}
-            value={item.value ?? <span aria-label={unavailableLabel}>—</span>}
-            meta={item.detail}
-          />
-        ))}
+      {motion && (
+        <button
+          type="button"
+          className="troc-stats-motion"
+          aria-pressed={paused}
+          onClick={() => setPaused((value) => !value)}
+        >
+          {paused ? motion.resume : motion.pause}
+        </button>
+      )}
+      <div className={cn(motion && "troc-stats-marquee")} data-paused={paused}
+        tabIndex={motion ? 0 : undefined}
+        role={motion ? "region" : undefined}
+        aria-label={motion ? label : undefined}>
+        <div className={cn(motion && "troc-stats-track")}>
+          <div className="troc-stats-grid">
+            {items.map((item, index) => (
+              <MetricStat
+                key={item.id}
+                data-index={String(index + 1).padStart(2, "0")}
+                label={item.label}
+                value={
+                  item.value ?? <span aria-label={unavailableLabel}>—</span>
+                }
+                meta={item.detail}
+              />
+            ))}
+          </div>
+          {motion && (
+            <div className="troc-stats-grid troc-stats-copy" aria-hidden="true">
+              {items.map((item, index) => (
+                <MetricStat
+                  key={item.id}
+                  data-index={String(index + 1).padStart(2, "0")}
+                  label={item.label}
+                  value={
+                    item.value ?? <span aria-label={unavailableLabel}>—</span>
+                  }
+                  meta={item.detail}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <p className="troc-stats-source">{source}</p>
     </section>
@@ -221,6 +259,8 @@ export function StoreHero({
   actions?: ReactNode;
 }) {
   const Heading = level === 1 ? "h1" : "h2";
+  const [failedSource, setFailedSource] = useState<string | null>(null);
+  const showBanner = Boolean(bannerSrc && bannerSrc !== failedSource);
   return (
     <section className="troc-store-hero">
       <div
@@ -229,8 +269,16 @@ export function StoreHero({
         style={{ "--store-focal": focalPoint } as CSSProperties}
         aria-hidden="true"
       >
-        {bannerSrc ? <img src={bannerSrc} alt="" /> : banner}
-        {!bannerSrc && (
+        {showBanner ? (
+          <img
+            src={bannerSrc!}
+            alt=""
+            onError={() => setFailedSource(bannerSrc!)}
+          />
+        ) : (
+          banner
+        )}
+        {!showBanner && (
           <span className="troc-store-cover-word">{location}</span>
         )}
       </div>
@@ -353,7 +401,7 @@ export function SmartCartComparison({
     after: string;
     cards: string;
     shipping: string;
-    sellers: string;
+    sellers: string | ((count: number) => string);
     save: string;
     explanation: string;
   };
@@ -387,7 +435,7 @@ export function SmartCartComparison({
               ))}
             </div>
             <span>
-              {side.sellers} {labels.sellers}
+              {side.sellers} {typeof labels.sellers === "function" ? labels.sellers(side.sellers) : labels.sellers}
             </span>
             <dl>
               <div>

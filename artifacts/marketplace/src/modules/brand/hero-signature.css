@@ -1,0 +1,45 @@
+/* Live signature: locally hosted OFL font and a tapered vector brush underline. */
+@font-face {
+  font-family: "Caveat";
+  src: url("/fonts/caveat.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+.troc-cinematic-hero .troc-hero-script {
+  position: absolute;
+  top: calc(72px + 2.5cqw);
+  right: 6%;
+  width: clamp(150px, 11.5cqw, 370px);
+  margin: 0;
+  color: #ddd9d7;
+  font-family: "Caveat", cursive;
+  font-size: clamp(26px, 1.95cqw, 64px);
+  font-weight: 400;
+  line-height: .94;
+  text-align: center;
+  transform: rotate(-10deg);
+  pointer-events: none;
+}
+.troc-hero-script > span { display: block; white-space: nowrap; }
+.troc-hero-script > span:first-child { padding-right: 18%; }
+.troc-hero-script > span:last-of-type { padding-left: 4%; }
+.troc-hero-script > svg { display: block; width: 75%; height: .42em; margin: .14em 0 0 22%; color: #f01425; }
+.troc-cinematic-hero:lang(fr) .troc-hero-script { font-size: clamp(23px, 1.65cqw, 54px); }
+@media (max-width: 1023px) {
+  .troc-cinematic-hero .troc-hero-script {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 210px;
+    margin: 0 auto 28px;
+    font-size: 36px;
+  }
+  .troc-cinematic-hero:lang(fr) .troc-hero-script { font-size: 30px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .troc-cinematic-hero .troc-hero-script { right: 2%; }
+}
+@media (max-width: 1023px) {
+  .troc-cinematic-hero .troc-hero-script { margin-top: 32px; }
+}

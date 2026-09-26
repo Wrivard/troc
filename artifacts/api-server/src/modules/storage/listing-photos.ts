@@ -21,6 +21,7 @@ export class PublicListingPhotoStorage implements Pick<
     const segments = key.split("/");
     if (
       !key ||
+      key.startsWith("listing-quarantine/") ||
       key.length > 1000 ||
       segments.some((s) => !s || s === "." || s === "..") ||
       key.includes("\\") ||

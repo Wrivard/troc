@@ -1,3 +1,4 @@
+import { catalogBrowseHref } from "@workspace/catalog";
 import { Router } from "express";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -67,7 +68,7 @@ router.get("/sitemap-pages.xml", async (req, res) => {
       throw new DomainError("invalid_cursor");
     const products = await repo.sitemap(cursor);
     const root = origin();
-    const paths = products.map((p) => p.path);
+    const paths = products.map((p) => p.path).filter((path) => !/^\/(games|sets)\//.test(path));
     if (!cursor) paths.unshift("/");
     res
       .type("application/xml")
@@ -79,9 +80,9 @@ router.get("/sitemap-pages.xml", async (req, res) => {
   }
 });
 let templatePromise: Promise<string> | undefined;
-let manifestPromise: Promise<Record<string, { file: string }>> | undefined;
+let manifestPromise: Promise<Record<string, { file: string; imports?: string[]; css?: string[] }>> | undefined;
 let rendererPromise:
-  | Promise<{ render: (page: PublicPage, theme: "dark" | "light") => string }>
+  | Promise<{ render: (page: PublicPage, theme: "dark" | "light") => Promise<string> }>
   | undefined;
 router.get(
   /^\/(?:search|games\/[^/]+|sets\/[^/]+|product\/[^/]+|store\/[^/]+)?$/,
@@ -90,7 +91,15 @@ router.get(
       const params = new URLSearchParams(req.originalUrl.split("?")[1]);
       if (!params.has("lang") && req.cookies?.troc_locale === "fr")
         params.set("lang", "fr");
-      const page = await publicPage(req.path, params);
+      const browse = catalogBrowseHref(req.path, params);
+      if (browse.split("?")[0] !== req.path) {
+        res.redirect(308, browse);
+        return;
+      }
+      const requestStart = performance.now();
+      const timings: string[] = [];
+      const page = await publicPage(req.path, params, undefined, (stage, duration) => timings.push(`${stage};dur=${duration.toFixed(1)}`));
+      const rendererStart = performance.now();
       const theme = req.cookies?.troc_theme === "light" ? "light" : "dark";
       const root = origin();
       const canonical = `${root}${page.path}?lang=${page.locale}`;
@@ -123,6 +132,19 @@ router.get(
           /^assets\/index-.*\.css$/.test(entry.file),
         )?.file;
       if (!stylesheet) throw new Error("Missing public stylesheet");
+      // Dynamic route CSS must be discoverable in SSR HTML, before the route JS executes.
+      const publicChunks = new Set<string>();
+      const collect = (key: string) => {
+        if (publicChunks.has(key) || !manifest[key]) return;
+        publicChunks.add(key);
+        for (const dependency of manifest[key].imports ?? []) collect(dependency);
+      };
+      collect("src/modules/catalog/PublicRoot.tsx");
+      const css = new Set([stylesheet]);
+      for (const key of publicChunks) for (const file of manifest[key].css ?? []) css.add(file);
+      const assetLinks = [...css].map(file => `<link rel="stylesheet" href="/${escape(file)}"/>`).join("") +
+        [...publicChunks].map(key => `<link rel="modulepreload" href="/${escape(manifest[key].file)}"/>`).join("");
+
       const title =
         page.product?.name[page.locale] ??
         page.seller?.name ??
@@ -151,12 +173,13 @@ router.get(
         )
         .replace(
           "<title>TROC</title>",
-          `<title>${escape(title)} · TROC</title>${meta}<link rel="stylesheet" href="/${stylesheet}"/>`,
+          `<title>${escape(title)} · TROC</title>${meta}${assetLinks}`,
         )
         .replace(
           '<div id="root"></div>',
-          `<div id="root">${renderer.render(page, theme)}</div><script>window.__TROC_PAGE__=${data};</script>`,
+          `<div id="root">${await renderer.render(page, theme)}</div><script>window.__TROC_PAGE__=${data};</script>`,
         );
+      res.setHeader("Server-Timing", [...timings, `render;dur=${(performance.now()-rendererStart).toFixed(1)}`, `total;dur=${(performance.now()-requestStart).toFixed(1)}`].join(", "));
       res.setHeader("Cache-Control", "private, no-cache");
       res.type("html").send(html);
     } catch (error) {

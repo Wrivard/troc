@@ -23,6 +23,14 @@ import {
   type Kind,
 } from "./validation";
 
+import {
+  onboardingSignup,
+  onboardingContract,
+  summaryWindow,
+  summarizeOnboarding,
+  type SummaryRow,
+} from "./onboarding";
+
 const tables = {
   collector: "troc.buyer_waitlist",
   seller: "troc.founding_seller_leads",
@@ -211,27 +219,140 @@ export class PrelaunchService {
       if (referral) await this.event(db, s, "referral", "server_recorded");
     });
   }
-  async withdraw(value: unknown) {
+  async captureOnboarding(value: unknown) {
     const v = object(value),
-      audience = kind(v.kind),
-      digest = hash(secret(v.withdrawal));
+      data = onboardingSignup(v);
     await this.store.transaction(async (db) => {
-      const rows = (
-        await db.query<{ id: string }>(
-          `UPDATE ${tables[audience]} SET unsubscribed_at=now(),cohort='unassigned',revision=revision+1 WHERE withdrawal_hash=$1 AND unsubscribed_at IS NULL RETURNING id`,
-          [digest],
-        )
-      ).rows;
-      for (const row of rows)
+      const s = await this.sessionFor(db, v.token);
+      if (s.kind !== "landing") throw new DomainError("session_conflict", 409);
+      // Same lock namespace as legacy capture; stable order avoids lock inversion.
+      for (const audience of ["collector", "seller"] as const)
+        await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
+          `${audience}:${data.email}`,
+        ]);
+      const prior = await db.query(
+        `SELECT id FROM troc.buyer_waitlist WHERE lower(btrim(email))=$1
+         UNION ALL SELECT id FROM troc.founding_seller_leads WHERE lower(btrim(email))=$1 LIMIT 1`,
+        [data.email],
+      );
+      if (prior.rows.length) return;
+      const referral =
+        (s.referral_code &&
+          (
+            await db.query<{ code: string }>(
+              `SELECT r.code FROM troc.prelaunch_referrals r
+         LEFT JOIN troc.buyer_waitlist b ON b.id=r.collector_lead_id
+         LEFT JOIN troc.founding_seller_leads f ON f.id=r.seller_lead_id
+         WHERE r.code=$1 AND r.active
+         AND (b.id IS NULL OR (b.unsubscribed_at IS NULL AND lower(btrim(b.email))<>$2))
+         AND (f.id IS NULL OR (f.unsubscribed_at IS NULL AND lower(btrim(f.email))<>$2))`,
+              [s.referral_code, data.email],
+            )
+          ).rows[0]?.code) ||
+        null;
+      const submissionId = randomUUID();
+      for (const [audience, details] of [
+        ["collector", data.buyer],
+        ["seller", data.seller],
+      ] as const) {
+        if (!details) continue;
+        const lead = (
+          await db.query<{ id: string }>(
+            `INSERT INTO ${tables[audience]}(email,locale,consent_version,consented_at,details,acquisition,withdrawal_hash)
+           VALUES($1,$2,$3,now(),$4::jsonb || jsonb_build_object('marketingConsentedAt',CASE WHEN $7 THEN now() ELSE NULL END),$5::jsonb,$6) RETURNING id`,
+            [
+              data.email,
+              data.locale,
+              onboardingContract.consentVersion,
+              JSON.stringify(details),
+              JSON.stringify({
+                source: s.source,
+                referral,
+                provenance: "unverified_acquisition",
+                sessionId: s.id,
+                submissionId,
+              }),
+              hash(data.withdrawal),
+              details.marketingConsent,
+            ],
+          )
+        ).rows[0];
         await db.query(
-          `INSERT INTO troc.audit_events(action,entity_type,entity_id) VALUES('prelaunch.consent_withdrawn',$1,$2)`,
+          `INSERT INTO troc.audit_events(action,entity_type,entity_id,metadata) VALUES('prelaunch.consent_granted',$1,$2,$3::jsonb)`,
           [
             audience === "collector"
               ? "buyer_waitlist"
               : "founding_seller_leads",
-            row.id,
+            lead.id,
+            JSON.stringify({
+              version: onboardingContract.consentVersion,
+              purpose: "waitlist_planning",
+              marketingConsent: details.marketingConsent,
+              emailVerified: false,
+            }),
           ],
         );
+      }
+      await this.event(db, s, "completion", "server_recorded");
+      if (referral) await this.event(db, s, "referral", "server_recorded");
+    });
+    return {
+      ok: true,
+      status: "received_unverified",
+      emailVerified: false,
+    } as const;
+  }
+  async onboardingSummary(p: Principal | null, value: unknown) {
+    admin(p);
+    const window = summaryWindow(value);
+    return this.store.transaction(async (db) => {
+      const rows = (
+        await db.query<SummaryRow>(
+          `SELECT role,email,details,acquisition FROM (
+          SELECT 'buyer' AS role,id,email,details,acquisition,created_at FROM troc.buyer_waitlist
+          WHERE unsubscribed_at IS NULL AND created_at >= $1::timestamptz AND created_at < $2::timestamptz
+            AND ($3::text IS NULL OR acquisition->>'source'=$3)
+          UNION ALL
+          SELECT 'seller' AS role,id,email,details,acquisition,created_at FROM troc.founding_seller_leads
+          WHERE unsubscribed_at IS NULL AND created_at >= $1::timestamptz AND created_at < $2::timestamptz
+            AND ($3::text IS NULL OR acquisition->>'source'=$3)
+        ) leads ORDER BY created_at,id,role LIMIT 10001`,
+          [window.from, window.to, window.source],
+        )
+      ).rows;
+      const summary = summarizeOnboarding(rows);
+      await db.query(
+        `INSERT INTO troc.audit_events(actor_id,action,entity_type,metadata)
+        VALUES($1,'prelaunch.summary_read','buyer_waitlist',$2::jsonb)`,
+        [p.userId, JSON.stringify({ ...window, roleRecords: rows.length })],
+      );
+      return { ...summary, window, maxRoleRecords: 10000 };
+    });
+  }
+  async withdraw(value: unknown) {
+    const v = object(value),
+      audiences =
+        v.kind === "both" ? (["collector", "seller"] as const) : [kind(v.kind)],
+      digest = hash(secret(v.withdrawal));
+    await this.store.transaction(async (db) => {
+      for (const audience of audiences) {
+        const rows = (
+          await db.query<{ id: string }>(
+            `UPDATE ${tables[audience]} SET unsubscribed_at=now(),cohort='unassigned',revision=revision+1 WHERE withdrawal_hash=$1 AND unsubscribed_at IS NULL RETURNING id`,
+            [digest],
+          )
+        ).rows;
+        for (const row of rows)
+          await db.query(
+            `INSERT INTO troc.audit_events(action,entity_type,entity_id) VALUES('prelaunch.consent_withdrawn',$1,$2)`,
+            [
+              audience === "collector"
+                ? "buyer_waitlist"
+                : "founding_seller_leads",
+              row.id,
+            ],
+          );
+      }
     });
   }
   async list(p: Principal | null, value: unknown) {

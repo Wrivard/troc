@@ -1,0 +1,9 @@
+# Initial-document white flash — fixed locally
+
+Reproduced across home, search, seller storefront and sign-in by withholding application JavaScript. All four new documents had no theme, normal color-scheme and transparent html/body over the browser's white default, with an empty React root. This establishes a document paint issue before route components, not a seller skeleton defect.
+
+The marketplace index.html now supplies a tiny inline canvas style and synchronous theme initializer before external resources. Matches existing URL override > saved preference > dark-default rules; denied localStorage reads fall back safely. An SSR-provided theme takes precedence to preserve rendered markup/hydration. No content hiding, extra request, artificial wait or change to canonical/SEO metadata. Both dev and built HTML include the fix.
+
+Verification: check-theme-flash.cjs passes42cases (19routes x2themes before externalJS/CSS, three preference/storage cases, one actual header-theme-switch then native link navigation). Screenshot blocked-dark.jpg inspected: dark canvas before React, root empty. Compiled client/SSR build passes; check-theme-ssr.ts passes16EN/FR/light/dark public hydration samples plus canonical/hreflang/noindex assertions. No new production deployment, no claim of removing all network loading time.
+
+Original generic SSR harness failed because it requested a real-catalogue product against an isolated demo SSR server, returning404. The dedicated theme harness takes its product identity from that same SSR catalogue; production source was not changed to bypass the failure. Original reproduction console values retained in before.json; a later diagnostic overwrote before.jpg, so it is not original visual evidence. Use blocked-dark/light.jpg for final images. Tests preserve source-catalogue identities and no writes were required.

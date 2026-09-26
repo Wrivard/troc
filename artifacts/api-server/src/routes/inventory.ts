@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import { rateLimit } from "express-rate-limit";
+import { requestRateLimit } from "../modules/security/rate-limit";
 import type { Principal } from "../modules/auth/permissions";
 import type { Sql } from "../modules/commerce/data";
 import type { TransactionStore } from "../modules/commerce/checkout";
@@ -15,17 +15,15 @@ export function inventoryRouter(
     service = new InventoryService(db, store);
   router.use(
     "/inventory",
-    rateLimit({
-      windowMs: 60000,
-      limit,
-      standardHeaders: "draft-8",
-      legacyHeaders: false,
-      message: { code: "rate_limited" },
-    }),
+    requestRateLimit({namespace:"inventory",windowMs:60000,limit}),
   );
   router.get("/inventory/sellers", async (req, res) =>
     res.json(await service.sellers(await principal(req, res))),
   );
+  router.get("/inventory/:seller/export", async (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.json(await service.export(await principal(req, res), req.params.seller, req.query));
+  });
   router.get("/inventory/:seller/sources", async (req, res) => {
     await service.access(db, await principal(req, res), req.params.seller);
     res.json(await service.sources());
@@ -37,6 +35,11 @@ export function inventoryRouter(
         req.params.seller,
         String(req.query.q ?? ""),
       ),
+    ),
+  );
+  router.get("/inventory/:seller/summary", async (req, res) =>
+    res.json(
+      await service.summary(await principal(req, res), req.params.seller),
     ),
   );
   router.get("/inventory/:seller/listings", async (req, res) =>

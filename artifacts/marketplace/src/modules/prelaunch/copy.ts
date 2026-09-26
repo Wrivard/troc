@@ -156,7 +156,24 @@ export const options: Record<string, readonly [string, string, string][]> = {
     "QC",
     "SK",
     "YT",
-  ].map((v) => [v, v, v]),
+  ].map((v) => {
+    const names: Record<string, [string, string]> = {
+      AB: ["Alberta", "Alberta"],
+      BC: ["British Columbia", "Colombie-Britannique"],
+      MB: ["Manitoba", "Manitoba"],
+      NB: ["New Brunswick", "Nouveau-Brunswick"],
+      NL: ["Newfoundland and Labrador", "Terre-Neuve-et-Labrador"],
+      NS: ["Nova Scotia", "Nouvelle-Écosse"],
+      NT: ["Northwest Territories", "Territoires du Nord-Ouest"],
+      NU: ["Nunavut", "Nunavut"],
+      ON: ["Ontario", "Ontario"],
+      PE: ["Prince Edward Island", "Île-du-Prince-Édouard"],
+      QC: ["Quebec", "Québec"],
+      SK: ["Saskatchewan", "Saskatchewan"],
+      YT: ["Yukon", "Yukon"],
+    };
+    return [v, names[v][0], names[v][1]];
+  }),
   channels: [
     ["ebay", "eBay", "eBay"],
     ["shopify", "Shopify", "Shopify"],

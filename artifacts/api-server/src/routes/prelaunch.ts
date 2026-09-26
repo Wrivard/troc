@@ -11,6 +11,8 @@ import type { TransactionStore } from "../modules/commerce/checkout";
 import { DomainError } from "../modules/shared/domain";
 import { PrelaunchService } from "../modules/prelaunch/service";
 
+import { onboardingContract } from "../modules/prelaunch/onboarding";
+
 export type PrelaunchConfig = {
   enabled: boolean;
   databaseReady: boolean;
@@ -80,6 +82,17 @@ export function prelaunchRouter(
     await service!.sessionPreferences(req.body);
     res.json({ ok: true });
   });
+  router.get("/onboarding/contract", (_req, res) =>
+    res.json(onboardingContract),
+  );
+  router.post("/onboarding/leads", async (req, res) => {
+    res.status(202).json(await service!.captureOnboarding(req.body));
+  });
+  router.get("/admin/onboarding-summary", async (req, res) =>
+    res.json(
+      await service!.onboardingSummary(await principal(req, res), req.query),
+    ),
+  );
   router.post("/leads", async (req, res) => {
     await service!.capture(req.body);
     res.status(202).json({ ok: true });

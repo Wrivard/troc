@@ -1,0 +1,25 @@
+
+import{chromium,expect}from'@playwright/test';import AxeBuilder from'@axe-core/playwright';import assert from'node:assert/strict';import{mkdir,writeFile}from'node:fs/promises';
+const origin='http://127.0.0.1:4313',sid='00000000-0000-4000-8000-000000000010',out='../UX-AUDIT/SELLER-REFINEMENT-20260923';await mkdir(out,{recursive:true});const b=await chromium.launch({channel:'chrome'}),results=[];
+const login=async(role,width=1440,lang='en')=>{const c=await b.newContext({viewport:{width,height:1100}});await c.addInitScript(lang=>{localStorage.setItem('troc.locale',lang);localStorage.setItem('troc.theme','dark')},lang);await c.request.post(origin+'/api/dev/session',{headers:{Origin:origin},data:{role}});return c};
+try{
+const buyer=await login('buyer');const body={key:'00000000-0000-4000-9000-000000009001',subject:'Question about card condition',body:'Hi! Before I order, can you tell me whether your cards have any visible edge wear?'};let r=await buyer.request.post(origin+'/api/seller/platform/'+sid+'/enquiries',{headers:{Origin:origin},data:body});assert.equal(r.status(),200);const thread=(await r.json()).id;
+r=await buyer.request.post(origin+'/api/seller/platform/'+sid+'/enquiries',{headers:{Origin:origin},data:body});assert.equal((await r.json()).id,thread);
+r=await buyer.request.get(origin+'/api/seller/platform/'+sid+'/enquiries');assert.equal(r.status(),403);
+r=await buyer.request.get(origin+'/api/seller/platform/'+sid+'/team');assert.equal(r.status(),403);results.push('buyer can create own enquiry, duplicate key returns same thread, cannot read seller inbox or team');await buyer.close();
+for(const[width,lang]of[[1440,'en'],[390,'fr']]){
+const c=await login('seller',width,lang),p=await c.newPage();await p.goto(origin+'/account?lang='+lang);await p.waitForURL('**/seller/dashboard?lang='+lang);await expect(p.locator('.seller-greeting').first()).toContainText('TROC Test Store');
+for(const route of['orders','inventory','messages','storefront','team']){
+await p.goto(origin+'/seller/'+route+'?lang='+lang);await p.waitForLoadState('networkidle');await expect(p.locator('main h1')).toBeVisible();
+if(route==='orders'){await p.locator('.ops-priorities button').first().click();await expect(p.locator('.ops-order-ready')).toHaveCount(2);assert.ok(await p.locator('.ops-product img').first().evaluate(i=>i.getBoundingClientRect().width>=60));}
+if(route==='messages'){await p.getByRole('button',{name:lang==='fr'?'Questions avant achat':'Pre-sale enquiries',exact:true}).click();await expect(p.locator('.ops-conversations button')).toHaveCount(1);await p.locator('.ops-conversations button').first().click();await expect(p.locator('#enquiry-reply')).toBeVisible();await expect(p.locator('.enquiry-no-order')).toBeVisible();}
+if(route==='storefront'){await p.getByRole('button',{name:'Mobile',exact:true}).click();await expect(p.locator('.storefront-preview-mobile')).toBeVisible();await p.getByLabel('Description',{exact:true}).fill('Carefully packed cards from Canada.');await p.getByRole('button',{name:lang==='fr'?'Enregistrer le brouillon':'Save local draft',exact:true}).click();await p.reload();await expect(p.getByLabel('Description',{exact:true})).toHaveValue('Carefully packed cards from Canada.');}
+if(route==='team'){await p.getByRole('button',{name:lang==='fr'?'Ajouter un membre':'Add a teammate',exact:true}).click();await expect(p.getByRole('dialog')).toBeVisible();await p.keyboard.press('Escape');}
+const axe=(await new AxeBuilder({page:p}).analyze()).violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)}));assert.deepEqual(axe,[]);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:out+'/'+route+'-'+width+'.png',fullPage:true});results.push({width,route,axe});
+}await c.close()}
+const seller=await login('seller');r=await seller.request.post(origin+'/api/seller/platform/'+sid+'/team',{headers:{Origin:origin},data:{email:'buyer@troc.test',role:'inventory'}});assert.equal(r.status(),200);
+let team=await(await seller.request.get(origin+'/api/seller/platform/'+sid+'/team')).json();assert.ok(team.some(m=>m.email==='buyer@troc.test'&&m.role==='inventory'));
+r=await seller.request.post(origin+'/api/seller/platform/'+sid+'/team',{headers:{Origin:origin},data:{userId:'00000000-0000-4000-8000-000000000001',role:null}});assert.equal(r.status(),200);
+r=await seller.request.post(origin+'/api/seller/platform/'+sid+'/team',{headers:{Origin:origin},data:{userId:'00000000-0000-4000-8000-000000000002',role:null}});assert.equal(r.status(),409);
+r=await seller.request.post(origin+'/api/seller/platform/'+sid+'/enquiries/'+thread,{headers:{Origin:origin},data:{key:'00000000-0000-4000-9000-000000009002',body:'Thanks for asking! I can check the edges and clarify the condition before you place an order.'}});assert.equal(r.status(),200);results.push('email membership add/remove restored; last owner409; seller reply to pre-sale enquiry saved');await seller.close();
+}finally{await b.close();await writeFile(out+'/checks.json',JSON.stringify(results,null,2))}console.log(results);

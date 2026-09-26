@@ -1,10 +1,16 @@
+import { ConditionInspection } from "./ConditionInspection";
+import { DocumentationIndex } from "./DocumentationIndex";
+import { DeveloperGuide } from "./DeveloperGuide";
 import { RoadmapPage } from "./roadmap/RoadmapPage";
 import { CatalogPreview } from "./CatalogPreview";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { MarketplaceFooter, MarketplaceHeader } from "./SiteChrome";
+
+const LiveSellDetails = lazy(() => import("../sell-page/LiveSellDetails"));
+const CollectionExample = lazy(() => import("./smart-cart-education/CollectionExample"));
 
 type Pair = readonly [string, string];
 type Content = {
@@ -14,6 +20,14 @@ type Content = {
   planned?: boolean;
 };
 const pages: Record<string, Content> = {
+  "/docs": {
+    title: ["Your guide to TROC.", "Vos repères sur TROC."],
+    lead: [
+      "Understand the tools, follow the right steps and know what comes next.",
+      "Comprenez les outils, suivez les bonnes étapes et découvrez la suite.",
+    ],
+    sections: [],
+  },
   "/roadmap": {
     title: ["TROC roadmap", "Feuille de route TROC"],
     lead: [
@@ -91,8 +105,8 @@ const pages: Record<string, Content> = {
           "Les outils vendeur prennent forme",
         ],
         body: [
-          "Simulated order fulfillment is available in the development environment. Seller onboarding, inventory tools and the full dashboard are not open yet.",
-          "Le traitement simulé des commandes est disponible dans l’environnement de développement. L’inscription vendeur, les outils d’inventaire et le tableau de bord complet ne sont pas encore ouverts.",
+          "Seller onboarding, inventory tools, the dashboard and simulated fulfillment can be explored with authorized local test accounts. Public seller activation and real payments remain unavailable.",
+          "L’inscription vendeur, l’inventaire, le tableau de bord et le traitement simulé sont accessibles aux comptes de test locaux autorisés. L’activation publique et les paiements réels restent indisponibles.",
         ],
       },
     ],
@@ -100,25 +114,55 @@ const pages: Record<string, Content> = {
   "/founding-sellers": {
     title: ["Help shape the marketplace.", "Façonnez le marché avec nous."],
     lead: [
-      "The founding seller program is for the collectors and shops who want to help TROC start strong.",
-      "Le programme des vendeurs fondateurs s’adresse aux collectionneurs et boutiques qui veulent contribuer aux débuts de TROC.",
+      "Bring the cards you already sell to a marketplace built around Canadian collectors.",
+      "Apportez les cartes que vous vendez déjà à un marché pensé pour les collectionneurs canadiens.",
     ],
     sections: [
       {
-        title: ["Build with TROC", "Bâtissez avec TROC"],
+        title: ["Tell us about your store", "Présentez votre boutique"],
         body: [
-          "Help shape the seller experience from the start. Seller approval requires a review; creating a buyer account does not approve you as a seller or grant program benefits.",
-          "Contribuez à façonner l’expérience vendeur dès le départ. Une candidature doit être examinée; créer un compte acheteur ne vous approuve pas comme vendeur et ne donne aucun avantage du programme.",
+          "Choose seller or buyer and seller in the early-access form. Share your games, approximate inventory, selling channels and inventory tools so we can understand what you need.",
+          "Choisissez vendeur ou acheteur et vendeur dans le formulaire d’accès anticipé. Indiquez vos jeux, votre inventaire approximatif, vos canaux de vente et vos outils pour nous aider à comprendre vos besoins.",
         ],
       },
       {
         title: [
-          "Applications are not open yet",
-          "Les candidatures ne sont pas encore ouvertes",
+          "Your account, while you wait",
+          "Votre compte, pendant l’attente",
         ],
         body: [
-          "The program and seller application flow are planned. There is no application submission or waiting-list form in this demo.",
-          "Le programme et le parcours de candidature sont prévus. Cette démo ne permet pas d’envoyer une candidature ni de s’inscrire à une liste d’attente.",
+          "Finish with email or Google when the account provider is configured, then return to your account. Joining early access records your interest; it does not automatically approve seller access or founding benefits. The current preview uses local test accounts.",
+          "Terminez par courriel ou Google lorsque le fournisseur de comptes est configuré, puis retrouvez votre compte. L’accès anticipé enregistre votre intérêt; il n’accorde pas automatiquement l’accès vendeur ni les avantages fondateurs. L’aperçu actuel utilise des comptes de test locaux.",
+        ],
+      },
+      {
+        title: [
+          "Bring inventory, not duplicate work",
+          "Apportez vos cartes, pas du travail en double",
+        ],
+        body: [
+          "The seller workspace supports reviewed CSV imports and canonical card listings in local testing. Live connections to your existing inventory tools remain planned. Tell us which tools matter to your store.",
+          "L’espace vendeur permet de vérifier les imports CSV et d’utiliser le catalogue de cartes dans les tests locaux. Les connexions en direct à vos outils restent prévues. Indiquez ceux qui comptent pour votre boutique.",
+        ],
+      },
+      {
+        title: [
+          "A Canadian buying experience",
+          "Une expérience d’achat canadienne",
+        ],
+        body: [
+          "CAD prices, bilingual browsing and seller-grouped shipping help collectors understand the full order. Smart Cart compares compatible offers and delivery costs; savings depend on actual inventory and seller rules.",
+          "Les prix en CAD, la navigation bilingue et la livraison regroupée par vendeur clarifient la commande. Smart Cart compare les offres compatibles et la livraison; les économies dépendent des stocks et des règles vendeur.",
+        ],
+      },
+      {
+        title: [
+          "Program terms before promises",
+          "Des modalités avant les promesses",
+        ],
+        body: [
+          "Founding eligibility, capacity and benefits will be confirmed before activation. No fee waiver, permanent paid plan or referral reward is granted by this form. Seller applications are reviewed separately.",
+          "L’admissibilité, les places et les avantages fondateurs seront confirmés avant activation. Ce formulaire n’accorde aucune exemption de frais, aucun forfait payant permanent ni récompense de parrainage. Les candidatures vendeurs sont examinées séparément.",
         ],
       },
     ],
@@ -319,9 +363,7 @@ function plannedKey(path: string) {
   if (path.startsWith("/want-lists/")) return "/want-lists";
   return path;
 }
-export function isInformationPage(path: string) {
-  return Boolean(pages[path] || planned[plannedKey(path)]);
-}
+export { isInformationPage } from "./information-routes";
 
 export function InformationPage({ path }: { path: string }) {
   const { locale, theme, setLocale, setTheme } = usePreferences();
@@ -458,6 +500,9 @@ export function InformationPage({ path }: { path: string }) {
           title={pair(content.title)}
           description={pair(content.lead)}
         />
+        {path === "/condition-guide" && <ConditionInspection locale={locale} />}
+        {path === "/developers" && <DeveloperGuide locale={locale} />}
+        {path === "/docs" && <DocumentationIndex locale={locale} />}
         {path === "/founding-sellers" && (
           <aside className="troc-founder-callout">
             <strong>
@@ -473,13 +518,14 @@ export function InformationPage({ path }: { path: string }) {
             </p>
             <p className="text-sm text-muted-foreground">
               {pair([
-                "Applications are not open yet.",
-                "Les candidatures ne sont pas encore ouvertes.",
+                "Share your interest through early access.",
+                "Faites-nous part de votre intérêt via l’accès anticipé.",
               ])}
             </p>
           </aside>
         )}
-        {collector && (
+        {collector && !wantList && (<Suspense fallback={<p role="status">{locale === "fr" ? "Chargement de l’exemple…" : "Loading example…"}</p>}><CollectionExample locale={locale}/></Suspense>)}
+        {collector && wantList && (
           <CatalogPreview
             locale={locale}
             kind={wantList ? "want-list" : "binder"}
@@ -498,18 +544,14 @@ export function InformationPage({ path }: { path: string }) {
               {[
                 [
                   "01",
-                  "Apply when applications open",
-                  "Postulez à l’ouverture des candidatures",
+                  "Share your inventory and tools",
+                  "Présentez votre inventaire et vos outils",
                 ],
-                [
-                  "02",
-                  "TROC reviews your application",
-                  "TROC examine votre candidature",
-                ],
+                ["02", "Create your account", "Créez votre compte"],
                 [
                   "03",
-                  "Seller access follows approval",
-                  "L’accès vendeur suit l’approbation",
+                  "Seller access follows review",
+                  "L’accès vendeur suit l’examen",
                 ],
               ].map(([n, en, fr]) => (
                 <div key={n}>
@@ -520,28 +562,37 @@ export function InformationPage({ path }: { path: string }) {
             </div>
           </section>
         )}
-        <div className="troc-info-layout">
-          {content.sections.map((section, i) => (
-            <section
-              id={path === "/help" && i === 3 ? "demo" : undefined}
-              tabIndex={path === "/help" && i === 3 ? -1 : undefined}
-              key={section.title[0]}
-              className="grid content-start gap-4 border-t border-border pt-6"
-            >
-              <span className="troc-info-index">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h2 className="text-xl font-semibold">{pair(section.title)}</h2>
-              <p className="max-w-prose leading-relaxed text-muted-foreground">
-                {pair(section.body)}
-              </p>
-            </section>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-3">
+        {path !== "/developers" && (
+          <div className="troc-info-layout">
+            {content.sections.map((section, i) => (
+              <section
+                id={path === "/help" && i === 3 ? "demo" : undefined}
+                tabIndex={path === "/help" && i === 3 ? -1 : undefined}
+                key={section.title[0]}
+                className="grid content-start gap-4 border-t border-border pt-6"
+              >
+                <span className="troc-info-index">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h2 className="text-xl font-semibold">{pair(section.title)}</h2>
+                <p className="max-w-prose leading-relaxed text-muted-foreground">
+                  {pair(section.body)}
+                </p>
+              </section>
+            ))}
+          </div>
+        )}
+        {path === "/sell" && <Suspense fallback={<p role="status">{locale === "fr" ? "Chargement…" : "Loading…"}</p>}><LiveSellDetails locale={locale}/></Suspense>}
+        {path !== "/sell" && <div className="flex flex-wrap gap-3">
           <Button asChild>
-            <a href={href("/search")}>
-              {pair(["Explore cards", "Explorer les cartes"])}
+            <a
+              href={href(path === "/founding-sellers" ? "/sign-up" : "/search")}
+            >
+              {pair(
+                path === "/founding-sellers"
+                  ? ["Join early access", "Rejoindre l’accès anticipé"]
+                  : ["Explore cards", "Explorer les cartes"],
+              )}
             </a>
           </Button>
           <Button asChild variant="secondary">
@@ -587,7 +638,7 @@ export function InformationPage({ path }: { path: string }) {
               )}
             </a>
           </Button>
-        </div>
+        </div>}
       </main>
       <MarketplaceFooter locale={locale} />
     </div>

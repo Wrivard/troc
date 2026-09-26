@@ -2,7 +2,7 @@ import type { ReactNode, CSSProperties } from "react";
 import type { PublicPage, Product } from "@workspace/catalog";
 import { EditorialIcon } from "@workspace/troc-design-system/components/ui/editorial";
 import { SellerAvatar } from "@workspace/troc-design-system/components/ui/seller-storefront";
-import { demoStoreFocalPoint } from "../demo-store-branding";
+import { demoStoreFocalPoint, isBrandedDemoSeller } from "../demo-store-branding";
 import "./seller-community.css";
 
 function CommunityIntro({
@@ -56,10 +56,10 @@ function CommunitySellerCard({
         style={{ "--hc-store-focal": focalPoint } as CSSProperties}
       >
         <div aria-hidden="true">{banner}</div>
-        <span className="troc-hc-seller-location">
+        {location && <span className="troc-hc-seller-location">
           <EditorialIcon name="pin" />
           {location}
-        </span>
+        </span>}
       </div>
       <div className="troc-hc-seller-body">
         <div className="troc-hc-seller-identity">
@@ -89,11 +89,14 @@ export function SellerCommunitySection({
   href,
   art,
 }: {
-  page: Pick<PublicPage, "locale" | "sellers" | "results">;
+  page: Pick<PublicPage, "locale" | "sellers" | "results" | "demo">;
   href: (path: string) => string;
   art: (product: Product) => ReactNode;
 }) {
   const c = (en: string, fr: string) => (page.locale === "fr" ? fr : en);
+  const showcaseSellers = page.demo
+    ? [...page.sellers].sort((a, b) => Number(isBrandedDemoSeller(b)) - Number(isBrandedDemoSeller(a)))
+    : page.sellers;
   const products = page.results.filter((r) => r.product.images?.length);
   return (
     <section
@@ -112,20 +115,20 @@ export function SellerCommunitySection({
         )}
       />
       <div className="troc-hc-community-grid">
-        {page.sellers.slice(0, 3).map((seller, i) => (
+        {showcaseSellers.slice(0, 3).map((seller, i) => (
           <CommunitySellerCard
             key={seller.id}
             href={href(`/store/${seller.slug}`)}
             name={seller.name}
             focalPoint={demoStoreFocalPoint(seller)}
-            location={`${seller.city}, ${seller.province}`}
+            location={[seller.city, seller.province].filter(Boolean).join(", ")}
             avatar={<SellerAvatar name={seller.name} src={seller.logoUrl} />}
             typeLabel={c("Canadian demo store", "Boutique canadienne fictive")}
             banner={
               seller.bannerUrl ? (
                 <img src={seller.bannerUrl} alt="" loading="lazy" />
               ) : (
-                products[i] && art(products[i].product)
+                <span className="troc-hc-seller-cover-placeholder">{seller.name.trim().slice(0, 1)}</span>
               )
             }
             thumbnails={products.slice(i, i + 3).map((r) => (

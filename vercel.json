@@ -23,7 +23,7 @@
       "continue": true
     },
     {
-      "src": "^/catalog-art/[a-f0-9]{20}-[0-9]+\\.webp$",
+      "src": "^/catalog-art/(?:[a-f0-9]{20}|retained-[a-f0-9]{64})-[0-9]+\\.webp$",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       },

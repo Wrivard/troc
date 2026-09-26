@@ -1,3 +1,6 @@
+import { inventoryCsv } from "./export";
+import {collectorQuery,collectorSql} from "../catalog/collector-search";
+import {PostgresCatalogAssetProvider} from "../catalog/assets";
 import { createHash, randomUUID } from "node:crypto";
 import { authorize, type Principal } from "../auth/permissions";
 import type { Sql } from "../commerce/data";
@@ -69,12 +72,22 @@ export class InventoryService {
       )
     ).rows[0];
     if (!a) throw new DomainError("seller_unavailable", 403);
+    // Recheck after the seller lock: team edits use this same lock, so a stale
+    // request principal cannot retain inventory authority after a removal.
+    const actor = (await db.query<{ active: boolean; permitted: boolean }>(
+      `SELECT u.status='active' AS active,
+       (EXISTS(SELECT 1 FROM troc.user_roles WHERE user_id=u.id AND role='admin')
+        OR EXISTS(SELECT 1 FROM troc.seller_members WHERE user_id=u.id AND seller_id=$2 AND role IN ('owner','manager','inventory'))) AS permitted
+       FROM troc.users u WHERE u.id=$1`, [p.userId,seller],
+    )).rows[0];
+    if (!actor?.active) throw new DomainError("unauthorized",401);
+    if (!actor.permitted) throw new DomainError("forbidden",403);
     return a;
   }
   async sellers(p: Principal) {
     return (
       await this.db.query<{ id: string; display_name: string }>(
-        `SELECT s.id,s.display_name FROM troc.seller_accounts s JOIN troc.seller_members m ON m.seller_id=s.id WHERE m.user_id=$1 AND m.role IN ('owner','manager','inventory') AND s.status='active' ORDER BY s.display_name`,
+        `SELECT s.id,s.display_name FROM troc.seller_accounts s LEFT JOIN troc.seller_members m ON m.seller_id=s.id AND m.user_id=$1 WHERE (m.role IN ('owner','manager','inventory') OR EXISTS(SELECT 1 FROM troc.user_roles WHERE user_id=$1 AND role='admin')) AND s.status='active' ORDER BY s.display_name`,
         [p.userId],
       )
     ).rows;
@@ -89,34 +102,53 @@ export class InventoryService {
   async catalog(p: Principal, seller: string, q: string) {
     await this.access(this.db, p, seller);
     q = string(q, 100);
-    if (q.length < 2) return [];
+    const numbered = !!collectorQuery(q);
+    if (q.length < 2 && !numbered) return [];
     return (
       await this.db.query(
-        `SELECT v.id,p.name_en,p.name_fr,s.slug AS set,pr.collector_number AS number,pr.language,v.variant_key AS finish,p.product_type FROM troc.variants v JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_products p ON p.id=pr.product_id JOIN troc.set_releases s ON s.id=p.set_id WHERE (p.name_en ILIKE $1 ESCAPE '\\' OR p.name_fr ILIKE $1 ESCAPE '\\') AND p.product_type='raw_single' ORDER BY p.name_en,v.id LIMIT 40`,
-        ["%" + q.replace(/[\\%_]/g, "\\$&") + "%"],
+        `SELECT v.id,p.name_en,p.name_fr,s.slug AS set,pr.collector_number AS number,pr.language,v.variant_key AS finish,p.product_type FROM troc.variants v JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_products p ON p.id=pr.product_id JOIN troc.set_releases s ON s.id=p.set_id WHERE ${numbered ? "("+collectorSql("pr.collector_number","s.id","$1")+")" : "(p.name_en ILIKE $1 ESCAPE '\\' OR p.name_fr ILIKE $1 ESCAPE '\\')"} AND p.product_type='raw_single' ORDER BY p.name_en,v.id LIMIT 40`,
+        [numbered ? q : "%" + q.replace(/[\\%_]/g, "\\$&") + "%"],
       )
     ).rows;
   }
-  async list(
+  async summary(p: Principal, seller: string) {
+    await this.access(this.db, p, seller);
+    return (
+      await this.db.query(
+        "SELECT count(*) FILTER(WHERE status='active')::int AS active,count(*) FILTER(WHERE status='draft')::int AS draft,count(*) FILTER(WHERE status='sold_out')::int AS sold_out,count(*) FILTER(WHERE status='active' AND quantity BETWEEN 1 AND 3)::int AS low,count(*) FILTER(WHERE sync_status IN ('error','conflict'))::int AS review FROM troc.listings WHERE seller_id=$1",
+        [seller],
+      )
+    ).rows[0];
+  }
+  private async readListings(
     p: Principal,
     seller: string,
     filter: Record<string, unknown> = {},
+    exporting = false,
   ) {
     await this.access(this.db, p, seller);
     const q = string(filter.q ?? "", 100),
       source = string(filter.source ?? ""),
       status = string(filter.status ?? ""),
       sync = string(filter.sync ?? "");
-    const after = filter.after ? uuid(filter.after) : null;
+    const after = !exporting && filter.after ? uuid(filter.after) : null;
     const rows = (
       await this.db.query(
-        `SELECT l.*,p.name_en,p.name_fr,pr.language,v.variant_key AS finish,pr.collector_number FROM troc.listings l JOIN troc.variants v ON v.id=l.variant_id JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_products p ON p.id=pr.product_id WHERE l.seller_id=$1 AND ($2::uuid IS NULL OR l.id>$2) AND ($3='' OR l.source_platform=$3) AND ($4='' OR l.status=$4) AND ($5='' OR l.sync_status=$5) AND ($6='' OR strpos(lower(coalesce(l.seller_sku,'')||' '||p.name_en||' '||p.name_fr),lower($6))>0) ORDER BY l.id LIMIT 51`,
-        [seller, after, source, status, sync, q],
+        `SELECT l.*,p.name_en,p.name_fr,pr.language,v.variant_key AS finish,pr.collector_number FROM troc.listings l JOIN troc.variants v ON v.id=l.variant_id JOIN troc.printings pr ON pr.id=v.printing_id JOIN troc.catalog_products p ON p.id=pr.product_id WHERE l.seller_id=$1 AND ($2::uuid IS NULL OR l.id>$2) AND ($3='' OR l.source_platform=$3) AND ($4='' OR l.status=$4) AND ($5='' OR l.sync_status=$5 OR ($5='review' AND l.sync_status IN ('error','conflict'))) AND ($6='' OR strpos(lower(coalesce(l.seller_sku,'')||' '||coalesce(l.storage_location,'')||' '||p.name_en||' '||p.name_fr),lower($6))>0${collectorQuery(q) ? " OR ("+collectorSql("pr.collector_number","p.set_id","$6")+")" : ""}) AND ($7::boolean=false OR (l.quantity BETWEEN 1 AND 3 AND l.status='active')) ORDER BY l.id LIMIT $8`,
+        [seller, after, source, status, sync, q, filter.low === "true", exporting ? 10001 : 51],
       )
     ).rows;
+    return rows;
+  }
+  async export(p: Principal, seller: string, filter: Record<string, unknown> = {}) {
+    return inventoryCsv(await this.readListings(p, seller, filter, true));
+  }
+  async list(p: Principal, seller: string, filter: Record<string, unknown> = {}) {
+    const rows = await this.readListings(p, seller, filter);
+    const images=await new PostgresCatalogAssetProvider(this.db).thumbnails(rows.map(r=>String(r.variant_id)));
     const more = rows.length > 50;
     return {
-      rows: rows.slice(0, 50),
+      rows: rows.slice(0,50).map(r=>({...r,image_url:images.get(String(r.variant_id))??null})),
       next: more ? (rows[49] as { id: string }).id : null,
     };
   }
@@ -181,6 +213,7 @@ export class InventoryService {
           quantity: 0,
         };
         try {
+          r.storage_location = string(r.storage_location ?? "", 100);
           row.priceCents = cents(r.price);
           if (!/^\d{1,7}$/.test(r.quantity))
             throw new DomainError("invalid_quantity");
@@ -360,8 +393,8 @@ export class InventoryService {
       try {
         for (let i = 0; i < record.rows.length; i += 500)
           await tx.query(
-            `INSERT INTO troc.listings(seller_id,variant_id,condition,unit_price_cents,quantity,status,seller_sku,external_sku,external_listing_id,source_platform,demo_batch_id)
-    SELECT $1,r."variantId",r.input->>'condition',r."priceCents",r.quantity,CASE WHEN r."priceCents">=$4 THEN 'draft' WHEN r.quantity=0 THEN 'sold_out' ELSE 'active' END,r.input->>'seller_sku',nullif(r.input->>'external_sku',''),nullif(r.input->>'external_listing_id',''),r.source,$3
+            `INSERT INTO troc.listings(seller_id,variant_id,condition,unit_price_cents,quantity,status,seller_sku,external_sku,external_listing_id,source_platform,demo_batch_id,storage_location)
+    SELECT $1,r."variantId",r.input->>'condition',r."priceCents",r.quantity,CASE WHEN r."priceCents">=$4 THEN 'draft' WHEN r.quantity=0 THEN 'sold_out' ELSE 'active' END,r.input->>'seller_sku',nullif(r.input->>'external_sku',''),nullif(r.input->>'external_listing_id',''),r.source,$3,nullif(r.input->>'storage_location','')
     FROM jsonb_to_recordset($2::jsonb) AS r("variantId" uuid,"priceCents" integer,quantity integer,input jsonb,source text)`,
             [
               seller,
@@ -398,9 +431,10 @@ export class InventoryService {
       String(integer(value.priceCents, 1, 100000000) / 100),
       String(integer(value.quantity)),
       string(value.sellerSku),
+      string(value.storageLocation ?? "", 100),
     ];
     const csv =
-      "variant_id,condition,price,quantity,seller_sku\n" +
+      "variant_id,condition,price,quantity,seller_sku,storage_location\n" +
       values.map((v) => '"' + v.replace(/"/g, '""') + '"').join(",");
     const preview = await this.preview(p, seller, {
       csv,
@@ -425,6 +459,8 @@ export class InventoryService {
             r.priceCents === undefined
               ? undefined
               : integer(r.priceCents, 1, 100000000),
+          sale: r.saleCents === undefined ? undefined : r.saleCents === null ? null : integer(r.saleCents,1,100000000),
+          storageLocation: r.storageLocation === undefined ? undefined : string(r.storageLocation, 100),
           status: r.status === undefined ? undefined : string(r.status),
         };
       })
@@ -472,7 +508,8 @@ export class InventoryService {
         if (quantity === 0 && status === "active") status = "sold_out";
         if (quantity > 0 && status === "sold_out") status = "active";
         const price = u.price ?? current.unit_price_cents;
-        if (current.sale_cents !== null && price < current.sale_cents)
+        const sale = u.sale === undefined ? current.sale_cents : u.sale;
+        if (sale !== null && price < sale)
           throw new DomainError("price_below_sale", 409);
         if (
           status === "active" &&
@@ -481,8 +518,8 @@ export class InventoryService {
         )
           throw new DomainError("listing_photos_required", 409);
         await tx.query(
-          "UPDATE troc.listings SET quantity=$3,unit_price_cents=$4,status=$5 WHERE seller_id=$1 AND id=$2",
-          [seller, u.id, quantity, u.price ?? current.unit_price_cents, status],
+          "UPDATE troc.listings SET quantity=$3,unit_price_cents=$4,status=$5,sale_cents=$8,storage_location=CASE WHEN $6::boolean THEN nullif($7,'') ELSE storage_location END WHERE seller_id=$1 AND id=$2",
+          [seller, u.id, quantity, u.price ?? current.unit_price_cents, status, u.storageLocation !== undefined, u.storageLocation ?? "", sale],
         );
         await tx.query(
           "INSERT INTO troc.audit_events(actor_id,action,entity_type,entity_id) VALUES($1,'inventory.updated','listing',$2)",

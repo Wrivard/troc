@@ -88,3 +88,21 @@
     padding: 24px;
   }
 }
+
+/* Independent leaf backdrop; translucent surfaces preserve fully opaque text. */
+.troc-hc-about-features { position: relative; isolation: isolate; }
+.troc-hc-about-features::before {
+  content: "";
+  position: absolute;
+  inset: -25px -12px;
+  z-index: -1;
+  background: url("/hero/hero-leaf-v1.webp") center / contain no-repeat;
+  opacity: .55;
+  pointer-events: none;
+}
+.troc-hc-about-features > article {
+  background: color-mix(in srgb, var(--hc-surface) 78%, transparent);
+}
+@media (max-width: 600px) {
+  .troc-hc-about-features::before { inset: 0; background-size: 100% auto; background-repeat: repeat-y; }
+}

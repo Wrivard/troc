@@ -30,6 +30,7 @@ export interface SearchPresentationGroup {
   total?: number;
 }
 export interface GlobalSearchPresentationProps {
+  hero?: boolean;
   locale: Locale;
   query: string;
   groups: readonly SearchPresentationGroup[];
@@ -61,6 +62,7 @@ const caps: Record<SearchGroupKind, number> = {
 /** Controlled, input-anchored presentation only. Fetch, debounce, ranking and routing belong to the host. */
 export function GlobalSearchPresentation({
   locale,
+  hero = false,
   query,
   groups,
   loading = false,
@@ -194,7 +196,7 @@ export function GlobalSearchPresentation({
   return (
     <div
       ref={root}
-      className="troc-search-presentation"
+      className={`troc-search-presentation ${hero ? "troc-search-hero" : ""}`}
       role="search"
       aria-label={fr ? "Recherche TROC" : "TROC search"}
       onBlur={(event) => {
@@ -227,7 +229,7 @@ export function GlobalSearchPresentation({
           autoComplete="off"
           spellCheck={false}
           placeholder={
-            fr ? "Cartes, extensions, vendeurs…" : "Cards, sets, sellers…"
+            hero ? (fr ? "Votre prochaine trouvaille…" : "Your next find starts here…") : (fr ? "Cartes, extensions, vendeurs…" : "Cards, sets, sellers…")
           }
           disabled={disabled}
           value={query}
@@ -281,6 +283,7 @@ export function GlobalSearchPresentation({
             <span aria-hidden="true">×</span>
           </Button>
         )}
+        {hero && <Button className="troc-search-hero-submit" type="button" onClick={() => navigate(searchAllHref)}>{fr ? "Chercher" : "Search"}</Button>}
       </div>
       {show && (
         <div

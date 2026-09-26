@@ -1,1 +1,33 @@
-<!doctype html><html lang="en-CA"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TROC</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="troc-document-theme">
+      /* Paint the canvas before external CSS/React; normal page styles follow. */
+      html { background: #171717; color: #fafafa; color-scheme: dark; }
+      html[data-theme="troc-dark"] { background: var(--surface, #171717); color-scheme: dark; }
+      html[data-theme="troc-light"] { background: var(--surface, #fff); color: #171717; color-scheme: light; }
+      body { margin: 0; }
+    </style>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        // SSR's theme must match its rendered markup during hydration.
+        const rendered = root.dataset.theme;
+        let theme = rendered === "troc-light" ? "light" : rendered === "troc-dark" ? "dark" : null;
+        if (!theme) {
+          const linked = new URLSearchParams(location.search).get("theme");
+          let saved;
+          try { saved = localStorage.getItem("troc.theme"); } catch { /* Storage can be unavailable. */ }
+          theme = (linked === "light" || linked === "dark" ? linked : saved) === "light" ? "light" : "dark";
+        }
+        root.dataset.theme = "troc-" + theme;
+        root.classList.add(theme);
+        root.style.colorScheme = theme;
+      })();
+    </script>
+    <title>TROC</title>
+  </head>
+  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
+</html>

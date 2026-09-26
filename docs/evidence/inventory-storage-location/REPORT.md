@@ -1,0 +1,9 @@
+# Inventory storage location
+
+## Inventory storage location — complete local journey, September 25
+
+E4.3 now exposes existing private listings.storage_location through manual creation, optional CSV mapping, inventory row display, location search and edit dialog.100-character validated text; blank clears to null; omitted field preserves existing value; existing version/reservation/stock/price guards retained. Migration0027grants only backend UPDATE on the existing column. No new location model or catalogue identity changes.
+
+13isolated inventory tests pass including manual/idempotent replay/CSV/clear/oversized-row rejection/cross-store rejection/stale version and unchanged price/quantity. Real synthetic seller EN1440/FR390 browsers verified manual create -> inventory search -> edit -> persisted display with unchanged quantity0/price125cents. All QA listings archived and locations cleared; immutable audit history retained. Public catalogue offer and commerce listing projections source-reviewed: location excluded (not a fresh hosted privacy certification). API/frontend types, scoped lint, API/client/SSR builds passed; final French label encoding correction included in subsequent build. Evidence: Troc-UX-Design/docs/evidence/inventory-storage-location/. Local API38308replaces60228;0027applied only to isolated local DB, ready verified.
+
+NEXT coherent batch: bounded private inventory CSV export using existing filters and canonical variant IDs, exact cents, formula-safe text, clear row/byte cap and explicit snapshot semantics. Analytics export is a different dataset and must not be presented as inventory export. Follow docs/INVENTORY-EXPORT-CONTRACT.md. Photos remain UP01; offers remain E4.5; graded/sealed remain later workflows.146IDs preserved; solo/remote/production/source gates unchanged.

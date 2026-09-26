@@ -1,10 +1,16 @@
 import {
+  accountOnboardingRouter,
+  accountOnboarding,
+  draftToken,
+} from "./account-onboarding";
+import { googleAuthRouter } from "../modules/auth/google";
+import {
   Router,
   type Request,
   type Response,
   type NextFunction,
 } from "express";
-import { rateLimit } from "express-rate-limit";
+import { requestRateLimit } from "../modules/security/rate-limit";
 import { authClient } from "../modules/auth/supabase";
 import { ensureBuyer } from "../modules/auth/service";
 import { account, savePreferences } from "../modules/users/service";
@@ -39,14 +45,10 @@ router.use((req, res, next) => {
 });
 router.use(
   "/auth",
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 30,
-    standardHeaders: "draft-8",
-    legacyHeaders: false,
-    message: { code: "rate_limited" },
-  }),
+  requestRateLimit({namespace:"authentication",windowMs:15 * 60 * 1000,limit: 30}),
 );
+router.use(accountOnboardingRouter());
+router.use(googleAuthRouter());
 function credentials(body: unknown) {
   const v = body as Record<string, unknown> | null;
   if (
@@ -64,12 +66,16 @@ function credentials(body: unknown) {
 router.post("/auth/sign-up", async (req, res) => {
   if (req.body?.country !== "CA" || req.body?.canadaConfirmed !== true)
     throw new DomainError("invalid_credentials");
+  const draft = await accountOnboarding.ready(draftToken(req));
   const client = authClient(req, res);
   const { error } = await client.auth.signUp({
     ...credentials(req.body),
-    options: { emailRedirectTo: `${process.env.APP_ORIGIN}/api/auth/callback` },
+    options: {
+      emailRedirectTo: `${process.env.APP_ORIGIN}/api/auth/callback${req.body?.onboarding === true ? "?onboarding=1" : ""}`,
+    },
   });
   if (error) throw new DomainError("auth_failed", 400);
+  await accountOnboarding.awaitingEmail(draftToken(req), draft.revision);
   // Do not disclose whether an address is already registered.
   res.status(202).json({ code: "check_email" });
 });
@@ -87,6 +93,64 @@ router.post("/auth/sign-in", async (req, res) => {
   }
   res.json({ ok: true });
 });
+
+function emailAddress(value: unknown) {
+  if (
+    typeof value !== "string" ||
+    value.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  )
+    throw new DomainError("invalid_credentials");
+  return value.trim();
+}
+router.post("/auth/resend", async (req, res) => {
+  await accountOnboarding.ready(draftToken(req));
+  const email = emailAddress(req.body?.email);
+  const { error } = await authClient(req, res).auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo:
+        process.env.APP_ORIGIN + "/api/auth/callback?onboarding=1",
+    },
+  });
+  if (error) throw new DomainError("auth_failed");
+  res.status(202).json({ code: "check_email" });
+});
+router.post("/auth/recovery/start", async (req, res) => {
+  const email = emailAddress(req.body?.email);
+  const { error } = await authClient(req, res).auth.resetPasswordForEmail(
+    email,
+    { redirectTo: process.env.APP_ORIGIN + "/sign-in" },
+  );
+  if (error) throw new DomainError("auth_failed");
+  res.status(202).json({ ok: true });
+});
+router.post("/auth/recovery/finish", async (req, res) => {
+  const email = emailAddress(req.body?.email),
+    token = req.body?.token,
+    password = req.body?.password;
+  if (
+    typeof token !== "string" ||
+    !/^\d{6,10}$/.test(token) ||
+    typeof password !== "string" ||
+    password.length < 8 ||
+    password.length > 128
+  )
+    throw new DomainError("invalid_credentials");
+  const client = authClient(req, res);
+  const verified = await client.auth.verifyOtp({
+    email,
+    token,
+    type: "recovery",
+  });
+  if (verified.error || !verified.data.user)
+    throw new DomainError("auth_failed");
+  const changed = await client.auth.updateUser({ password });
+  await client.auth.signOut({ scope: "local" });
+  if (changed.error) throw new DomainError("auth_failed");
+  res.json({ ok: true });
+});
 router.post("/auth/sign-out", async (req, res) => {
   const { error } = await authClient(req, res).auth.signOut();
   if (error) throw new DomainError("auth_failed", 400);
@@ -94,12 +158,27 @@ router.post("/auth/sign-out", async (req, res) => {
 });
 // PKCE email-confirmation callback; destination is fixed, never a user-controlled redirect.
 router.get("/auth/callback", async (req, res) => {
-  if (typeof req.query.code !== "string") throw new DomainError("auth_failed");
-  const { error } = await authClient(req, res).auth.exchangeCodeForSession(
-    req.query.code,
-  );
-  if (error) throw new DomainError("auth_failed");
-  res.redirect(`${process.env.APP_ORIGIN}/account`);
+  const destination =
+    req.query.onboarding === "1" ? "/early-access" : "/account";
+  try {
+    if (
+      typeof req.query.code !== "string" ||
+      !req.query.code ||
+      req.query.code.length > 4096
+    )
+      throw new DomainError("auth_failed");
+    const { error } = await authClient(req, res).auth.exchangeCodeForSession(
+      req.query.code,
+    );
+    if (error) throw new DomainError("auth_failed");
+    return res.redirect(303, process.env.APP_ORIGIN + destination);
+  } catch {
+    return res.redirect(
+      303,
+      process.env.APP_ORIGIN +
+        "/sign-in?authError=email_confirmation_failed&returnTo=%2Fearly-access",
+    );
+  }
 });
 router.get("/account", async (req, res) =>
   res.json(await account(await principal(req, res))),

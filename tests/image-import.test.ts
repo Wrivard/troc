@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { PGlite } from "@electric-sql/pglite";
 import { pg_trgm } from "@electric-sql/pglite/contrib/pg_trgm";
 import type { ImportImage } from "@workspace/catalog";
@@ -54,16 +54,14 @@ test("approved manifest import is atomic, idempotent, removable and provenance-s
     query: async (text, values) => db.query(text, values),
   };
   try {
-    for (const name of [
-      "0001_foundation",
-      "0002_backend_access",
-      "0003_catalog",
-      "0005_catalog_images",
-      "0006_catalog_image_integrity",
-    ])
+    for (const name of (
+      await readdir(new URL("../lib/db/migrations/", import.meta.url))
+    )
+      .filter((n) => n.endsWith(".sql"))
+      .sort())
       await db.exec(
         await readFile(
-          new URL("../lib/db/migrations/" + name + ".sql", import.meta.url),
+          new URL("../lib/db/migrations/" + name, import.meta.url),
           "utf8",
         ),
       );

@@ -6,6 +6,11 @@ const root=new URL('../../',import.meta.url);
 const output=new URL('artifacts/marketplace/public/catalog-art/',root);
 const dataDir=new URL('artifacts/api-server/src/modules/catalog/sample/',root);
 await mkdir(output,{recursive:true});await mkdir(dataDir,{recursive:true});
+// The original small sample builder must not overwrite the expanded real catalogue.
+try {
+ const previous=JSON.parse(await readFile(new URL('provenance.json',dataDir),'utf8'));
+ if(previous.expansions?.length) throw new Error('expanded_catalogue_present: use an incremental import; original sample rebuild would discard real records');
+} catch(error) { if(error.code!=='ENOENT') throw error; }
 const registryFile=new URL('identities.json',dataDir);
 let identities={};try{identities=JSON.parse(await readFile(registryFile,'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
 const id=key=>identities[key]??(identities[key]=randomUUID());

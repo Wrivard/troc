@@ -1,0 +1,7 @@
+# Dense activity marquee
+Removed Activity/Demo header block and pause button per user. Stats stay static.
+Eight preview events use existing canonical artwork thumbnails or store initials; no fabricated data is added to the database. Subtle per-event preview attribution remains.
+Actual cause of blank tail: viewport-based minimum width stretched a short sequence beyond its content. Removed that rule; repeating measured sequence fills viewport and duplicate groups have identical widths. Constant52px/s vs former ~20px/s desktop; no perpetual JS animation loop.
+Four widths390/1440/2560/3840, EN/FR/light/dark samples, fiveanimation positions including end seam: no gap or overflow, measured52px/s. Hover stops, keyboard enters first real link, reduced motion removes movement; clones not focusable. Desktop/mobile crops opened and visually inspected.
+Types/scoped lint pass. New density test: scripts/check-activity-marquee-dense.cjs. Original marquee smoke test updated for removed controls.
+D05 follow-up: removed per-event aperçu/preview text; added localized CAD amounts to listing/sale sample events, none on reviews. Prices15/10/1200cents read from current local demo listings matched by exact existing artwork, with canonical product destinations. Title/accessibility demo provenance retained; not a live transaction feed. Types and four-width continuous-loop checks pass; updated desktop capture inspected.

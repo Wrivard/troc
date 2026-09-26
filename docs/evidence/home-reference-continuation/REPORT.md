@@ -1,0 +1,13 @@
+# Homepage continuation — D07/D08/D09
+
+Solo local review against retained written requirements and existing implementation handoffs. Original approved raster references were not freshly reopened; no independent/hosted certification.
+
+D07: corrected dangling comma when seller city/province are absent; omit only the absent location, preserve seller name and handling. Current catalogue/seller identities replace obsolete fixture-specific assertions in journey-refinement-preview.mjs. Six EN/FR/theme/responsive cases pass, three-step sequence, actual decoded card image, demo total/disclosure, aligned desktop panels and no overflow. Inspected current desktop before and unobscured final390FR image; saved final desktop capture. Earlier mobile image was captured before data settled; corrected capture waits for loaded page and hides fixed chrome only during section screenshot.
+
+D08: homepage now supplies grammatically singular/plural seller labels via optional shared component formatter; existing string callers stay compatible. Narrow savings label and amount stack rather than crowding panel padding. Six smart-reference-preview cases pass: unchanged1425/1122/303cent examples, disclaimer, desktop alignment/mobile stacking, keyboard CTA route, singular/plural labels, and amount within panel padding. Inspected desktop1672 and final320FRlight screenshots. Separate motion acceptance remains open; do not claim it was completed by reduced-motion tests.
+
+D09: current retained catalogue replaced old seed identities, so historical shelf-baseline files were preserved rather than regenerated. New shelf-current-review compares same-language identities across eight layouts, loaded/contained art, <1CAD displayed prices, actual product navigation, filter URL, keyboard focus and alignment. It reproduced18pxprice misalignment at600FR because availability wrapped differently. Scoped shelf CSS reserves two availability lines; all8cases now pass. Final600FRlight image inspected. No card identity, image, listing/stock or money data changed; listings remain local fixtures.
+
+Frontend typecheck, scoped lint and final client/SSR build pass. Initial test lint flagged an unqualified browser global and was corrected. Evidence: verification/journey-refinement.json, smart-reference.json, shelf-current-review.json and matching images in Troc-UX-Design. Build .local/home-reference-build.log. No source import, live transaction or deployment.
+
+Next ready: D10/D11 existing About/community reference coverage. D08 motion, D06 exact art-choice reference, hosted storage/auth/payments, canonical rights/variants and remote holds remain explicit.

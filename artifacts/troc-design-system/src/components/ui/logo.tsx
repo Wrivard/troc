@@ -7,11 +7,8 @@ import { cn } from "../../lib/utils"
 // faithful supplied lockups — never redrawn, restyled, or typeset. Importing
 // them from src/assets keeps the component self-contained for consumers that
 // do not ship public/brand files.
-import logoForDark from "../../assets/brand/troc-dark.png"
-import logoForLight from "../../assets/brand/troc-light.png"
-import logoMono from "../../assets/brand/troc-mono.png"
-import wordmark from "../../assets/brand/troc-wordmark.png"
-import leaf from "../../assets/brand/troc-leaf.png"
+import {logoRenditions} from '../../assets/brand/logo-renditions'
+const logoForDark=logoRenditions.dark.src,logoForLight=logoRenditions.light.src,logoMono=logoRenditions.mono.src,wordmark=logoRenditions.wordmark.src,leaf=logoRenditions.leaf.src;
 
 export type TrocLogoVariant =
   | "auto"
@@ -35,6 +32,8 @@ export interface TrocLogoProps
   variant?: TrocLogoVariant
   /** Rendered height in px; width follows the intrinsic aspect ratio. */
   height?: number
+  /** Defer off-screen artwork without changing its reserved size. */
+  loading?: "eager" | "lazy"
   /** Accessible name. Provide a localized value; defaults to "TROC". */
   label?: string
   /** Reserve one leaf-width of clear space around the lockup. */
@@ -47,6 +46,7 @@ const TrocLogo = React.forwardRef<HTMLSpanElement, TrocLogoProps>(
       className,
       variant = "auto",
       height = 28,
+      loading = "eager",
       label = "TROC",
       clearSpace = false,
       style,
@@ -108,8 +108,8 @@ const TrocLogo = React.forwardRef<HTMLSpanElement, TrocLogoProps>(
           {...props}
         >
           <span className="troc-logo-stack">
-            <img className="troc-logo-img" data-for="dark" src={logoForDark} alt="" aria-hidden="true" draggable={false} />
-            <img className="troc-logo-img" data-for="light" src={logoForLight} alt="" aria-hidden="true" draggable={false} />
+            <img loading={loading} className="troc-logo-img" data-for="dark" src={logoForDark} srcSet={logoRenditions.dark.srcSet} sizes={`${height * logoRenditions.dark.ratio}px`} alt="" aria-hidden="true" draggable={false} />
+            <img loading={loading} className="troc-logo-img" data-for="light" src={logoForLight} srcSet={logoRenditions.light.srcSet} sizes={`${height * logoRenditions.light.ratio}px`} alt="" aria-hidden="true" draggable={false} />
           </span>
         </span>
       )
@@ -126,6 +126,7 @@ const TrocLogo = React.forwardRef<HTMLSpanElement, TrocLogoProps>(
               ? wordmark
               : leaf
 
+    const rendition = Object.values(logoRenditions).find(image => image.src === src)!
     return (
       <span
         ref={setRefs}
@@ -133,7 +134,7 @@ const TrocLogo = React.forwardRef<HTMLSpanElement, TrocLogoProps>(
         style={rootStyle}
         {...props}
       >
-        <img className="troc-logo-img" src={src} alt={label} draggable={false} />
+        <img loading={loading} className="troc-logo-img" src={src} srcSet={rendition.srcSet} sizes={`${height * rendition.ratio}px`} alt={label} draggable={false} />
       </span>
     )
   }

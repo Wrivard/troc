@@ -1,0 +1,9 @@
+# Free-shipping Settings local candidate
+
+## Free-shipping seller control — September25
+
+Reused existing free_shipping_threshold_cents and commerce level gating (Established/Trusted/Elite). Settings now exposes optional CAD threshold, blank disables/null,0means free shipping on eligible orders; copy specifies merchandise after discounts before taxes. Backend validates integer0..100000000cents, owner access/current store level and optimistic version. Omitted field preserves legacy clients/settings; noneligible sellers may clear but cannot enable. Existing promotion settings unaffected. Migration0029grants only backend update on existing field; not applied to persistent preview.
+
+21seller-platform tests pass including eligible threshold1250, ineligible rejection, invalid/fractional/out-of-range amounts, stale version, omitted-field preservation, zero and null after downgrade. EN1440/FR390 intercepted UI checks pass comma12,50->1250cents, conflict keeps edited threshold and merges remote untouched name, explicit resave uses latest version, blank sends null. Frontend/APItypes/scoped lint/API/client+SSR builds pass. Evidence docs/evidence/free-shipping-settings/ui.json. No persistent level/threshold change or live shipping-policy activation. API39372still prior runtime;0029pending, avoid casual restart.
+
+NEXT coherent batch: spend-threshold promotion draft/publication controls using existing minimumCents calculation, exact CAD cents and explicit AND semantics when quantity+spend both supplied; preserve existing drafts with omitted amount. Then deliberate0029local activation and real eligible-fixture round-trip/quote validation where isolated fixture permits, without changing existing seller level. Hosted/native acceptance remains gated.146IDs retained; E4.5 partial, remote/stock/money/source holds unchanged.

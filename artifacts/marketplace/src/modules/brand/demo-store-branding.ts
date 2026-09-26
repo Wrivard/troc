@@ -48,3 +48,8 @@ export function commerceSellerName(group: {
     ? branding[group.seller.id].name
     : group.seller.name;
 }
+
+/** Identify the approved showcase fixtures without changing seller identity or commerce data. */
+export function isBrandedDemoSeller(seller: Seller): boolean {
+  return seller.demo && Object.hasOwn(branding, seller.id);
+}

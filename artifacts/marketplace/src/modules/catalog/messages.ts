@@ -48,8 +48,8 @@ export const catalogMessages = {
     "Aucun produit correspondant. Essayez une autre recherche ou effacez les filtres.",
   ],
   demo: [
-    "Demo marketplace — representative cards and test products. Sellers, prices and inventory are fictional. No purchases are available.",
-    "Marché de démonstration — cartes représentatives et produits tests. Vendeurs, prix et stocks fictifs. Aucun achat n’est offert.",
+    "Development marketplace — real card catalogue. Seller listings, prices and quantities are simulated. No purchases are available.",
+    "Marché de développement — catalogue de vraies cartes. Annonces, prix et quantités simulés. Aucun achat n’est offert.",
   ],
   title: ["One search. Every seller.", "Une recherche. Tous les vendeurs."],
   subtitle: [

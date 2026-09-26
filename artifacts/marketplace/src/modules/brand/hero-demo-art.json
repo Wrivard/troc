@@ -1,0 +1,92 @@
+[
+  {
+    "name": {
+      "en": "Charizard ex",
+      "fr": "Charizard ex"
+    },
+    "image": {
+      "id": "e74c86d3-fa04-41e3-bc6e-83de074b6b5a",
+      "side": "front",
+      "url": "/catalog-art/db8f75c795d94c530fdd-600.webp",
+      "sources": [
+        {
+          "url": "/catalog-art/5e20d2d0f2f49ef6019f-245.webp",
+          "width": 245
+        },
+        {
+          "url": "/catalog-art/db8f75c795d94c530fdd-600.webp",
+          "width": 600
+        }
+      ],
+      "width": 600,
+      "height": 825,
+      "provenance": {
+        "provider": "tcgdex",
+        "externalId": "sv03.5-199",
+        "sourceUrl": "https://assets.tcgdex.net/en/sv/sv03.5/199/high.webp",
+        "license": "User-approved bounded demo/development sample only; publisher rights retained",
+        "capturedAt": "2026-09-22T11:47:23.052Z"
+      }
+    }
+  },
+  {
+    "name": {
+      "en": "Lightning Bolt",
+      "fr": "Lightning Bolt"
+    },
+    "image": {
+      "id": "2093d10f-9265-4ffe-9f8d-9fcf930c909b",
+      "side": "front",
+      "url": "/catalog-art/4e531d902533e96b91a8-488.webp",
+      "sources": [
+        {
+          "url": "/catalog-art/2fe2e83758204c9014fb-245.webp",
+          "width": 245
+        },
+        {
+          "url": "/catalog-art/4e531d902533e96b91a8-488.webp",
+          "width": 488
+        }
+      ],
+      "width": 488,
+      "height": 680,
+      "provenance": {
+        "provider": "scryfall",
+        "externalId": "7673784e-db4b-43a1-8d55-1bb9fc1e284f",
+        "sourceUrl": "https://cards.scryfall.io/normal/front/7/6/7673784e-db4b-43a1-8d55-1bb9fc1e284f.jpg?1783903008",
+        "license": "User-approved bounded demo/development sample only; publisher rights retained",
+        "capturedAt": "2026-09-22T11:47:23.052Z"
+      }
+    }
+  },
+  {
+    "name": {
+      "en": "Chaos Command Magician",
+      "fr": "Chaos Command Magician"
+    },
+    "image": {
+      "id": "99ab9af7-84ba-4d30-a93a-ed49d6d70110",
+      "side": "front",
+      "url": "/catalog-art/d6d975aca6f5bb78fa45-600.webp",
+      "sources": [
+        {
+          "url": "/catalog-art/cc6762834385c4c8709f-245.webp",
+          "width": 245
+        },
+        {
+          "url": "/catalog-art/d6d975aca6f5bb78fa45-600.webp",
+          "width": 600
+        }
+      ],
+      "width": 600,
+      "height": 875,
+      "provenance": {
+        "provider": "ygoprodeck",
+        "externalId": "72630549",
+        "sourceUrl": "https://images.ygoprodeck.com/images/cards/72630549.jpg",
+        "license": "User-approved bounded demo/development sample only; publisher rights retained",
+        "capturedAt": "2026-09-22T11:47:23.052Z"
+      }
+    }
+  }
+]

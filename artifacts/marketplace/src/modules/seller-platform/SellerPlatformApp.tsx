@@ -1,10 +1,20 @@
+import { loadSellerDirectory } from "./seller-directory";
+import { SellerLoading } from "./SellerLoading";
+import { useSellerWorkspace } from "./SellerShell";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@workspace/troc-design-system/components/ui/select";
+import { SellerHub } from "./SellerHub";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { api } from "../../api";
-import { formatCad } from "./money";
 import "./seller-platform.css";
 type Application = {
   id: string;
@@ -52,9 +62,9 @@ export function SellerPlatformApp({
   const { locale, theme, setLocale, setTheme } = usePreferences(),
     fr = locale === "fr",
     t = (en: string, french: string) => (fr ? french : en);
+  const { userId, seller, setSeller, directory, directoryState } = useSellerWorkspace();
   const [applications, setApplications] = useState<Application[]>([]),
     [sellers, setSellers] = useState<Seller[]>([]),
-    [seller, setSeller] = useState(""),
     [dashboard, setDashboard] = useState<Dashboard | null>(null),
     [team, setTeam] = useState<Member[]>([]),
     [error, setError] = useState(""),
@@ -67,7 +77,7 @@ export function SellerPlatformApp({
     [busy, setBusy] = useState(false),
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
-  const money = (v: string) => formatCad(v, locale);
+
   function loadFailure(error: unknown) {
     const code = error instanceof Error ? error.message : "";
     if (code === "unauthorized")
@@ -121,6 +131,13 @@ export function SellerPlatformApp({
     setLoadError(false);
     setApplications([]);
     setSellers([]);
+    if (view === "dashboard" && userId && revision === 0 && sellerPage === 0) {
+      if (directoryState === "loading") return;
+      if (directoryState === "error") { setLoadError(true); setError(loadFailure(new Error())); }
+      else setSellers(directory);
+      setLoaded(true);
+      return;
+    }
     const load = async () => {
       try {
         if (view === "apply" || view === "admin") {
@@ -131,9 +148,7 @@ export function SellerPlatformApp({
           );
           if (!cancelled) setApplications(data);
         } else {
-          const data = await api<Seller[]>(
-            `/seller/platform/sellers?page=${sellerPage}`,
-          );
+          const data = await loadSellerDirectory(userId, sellerPage);
           if (!cancelled) {
             setSellers(data);
             setSeller((current) =>
@@ -154,7 +169,7 @@ export function SellerPlatformApp({
     return () => {
       cancelled = true;
     };
-  }, [view, revision, locale, adminPage, sellerPage]);
+  }, [view, revision, locale, adminPage, sellerPage, userId, directory, directoryState]);
   useEffect(() => {
     let cancelled = false;
     setDashboard(null);
@@ -248,38 +263,21 @@ export function SellerPlatformApp({
             "En développement · Espace vendeur",
           )}
         </p>
-        <h1>
-          {view === "apply"
-            ? t("Apply to sell", "Devenir vendeur")
-            : view === "admin"
-              ? t("Review seller applications", "Examiner les demandes")
-              : view === "team"
-                ? t("Seller team", "Équipe vendeur")
-                : t("Seller dashboard", "Tableau de bord vendeur")}
-        </h1>
-        <nav aria-label={t("Seller navigation", "Navigation vendeur")}>
-          <a
-            href="/seller/apply"
-            aria-current={view === "apply" ? "page" : undefined}
-          >
-            {t("Application", "Demande")}
-          </a>
-          <a
-            href="/seller/dashboard"
-            aria-current={view === "dashboard" ? "page" : undefined}
-          >
-            {t("Dashboard", "Tableau de bord")}
-          </a>
-          <a
-            href="/seller/team"
-            aria-current={view === "team" ? "page" : undefined}
-          >
-            {t("Team", "Équipe")}
-          </a>
-          <a href="/seller/inventory">{t("Inventory", "Inventaire")}</a>
-        </nav>
+        {view !== "dashboard" && (
+          <h1>
+            {view === "apply"
+              ? t("Apply to sell", "Devenir vendeur")
+              : view === "admin"
+                ? t("Review seller applications", "Examiner les demandes")
+                : view === "team"
+                  ? t("Seller team", "Équipe vendeur")
+                  : t("Seller dashboard", "Tableau de bord vendeur")}
+          </h1>
+        )}
+
         {error && <p role="alert">{error}</p>}
-        {!loaded && <p role="status">{t("Loading…", "Chargement…")}</p>}
+        {!loaded && view !== "dashboard" && <p role="status">{t("Loading…", "Chargement…")}</p>}
+        {view === "dashboard" && (!loaded || (!!seller && !workspaceLoaded)) && !loadError && !workspaceError && <SellerLoading view="dashboard" locale={locale} heading />}
         {view === "apply" && loaded && !loadError && (
           <>
             <p>
@@ -579,7 +577,7 @@ export function SellerPlatformApp({
             ))}
           </>
         )}
-        {["dashboard", "team"].includes(view) && loaded && !loadError && (
+        {view === "team" && loaded && !loadError && (
           <>
             {pageControls(
               t("Seller pages", "Pages de vendeurs"),
@@ -591,28 +589,33 @@ export function SellerPlatformApp({
                 setSellerPage(page);
               },
             )}
-            <label>
-              {t("Seller", "Vendeur")}
-              <select
+            <div style={{ maxWidth: 360 }}>
+              <Select
                 value={seller}
-                onChange={(e) => {
+                onValueChange={(value) => {
                   setError("");
                   setTeamPage(0);
-                  setSeller(e.target.value);
+                  setSeller(value);
                 }}
               >
-                <option value="">
-                  {t("Select seller", "Choisir un vendeur")}
-                </option>
-                {sellers
-                  .filter((s) => s.status === "active")
-                  .map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.display_name}
-                    </option>
-                  ))}
-              </select>
-            </label>
+                <SelectTrigger
+                  aria-label={t("Active store", "Boutique active")}
+                >
+                  <SelectValue
+                    placeholder={t("Choose a store", "Choisir une boutique")}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {sellers
+                    .filter((s) => s.status === "active")
+                    .map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.display_name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
             {!sellers.some((s) => s.status === "active") && (
               <p>
                 {t(
@@ -623,62 +626,13 @@ export function SellerPlatformApp({
             )}
           </>
         )}
-        {seller && !workspaceLoaded && !loadError && (
+        {view !== "dashboard" && seller && !workspaceLoaded && !loadError && (
           <p role="status">
             {t("Loading workspace…", "Chargement de l’espace…")}
           </p>
         )}
         {view === "dashboard" && dashboard && !loadError && !workspaceError && (
-          <>
-            <h2>{dashboard.account.display_name}</h2>
-            <dl>
-              <dt>{t("Active listings", "Annonces actives")}</dt>
-              <dd>{dashboard.inventory.active_listings}</dd>
-              <dt>{t("Inventory stock units", "Unités en inventaire")}</dt>
-              <dd>{dashboard.inventory.units}</dd>
-              <dt>
-                {t(
-                  "Inventory asking value (CAD)",
-                  "Valeur demandée de l’inventaire (CAD)",
-                )}
-              </dt>
-              <dd>{money(dashboard.inventory.asking_value_cents)}</dd>
-              <dt>
-                {t(
-                  "Eligible completed orders",
-                  "Commandes terminées admissibles",
-                )}
-              </dt>
-              <dd>{dashboard.sales.completed_orders}</dd>
-              <dt>
-                {t(
-                  "Completed merchandise subtotal (CAD)",
-                  "Sous-total des marchandises terminées (CAD)",
-                )}
-              </dt>
-              <dd>{money(dashboard.sales.merchandise_cents)}</dd>
-            </dl>
-            <p>
-              {t(
-                "All time. Excludes demo, simulated and refunded orders. Asking value is not sales revenue.",
-                "Depuis le début. Exclut les commandes de démonstration, simulées et remboursées. La valeur demandée n’est pas un revenu.",
-              )}
-            </p>
-            {dashboard.sales.completed_orders === 0 && (
-              <p>
-                {t(
-                  "No eligible real completed sales yet.",
-                  "Aucune vente réelle terminée admissible pour le moment.",
-                )}
-              </p>
-            )}
-            <p>
-              {t(
-                "Views, conversion, demand and promotion analytics are not available.",
-                "Les statistiques de vues, conversion, demande et promotions ne sont pas disponibles.",
-              )}
-            </p>
-          </>
+          <SellerHub seller={seller} dashboard={dashboard} locale={locale} />
         )}
         {view === "team" &&
           seller &&
@@ -688,8 +642,8 @@ export function SellerPlatformApp({
             <>
               <p>
                 {t(
-                  "Only current owners can change membership. Add existing account IDs; no invitation email is sent.",
-                  "Seuls les propriétaires actuels peuvent gérer l’équipe. Ajoutez les identifiants de comptes existants; aucun courriel d’invitation n’est envoyé.",
+                  "Current owners and administrators can manage membership. Add existing account IDs; no invitation email is sent.",
+                  "Les propriétaires actuels et les administrateurs peuvent gérer l’équipe. Ajoutez les identifiants de comptes existants; aucun courriel d’invitation n’est envoyé.",
                 )}
               </p>
               {pageControls(

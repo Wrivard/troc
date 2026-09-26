@@ -155,6 +155,8 @@ export interface PublicPage {
   prices: PricePoint[];
   seller?: Seller;
   selectedVariantId?: string;
+  /** Up to six other canonical products in the same set. */
+  relatedProducts?: ProductResult[];
 }
 // Provider payload describes relationships, never supplies canonical primary IDs.
 export interface ImportImage {
@@ -193,3 +195,44 @@ export interface CatalogImportProvider {
     limit: number;
   }): Promise<{ items: ImportRecord[]; nextCursor?: string }>;
 }
+
+export type SuggestionKind =
+  "cards" | "sets" | "products" | "sellers" | "games";
+export interface CatalogSuggestion {
+  id: string;
+  slug: string;
+  name: Text;
+  demo: boolean;
+  variantId?: string;
+  collectorNumber?: string;
+  subtitle?: Text;
+  imageUrl?: string | null;
+  lowestCents?: number | null;
+  sellerCount?: number;
+}
+export interface CatalogSuggestions {
+  query: string;
+  locale: Locale;
+  groups: { kind: SuggestionKind; results: CatalogSuggestion[] }[];
+}
+
+/** Fresh selection only; does not reserve stock or include shipping. */
+export interface CheapestOffer { variantId: string; offer: Offer | null; seller: Seller | null; }
+
+/** Canonical browse destination. Legacy slugs override stale category filters. */
+export function catalogBrowseHref(path: string, input: URLSearchParams): string {
+  const params = new URLSearchParams(input);
+  const match = /^\/(games|sets)\/([a-z0-9-]+)\/?$/.exec(path);
+  if (match) {
+    params.delete("cursor");
+    params.delete(match[1] === "games" ? "set" : "game");
+    params.set(match[1] === "games" ? "game" : "set", match[2]);
+    path = "/search";
+  }
+  const query = params.toString();
+  return path + (query ? "?" + query : "");
+}
+
+/** Bounded catalogue pages; desktop choices fill four-column rows. */
+export const CATALOG_PAGE_SIZES = [12, 24, 48, 100, 248] as const;
+export const MAX_CATALOG_PAGE_SIZE = 248;

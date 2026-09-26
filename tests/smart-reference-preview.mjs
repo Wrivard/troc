@@ -36,6 +36,13 @@ try {
     await expect(section).toContainText(
       lang === "fr" ? "démonstration" : "demo basket",
     );
+    await expect(section).toContainText(lang === "fr" ? "3 vendeurs" : "3 sellers");
+    await expect(section).toContainText(lang === "fr" ? "1 vendeur" : "1 seller");
+    const savings = await section.locator(".troc-consolidation-result").evaluate(e => {
+      const amount=e.querySelector("strong").getBoundingClientRect(), box=e.getBoundingClientRect();
+      return { right: amount.right, edge: box.right - parseFloat(globalThis.getComputedStyle(e).paddingRight) };
+    });
+    assert.ok(savings.right <= savings.edge + 1, "Savings amount respects panel padding");
     const panels = await section
       .locator(".troc-consolidation-side")
       .evaluateAll((es) =>
@@ -63,6 +70,7 @@ try {
     await page.mouse.move(0, 0);
     await section.screenshot({
       path: `verification/smart-reference-${width}-${lang}-${theme}.jpg`,
+      style: ".troc-marketplace-header-frame,.troc-skip{visibility:hidden!important}",
     });
     results.push({ width, lang, theme, panels, result: "PASS" });
     await page.close();
@@ -75,3 +83,4 @@ try {
 } finally {
   await browser.close();
 }
+

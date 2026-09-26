@@ -1,0 +1,12 @@
+
+import{chromium,expect}from'@playwright/test';import AxeBuilder from'@axe-core/playwright';import assert from'node:assert/strict';import{writeFile}from'node:fs/promises';
+const b=await chromium.launch({channel:'chrome'}),out='../UX-AUDIT/SELLER-OPERATIONS-20260923',results=[];
+try{for(const[width,lang,theme]of[[1440,'en','dark'],[834,'fr','dark'],[390,'fr','light'],[320,'en','dark']]){
+const c=await b.newContext({viewport:{width,height:1000}});await c.addInitScript(({lang,theme})=>{localStorage.setItem('troc.locale',lang);localStorage.setItem('troc.theme',theme)},{lang,theme});await c.request.post('http://127.0.0.1:4313/api/dev/session',{headers:{Origin:'http://127.0.0.1:4313'},data:{role:'seller'}});
+const p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:4313/seller/analytics?lang='+lang);await expect(p.locator('.ops-metrics section')).toHaveCount(6);await expect(p.locator('.ops-metrics section').nth(1).locator('strong')).toHaveText('8');
+await p.locator('.ops-data-table summary').click();await expect(p.locator('.ops-data-table tbody tr')).toHaveCount(30);await p.locator('.ops-data-table summary').click();
+const axe=(await new AxeBuilder({page:p}).analyze()).violations.map(v=>({id:v.id,n:v.nodes.length,targets:v.nodes.map(n=>n.target)}));assert.deepEqual(axe,[]);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:out+'/analytics-'+width+'.png',fullPage:true});
+await p.getByRole('combobox',{name:lang==='fr'?'Données':'Data',exact:true}).click();await p.getByRole('option',{name:lang==='fr'?'Commandes réelles':'Real orders',exact:true}).click();await expect(p.locator('.ops-metrics section').nth(1).locator('strong')).toHaveText('0');results.push({width,axe,errors,realSampleSeparated:true});await c.close();
+}
+for(const role of['buyer','admin']){const c=await b.newContext();await c.request.post('http://127.0.0.1:4313/api/dev/session',{headers:{Origin:'http://127.0.0.1:4313'},data:{role}});const r=await c.request.get('http://127.0.0.1:4313/api/seller/platform/00000000-0000-4000-8000-000000000010/operations');assert.equal(r.status(),role==='buyer'?403:200);results.push({role,status:r.status()});await c.close()}
+}finally{await b.close();await writeFile(out+'/analytics.json',JSON.stringify(results,null,2))}console.log(results);

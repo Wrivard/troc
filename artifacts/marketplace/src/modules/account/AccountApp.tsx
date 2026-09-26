@@ -1,3 +1,10 @@
+import { AccountDashboard } from "./AccountDashboard";
+import { PasswordRecovery } from "./PasswordRecovery";
+import { AccountWaitlist } from "./AccountWaitlist";
+import "./sign-in-presentation/sign-in-reference.css";
+import { SignInLayout } from "./sign-in-presentation/SignInLayout";
+import { WaitlistOnboarding } from "../prelaunch/WaitlistOnboarding";
+import { GoogleSignIn } from "./GoogleSignIn";
 import { TrocLogo } from "@workspace/troc-design-system/components/ui/logo";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
@@ -11,17 +18,35 @@ import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferen
 import { messages, type MessageKey } from "../../messages";
 import { api } from "../../api";
 type Account = {
+  roles?: string[];
+  memberships?: { sellerId: string; active: boolean }[];
   id: string;
   email: string;
   locale: "en" | "fr";
   theme: "dark" | "light";
 };
 export function AccountApp({ path }: { path: string }) {
+  if (path === "/account" || path === "/account/settings")
+    return <AccountDashboard path={path} />;
+  return path === "/sign-up" ? (
+    <WaitlistOnboarding path={path} />
+  ) : (
+    <AccountPage path={path} />
+  );
+}
+function AccountPage({ path }: { path: string }) {
   const { locale, setLocale, theme, setTheme } = usePreferences();
   const t = (key: MessageKey) => messages[key][locale === "en" ? 0 : 1];
   const link = (route: string) => `${import.meta.env.BASE_URL}${route}`;
   const [status, setStatus] = useState<MessageKey | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [recovering, setRecovering] = useState(false);
+  const recoveryTrigger = useRef<HTMLButtonElement>(null);
+  const submitLock = useRef(false);
+  const oauthFailure =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).has("authError");
   const [user, setUser] = useState<Account | null>(null);
   const currentPreferences = useRef({ locale, theme });
   useEffect(() => {
@@ -77,6 +102,8 @@ export function AccountApp({ path }: { path: string }) {
   }, [protectedPage]);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitLock.current) return;
+    submitLock.current = true;
     setBusy(true);
     setStatus(null);
     const values = new FormData(event.currentTarget);
@@ -88,10 +115,22 @@ export function AccountApp({ path }: { path: string }) {
         canadaConfirmed: values.get("canada") === "on",
       });
       if (signup) setStatus("check_email");
-      else window.location.assign(link("account"));
+      else {
+        const requested =
+          new URLSearchParams(window.location.search).get("returnTo") ||
+          "/account";
+        const safe =
+          /^\/(?:account(?:\/(?:settings|orders(?:\/[a-f0-9-]{36})?))?|seller\/(?:dashboard|inventory|team|orders(?:\/[a-f0-9-]{36})?)|admin\/(?:waitlist|seller-applications)|early-access|cart|checkout|smart-cart|store[/][a-z0-9][a-z0-9-]{0,119})$/.test(
+            requested,
+          )
+            ? requested
+            : "/account";
+        window.location.assign(safe + "?lang=" + locale);
+      }
     } catch (error) {
       report(error);
     } finally {
+      submitLock.current = false;
       setBusy(false);
     }
   }
@@ -122,6 +161,174 @@ export function AccountApp({ path }: { path: string }) {
       setBusy(false);
     }
   }
+  const authContent = (
+    <>
+      {oauthFailure && (
+        <p role="alert">
+          {locale === "fr"
+            ? "L’authentification n’a pas abouti ou le lien a expiré. Réessayez. Si vous découvrez TROC, créez votre compte. Vos réponses enregistrées sont conservées."
+            : "Authentication did not finish or the link expired. Retry, or create your account if you’re new to TROC. Saved answers are preserved."}
+        </p>
+      )}
+      {busy && <p role="status">{t("loading")}</p>}
+      {status && <p role="status">{t(status)}</p>}
+      {known && !protectedPage && (
+        <GoogleSignIn
+          locale={locale}
+          busy={busy}
+          setBusy={setBusy}
+          report={report}
+        />
+      )}
+      {known && !protectedPage && (
+        <form onSubmit={submit} className="grid gap-4">
+          {path === "/sign-in" && (
+            <div className="signin-divider">
+              <span>{locale === "fr" ? "ou" : "or"}</span>
+            </div>
+          )}
+          <label className="grid gap-2">
+            {t("email")}
+            <Input
+              name="email"
+              placeholder="you@example.com"
+              type="email"
+              autoComplete="email"
+              required
+              maxLength={254}
+            />
+          </label>
+          <div className="signin-password-field">
+            <label htmlFor="signin-password">{t("password")}</label>
+            <div className="signin-password-control">
+              <Input
+                id="signin-password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete={signup ? "new-password" : "current-password"}
+                required
+                minLength={8}
+                maxLength={128}
+                placeholder="••••••••"
+                aria-describedby={signup ? "password-hint" : undefined}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                className="signin-reveal"
+                aria-pressed={showPassword}
+                aria-label={
+                  locale === "fr"
+                    ? showPassword
+                      ? "Masquer le mot de passe"
+                      : "Afficher le mot de passe"
+                    : showPassword
+                      ? "Hide password"
+                      : "Show password"
+                }
+                onClick={() => setShowPassword((value) => !value)}
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  aria-hidden="true"
+                >
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                  {showPassword && <path d="m3 3 18 18" />}
+                </svg>
+              </Button>
+            </div>
+          </div>
+          {signup && <p id="password-hint">{t("passwordHint")}</p>}
+          {signup && (
+            <>
+              <p>{t("country")}</p>
+              <label className="flex items-center gap-2">
+                <Checkbox required name="canada" />
+                {t("canadaConfirm")}
+              </label>
+            </>
+          )}
+          <Button type="submit" disabled={busy}>
+            {t(signup ? "signUp" : "signIn")}
+          </Button>
+          {path === "/sign-in" && (
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={busy}
+              ref={recoveryTrigger}
+              onClick={() => setRecovering(true)}
+            >
+              {locale === "fr" ? "Mot de passe oublié?" : "Forgot password?"}
+            </Button>
+          )}
+          <div className="signin-register">
+            {path === "/sign-in" && (
+              <span className="signin-register-prompt">
+                {locale === "fr"
+                  ? "Pas encore de compte?"
+                  : "Don’t have an account?"}
+              </span>
+            )}
+            <a
+              className="underline"
+              href={`${link(signup ? "sign-in" : "sign-up")}?lang=${locale}`}
+            >
+              {t(signup ? "signIn" : "signUp")}
+            </a>
+          </div>
+        </form>
+      )}
+    </>
+  );
+  if (path === "/sign-in")
+    return (
+      <div className="wl-site min-h-screen bg-background text-foreground">
+        <MarketplaceHeader
+          locale={locale}
+          theme={theme}
+          onLocale={changeLocale}
+          onTheme={changeTheme}
+        />
+        <div className="wl-page signin-reference" data-stage="sign-in">
+          <SignInLayout
+            locale={locale}
+            busy={busy}
+            copy={{
+              heading:
+                locale === "fr" ? "Heureux de vous revoir" : "Welcome back",
+              support:
+                locale === "fr"
+                  ? ["Connectez-vous à votre compte.", ""]
+                  : ["Sign in to your account", ""],
+            }}
+          >
+            <div className="wl-form wl-login">
+              {recovering ? (
+                <PasswordRecovery
+                  locale={locale}
+                  onClose={() => {
+                    setRecovering(false);
+                    requestAnimationFrame(() =>
+                      recoveryTrigger.current?.focus(),
+                    );
+                  }}
+                />
+              ) : (
+                authContent
+              )}
+            </div>
+          </SignInLayout>
+        </div>
+        <MarketplaceFooter locale={locale} />
+      </div>
+    );
   return (
     <div className="min-h-screen bg-background text-foreground">
       <MarketplaceHeader
@@ -159,55 +366,12 @@ export function AccountApp({ path }: { path: string }) {
                   : "Keep your cards and orders together. One account for your hobby."
             }
           />
-          {busy && <p role="status">{t("loading")}</p>}
-          {status && <p role="status">{t(status)}</p>}
-          {known && !protectedPage && (
-            <form onSubmit={submit} className="grid gap-4">
-              <label className="grid gap-2">
-                {t("email")}
-                <Input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  maxLength={254}
-                />
-              </label>
-              <label className="grid gap-2">
-                {t("password")}
-                <Input
-                  name="password"
-                  type="password"
-                  autoComplete={signup ? "new-password" : "current-password"}
-                  required
-                  minLength={8}
-                  maxLength={128}
-                  aria-describedby={signup ? "password-hint" : undefined}
-                />
-              </label>
-              {signup && <p id="password-hint">{t("passwordHint")}</p>}
-              {signup && (
-                <>
-                  <p>{t("country")}</p>
-                  <label className="flex items-center gap-2">
-                    <Checkbox required name="canada" />
-                    {t("canadaConfirm")}
-                  </label>
-                </>
-              )}
-              <Button type="submit" disabled={busy}>
-                {t(signup ? "signUp" : "signIn")}
-              </Button>
-              <a
-                className="underline"
-                href={`${link(signup ? "sign-in" : "sign-up")}?lang=${locale}`}
-              >
-                {t(signup ? "signIn" : "signUp")}
-              </a>
-            </form>
-          )}
+          {authContent}
           {user && (
             <div className="grid gap-6">
+              <div id="early-access">
+                <AccountWaitlist locale={locale} />
+              </div>
               <nav
                 className="flex flex-wrap items-center gap-4"
                 aria-label={
@@ -230,6 +394,23 @@ export function AccountApp({ path }: { path: string }) {
                 >
                   {path.endsWith("settings") ? t("account") : t("settings")}
                 </a>
+                {(user.roles?.includes("admin") ||
+                  user.memberships?.some((m) => m.active)) && (
+                  <a
+                    className="underline"
+                    href={"/seller/dashboard?lang=" + locale}
+                  >
+                    {locale === "fr" ? "Espace vendeur" : "Seller workspace"}
+                  </a>
+                )}
+                {user.roles?.includes("admin") && (
+                  <a
+                    className="underline"
+                    href={"/admin/seller-applications?lang=" + locale}
+                  >
+                    Administration
+                  </a>
+                )}
               </nav>
               <section
                 className="grid gap-4"
@@ -347,3 +528,5 @@ export function AccountApp({ path }: { path: string }) {
     </div>
   );
 }
+
+

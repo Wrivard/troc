@@ -167,3 +167,18 @@
     font-size: 1.125rem;
   }
 }
+/* Center the final store when the showcase wraps into two columns. */
+@media (min-width: 641px) and (max-width: 1050px) {
+  .troc-hc-community-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 24px) / 2);
+    justify-self: center;
+  }
+}
+
+/* Missing store branding must not appear to be an unrelated product cover. */
+.troc-hc-seller-cover-placeholder {
+  display: grid; place-items: center; width: 100%; height: 100%;
+  background: var(--surface-hover); color: var(--text-secondary);
+  font-size: clamp(3rem, 6vw, 5rem); font-weight: 650;
+}

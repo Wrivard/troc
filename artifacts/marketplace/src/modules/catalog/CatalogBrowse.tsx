@@ -1,5 +1,7 @@
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@workspace/troc-design-system/components/ui/tooltip";
+import { priceInputCents, priceInputValue } from "./price-input";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { PublicPage } from "@workspace/catalog";
+import { CATALOG_PAGE_SIZES, type PublicPage } from "@workspace/catalog";
 import { EditorialIcon } from "@workspace/troc-design-system/components/ui/editorial";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
@@ -23,7 +25,6 @@ import {
 } from "@workspace/troc-design-system/components/ui/drawer";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { catalogMessages, type CatalogMessage } from "./messages";
-import { Skeleton } from "@workspace/troc-design-system/components/ui/skeleton";
 import "./catalog-browse.css";
 
 type View = "large" | "compact" | "list";
@@ -60,14 +61,70 @@ export function CatalogBrowse({
   const [draft, setDraft] = useState<Record<Field, string>>(
     () =>
       Object.fromEntries(
-        fields.map((key) => [key, String(page.filters[key] ?? "")]),
+        fields.map((key) => [
+          key,
+          key === "min" || key === "max"
+            ? priceInputValue(page.filters[key])
+            : String(page.filters[key] ?? ""),
+        ]),
       ) as Record<Field, string>,
   );
+  const form = useRef<HTMLFormElement>(null);
+  const typingTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const composing = useRef(false);
+  const typingSubmit = useRef(false);
+  const queueSearch = () => {
+    clearTimeout(typingTimer.current);
+    if (composing.current) return;
+    typingTimer.current = setTimeout(() => { typingSubmit.current = true; form.current?.requestSubmit(); typingSubmit.current = false; }, 100);
+  };
+  useEffect(() => {
+    const sync = () => {
+      clearTimeout(typingTimer.current);
+      const value = new URLSearchParams(window.location.search).get("q") ?? "";
+      if (query.current && query.current.value !== value) query.current.value = value;
+    };
+    window.addEventListener("popstate", sync);
+    return () => { clearTimeout(typingTimer.current); window.removeEventListener("popstate", sync); };
+  }, []);
+  const filterKey = JSON.stringify(fields.map(key => page.filters[key]));
+  useEffect(() => {
+    setDraft(Object.fromEntries(fields.map(key => [key, key === "min" || key === "max" ? priceInputValue(page.filters[key]) : String(page.filters[key] ?? "")])) as Record<Field, string>);
+  }, [filterKey]);
+  useEffect(() => { setSetOptions({game: page.filters.game, sets: page.sets}); }, [page.sets, page.filters.game]);
+  const automatic = useRef(false);
+  const autoSubmit = (force = false) => {
+    if (!force && window.matchMedia("(max-width: 1023px)").matches) return;
+    requestAnimationFrame(() => form.current?.requestSubmit());
+  };
+  useEffect(() => { if (automatic.current) { automatic.current = false; autoSubmit(); } }, [draft]);
+  const [priceError, setPriceError] = useState("");
+  const invalidPriceField = useRef("max");
   const [view, setView] = useState<View>("large");
   const [mobile, setMobile] = useState(false);
   const [open, setOpen] = useState(false);
   const [setQuery, setSetQuery] = useState("");
   const [moreSets, setMoreSets] = useState(false);
+  const [fullNames, setFullNames] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>(() => Object.fromEntries(fields.map(key => [key, key === "game" || Boolean(page.filters[key])])));
+  const fold = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().replace(/\s+/g, " ").toLocaleLowerCase(page.locale);
+  const [setOptions, setSetOptions] = useState({ game: page.filters.game, sets: page.sets });
+  const [setError, setSetError] = useState(false);
+  const [setRevision, setSetRevision] = useState(0);
+  useEffect(() => {
+    if (draft.game === setOptions.game || !window.matchMedia("(max-width: 1023px)").matches) return;
+    const controller = new AbortController();
+    setSetError(false);
+    const params = new URLSearchParams({ game: draft.game, lang: page.locale });
+    fetch(base + "/api/catalog/facets?" + params, { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]) })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("sets_unavailable");
+        const result = await response.json() as Pick<PublicPage, "sets">;
+        if (!controller.signal.aborted) setSetOptions({ game: draft.game, sets: result.sets });
+      })
+      .catch(() => { if (!controller.signal.aborted) setSetError(true); });
+    return () => controller.abort();
+  }, [draft.game, page.locale, base, setOptions.game, setRevision]);
   const trigger = useRef<HTMLButtonElement>(null);
   const query = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -87,6 +144,15 @@ export function CatalogBrowse({
     }
     return () => media.removeEventListener("change", update);
   }, []);
+  useEffect(() => {
+    if (!priceError) return;
+    const frame = requestAnimationFrame(() =>
+      document
+        .getElementById("browse-price-" + invalidPriceField.current)
+        ?.focus(),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [priceError, open]);
   const chooseView = (next: View) => {
     setView(next);
     try {
@@ -95,32 +161,37 @@ export function CatalogBrowse({
       /* Storage is optional. */
     }
   };
-  const change = (key: Field, value: string) =>
+  const change = (key: Field, value: string) => {
+    automatic.current = key !== "min" && key !== "max";
+    if (key === "game") { setSetQuery(""); setMoreSets(false); }
     setDraft((previous) => ({
       ...previous,
       [key]: value,
       ...(key === "game" ? { set: "" } : {}),
     }));
-  const reset = `${base}${page.path}?lang=${page.locale}`;
+  };
+  const reset = `${base}${page.path}?lang=${page.locale}&limit=${page.filters.limit}`;
   const game = page.games.find((item) => item.slug === draft.game);
-  const sets = page.sets.filter(
+  const setsLoading = draft.game !== setOptions.game;
+  const sets = (setsLoading ? [] : setOptions.sets).filter(
     (item) =>
       (!game || item.gameId === game.id) &&
-      item.name[page.locale]
-        .toLocaleLowerCase(page.locale)
-        .includes(setQuery.toLocaleLowerCase(page.locale)),
+      fold(item.name[page.locale]).includes(fold(setQuery)),
   );
   const options = (
     key: Field,
     label: string,
     values: { value: string; label: string }[],
     extra?: ReactNode,
+    footer?: ReactNode,
   ) => (
     <details
       className="troc-browse-group"
-      open={key === "game" || Boolean(draft[key])}
+      open={Boolean(expanded[key])}
     >
-      <summary>{label}</summary>
+      <summary onClick={(event) => { event.preventDefault(); setExpanded(previous => ({ ...previous, [key]: !previous[key] })); }}>
+        {label}{draft[key] && <span className="troc-filter-selected" aria-label={fr ? "Filtre sélectionné" : "Filter selected"} />}
+      </summary>
       {extra}
       <RadioGroup
         aria-label={label}
@@ -128,11 +199,18 @@ export function CatalogBrowse({
         onValueChange={(value) => change(key, value === "__all" ? "" : value)}
       >
         {[{ value: "__all", label: t("all") }, ...values].map((option) => (
-          <label key={option.value} className="troc-browse-option">
-            <RadioGroupItem value={option.value} /> <span>{option.label}</span>
-          </label>
+          <Tooltip key={option.value}>
+            <TooltipTrigger asChild>
+              <label className="troc-browse-option" data-full-names={key === "set" && fullNames ? "true" : undefined}>
+                <RadioGroupItem id={`catalog-filter-${key}-${option.value}`} value={option.value} aria-label={option.label} />
+                <span className="troc-filter-option-label">{option.label}</span>
+              </label>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="troc-filter-tooltip">{option.label}</TooltipContent>
+          </Tooltip>
         ))}
       </RadioGroup>
+      {footer}
     </details>
   );
   const variantOptions = (key: "variant" | "rarity") =>
@@ -152,7 +230,7 @@ export function CatalogBrowse({
         label: value in catalogMessages ? t(value as CatalogMessage) : value,
       }));
   const panel = (
-    <div className="troc-browse-panel">
+    <TooltipProvider delayDuration={350}><div className="troc-browse-panel">
       <div className="troc-browse-filter-heading">
         <strong>{fr ? "Filtres" : "Filters"}</strong>
         <a href={reset}>{fr ? "Tout effacer" : "Clear all"}</a>
@@ -170,7 +248,7 @@ export function CatalogBrowse({
         {options(
           "set",
           t("set"),
-          (moreSets
+          (moreSets || fold(setQuery)
             ? sets
             : sets.filter((item, index) => index < 7 || item.slug === draft.set)
           ).map((item) => ({
@@ -184,26 +262,21 @@ export function CatalogBrowse({
               aria-label={fr ? "Rechercher une extension" : "Search sets"}
               placeholder={fr ? "Rechercher une extension…" : "Search sets…"}
             />
-            {sets.length > 7 && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setMoreSets(!moreSets)}
-              >
-                {moreSets
-                  ? fr
-                    ? "Voir moins"
-                    : "Show less"
-                  : fr
-                    ? "Voir plus"
-                    : "Show more"}
-              </Button>
+            <div className="troc-set-tools">
+              <span aria-live="polite">{setsLoading ? "" : sets.length + (fr ? " extensions" : " sets")}</span>
+              <button type="button" aria-pressed={fullNames} onClick={() => setFullNames(value => !value)}>{fr ? "Noms complets" : "Full names"}</button>
+            </div>
+            {setsLoading && (
+              <p role={setError ? "alert" : "status"}>
+                {setError ? (fr ? "Extensions indisponibles." : "Sets unavailable.") : (fr ? "Chargement des extensions…" : "Loading sets…")}
+                {setError && <Button type="button" variant="ghost" onClick={() => setSetRevision((value) => value + 1)}>{fr ? "Réessayer" : "Retry"}</Button>}
+              </p>
             )}
-            {!sets.length && (
-              <p>{fr ? "Aucune extension trouvée." : "No sets found."}</p>
+            {!setsLoading && !sets.length && (
+              <div><p>{fr ? "Aucune extension trouvée." : "No sets found."}</p>{setQuery && <Button type="button" variant="ghost" size="sm" onClick={() => setSetQuery("")}>{fr ? "Effacer la recherche" : "Clear set search"}</Button>}</div>
             )}
           </div>,
+          !fold(setQuery) && sets.length > 7 ? <Button type="button" variant="ghost" size="sm" className="troc-set-more" aria-expanded={moreSets} onClick={() => setMoreSets(value => !value)}>{moreSets ? (fr ? "Voir moins" : "Show less") : (fr ? "Voir toutes les extensions" : "Show all sets")}</Button> : null,
         )}
         {options(
           "condition",
@@ -232,25 +305,41 @@ export function CatalogBrowse({
           open={Boolean(draft.min || draft.max)}
         >
           <summary>{fr ? "Prix (CAD)" : "Price (CAD)"}</summary>
-          <div className="troc-browse-prices">
+          <div className="troc-browse-prices" onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) autoSubmit(); }}>
             {(["min", "max"] as const).map((key) => (
               <label key={key}>
-                {key === "min" ? "Min (¢)" : "Max (¢)"}
+                {key === "min" ? "Min (CAD)" : "Max (CAD)"}
                 <Input
-                  type="number"
-                  min={0}
-                  step={1}
+                  id={"browse-price-" + key}
+                  type="text"
+                  inputMode="decimal"
+                  maxLength={14}
+                  aria-invalid={Boolean(priceError)}
                   form="catalog-browse-form"
                   value={draft[key]}
-                  onChange={(event) => change(key, event.target.value)}
-                  aria-describedby="browse-price-help"
+                  onChange={(event) => {
+                    setPriceError("");
+                    change(key, event.target.value);
+                  }}
+                  aria-describedby={
+                    priceError
+                      ? "browse-price-help browse-price-error"
+                      : "browse-price-help"
+                  }
                 />
               </label>
             ))}
           </div>
           <p id="browse-price-help">
-            {fr ? "100 ¢ = 1 $ CAD" : "100¢ = $1 CAD"}
+            {fr
+              ? "Prix en dollars canadiens, avant livraison."
+              : "Canadian dollars, before shipping."}
           </p>
+          {priceError && (
+            <p id="browse-price-error" role="alert">
+              {priceError}
+            </p>
+          )}
         </details>
         {options(
           "type",
@@ -267,29 +356,62 @@ export function CatalogBrowse({
         ])}
         {options("variant", t("variant"), variantOptions("variant"))}
       </div>
-      <div className="troc-browse-apply">
-        <Button type="submit" form="catalog-browse-form">
-          {t("apply")}
-        </Button>
-      </div>
-    </div>
+
+    </div></TooltipProvider>
   );
   return (
     <form
+      ref={form}
       id="catalog-browse-form"
       className="troc-browse"
       action={`${base}${page.path}`}
       data-view={view}
       onSubmit={(event) => {
         event.preventDefault();
+        if (composing.current) return;
+        clearTimeout(typingTimer.current);
+        const min = priceInputCents(draft.min),
+          max = priceInputCents(draft.max);
+        if (
+          min === undefined ||
+          max === undefined ||
+          (min !== null && max !== null && min > max)
+        ) {
+          invalidPriceField.current = min === undefined ? "min" : "max";
+          setPriceError(
+            min === undefined || max === undefined
+              ? fr
+                ? "Entrez un montant valide, avec au plus deux décimales."
+                : "Enter a valid amount with up to two decimal places."
+              : fr
+                ? "Le maximum doit être supérieur ou égal au minimum."
+                : "Maximum must be at least the minimum.",
+          );
+          if (mobile) setOpen(true);
+          return;
+        }
         const values = new URLSearchParams();
         new FormData(event.currentTarget).forEach((value, key) => {
           if (value && value !== "__all") values.set(key, String(value));
         });
-        window.location.assign(`${base}${page.path}?${values}`);
+        for (const [key, amount] of [
+          ["min", min],
+          ["max", max],
+        ] as const) {
+          if (amount === null) values.delete(key);
+          else values.set(key, String(amount));
+        }
+        const destination = `${base}${page.path}?${values}`;
+        if (page.path === "/search") {
+          setOpen(false);
+          const activeId = document.activeElement?.id;
+          window.history[typingSubmit.current && window.history.state?.trocTypingSearch ? "replaceState" : "pushState"]({ ...window.history.state, trocTypingSearch: typingSubmit.current, ...(activeId?.startsWith("catalog-filter-") ? {trocCatalogFocus: activeId} : {}) }, "", destination);
+          window.dispatchEvent(new PopStateEvent("popstate"));
+        } else window.location.assign(destination);
       }}
     >
       <input type="hidden" name="lang" value={page.locale} />
+      <input type="hidden" name="limit" value={page.filters.limit} />
       {fields.map((key) => (
         <input key={key} type="hidden" name={key} value={draft[key]} />
       ))}
@@ -304,6 +426,9 @@ export function CatalogBrowse({
             ref={query}
             name="q"
             defaultValue={page.filters.q}
+            onChange={queueSearch}
+            onCompositionStart={() => { composing.current = true; clearTimeout(typingTimer.current); }}
+            onCompositionEnd={() => { composing.current = false; queueSearch(); }}
             maxLength={100}
             placeholder={
               fr ? "Rechercher dans le catalogue…" : "Search the catalog…"
@@ -332,7 +457,7 @@ export function CatalogBrowse({
           )}
           <label className="troc-browse-sort">
             <span>{t("sort")}</span>
-            <Select name="sort" defaultValue={page.filters.sort}>
+            <Select key={page.filters.sort} name="sort" defaultValue={page.filters.sort} onValueChange={() => autoSubmit(true)}>
               <SelectTrigger aria-label={t("sort")}>
                 <SelectValue />
               </SelectTrigger>
@@ -379,12 +504,27 @@ export function CatalogBrowse({
           </aside>
         )}
         <section className="troc-browse-results" aria-label={t("results")}>
+          <div className="troc-browse-results-heading">
           <p id="catalog-results" tabIndex={-1}>
             {page.results.length}{" "}
             {fr
               ? `${page.results.length <= 1 ? "produit" : "produits"} sur cette page`
               : `product${page.results.length === 1 ? "" : "s"} on this page`}
           </p>
+          <div className="troc-browse-page-size">
+            <label id="catalog-page-size-label" htmlFor="catalog-page-size">{fr ? "Par page" : "Per page"}</label>
+            <Select value={String(page.filters.limit)} onValueChange={(value) => {
+              const url = new URL(window.location.href);
+              url.searchParams.set("limit", value);
+              url.searchParams.delete("cursor");
+              window.history.pushState({ ...window.history.state, trocCatalogFocus: "catalog-page-size" }, "", url);
+              window.dispatchEvent(new PopStateEvent("popstate"));
+            }}>
+              <SelectTrigger id="catalog-page-size" aria-labelledby="catalog-page-size-label"><SelectValue /></SelectTrigger>
+              <SelectContent>{[...new Set<number>([...CATALOG_PAGE_SIZES, page.filters.limit])].sort((a,b)=>a-b).map(size => <SelectItem key={size} value={String(size)}>{size}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          </div>
           {mobile && chips}
           {page.results.length ? (
             children
@@ -439,7 +579,10 @@ export function CatalogBrowse({
                   : "Apply your choices to update the catalog."}
               </DrawerDescription>
             </DrawerHeader>
-            {panel}
+            <div className="troc-browse-drawer-scroll">{panel}</div>
+            <div className="troc-browse-drawer-footer">
+              <Button type="submit" form="catalog-browse-form">{t("apply")}</Button>
+            </div>
           </DrawerContent>
         </Drawer>
       )}
@@ -447,32 +590,4 @@ export function CatalogBrowse({
   );
 }
 
-export function CatalogLoading({ locale }: { locale: PublicPage["locale"] }) {
-  const [view, setView] = useState<View>("large");
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("troc.catalog.view");
-      if (saved === "large" || saved === "compact" || saved === "list")
-        setView(saved);
-    } catch {
-      /* Storage is optional. */
-    }
-  }, []);
-  return (
-    <div
-      className="troc-browse troc-browse-loading"
-      data-view={view}
-      role="status"
-      aria-busy="true"
-    >
-      <h1 className="text-2xl font-semibold">
-        {catalogMessages.loading[locale === "fr" ? 1 : 0]}
-      </h1>
-      <div className="troc-editorial-catalog" aria-hidden="true">
-        {Array.from({ length: 8 }, (_, index) => (
-          <Skeleton key={index} shape={view === "list" ? "row" : "card"} />
-        ))}
-      </div>
-    </div>
-  );
-}
+export { CatalogLoading } from "./CatalogLoading";

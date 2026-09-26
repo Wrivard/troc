@@ -1,0 +1,142 @@
+/* Independent artwork coordinates: leaf follows cards; rocks follow the hero edge. */
+.troc-home-editorial > .troc-home-hero.troc-cinematic-hero {
+  isolation: isolate;
+  background: #080809;
+  padding-bottom: clamp(90px, 8cqw, 150px);
+}
+.troc-home-hero.troc-cinematic-hero .troc-hero-display {
+  position: relative;
+  isolation: isolate;
+  margin-top: clamp(60px, 6cqw, 96px);
+}
+.troc-home-hero.troc-cinematic-hero .troc-hero-leaf-layer {
+  position: absolute;
+  z-index: -1;
+  width: 125%;
+  max-width: none;
+  height: auto;
+  left: -12.5%;
+  top: -26%;
+  pointer-events: none;
+  user-select: none;
+}
+.troc-hero-rock-layer {
+  position: absolute;
+  inset: auto 0 0;
+  height: clamp(170px, 18cqw, 360px);
+  mask-image: linear-gradient(to bottom, transparent, #000 42%);
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+.troc-hero-rock-layer img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 1100px;
+  max-width: 2560px;
+  height: auto;
+}
+@media (max-width: 1023px) {
+  .troc-home-editorial > .troc-home-hero.troc-cinematic-hero {
+    padding-bottom: 90px;
+  }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-display {
+    width: calc(100% - 64px);
+    max-width: 370px;
+    margin-top: clamp(52px, 8cqw, 64px);
+    margin-bottom: 48px;
+    margin-inline: auto;
+  }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-leaf-layer {
+    display: block;
+    width: 118%;
+    left: -9%;
+    top: -22%;
+  }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-script {
+    position: absolute;
+    top: 64px;
+    right: 24px;
+    width: clamp(94px, 27cqw, 200px);
+    margin: 0;
+    font-size: clamp(18px, 4cqw, 34px);
+  }
+  .troc-hero-rock-layer {
+    display: block;
+    height: 230px;
+  }
+  .troc-hero-rock-layer img {
+    width: 100%;
+    min-width: 1400px;
+  }
+}
+
+
+/* A fine crimson rim with bright opposing corners; artwork stays unfiltered. */
+.troc-home-hero.troc-cinematic-hero .troc-stack-card {
+  box-shadow: 0 22px 32px #000b, 0 0 14px #ed14252e;
+}
+.troc-home-hero.troc-cinematic-hero .troc-stack-card::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ffb3a3 0%, #fb283e 15%, #ed14251c 40%, #ed142508 55%, #ff2038 83%, #ff8b76 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .troc-home-hero.troc-cinematic-hero .troc-stack-card { transition: box-shadow 180ms ease; }
+  .troc-home-hero.troc-cinematic-hero .troc-stack-stage:hover .troc-stack-card {
+    box-shadow: 0 24px 36px #000b, 0 0 20px #ed14254a;
+  }
+}
+
+@media (max-width: 1023px) {
+  .troc-home-hero.troc-cinematic-hero .troc-hero-copy h1,
+  .troc-home-hero.troc-cinematic-hero:lang(fr) .troc-hero-copy h1 {
+    width: 66%;
+    font-size: clamp(1.875rem, 8.8cqw, 4.3rem);
+    line-height: 1.04;
+  }
+  .troc-home-hero.troc-cinematic-hero .troc-editorial-eyebrow { max-width: 66%; font-size: 9px; }
+  .troc-home-hero.troc-cinematic-hero:lang(fr) .troc-hero-script { font-size: clamp(16px, 3.4cqw, 29px); }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefits { padding-block: 12px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-closing { margin-top: 16px; }
+}
+
+@media (max-width: 1023px) {
+  .troc-home-hero.troc-cinematic-hero:lang(fr) .troc-hero-copy h1 { font-size: clamp(1.7rem, 7cqw, 3.5rem); }
+}
+@media (max-width: 767px) {
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefits { gap: 18px 16px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefits > div { flex-direction: row; gap: 10px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefit-icon { width: 28px; height: 28px; flex-basis: 28px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefit-icon svg { width: 15px; height: 15px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefits strong { font-size: 13px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-benefits p { font-size: 12px; line-height: 1.5; }
+}
+@media (max-width: 359px) {
+  .troc-home-hero.troc-cinematic-hero .troc-hero-script { right: 12px; width: 100px; font-size: 17px; }
+  .troc-home-hero.troc-cinematic-hero:lang(fr) .troc-hero-script { font-size: 15px; }
+  .troc-home-hero.troc-cinematic-hero .troc-hero-copy h1 { width: 62%; }
+}
+
+/* Enlarge the hero cards by 20%; keep the taller stack in document flow. */
+.troc-home-hero.troc-cinematic-hero .troc-stack-stage {
+  width: 120%;
+  max-width: none;
+}
+@media (max-width: 1023px) {
+  .troc-home-hero.troc-cinematic-hero .troc-stack-stage {
+    width: min(120%, calc(100vw - 24px));
+    margin-inline: 0;
+    margin-left: 50%;
+    translate: -50% 0;
+  }
+}

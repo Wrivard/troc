@@ -1,61 +1,63 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { LoaderCircle, LogIn, ShoppingCart, User } from "lucide-react"
+import * as React from "react";
+import { LoaderCircle, LogIn, ShoppingCart, User } from "lucide-react";
 
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import { TrocLogo } from "./logo"
-import { GlobalSearch, type GlobalSearchProps } from "./global-search"
-import { LocaleSwitcher, type LocaleSwitcherProps } from "./locale-switcher"
-import { ThemeSwitcher, type ThemeSwitcherProps } from "./theme-switcher"
+import { cn } from "../../lib/utils";
+import { Button } from "./button";
+import { TrocLogo } from "./logo";
+import { GlobalSearch, type GlobalSearchProps } from "./global-search";
+import { LocaleSwitcher, type LocaleSwitcherProps } from "./locale-switcher";
+import { ThemeSwitcher, type ThemeSwitcherProps } from "./theme-switcher";
 
 export interface SiteNavItem {
-  id: string
-  label: string
+  id: string;
+  label: string;
   /** Native header destination; disabled/loading items remain inert buttons. */
-  href?: string
-  current?: boolean
-  onSelect?: () => void
+  href?: string;
+  current?: boolean;
+  onSelect?: () => void;
   /** Disable interaction for this destination (native button disabled). */
-  disabled?: boolean
+  disabled?: boolean;
   /**
    * Mark this destination as loading: interaction is disabled, `aria-busy` is
    * set, and a decorative spinner is shown beside the unchanged, accessible
    * label. Purely a visual/interaction state — implies no auth or routing.
    */
-  loading?: boolean
+  loading?: boolean;
 }
 
 export interface SiteAccount {
   /** Signed-in display name; when omitted the header shows a Sign in action. */
-  name?: string
+  name?: string;
   /** Short initials for the avatar. */
-  initials?: string
+  initials?: string;
 }
 
 export interface SiteHeaderProps extends React.HTMLAttributes<HTMLElement> {
   /** Primary destinations, e.g. Shop / Sell / Collect. */
-  navItems: SiteNavItem[]
+  navItems: SiteNavItem[];
   /** Three compact rows on narrow screens; all controls remain available. */
-  compactMobile?: boolean
+  compactMobile?: boolean;
   /** Accessible name for the primary nav landmark. */
-  navLabel: string
+  navLabel: string;
   /** Localized brand label for the logo. */
-  logoLabel: string
+  logoLabel: string;
   /** Consumer-owned home destination; omitted in isolated component examples. */
-  homeHref?: string
-  search: GlobalSearchProps
-  locale: LocaleSwitcherProps
-  theme: ThemeSwitcherProps
-  account?: SiteAccount
-  cartCount?: number
-  cartLabel: string
-  accountLabel: string
-  signInLabel: string
-  onCart?: () => void
-  onAccount?: () => void
-  onSignIn?: () => void
+  homeHref?: string;
+  search?: GlobalSearchProps;
+  searchSlot?: React.ReactNode;
+  locale: LocaleSwitcherProps;
+  theme: ThemeSwitcherProps;
+  accountControl?: React.ReactNode;
+  account?: SiteAccount;
+  cartCount?: number;
+  cartLabel: string;
+  accountLabel: string;
+  signInLabel: string;
+  onCart?: () => void;
+  onAccount?: () => void;
+  onSignIn?: () => void;
 }
 
 const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
@@ -68,9 +70,11 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
       logoLabel,
       homeHref,
       search,
+      searchSlot,
       locale,
       theme,
       account,
+      accountControl,
       cartCount = 0,
       cartLabel,
       accountLabel,
@@ -80,36 +84,56 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
       onSignIn,
       ...props
     },
-    ref
+    ref,
   ) => (
-    <header ref={ref} className={cn("troc-site-header", className)} data-compact-mobile={compactMobile || undefined} {...props}>
+    <header
+      ref={ref}
+      className={cn("troc-site-header", className)}
+      data-compact-mobile={compactMobile || undefined}
+      {...props}
+    >
       <div className="troc-site-header-brand">
-        {homeHref ? <a href={homeHref} aria-label={logoLabel}><TrocLogo variant="auto" height={26} label={logoLabel} /></a> : <TrocLogo variant="auto" height={26} label={logoLabel} />}
+        {homeHref ? (
+          <a href={homeHref} aria-label={logoLabel}>
+            <TrocLogo variant={theme.value} height={26} label={logoLabel} />
+          </a>
+        ) : (
+          <TrocLogo variant={theme.value} height={26} label={logoLabel} />
+        )}
       </div>
 
       <nav className="troc-site-nav" aria-label={navLabel}>
-        {navItems.map((item) => item.href && !item.disabled && !item.loading ? (
-          <a key={item.id} className="troc-site-nav-link" href={item.href} aria-current={item.current ? "page" : undefined}>
-            {item.label}
-          </a>
-        ) : (
-          <button
-            key={item.id}
-            type="button"
-            className="troc-site-nav-link"
-            aria-current={item.current ? "page" : undefined}
-            aria-busy={item.loading || undefined}
-            disabled={item.disabled || item.loading || undefined}
-            onClick={item.onSelect}
-          >
-            {item.loading && <LoaderCircle className="troc-loading" aria-hidden="true" />}
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) =>
+          item.href && !item.disabled && !item.loading ? (
+            <a
+              key={item.id}
+              className="troc-site-nav-link"
+              href={item.href}
+              aria-current={item.current ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ) : (
+            <button
+              key={item.id}
+              type="button"
+              className="troc-site-nav-link"
+              aria-current={item.current ? "page" : undefined}
+              aria-busy={item.loading || undefined}
+              disabled={item.disabled || item.loading || undefined}
+              onClick={item.onSelect}
+            >
+              {item.loading && (
+                <LoaderCircle className="troc-loading" aria-hidden="true" />
+              )}
+              {item.label}
+            </button>
+          ),
+        )}
       </nav>
 
       <div className="troc-site-header-search">
-        <GlobalSearch {...search} />
+        {searchSlot ?? (search ? <GlobalSearch {...search} /> : null)}
       </div>
 
       <div className="troc-site-header-actions">
@@ -125,42 +149,66 @@ const SiteHeader = React.forwardRef<HTMLElement, SiteHeaderProps>(
           onClick={onCart}
         >
           <ShoppingCart aria-hidden="true" />
-          {cartCount > 0 && <span className="troc-site-cart-count" aria-hidden="true">{cartCount}</span>}
+          {cartCount > 0 && (
+            <span className="troc-site-cart-count" aria-hidden="true">
+              {cartCount}
+            </span>
+          )}
         </Button>
 
-        {account?.name ? (
-          <Button type="button" variant="ghost" className="troc-site-account" aria-label={accountLabel} onClick={onAccount}>
-            <span className="troc-site-avatar" aria-hidden="true">{account.initials ?? <User aria-hidden="true" />}</span>
-            <span className="troc-site-account-name">{account.name}</span>
-          </Button>
-        ) : (
-          <Button type="button" variant="primary" size="sm" className="troc-site-sign-in" onClick={onSignIn}>
-            <LogIn aria-hidden="true" />
-            <span className="troc-site-sign-in-label">{signInLabel}</span>
-          </Button>
-        )}
+        {accountControl ??
+          (account?.name ? (
+            <Button
+              type="button"
+              variant="ghost"
+              className="troc-site-account"
+              aria-label={accountLabel}
+              onClick={onAccount}
+            >
+              <span className="troc-site-avatar" aria-hidden="true">
+                {account.initials ?? <User aria-hidden="true" />}
+              </span>
+              <span className="troc-site-account-name">{account.name}</span>
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              className="troc-site-sign-in"
+              onClick={onSignIn}
+            >
+              <LogIn aria-hidden="true" />
+              <span className="troc-site-sign-in-label">{signInLabel}</span>
+            </Button>
+          ))}
       </div>
     </header>
-  )
-)
-SiteHeader.displayName = "SiteHeader"
+  ),
+);
+SiteHeader.displayName = "SiteHeader";
 
 export interface MobileNavItem extends SiteNavItem {
-  icon: React.ReactNode
+  icon: React.ReactNode;
   /** Optional count badge (e.g. cart). */
-  count?: number
+  count?: number;
 }
 
 export interface MobileNavigationProps extends React.HTMLAttributes<HTMLElement> {
   /** Bottom-navigation destinations (keep it restrained: 3–5 items). */
-  items: MobileNavItem[]
+  items: MobileNavItem[];
   /** Accessible name for the bottom nav landmark. */
-  label: string
+  label: string;
 }
 
 const MobileNavigation = React.forwardRef<HTMLElement, MobileNavigationProps>(
   ({ className, items, label, ...props }, ref) => (
-    <nav ref={ref} className={cn("troc-mobile-bottom-nav", className)} aria-label={label} {...props}>
+    <nav
+      ref={ref}
+      className={cn("troc-mobile-bottom-nav", className)}
+      aria-label={label}
+      {...props}
+    >
       {items.map((item) => (
         <button
           key={item.id}
@@ -171,18 +219,24 @@ const MobileNavigation = React.forwardRef<HTMLElement, MobileNavigationProps>(
           disabled={item.disabled || item.loading || undefined}
           onClick={item.onSelect}
         >
-          {item.loading ? <LoaderCircle className="troc-loading" aria-hidden="true" /> : item.icon}
+          {item.loading ? (
+            <LoaderCircle className="troc-loading" aria-hidden="true" />
+          ) : (
+            item.icon
+          )}
           <span>
             {item.label}
             {typeof item.count === "number" && item.count > 0 && (
-              <span className="troc-site-cart-count" aria-hidden="true">{item.count}</span>
+              <span className="troc-site-cart-count" aria-hidden="true">
+                {item.count}
+              </span>
             )}
           </span>
         </button>
       ))}
     </nav>
-  )
-)
-MobileNavigation.displayName = "MobileNavigation"
+  ),
+);
+MobileNavigation.displayName = "MobileNavigation";
 
-export { SiteHeader, MobileNavigation }
+export { SiteHeader, MobileNavigation };

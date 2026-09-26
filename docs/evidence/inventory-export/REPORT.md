@@ -1,0 +1,9 @@
+# Inventory export evidence
+
+## Inventory export — complete bounded local batch, September25
+
+E4.3 filtered inventory CSV now uses the same SQL/filter function as the list, ignoring the page cursor and exporting all matching pages. One statement snapshot, no artwork hydration. Canonical variant/listing IDs, exact CAD cents, SKU/private location/source/status/language/finish/card number included. CSV quotes/UTF-8/formula-safe text,10,000rows and5MiB hard caps; rejects overflow before sending any partial CSV. UI discloses current-value, spreadsheet-safe/nonbackup semantics; importing still uses duplicate review rather than overwriting stock.
+
+15inventory tests pass:100/1000/10001imports plus storage/search guards, all-page filter parity, cursor exclusion, permissions, row/byte caps, exact0.05/1.25prices, quote/newline/accent/formula cells. Real EN1440/FR390 downloads match actual API CSV; buyer403/no-store verified. Intercepted503retry and delayed stale response after filter change pass. No inventory writes. API/frontend types, scoped lint, API/client/SSR builds pass. Evidence Troc-UX-Design/docs/evidence/inventory-export/. Local API10136replaces38308; no migration added. Initial browser locator timeout occurred during API restart; unchanged retry was auto-review rejected. Read-only diagnostic then confirmed session200 and loaded inventory; harness now asserts session readiness before UI, and corrected run passed. No outstanding approval needed for this resolved diagnostic.
+
+NEXT coherent batch: reconcile E4.5 existing promotions/offer/coupon controls against commerce rules and original requirements, write feasible missing-control contract before activation. E4.3 photos remain UP01; graded/sealed later workflows; larger asynchronous exports/native-hosted load remain open. Existing stock/money/auth/source/remote holds unchanged.146original IDs preserved; solo heartbeat follows newer checkpoint.

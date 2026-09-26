@@ -1,0 +1,12 @@
+import {chromium,expect} from '@playwright/test';import AxeBuilder from '@axe-core/playwright';import assert from 'node:assert/strict';import {mkdir,writeFile} from 'node:fs/promises';
+const b=await chromium.launch({channel:'chrome',headless:true}),out='../UX-AUDIT/SELLER-HUB-20260923';await mkdir(out,{recursive:true});let results=[];
+try{for(const [role,width,lang,theme] of [['seller',1440,'en','dark'],['seller',390,'fr','light'],['admin',320,'en','dark'],['buyer',390,'en','dark']]){
+const c=await b.newContext({viewport:{width,height:1000}});await c.addInitScript(({lang,theme})=>{localStorage.setItem('troc.locale',lang);localStorage.setItem('troc.theme',theme);},{lang,theme});await c.request.post('http://127.0.0.1:4313/api/dev/session',{headers:{Origin:'http://127.0.0.1:4313'},data:{role}});
+const p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
+const resp=await c.request.get('http://127.0.0.1:4313/api/dev/seller-hub?seller=00000000-0000-4000-8000-000000000010');if(role==='buyer'){assert.equal(resp.status(),403);await p.goto('http://127.0.0.1:4313/account/orders?lang=en');}else{assert.equal(resp.status(),200);let data=await resp.json();assert.equal(data.orders.length,8);assert.equal(data.inventory.reduce((s,i)=>s+i.count,0),18);await p.goto('http://127.0.0.1:4313/seller/dashboard?lang='+lang);await p.locator('.hub-orders tbody tr').first().waitFor();}
+await p.waitForLoadState('networkidle');assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+await p.screenshot({path:out+'/'+role+'-'+width+'.png',fullPage:true});
+const axe=(await new AxeBuilder({page:p}).analyze()).violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)}));results.push({role,width,errors,axe});assert.equal(errors.length,0);
+if(role==='seller'){await p.locator('.hub-tasks a').first().click();await expect(p.locator('.hub-orders tbody tr')).toHaveCount(2);await p.locator('.hub-orders tbody a').first().click();await p.waitForLoadState('networkidle');assert.equal(await p.locator('main').innerText().then(v=>/temporarily unavailable|temporairement indisponible/.test(v)),false);await p.screenshot({path:out+'/order-'+width+'.png',fullPage:true});await p.goto('http://127.0.0.1:4313/seller/inventory?lang=en');await p.waitForLoadState('networkidle');await expect(p.locator('main').getByText('TROC-DEMO-100',{exact:false}).first()).toBeVisible();}
+await c.close();}
+}finally{await writeFile(out+'/results.json',JSON.stringify(results,null,2));await b.close();}console.log(JSON.stringify(results));

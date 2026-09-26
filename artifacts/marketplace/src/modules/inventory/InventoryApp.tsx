@@ -1,11 +1,20 @@
+import { InventoryExport } from "./InventoryExport";
+import { SellerLoading } from "../seller-platform/SellerLoading";
+import { useSellerWorkspace } from "../seller-platform/SellerShell";
+import { InventoryTable } from "./InventoryTable";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@workspace/troc-design-system/components/ui/select";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
-import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
 import { api } from "../../api";
-import { catalogMessages, type CatalogMessage } from "../catalog/messages";
 import "./inventory.css";
 
 type Listing = {
@@ -65,6 +74,7 @@ const columns = [
   "seller_sku",
   "external_sku",
   "external_listing_id",
+  "storage_location",
 ];
 const columnLabels = [
   ["TROC card ID", "Identifiant de carte TROC"],
@@ -81,6 +91,7 @@ const columnLabels = [
   ["Seller SKU", "SKU vendeur"],
   ["External SKU", "SKU externe"],
   ["External listing ID", "Identifiant d’annonce externe"],
+  ["Storage location", "Emplacement de rangement"],
 ];
 function headers(csv: string) {
   const out: string[] = [];
@@ -110,26 +121,51 @@ export function InventoryApp() {
     fr = locale === "fr",
     t = (en: string, frText: string) => (fr ? frText : en);
   const [sellers, setSellers] = useState<
-      { id: string; display_name: string }[]
-    >([]),
-    [seller, setSeller] = useState("");
+    { id: string; display_name: string }[]
+  >([]);
+  const { seller, setSeller } = useSellerWorkspace();
   const [items, setItems] = useState<Listing[]>([]),
     [next, setNext] = useState<string | null>(null),
     [after, setAfter] = useState("");
+  const [low, setLow] = useState(false);
+  const [listState, setListState] = useState<"loading" | "ready" | "error">("loading");
+  const [accessRevision, setAccessRevision] = useState(0);
   const [q, setQ] = useState(""),
-    [status, setStatus] = useState(""),
+    [status, setStatus] = useState(() => {
+      const value = new URLSearchParams(location.search).get("status") || "";
+      return ["active", "sold_out", "paused", "archived", "draft"].includes(value) ? value : "";
+    }),
     [source, setSource] = useState(""),
     [sync, setSync] = useState("");
   const [sources, setSources] = useState<{ id: string; label: string }[]>([]),
     [selected, setSelected] = useState<string[]>([]);
+  const [sourceState, setSourceState] = useState<"loading" | "ready" | "error">("loading");
+  const [mappingState, setMappingState] = useState<"loading" | "ready" | "error">("loading");
+  const [sourceRevision, setSourceRevision] = useState(0);
+  const [mappingRevision, setMappingRevision] = useState(0);
   const [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     [accessUnavailable, setAccessUnavailable] = useState(false),
     [loaded, setLoaded] = useState(false),
     [revision, setRevision] = useState(0);
-  const [tab, setTab] = useState("inventory"),
+  const [tab, setTab] = useState(() =>
+      ["manual", "import"].includes(
+        new URLSearchParams(location.search).get("tab") || "",
+      )
+        ? new URLSearchParams(location.search).get("tab")!
+        : "inventory",
+    ),
     [cards, setCards] = useState<Card[]>([]),
     [variant, setVariant] = useState("");
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (tab === "inventory") url.searchParams.delete("tab");
+    else url.searchParams.set("tab", tab);
+    if (status) url.searchParams.set("status", status);
+    else url.searchParams.delete("status");
+    window.history.replaceState(window.history.state, "", url);
+  }, [tab, status]);
+  const [cardState, setCardState] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [csv, setCsv] = useState(""),
     [mapping, setMapping] = useState<Record<string, string>>({}),
     [mappingName, setMappingName] = useState(""),
@@ -137,9 +173,32 @@ export function InventoryApp() {
       { name: string; mapping: Record<string, string> }[]
     >([]),
     [importSource, setImportSource] = useState("csv");
+  const [pendingPreview, setPendingPreview] = useState<string | null>(null);
   const [review, setReview] = useState<Review | null>(null),
     [reviewPage, setReviewPage] = useState(0),
     [requestKey, setRequestKey] = useState(() => crypto.randomUUID());
+  const [summary, setSummary] = useState<Record<string, number> | null>(null);
+  useEffect(() => {
+    if (!seller) return;
+    let active = true;
+    setSummary(null);
+    api<Record<string, number>>("/inventory/" + seller + "/summary")
+      .then((v) => {
+        if (active) setSummary(v);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [seller, revision]);
+  useEffect(() => {
+    setAfter("");
+    setCards([]);
+    setCardState("idle");
+    setVariant("");
+    setRequestKey(crypto.randomUUID());
+  }, [seller]);
+  const exportFilters = new URLSearchParams({q,source,status,sync,low: String(low)}).toString();
   const base = `/inventory/${seller}`;
   const errors: Record<string, [string, string]> = {
     unauthorized: [
@@ -216,11 +275,15 @@ export function InventoryApp() {
   }
   useEffect(() => {
     let active = true;
+    setLoaded(false);
+    setAccessUnavailable(false);
     api<typeof sellers>("/inventory/sellers")
       .then((r) => {
         if (active) {
           setSellers(r);
-          setSeller(r[0]?.id ?? "");
+          setSeller((current) =>
+            r.some((s) => s.id === current) ? current : (r[0]?.id ?? ""),
+          );
         }
       })
       .catch((e) => {
@@ -238,49 +301,65 @@ export function InventoryApp() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [accessRevision]);
   useEffect(() => {
-    if (!seller) return;
-    let active = true;
-    setItems([]);
-    setSelected([]);
     setReview(null);
-    Promise.all([
-      api<typeof sources>(base + "/sources"),
-      api<typeof mappings>(base + "/mappings"),
-    ])
-      .then(([s, m]) => {
-        if (active) {
-          setSources(s);
-          setMappings(m);
-        }
-      })
-      .catch((e) => {
-        if (active) report(e);
-      });
-    return () => {
-      active = false;
-    };
+    setPendingPreview(null);
+    setCsv("");
+    setMapping({});
+    setMappingName("");
+    setImportSource("csv");
   }, [seller]);
   useEffect(() => {
-    if (!seller) return;
     let active = true;
-    const params = new URLSearchParams({ q, status, source, sync, after });
+    setSources([]);
+    setSourceState("loading");
+    if (seller) void api<typeof sources>(base + "/sources").then((value) => {
+      if (active) { setSources(value); setSourceState("ready"); }
+    }).catch(() => { if (active) setSourceState("error"); });
+    return () => { active = false; };
+  }, [seller, sourceRevision]);
+  useEffect(() => {
+    let active = true;
+    if (!seller || tab !== "import") return;
+    setMappings([]);
+    setMappingState("loading");
+    if (seller) void api<typeof mappings>(base + "/mappings").then((value) => {
+      if (active) { setMappings(value); setMappingState("ready"); }
+    }).catch(() => { if (active) setMappingState("error"); });
+    return () => { active = false; };
+  }, [seller, mappingRevision, tab]);
+  useEffect(() => {
+    if (!seller || tab !== "inventory") return;
+    let active = true;
+    setListState("loading");
+    setItems([]);
+    setNext(null);
+    setSelected([]);
+    const params = new URLSearchParams({
+      q,
+      status,
+      source,
+      sync,
+      after,
+      low: String(low),
+    });
     api<{ rows: Listing[]; next: string | null }>(base + "/listings?" + params)
       .then((r) => {
         if (active) {
+          setListState("ready");
           setItems(r.rows);
           setNext(r.next);
           setSelected([]);
         }
       })
-      .catch((e) => {
-        if (active) report(e);
+      .catch(() => {
+        if (active) setListState("error");
       });
     return () => {
       active = false;
     };
-  }, [seller, q, status, source, sync, after, revision]);
+  }, [seller, q, status, source, sync, after, revision, low, tab]);
   const labels: Record<string, string> = {
     matched: t("Matched", "Correspondances"),
     unmatched: t("Unmatched", "Sans correspondance"),
@@ -313,6 +392,7 @@ export function InventoryApp() {
         priceCents: Math.round(Number(f.get("price")) * 100),
         quantity: Number(f.get("quantity")),
         sellerSku: f.get("sku"),
+        storageLocation: f.get("storageLocation"),
         requestKey,
       });
       setRequestKey(crypto.randomUUID());
@@ -326,11 +406,19 @@ export function InventoryApp() {
     });
   }
   async function update(changes: unknown[]) {
-    await run(async () => {
+    setBusy(true);
+    setNotice("");
+    try {
       await api(base + "/bulk", "POST", { changes });
       setRevision((r) => r + 1);
       setNotice(t("Inventory saved.", "Inventaire enregistré."));
-    });
+      return true;
+    } catch (e) {
+      report(e);
+      return false;
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <>
@@ -341,19 +429,27 @@ export function InventoryApp() {
         onTheme={setTheme}
       />
       <main id="main-content" className="marketplace-main inventory-app">
-        <EditorialIntro
-          level={1}
-          compact
-          className="troc-page-opening"
-          eyebrow={`TROC · ${t("Seller tools", "Outils vendeur")}`}
-          title={t("Your inventory", "Votre inventaire")}
-          description={t(
-            "Bring your cards to TROC. Review every import before publishing.",
-            "Ajoutez vos cartes à TROC. Vérifiez chaque importation avant de publier.",
-          )}
-        />
+        <header className="seller-page-heading">
+          <div>
+            <h1>{t("Inventory", "Inventaire")}</h1>
+            <p>
+              {t(
+                "Manage listings, pricing, quantity and status across your store.",
+                "Gérez les annonces, les prix, les quantités et les statuts de votre boutique.",
+              )}
+            </p>
+          </div>
+          <div className="seller-page-actions">
+            <Button variant="outline" onClick={() => setTab("import")}>
+              {t("Import CSV", "Importer un CSV")}
+            </Button>
+            <Button onClick={() => setTab("manual")}>
+              {t("Add listings", "Ajouter des annonces")}
+            </Button>
+          </div>
+        </header>
         {notice && <p role="status">{notice}</p>}
-        {!loaded && <p role="status">{t("Loading…", "Chargement…")}</p>}
+        {!loaded && <SellerLoading view="inventory" locale={locale} />}
         {loaded && !sellers.length ? (
           accessUnavailable ? (
             <section>
@@ -364,6 +460,7 @@ export function InventoryApp() {
                   "Nous n’avons pas pu charger l’accès vendeur. Réessayez plus tard.",
                 )}
               </p>
+              <Button variant="secondary" onClick={() => { setNotice(""); setAccessRevision(value => value + 1); }}>{t("Retry access", "Réessayer l’accès")}</Button>
             </section>
           ) : (
             <section>
@@ -382,26 +479,64 @@ export function InventoryApp() {
         ) : (
           seller && (
             <>
-              <label>
-                {t("Seller", "Vendeur")}
-                <select
-                  value={seller}
-                  disabled={busy}
-                  onChange={(e) => {
-                    setSeller(e.target.value);
-                    setAfter("");
-                    setCards([]);
-                    setVariant("");
-                    setRequestKey(crypto.randomUUID());
-                  }}
-                >
-                  {sellers.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.display_name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <div className="inventory-summary">
+                {[
+                  [
+                    "active",
+                    t("Active listings", "Annonces actives"),
+                    t("Published listings", "Annonces publiées"),
+                  ],
+                  [
+                    "review",
+                    t("Needs review", "À vérifier"),
+                    t(
+                      "Sync errors or conflicts",
+                      "Erreurs ou conflits de synchronisation",
+                    ),
+                  ],
+                  [
+                    "draft",
+                    t("Drafts", "Brouillons"),
+                    t("Not published", "Non publiées"),
+                  ],
+                  [
+                    "low",
+                    t("Low quantity", "Stock faible"),
+                    t(
+                      "1–3 cards · active listings",
+                      "1–3 cartes · annonces actives",
+                    ),
+                  ],
+                  [
+                    "sold_out",
+                    t("Sold out", "Épuisées"),
+                    t("Sold-out listings", "Annonces épuisées"),
+                  ],
+                ].map(([key, label, help]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => {
+                      setTab("inventory");
+                      setAfter("");
+                      setQ("");
+                      setSource("");
+                      setLow(key === "low");
+                      setSync(key === "review" ? "review" : "");
+                      setStatus(
+                        ["active", "draft", "sold_out"].includes(key)
+                          ? key
+                          : "",
+                      );
+                      setNotice("");
+                    }}
+                  >
+                    <span>{label}</span>
+                    <strong>{summary?.[key] ?? "—"}</strong>
+                    <small>{help}</small>
+                  </button>
+                ))}
+              </div>
               <nav
                 aria-label={t("Inventory tools", "Outils d’inventaire")}
                 className="inventory-actions"
@@ -421,233 +556,207 @@ export function InventoryApp() {
                 ))}
               </nav>
               {tab === "inventory" && (
-                <section>
-                  <h2>{t("Listings", "Annonces")}</h2>
-                  <div className="inventory-filters">
-                    <label>
-                      {t("Search name or SKU", "Nom ou SKU")}
-                      <Input
-                        value={q}
-                        onChange={(e) => {
-                          setQ(e.target.value);
-                          setAfter("");
-                        }}
-                      />
-                    </label>
-                    <label>
-                      {t("Status", "Statut")}
-                      <select
-                        value={status}
-                        onChange={(e) => {
-                          setStatus(e.target.value);
-                          setAfter("");
-                        }}
-                      >
-                        <option value="">{t("All", "Tous")}</option>
-                        {[
-                          "active",
-                          "sold_out",
-                          "paused",
-                          "archived",
-                          "draft",
-                        ].map((s) => (
-                          <option key={s} value={s}>
-                            {labels[s]}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label>
-                      {t("Source", "Source")}
-                      <select
-                        value={source}
-                        onChange={(e) => {
-                          setSource(e.target.value);
-                          setAfter("");
-                        }}
-                      >
-                        <option value="">{t("All", "Toutes")}</option>
-                        {sources.map((s) => (
-                          <option key={s.id} value={s.id}>
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label>
-                      {t("Sync status", "État de synchronisation")}
-                      <select
-                        value={sync}
-                        onChange={(e) => {
-                          setSync(e.target.value);
-                          setAfter("");
-                        }}
-                      >
-                        <option value="">{t("All", "Tous")}</option>
-                        {[
-                          "not_connected",
-                          "pending",
-                          "synced",
-                          "error",
-                          "conflict",
-                        ].map((s) => (
-                          <option key={s} value={s}>
-                            {labels[s]}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  </div>
-                  <div className="inventory-actions">
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        setAfter("");
-                        setRevision((r) => r + 1);
-                      }}
-                    >
-                      {t("Refresh", "Actualiser")}
-                    </Button>
-                    {["active", "paused", "archived"].map((state) => (
-                      <Button
-                        key={state}
-                        variant="secondary"
-                        disabled={busy || !selected.length}
-                        onClick={() =>
-                          void update(
-                            items
-                              .filter((i) => selected.includes(i.id))
-                              .map((i) => ({
-                                id: i.id,
-                                version: i.inventory_version,
-                                status: state,
-                              })),
-                          )
-                        }
-                      >
-                        {t("Set selected: ", "Sélection : ") + labels[state]}
+                <section className="inventory-workbench">
+                  <div className="inventory-primary">
+                    {low && (
+                      <Button variant="outline" onClick={() => setLow(false)}>
+                        {t("Low stock filter ×", "Filtre stock faible ×")}
                       </Button>
-                    ))}
-                  </div>
-                  {!items.length ? (
-                    <p>
-                      {t(
-                        "No listings match these filters.",
-                        "Aucune annonce ne correspond aux filtres.",
-                      )}
-                    </p>
-                  ) : (
-                    <ul className="inventory-list">
-                      {items.map((item) => (
-                        <li key={`${item.id}-${item.inventory_version}`}>
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              const f = new FormData(e.currentTarget);
-                              void update([
-                                {
-                                  id: item.id,
-                                  version: item.inventory_version,
-                                  quantity: Number(f.get("quantity")),
-                                  priceCents: Math.round(
-                                    Number(f.get("price")) * 100,
-                                  ),
-                                },
-                              ]);
+                    )}
+                    <div className="inventory-section-heading">
+                      <h2>{t("Listings", "Annonces")}</h2>
+                      <span>
+                        {listState === "ready" ? <>{items.length} {t("on this page", "sur cette page")} · {selected.length} {t("selected", "sélectionnées")}</> : listState === "loading" ? t("Loading…", "Chargement…") : t("Listings unavailable", "Annonces indisponibles")}
+                      </span>
+                    </div>
+                    <InventoryExport key={seller + ":" + exportFilters} seller={seller} filters={exportFilters} />
+                    <div className="inventory-filters">
+                      <label>
+                        {t("Name, card number, SKU or location", "Nom, numéro, SKU ou emplacement")}
+                        <Input
+                          value={q}
+                          placeholder={t(
+                            "Search your inventory…",
+                            "Rechercher dans l’inventaire…",
+                          )}
+                          onChange={(e) => {
+                            setQ(e.target.value);
+                            setAfter("");
+                          }}
+                        />
+                      </label>
+                      {[
+                        [
+                          t("Status", "Statut"),
+                          status,
+                          (v: string) => setStatus(v),
+                          [
+                            "active",
+                            "sold_out",
+                            "paused",
+                            "archived",
+                            "draft",
+                          ].map((s) => [s, labels[s]]),
+                        ],
+                        [
+                          t("Source", "Source"),
+                          source,
+                          (v: string) => setSource(v),
+                          sources.map((s) => [s.id, s.label]),
+                        ],
+                        [
+                          t("Sync status", "État de synchronisation"),
+                          sync,
+                          (v: string) => setSync(v),
+                          [
+                            "review",
+                            "not_connected",
+                            "pending",
+                            "synced",
+                            "error",
+                            "conflict",
+                          ].map((s) => [
+                            s,
+                            s === "review"
+                              ? t("Needs review", "À vérifier")
+                              : labels[s],
+                          ]),
+                        ],
+                      ].map(([label, value, set, options]) => (
+                        <label key={String(label)}>
+                          {String(label)}
+                          <Select
+                            value={String(value) || "all"}
+                            onValueChange={(v) => {
+                              (set as (v: string) => void)(
+                                v === "all" ? "" : v,
+                              );
+                              setAfter("");
                             }}
                           >
-                            <label className="inventory-check">
-                              <input
-                                type="checkbox"
-                                checked={selected.includes(item.id)}
-                                onChange={(e) =>
-                                  setSelected((v) =>
-                                    e.target.checked
-                                      ? [...v, item.id]
-                                      : v.filter((id) => id !== item.id),
-                                  )
-                                }
-                              />
-                              <span>
-                                <strong>
-                                  {fr ? item.name_fr : item.name_en}
-                                </strong>
-                                {" · "}
-                                {[
-                                  item.language === "en"
-                                    ? catalogMessages.english[fr ? 1 : 0]
-                                    : item.language === "ja"
-                                      ? catalogMessages.japanese[fr ? 1 : 0]
-                                      : item.language,
-                                  item.finish &&
-                                  Object.hasOwn(catalogMessages, item.finish)
-                                    ? catalogMessages[
-                                        item.finish as CatalogMessage
-                                      ][fr ? 1 : 0]
-                                    : item.finish,
-                                  item.collector_number
-                                    ? `#${item.collector_number}`
-                                    : null,
-                                  item.condition,
-                                  item.seller_sku,
-                                ]
-                                  .filter(Boolean)
-                                  .join(" · ")}
-                              </span>
-                            </label>
-                            <p>
-                              {labels[item.status]} · {item.source_platform} ·{" "}
-                              {labels[item.sync_status]}
-                            </p>
-                            {item.sync_error && (
-                              <p>
-                                {t(
-                                  "Synchronization needs attention.",
-                                  "La synchronisation nécessite une vérification.",
-                                )}
-                              </p>
-                            )}
-                            <div className="inventory-filters">
-                              <label>
-                                {t("Quantity", "Quantité")}
-                                <Input
-                                  name="quantity"
-                                  type="number"
-                                  min="0"
-                                  max="1000000"
-                                  step="1"
-                                  defaultValue={item.quantity}
-                                  required
-                                />
-                              </label>
-                              <label>
-                                {t("Price (CAD)", "Prix (CAD)")}
-                                <Input
-                                  name="price"
-                                  type="number"
-                                  min="0.01"
-                                  max="1000000"
-                                  step="0.01"
-                                  defaultValue={(
-                                    item.unit_price_cents / 100
-                                  ).toFixed(2)}
-                                  required
-                                />
-                              </label>
-                              <Button disabled={busy} type="submit">
-                                {t("Save", "Enregistrer")}
-                              </Button>
-                            </div>
-                          </form>
-                        </li>
+                            <SelectTrigger aria-label={String(label)}>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">
+                                {t("All", "Tous")}
+                              </SelectItem>
+                              {(options as string[][]).map(([value, label]) => (
+                                <SelectItem key={value} value={value}>
+                                  {label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </label>
                       ))}
-                    </ul>
-                  )}
-                  {next && (
-                    <Button variant="secondary" onClick={() => setAfter(next)}>
-                      {t("Next 50", "50 suivantes")}
-                    </Button>
-                  )}
+                    </div>
+                    <div className="inventory-actions">
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setAfter("");
+                          setRevision((r) => r + 1);
+                        }}
+                      >
+                        {t("Refresh", "Actualiser")}
+                      </Button>
+                      {["active", "paused", "archived"].map((state) => (
+                        <Button
+                          key={state}
+                          variant="secondary"
+                          disabled={busy || listState !== "ready" || !selected.length}
+                          onClick={() =>
+                            void update(
+                              items
+                                .filter((i) => selected.includes(i.id))
+                                .map((i) => ({
+                                  id: i.id,
+                                  version: i.inventory_version,
+                                  status: state,
+                                })),
+                            )
+                          }
+                        >
+                          {t("Set selected: ", "Sélection : ") + labels[state]}
+                        </Button>
+                      ))}
+                    </div>
+                    {listState === "loading" ? (
+                      <SellerLoading view="inventory" locale={locale} rowsOnly />
+                    ) : listState === "error" ? (
+                      <div role="alert">
+                        <p>{t("We couldn’t load these listings. Your filters are still here.", "Impossible de charger les annonces. Vos filtres sont conservés.")}</p>
+                        <Button variant="secondary" onClick={() => setRevision(value => value + 1)}>{t("Retry listings", "Réessayer les annonces")}</Button>
+                      </div>
+                    ) : !items.length ? (
+                      <p>
+                        {t(
+                          q || status || source || sync || low || after ? "No listings match these filters." : "No listings yet. Add a card or import a CSV to get started.",
+                          q || status || source || sync || low || after ? "Aucune annonce ne correspond aux filtres." : "Aucune annonce pour le moment. Ajoutez une carte ou importez un CSV pour commencer.",
+                        )}
+                      </p>
+                    ) : (
+                      <InventoryTable
+                        key={seller}
+                        items={items}
+                        selected={selected}
+                        onSelection={setSelected}
+                        onSave={update}
+                        busy={busy}
+                        labels={labels}
+                        locale={locale}
+                      />
+                    )}
+                    {listState === "ready" && next && (
+                      <Button
+                        variant="secondary"
+                        onClick={() => setAfter(next)}
+                      >
+                        {t("Next 50", "50 suivantes")}
+                      </Button>
+                    )}
+                  </div>
+                  <aside className="inventory-tools">
+                    <h3>{t("Inventory tools", "Outils d’inventaire")}</h3>
+                    <button onClick={() => setTab("manual")}>
+                      {t("Add a listing", "Ajouter une annonce")}
+                      <small>
+                        {t(
+                          "Find a canonical card, then set your price and stock.",
+                          "Trouvez une carte, puis définissez prix et quantité.",
+                        )}
+                      </small>
+                    </button>
+                    <button onClick={() => setTab("import")}>
+                      {t("Import from CSV", "Importer un CSV")}
+                      <small>
+                        {t(
+                          "Map, validate and review before publishing.",
+                          "Associez, validez et vérifiez avant publication.",
+                        )}
+                      </small>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLow(false);
+                        setQ("");
+                        setStatus("");
+                        setSync("");
+                        setSource("");
+                        setAfter("");
+                        setSelected([]);
+                      }}
+                    >
+                      {t("Reset filters", "Réinitialiser les filtres")}
+                    </button>
+                    <p>
+                      {t(
+                        "Your listing price is not a market-price estimate. External inventory tools are not connected.",
+                        "Votre prix demandé n’est pas une estimation du marché. Les outils externes ne sont pas connectés.",
+                      )}
+                    </p>
+                  </aside>
                 </section>
               )}
               {tab === "manual" && (
@@ -662,26 +771,32 @@ export function InventoryApp() {
                     onSubmit={(e) => {
                       e.preventDefault();
                       const f = new FormData(e.currentTarget);
+                      setCards([]);
+                      setVariant("");
+                      setCardState("loading");
                       void run(async () => {
-                        setCards(
-                          await api<Card[]>(
-                            base +
-                              "/catalog?q=" +
-                              encodeURIComponent(String(f.get("search"))),
-                          ),
-                        );
-                        setVariant("");
+                        try {
+                          setCards(await api<Card[]>(base + "/catalog?q=" + encodeURIComponent(String(f.get("search")).trim())));
+                          setCardState("ready");
+                        } catch {
+                          setCardState("error");
+                        }
                       });
                     }}
                   >
                     <label>
                       {t("Card name", "Nom de carte")}
-                      <Input name="search" required minLength={2} />
+                      <Input name="search" required minLength={1} />
                     </label>
                     <Button type="submit" disabled={busy}>
                       {t("Search", "Rechercher")}
                     </Button>
                   </form>
+                  <p role="status">
+                    {cardState === "loading" ? t("Searching the catalogue…", "Recherche dans le catalogue…")
+                      : cardState === "error" ? t("The catalogue could not load. Search again to retry; your listing details are preserved.", "Le catalogue n’a pas pu charger. Relancez la recherche; les détails de votre annonce sont conservés.")
+                      : cardState === "ready" && cards.length === 0 ? t("No cards match this search. Try a different name or card number.", "Aucune carte ne correspond. Essayez un autre nom ou numéro de carte.") : ""}
+                  </p>
                   <form
                     onSubmit={manual}
                     onChange={() => setRequestKey(crypto.randomUUID())}
@@ -693,6 +808,7 @@ export function InventoryApp() {
                       )}
                       <select
                         required
+                        disabled={busy || cardState !== "ready" || cards.length === 0}
                         value={variant}
                         onChange={(e) => {
                           setVariant(e.target.value);
@@ -727,6 +843,11 @@ export function InventoryApp() {
                     <label>
                       {t("Your unique SKU", "Votre SKU unique")}
                       <Input name="sku" required maxLength={100} />
+                    </label>
+                    <label>
+                      {t("Storage location (optional)", "Emplacement de rangement (facultatif)")}
+                      <Input name="storageLocation" maxLength={100} placeholder={t("e.g. Box A - Row 3", "Ex. Boîte A - Rangée 3")} />
+                      <small>{t("Private to your store team.", "Visible seulement par votre équipe.")}</small>
                     </label>
                     <label>
                       {t("Price (CAD)", "Prix (CAD)")}
@@ -771,17 +892,34 @@ export function InventoryApp() {
                       "Utilisez un identifiant TROC, un identifiant externe et son fournisseur, ou le nom exact, code de série, numéro, langue et finition.",
                     )}
                   </p>
+                  <a
+                    className="underline"
+                    href={`/help?article=csv&lang=${locale}`}
+                  >
+                    {t(
+                      "Read the CSV import guide",
+                      "Lire le guide d’import CSV",
+                    )}
+                  </a>
+                  <p id="csv-format-help">
+                    {t(
+                      "Use comma-separated columns and a decimal point for prices: 12.50, without a currency symbol. Keep SKU and card-number columns as text to preserve leading zeros.",
+                      "Séparez les colonnes par des virgules et utilisez un point décimal pour les prix : 12.50, sans symbole monétaire. Gardez les colonnes SKU et numéro de carte au format texte pour conserver les zéros initiaux.",
+                    )}
+                  </p>
                   <label>
                     {t("CSV file", "Fichier CSV")}
                     <input
                       type="file"
                       disabled={busy}
                       accept=".csv,text/csv"
+                      aria-describedby="csv-format-help"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
                         setCsv("");
                         setReview(null);
+                        setPendingPreview(null);
                         void run(async () => {
                           if (file.size > 4194304)
                             throw new Error("invalid_csv");
@@ -800,16 +938,30 @@ export function InventoryApp() {
                             ),
                           );
                           setReview(null);
+                          setPendingPreview(null);
                           setRequestKey(crypto.randomUUID());
                         });
                       }}
                     />
                   </label>
+                  {sourceState !== "ready" && (
+                    <div role="status">
+                      <p>{sourceState === "loading" ? t("Loading inventory sources…", "Chargement des sources…") : t("Inventory sources could not load. Your file and column choices are preserved. Retry before previewing.", "Les sources n’ont pas pu charger. Votre fichier et vos colonnes sont conservés. Réessayez avant l’aperçu.")}</p>
+                      {sourceState === "error" && <Button variant="secondary" onClick={() => setSourceRevision((v) => v + 1)}>{t("Retry sources", "Réessayer les sources")}</Button>}
+                    </div>
+                  )}
+                  {mappingState !== "ready" && (
+                    <div role="status">
+                      <p>{mappingState === "loading" ? t("Loading saved mappings…", "Chargement des correspondances…") : t("Saved mappings could not load. You can still map columns manually and preview your file.", "Les correspondances n’ont pas pu charger. Vous pouvez associer les colonnes manuellement et consulter l’aperçu.")}</p>
+                      {mappingState === "error" && <Button variant="secondary" onClick={() => setMappingRevision((v) => v + 1)}>{t("Retry saved mappings", "Réessayer les correspondances")}</Button>}
+                    </div>
+                  )}
                   {csv && (
                     <>
                       <label>
                         {t("Saved mapping", "Correspondance enregistrée")}
                         <select
+                          disabled={busy || mappingState !== "ready"}
                           defaultValue=""
                           onChange={(e) => {
                             const found = mappings.find(
@@ -818,6 +970,7 @@ export function InventoryApp() {
                             if (found) {
                               setMapping(found.mapping);
                               setReview(null);
+                              setPendingPreview(null);
                               setRequestKey(crypto.randomUUID());
                             }
                           }}
@@ -842,6 +995,7 @@ export function InventoryApp() {
                                   [c]: e.target.value,
                                 }));
                                 setReview(null);
+                                setPendingPreview(null);
                                 setRequestKey(crypto.randomUUID());
                               }}
                             >
@@ -869,10 +1023,12 @@ export function InventoryApp() {
                       <label>
                         {t("Inventory source", "Source de l’inventaire")}
                         <select
+                          disabled={busy || sourceState !== "ready"}
                           value={importSource}
                           onChange={(e) => {
                             setImportSource(e.target.value);
                             setReview(null);
+                            setPendingPreview(null);
                             setRequestKey(crypto.randomUUID());
                           }}
                         >
@@ -890,7 +1046,7 @@ export function InventoryApp() {
                         )}
                       </p>
                       <Button
-                        disabled={busy}
+                        disabled={busy || !!pendingPreview || sourceState !== "ready" || !sources.some((s) => s.id === importSource)}
                         onClick={() =>
                           void run(async () => {
                             const result = await api<{ id: string }>(
@@ -904,16 +1060,26 @@ export function InventoryApp() {
                                 requestKey,
                               },
                             );
+                            setPendingPreview(result.id);
                             await loadReview(result.id);
-                            setMappings(
-                              await api<typeof mappings>(base + "/mappings"),
-                            );
+                            setPendingPreview(null);
+                            setMappingRevision((v) => v + 1);
                           })
                         }
                       >
                         {t("Preview import", "Voir l’aperçu")}
                       </Button>
                     </>
+                  )}
+                  {pendingPreview && !busy && (
+                    <div role="status">
+                      <p>{t("Your preview was created, but its results could not load. Retry loading the results without uploading again.", "Votre aperçu a été créé, mais ses résultats n’ont pas pu charger. Réessayez de les charger sans importer à nouveau.")}</p>
+                      <Button disabled={busy} variant="secondary" onClick={() => void run(async () => {
+                        await loadReview(pendingPreview);
+                        setPendingPreview(null);
+                        setMappingRevision((v) => v + 1);
+                      })}>{t("Retry preview results", "Réessayer les résultats")}</Button>
+                    </div>
                   )}
                   {review && (
                     <div>

@@ -1,3 +1,6 @@
+import { catalogBrowseHref } from "@workspace/catalog";
+import { BuyCheapest } from "./BuyCheapest";
+import { ContactSeller } from "./ContactSeller";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -98,7 +101,7 @@ export function PublicMarketplace({
   );
   const href = (path: string, values: Record<string, string> = {}) => {
     const p = new URLSearchParams({ lang: locale, ...values });
-    return `${base}${path}?${p}`;
+    return base + catalogBrowseHref(path, p);
   };
   const go = (path: string, values: Record<string, string> = {}) =>
     window.location.assign(href(path, values));
@@ -152,16 +155,25 @@ export function PublicMarketplace({
       max: page.filters.max === null ? "" : String(page.filters.max),
       grade: page.selectedGrade ?? "",
     });
-  const cards = (items: ProductResult[], presentation?: "shelf") => (
+  const cards = (
+    items: ProductResult[],
+    presentation?: "shelf",
+    related = false,
+  ) => (
     <EditorialCatalogGrid
       className={
         presentation === "shelf" ? "troc-editorial-catalog--shelf" : undefined
       }
     >
-      {items.map((result) => {
+      {items.map((result, index) => {
         const p = result.product;
         const set = page.sets.find((s) => s.id === p.setId);
-        const selection = productSelection(p, page.filters);
+        const selection = related
+          ? {
+              variant: p.variants[0],
+              params: p.variants[0] ? { variantId: p.variants[0].id } : {},
+            }
+          : productSelection(p, page.filters);
         const productHref = href(`/product/${p.slug}`, selection.params);
         return (
           <MarketplaceProductCard
@@ -171,6 +183,8 @@ export function PublicMarketplace({
             image={
               <CatalogArtwork
                 product={p}
+                eager={page.kind === "search" && index < 2}
+                thumbnailSize={page.kind === "search" ? "180px" : undefined}
                 variant={selection.variant}
                 locale={locale}
               />
@@ -460,6 +474,7 @@ export function PublicMarketplace({
       className={`min-h-screen bg-background text-foreground ${page.kind === "home" ? "troc-home-shell" : ""}`}
     >
       <MarketplaceHeader
+        hideSearch={page.kind === "search"}
         locale={locale}
         theme={theme}
         onLocale={onLocale}
@@ -694,26 +709,36 @@ export function PublicMarketplace({
                         : "No available offers"
                   }
                   action={
-                    <Button asChild>
-                      <a
-                        href="#seller-offers"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          const offers =
-                            document.getElementById("seller-offers");
-                          offers?.focus({ preventScroll: true });
-                          offers?.scrollIntoView({ block: "start" });
-                        }}
-                      >
-                        {hasAvailableOffers
-                          ? locale === "fr"
-                            ? "Choisir une offre"
-                            : "View offers"
-                          : locale === "fr"
-                            ? "Vérifier les filtres"
-                            : "Review filters"}
-                      </a>
-                    </Button>
+                    <div className="grid gap-3">
+                      <BuyCheapest
+                        key={offerHref(1)}
+                        path={page.path}
+                        selection={offerHref(1).split("?")[1]}
+                        locale={locale}
+                        cartHref={href("/cart")}
+                        available={hasAvailableOffers}
+                      />
+                      <Button asChild variant="secondary">
+                        <a
+                          href="#seller-offers"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            const offers =
+                              document.getElementById("seller-offers");
+                            offers?.focus({ preventScroll: true });
+                            offers?.scrollIntoView({ block: "start" });
+                          }}
+                        >
+                          {hasAvailableOffers
+                            ? locale === "fr"
+                              ? "Choisir une offre"
+                              : "View offers"
+                            : locale === "fr"
+                              ? "Vérifier les filtres"
+                              : "Review filters"}
+                        </a>
+                      </Button>
+                    </div>
                   }
                   note={
                     locale === "fr"
@@ -819,6 +844,9 @@ export function PublicMarketplace({
                         : "CHOOSE YOUR SELLER"
                     }
                   />
+                  <p className="text-sm text-muted-foreground">
+                    {t("shipping")}
+                  </p>
                   <details className="troc-offer-controls">
                     <summary>
                       <span>
@@ -990,7 +1018,27 @@ export function PublicMarketplace({
                             ) : undefined
                           }
                           price={money(offer.cents, "offerPrice")}
-                          shipping={`${t("minimum")}: ${seller.minimumCents ? format(seller.minimumCents) : t("none")} · ${t("handling")}: ${seller.handlingDays}`}
+                          shipping={
+                            <span className="grid gap-1">
+                              <span>
+                                {t("minimum")}:{" "}
+                                {seller.minimumCents
+                                  ? format(seller.minimumCents)
+                                  : t("none")}
+                              </span>
+                              <span>
+                                {locale === "fr" ? "Préparation" : "Handling"}:{" "}
+                                {seller.handlingDays}{" "}
+                                {locale === "fr"
+                                  ? seller.handlingDays === 1
+                                    ? "jour"
+                                    : "jours"
+                                  : seller.handlingDays === 1
+                                    ? "day"
+                                    : "days"}
+                              </span>
+                            </span>
+                          }
                           promotion={`${offer.quantity} ${t("available")}${offer.grade ? ` · ${t("grade")}: ${offer.grade}` : ""}`}
                           quantityLabel={`${t("quantity")} · ${seller.name}`}
                           quantityDecrementLabel={`${t("less")} · ${seller.name}`}
@@ -1113,9 +1161,6 @@ export function PublicMarketplace({
                       </Button>
                     )}
                   </nav>
-                  <p className="text-sm text-muted-foreground">
-                    {t("shipping")}
-                  </p>
                 </section>
               </div>
             </div>
@@ -1158,6 +1203,21 @@ export function PublicMarketplace({
                 </p>
               )}
             </section>
+            {Boolean(page.relatedProducts?.length) && (
+              <section
+                aria-label={locale === "fr" ? "Même extension" : "Same set"}
+              >
+                <EditorialIntro
+                  compact
+                  title={
+                    locale === "fr"
+                      ? "Dans la même extension"
+                      : "From the same set"
+                  }
+                />
+                {cards(page.relatedProducts ?? [], undefined, true)}
+              </section>
+            )}
           </>
         ) : (
           <>
@@ -1167,8 +1227,12 @@ export function PublicMarketplace({
                   name={page.seller.name}
                   eyebrow={
                     locale === "fr"
-                      ? "BOUTIQUE CANADIENNE · DÉMO"
-                      : "CANADIAN STORE · DEMO"
+                      ? page.seller.demo
+                        ? "BOUTIQUE CANADIENNE · DÉMO"
+                        : "BOUTIQUE CANADIENNE"
+                      : page.seller.demo
+                        ? "CANADIAN STORE · DEMO"
+                        : "CANADIAN STORE"
                   }
                   location={`${page.seller.city}, ${page.seller.province}`}
                   avatar={
@@ -1227,6 +1291,7 @@ export function PublicMarketplace({
                           {locale === "fr" ? "Voir les cartes" : "Browse cards"}
                         </a>
                       </Button>
+                      <ContactSeller seller={page.seller.id} storePath={"/store/" + page.seller.slug} locale={locale} />
                       <Button disabled variant="ghost">
                         {t("follow")}
                       </Button>
@@ -1289,7 +1354,7 @@ export function PublicMarketplace({
               </div>
             ) : page.kind === "search" ? (
               <CatalogBrowse
-                key={`${page.path}:${JSON.stringify(page.filters)}`}
+                key={page.path}
                 page={page}
                 base={base}
                 chips={
@@ -1539,3 +1604,4 @@ export function PublicMarketplace({
     </div>
   );
 }
+

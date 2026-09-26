@@ -32,43 +32,12 @@ export function publicDemoCatalog(): CatalogSnapshot {
       }),
     ),
   );
-  const primaryOffers = new Map(
-    offers
-      .filter((o) => o.sellerId === data.sellers[0].id)
-      .map((o) => [o.variantId, o]),
-  );
-  const prices = sampleProducts.flatMap((product) =>
-    product.variants.flatMap((variant) => {
-      const offer = primaryOffers.get(variant.id)!;
-      const capturedAt = product.images![0].provenance.capturedAt;
-      return [2, 1, 0].map((day) => {
-        const date = new Date(
-          Date.parse(capturedAt) - day * 86400000,
-        ).toISOString();
-        const cents = offer.cents + 10 + day;
-        return {
-          variantId: variant.id,
-          cents,
-          capturedAt: date,
-          provider: "TROC fictional demo",
-          providerProductId: variant.id,
-          condition: "NM" as const,
-          grade: null,
-          sourceCurrency: "CAD",
-          sourceMinorUnits: cents,
-          fxRate: "1",
-          fxDate: date.slice(0, 10),
-          providerUpdatedAt: date,
-          demo: true,
-        };
-      });
-    }),
-  );
   return {
     ...data,
-    sets: [...sampleSets, ...data.sets],
-    products: [...sampleProducts, ...data.products],
-    offers: [...offers, ...data.offers],
-    prices: [...prices, ...data.prices],
+    sets: sampleSets,
+    products: sampleProducts,
+    offers,
+    // No invented historical market prices: only seller listings are simulated.
+    prices: [],
   };
 }

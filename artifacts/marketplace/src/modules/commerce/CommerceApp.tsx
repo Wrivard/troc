@@ -1,10 +1,17 @@
 import { Progress } from "@workspace/troc-design-system/components/ui/progress";
-import { SmartCartDemo } from "../brand/SmartCartDemo";
+
 import { commerceSellerName } from "../brand/demo-store-branding";
 import { PremiumEmptyState } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
 import { EditorialIntro } from "@workspace/troc-design-system/components/ui/editorial";
 import { MarketplaceHeader, MarketplaceFooter } from "../brand/SiteChrome";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import type { CartLine, CartQuote, SmartResult } from "@workspace/commerce";
 import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
@@ -25,6 +32,9 @@ import { CartGroups } from "./CartGroups";
 import { SmartChanges } from "./SmartChanges";
 import { OrderPages } from "./OrderPages";
 import { commerceMessages, type CommerceMessage } from "./messages";
+const SmartCartEducation = lazy(
+  () => import("../brand/smart-cart-feature/SmartCartEducation"),
+);
 export function CommerceApp({
   path,
   embedded = false,
@@ -237,15 +247,18 @@ export function CommerceApp({
   async function applySmart() {
     if (!smart || smartInput !== quoteInput || !quoteFresh || busy) return;
     setBusy(true);
+    setStatus(null);
     try {
-      if (authenticated)
-        await api("/commerce/smart/apply", "POST", {
-          lines,
-          coupon: appliedCoupon,
-        });
-      writeCart(smart.lines);
-      setLines(smart.lines);
-      setQuote(smart.optimized);
+      // The authenticated endpoint recalculates and saves against current offers.
+      const applied = authenticated
+        ? await api<SmartResult>("/commerce/smart/apply", "POST", {
+            lines,
+            coupon: appliedCoupon,
+          })
+        : smart;
+      writeCart(applied.lines);
+      setLines(applied.lines);
+      setQuote(applied.optimized);
       setSmart(null);
     } catch (error) {
       report(error);
@@ -323,7 +336,7 @@ export function CommerceApp({
             : "mx-auto grid min-h-[60vh] max-w-screen-xl content-start gap-6 px-4 py-8 md:px-8 md:py-12"
         }
       >
-        {!embeddedCart && (
+        {!embeddedCart && !orderPage && (
           <nav
             className="flex flex-wrap gap-4 border-b border-border pb-4 text-sm"
             aria-label={
@@ -334,7 +347,6 @@ export function CommerceApp({
               ["/cart", "cart"],
               ["/smart-cart", "smart"],
               ["/account/orders", "orders"],
-              ["/seller/orders", "fulfillment"],
             ].map(([url, key]) => (
               <a
                 key={url}
@@ -362,7 +374,7 @@ export function CommerceApp({
           <OrderPages path={path} locale={locale} />
         ) : (
           <>
-            {!embeddedCart && (
+            {!embeddedCart && !(smartPage && !lines.length) && (
               <EditorialIntro
                 level={1}
                 compact
@@ -410,7 +422,10 @@ export function CommerceApp({
                   </Button>
                 )}
                 {visibleStatus === "unauthorized" && (
-                  <a className="ml-2 underline" href={link("/sign-in")}>
+                  <a
+                    className="ml-2 underline"
+                    href={`${link("/sign-in")}&returnTo=${encodeURIComponent(path)}`}
+                  >
                     {t("signIn")}
                   </a>
                 )}
@@ -450,7 +465,13 @@ export function CommerceApp({
             )}
             {!lines.length ? (
               smartPage ? (
-                <SmartCartDemo locale={locale} catalogHref={link("/search")} />
+                <Suspense fallback={<p role="status">{t("loading")}</p>}>
+                  <SmartCartEducation
+                    locale={locale}
+                    catalogHref={link("/search")}
+                    cartHref={link("/cart")}
+                  />
+                </Suspense>
               ) : (
                 <PremiumEmptyState
                   title={
@@ -847,7 +868,7 @@ export function CommerceApp({
                       )}
                     </aside>
                   </div>
-                  {checkout && status !== "service_unavailable" && (
+                  {checkout && (
                     <form onSubmit={place} className="grid max-w-xl gap-4">
                       <h2 className="text-xl font-bold">{t("country")}</h2>
                       {(
@@ -865,6 +886,23 @@ export function CommerceApp({
                             name={name}
                             required={name !== "line2"}
                             maxLength={150}
+                            pattern={
+                              name === "postalCode"
+                                ? "[ABCEGHJ-NPRSTVXYabceghj-nprstvxy][0-9][ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][ \\-]?[0-9][ABCEGHJ-NPRSTV-Zabceghj-nprstv-z][0-9]"
+                                : name !== "line2"
+                                  ? ".*\\S.*"
+                                  : undefined
+                            }
+                            title={
+                              name === "postalCode"
+                                ? locale === "fr"
+                                  ? "Code postal canadien, par exemple K1A 0B1"
+                                  : "Canadian postal code, for example K1A 0B1"
+                                : undefined
+                            }
+                            placeholder={
+                              name === "postalCode" ? "K1A 0B1" : undefined
+                            }
                             autoComplete={
                               {
                                 recipient: "name",
@@ -934,7 +972,10 @@ export function CommerceApp({
                         {t("estimate")}
                       </p>
                       {!authenticated && (
-                        <a className="underline" href={link("/sign-in")}>
+                        <a
+                          className="underline"
+                          href={`${link("/sign-in")}&returnTo=${encodeURIComponent(path)}`}
+                        >
                           {t("signIn")}
                         </a>
                       )}
@@ -961,3 +1002,4 @@ export function CommerceApp({
     </div>
   );
 }
+

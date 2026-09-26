@@ -237,3 +237,13 @@
     padding: 12px;
   }
 }
+
+/* Hero and navigation share the same combobox and result presentation. */
+.troc-search-hero { max-width: 620px; margin-top: 5px; }
+.troc-search-hero .troc-search-presentation-control { min-height: 70px; padding: 8px; gap: 8px; border: 1px solid #65656b; border-radius: var(--radius-md); background: rgb(18 18 21 / 88%); box-shadow: 0 4px 18px #0004; }
+.troc-search-hero .troc-search-presentation-control:focus-within { border-color: transparent; outline: 2px solid var(--focus); outline-offset: 0; }
+.troc-search-hero .troc-search-presentation-control > input { flex: 1; min-width: 0; padding-left: 34px; padding-right: 0; border: 0; background: transparent; color: #f5f5f6; font-size: 18px; outline: none; box-shadow: none; }
+.troc-search-hero .troc-search-presentation-control > input::placeholder { color: #a3a3ad; }
+.troc-search-hero .troc-search-presentation-clear { position: static; flex: 0 0 40px; color: #f5f5f6; }
+.troc-search-hero-submit { min-height: 46px; flex-shrink: 0; }
+@media(max-width: 600px) { .troc-search-hero .troc-search-presentation-control > input { font-size: 16px; } }

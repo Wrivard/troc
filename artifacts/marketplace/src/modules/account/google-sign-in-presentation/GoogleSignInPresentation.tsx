@@ -8,6 +8,7 @@ export interface GoogleSignInPresentationProps {
   locale: "en" | "fr";
   enabled: boolean | null;
   confirmed: boolean;
+  requireConfirmation?: boolean;
   busy: boolean;
   onConfirmedChange: (confirmed: boolean) => void;
   onStart: () => void;
@@ -24,6 +25,7 @@ export function GoogleSignInPresentation({
   locale,
   enabled,
   confirmed,
+  requireConfirmation = true,
   busy,
   onConfirmedChange,
   onStart,
@@ -36,19 +38,23 @@ export function GoogleSignInPresentation({
       <div className="troc-google-signin-divider" aria-hidden="true">
         <span>{locale === "fr" ? "ou" : "or"}</span>
       </div>
-      <label className="troc-google-signin-consent">
-        <Checkbox
-          checked={confirmed}
-          onCheckedChange={(value) => onConfirmedChange(value === true)}
-          disabled={busy || enabled !== true}
-        />
-        <span>{labels.canada}</span>
-      </label>
+      {requireConfirmation && (
+        <label className="troc-google-signin-consent">
+          <Checkbox
+            checked={confirmed}
+            onCheckedChange={(value) => onConfirmedChange(value === true)}
+            disabled={busy || enabled !== true}
+          />
+          <span>{labels.canada}</span>
+        </label>
+      )}
       <Button
         type="button"
         variant="outline"
         className="troc-google-signin-button"
-        disabled={busy || enabled !== true || !confirmed}
+        disabled={
+          busy || enabled !== true || (requireConfirmation && !confirmed)
+        }
         aria-describedby={unavailable ? id : undefined}
         onClick={onStart}
       >

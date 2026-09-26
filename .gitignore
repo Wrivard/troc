@@ -54,3 +54,13 @@ Thumbs.db
 /verification/*.png
 
 .vercel
+
+# Reproducible local catalogue payloads (policies, notices and import code stay tracked)
+/catalog-data/raw/
+/catalog-data/releases/
+/catalog-data/current.json
+/catalog-data/*.sqlite*
+/catalog-data/image-work/
+/artifacts/marketplace/public/catalog-art/retained-*
+
+/catalog-data/thumbnail-renditions.json

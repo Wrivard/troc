@@ -9,7 +9,7 @@ test("listing photos stay under an operator-configured HTTPS storage base", asyn
     (await storage.readUrl("seller/card front.png")).url,
     "https://storage.example/listing-photos/seller/card%20front.png",
   );
-  for (const key of ["../private", "/absolute", "a//b", "a\\b"])
+  for (const key of ["../private", "/absolute", "a//b", "a\\b", "listing-quarantine/upload/image.webp"])
     await assert.rejects(storage.readUrl(key));
   assert.throws(() => new PublicListingPhotoStorage("http://storage.example/"));
   assert.throws(

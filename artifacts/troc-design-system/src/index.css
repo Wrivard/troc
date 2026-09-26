@@ -368,7 +368,7 @@ button, a, input, textarea, [tabindex] { -webkit-tap-highlight-color: transparen
 .troc-textarea { min-height: 112px; resize: vertical; }
 .troc-select-trigger { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); text-align: left; cursor: pointer; }
 .troc-select-trigger > span:first-child { white-space: normal; }
-.troc-select-content { position: relative; z-index: var(--z-dropdown); min-width: 160px; max-width: calc(100vw - 24px); max-height: var(--radix-select-content-available-height); overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface-elevated); color: var(--text-primary); box-shadow: var(--shadow-md); }
+.troc-select-content { position: relative; z-index: calc(var(--z-overlay) + 1); min-width: 160px; max-width: calc(100vw - 24px); max-height: var(--radix-select-content-available-height); overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface-elevated); color: var(--text-primary); box-shadow: var(--shadow-md); }
 .troc-select-item { min-height: var(--control-default); }
 .troc-select-item[data-highlighted] { background: var(--surface-hover); outline: 2px solid var(--focus); outline-offset: -2px; }
 .troc-select-item[data-state="checked"] { color: var(--text-primary); font-weight: 600; }

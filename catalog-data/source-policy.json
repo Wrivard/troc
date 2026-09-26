@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "state": "scoped-review",
+  "reason": "TCGdex metadata MIT verified; other source scopes remain separate. No blanket production approval.",
+  "productionApproved": false,
+  "sources": {
+    "scryfall": {
+      "status": "conditional-local-metadata-use",
+      "productionApproved": false,
+      "metadata": {
+        "local": true,
+        "production": false,
+        "evidence": [
+          "https://scryfall.com/docs/api#use-of-scryfall-data-and-images",
+          "https://scryfall.com/docs/terms"
+        ]
+      },
+      "artwork": {
+        "local": true,
+        "production": false,
+        "evidence": [
+          "https://scryfall.com/docs/api#use-of-scryfall-data-and-images",
+          "https://scryfall.com/docs/api/images"
+        ],
+        "scope": "User-authorized local card-reference testing; preserve full card, attribution and publisher rights; no production clearance"
+      },
+      "conditions": [
+        "Free catalogue access; no paywall",
+        "Application adds marketplace value; no raw API mirroring or resale",
+        "No implied Scryfall endorsement",
+        "Full undistorted card images only; preserve artist and copyright; no filters, crop or watermark"
+      ]
+    },
+    "tcgdex": {
+      "status": "metadata-license-verified",
+      "productionApproved": false,
+      "metadata": {
+        "local": true,
+        "production": false,
+        "evidence": [
+          "https://github.com/tcgdex/cards-database/blob/feced2e7b99bcf2e2ab76f0309e16ce2c15b6a9a/README.md",
+          "https://github.com/tcgdex/cards-database/blob/feced2e7b99bcf2e2ab76f0309e16ce2c15b6a9a/LICENSE"
+        ]
+      },
+      "artwork": {
+        "local": true,
+        "production": false,
+        "evidence": [
+          "https://tcgdex.dev/faq",
+          "https://tcgdex.dev/assets"
+        ],
+        "scope": "User-authorized local card-reference testing; preserve full card, attribution and publisher rights; no production clearance"
+      },
+      "attribution": "Copyright (c) 2021 TCGdex. MIT licence retained in TCGDEX-LICENSE.txt."
+    },
+    "ygoprodeck": {
+      "status": "existing-local-sample",
+      "productionApproved": false,
+      "metadata": {
+        "local": false,
+        "production": false,
+        "evidence": []
+      },
+      "artwork": {
+        "local": false,
+        "production": false
+      }
+    },
+    "pokemontcg-data": {
+      "status": "research-hold",
+      "productionApproved": false,
+      "metadata": {
+        "local": false,
+        "production": false,
+        "evidence": []
+      },
+      "artwork": {
+        "local": false,
+        "production": false
+      }
+    },
+    "optcgapi": {
+      "status": "research-hold",
+      "productionApproved": false,
+      "metadata": {
+        "local": false,
+        "production": false,
+        "evidence": []
+      },
+      "artwork": {
+        "local": false,
+        "production": false
+      }
+    }
+  }
+}

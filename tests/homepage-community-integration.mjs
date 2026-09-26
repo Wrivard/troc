@@ -24,6 +24,7 @@ try {
       { lang, theme },
     );
     await page.goto(`http://127.0.0.1:4313/?lang=${lang}`);
+    await expect(page.locator("[aria-busy]").first()).toHaveAttribute("aria-busy", "false");
     const selectors = [".troc-hc-about", ".troc-hc-community", ".troc-hc-cta"];
     await expect(
       page.locator(".troc-about-home,.troc-community-grid,.troc-final-edit"),
@@ -33,6 +34,17 @@ try {
     );
     await expect(page.locator(".troc-hc-seller")).toHaveCount(3);
     await expect(page.locator(".troc-hc-cta-disclaimer")).toBeVisible();
+    for (const location of await page.locator(".troc-hc-seller-location").allTextContents()) {
+      assert.ok(location.trim() && !/^,|,$/.test(location.trim()), "Location badges contain actual public location text");
+    }
+    for (const card of await page.locator(".troc-hc-seller").all()) {
+      await expect(card.locator(".troc-hc-seller-samples > div")).toHaveCount(3);
+      assert.equal(await card.locator(".troc-hc-seller-cover .troc-card-image").count(), 0, "Do not substitute a product image for store branding");
+    }
+    assert.deepEqual(await page.locator(".troc-hc-seller h3").allTextContents(), ["Card Forge TCG", "Piko Trading Cards", "The Playground"]);
+    for (const link of await page.locator(".troc-hc-seller").all()) {
+      assert.ok(!(await link.getAttribute("href")).includes("local-test-store"));
+    }
     let bottom = 0;
     for (const selector of selectors) {
       const section = page.locator(selector);
@@ -65,15 +77,16 @@ try {
           lang,
         );
       }
-      await page.evaluate(() => document.activeElement.blur());
+      await page.evaluate(() => globalThis.document.activeElement.blur());
       await section.scrollIntoViewIfNeeded();
       await section.screenshot({
         path: `verification/community-${selector.slice(9)}-${width}-${lang}-${theme}.jpg`,
+        style: ".troc-marketplace-header-frame,.troc-skip{visibility:hidden!important}",
       });
     }
     assert.equal(
       await page.evaluate(
-        () => document.documentElement.scrollWidth > innerWidth,
+        () => globalThis.document.documentElement.scrollWidth > globalThis.innerWidth,
       ),
       false,
     );

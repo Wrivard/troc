@@ -10,12 +10,12 @@ Milestones 1–3 are complete for sequencing per the user. Existing hosted activ
 | 2.5 | Marketplace polish | Existing completed polish |
 | 3 | Low-Value Commerce | Existing local cart/Smart Cart/checkout; hosted authenticated activation blocked |
 | **3.5** | **Frictionless Seller Inventory & Integration-Ready Architecture** | **Implemented/audited and application deployed; hosted activation In development** |
-| 4 | Seller Platform | In development in a separate task: bounded applications/manual approval/teams/dashboard. Reuse 3.5 inventory; broader scope remains planned |
+| 4 | Seller Platform | Mounted local seller UI/services: applications/approval/team/settings/storefront text, inventory and operations; advanced/provider scope remains partial |
 | 4.5 | Seller API & Live-Sync Foundation | Planned; public credentials, signed webhooks, delivery/retry workers and sync health |
 | 5 | Collector + Trust | Planned |
 | 5.5 | Founding Seller & Seller Referral System | Planned; activation-based qualification, configurable benefits |
 | 6 | Admin + Demo + Leads + Future | Planned |
-| 6.5 | Pre-Launch Buyer & Seller Growth System | In development in a separate task; user authorized safe isolated early work |
+| 6.5 | Pre-Launch Buyer & Seller Growth System | Mounted local account-last signup/waitlist admin; legacy lead/referral/cohort foundations retained; hosted rollout remains partial |
 | 7.5 | Wishlist & Demand Network | Planned |
 | 8.5 | Smart Cart expansion | Planned; extend Milestone 3 optimizer, never create a duplicate cart system |
 | 9.5 | Canadian Market Data | Planned; legitimate transactions and minimum quality/sample thresholds |

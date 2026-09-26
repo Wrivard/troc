@@ -64,8 +64,10 @@ export default function PriceHistory({
         height={180}
         label={t("history")}
         state={page.prices.length ? "ready" : "empty"}
-        emptySlot={<p>{t("empty")}</p>}
+        emptySlot={<p>{locale === "fr" ? "Aucun relevé de prix disponible pour cette sélection." : "No price snapshots are available for this selection."}</p>}
         dataTable={
+          <details className="troc-history-values">
+            <summary>{locale === "fr" ? "Voir les relevés de prix" : "View price snapshots"}</summary>
           <table>
             <caption>{t("history")}</caption>
             <thead>
@@ -83,9 +85,10 @@ export default function PriceHistory({
               ))}
             </tbody>
           </table>
+          </details>
         }
       >
-        <LineChart data={page.prices}>
+        <LineChart data={page.prices} margin={{ top: 8, right: 24, bottom: 0, left: 0 }}>
           <XAxis
             dataKey="capturedAt"
             tickFormatter={(v) => String(v).slice(5, 10)}

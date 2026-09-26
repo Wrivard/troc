@@ -1,0 +1,587 @@
+{
+  "77d0ab01-0974-59ac-8bbb-f3430b51746d": {
+    "total": 217,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me02.5",
+    "sha256": "46a91c4cbbae61677fec2a6c37195975ff3cd1b91d729189377de0d4fdf58b9d"
+  },
+  "f3a9836a-bdf2-5ea8-8716-ae45cfecd5f6": {
+    "total": 165,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ecard1",
+    "sha256": "32ce018b7b114fc784b67f2652d8591a0f77f63c233656e6cb081e2bc0c7bbb3"
+  },
+  "9f0e2dab-ba82-5964-8c76-9c8043693644": {
+    "total": 146,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp6",
+    "sha256": "c15e3324a8add105863bd7509bb1b9fcf2eaf65543a4a9e23d69e5bf6c773409"
+  },
+  "5e669289-caae-5122-86e3-addfa9bdb02f": {
+    "total": 182,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv04",
+    "sha256": "344aee5335392f0c711b0b00d46273f725639cef8bf9211800464c98afc49510"
+  },
+  "00008a7d-7775-5445-850c-00a46c51acc0": {
+    "total": 147,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ecard2",
+    "sha256": "c7db6ffd2d24cdc340fe86d57d65d7c294d5302db390ab55e0e91d4c68f49c34"
+  },
+  "962bbef2-c105-5f6c-846e-c1a4496c3fcc": {
+    "total": 144,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ecard3",
+    "sha256": "2cf640aff6324d3c59ee2950dea9e62a7039cc217b4ad8cac4ebeae6d29296d5"
+  },
+  "658aff41-4085-56ed-8a19-12409a4f15e3": {
+    "total": 98,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw2",
+    "sha256": "ee8faa6655f8523ed2ab010236e7af3f7004b63f38e9e14e9e952e5ab2114824"
+  },
+  "bf800077-cb64-53c4-833b-50616a496a9d": {
+    "total": 191,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv08",
+    "sha256": "663fc4d87f856bbc8cc2e5140b68f5f0c1262608cb5f5552797f0704c1254d57"
+  },
+  "ce56ef9d-7e50-5c0d-8f75-3300e3553cc9": {
+    "total": 142,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv07",
+    "sha256": "f9e9d21d3e1bb634ac629b29d2dc066ae461b82c30c03b19f126f7ab2ce5545a"
+  },
+  "2b3d58a8-18cc-54c9-8ff7-8151ead2580a": {
+    "total": 132,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me01",
+    "sha256": "e607b62d5e7ea9c8e6e12a321058ccf90b0e33a3ac5af2471fdda39449d57f54"
+  },
+  "0d82b804-32fa-5c21-80db-15b4e959d109": {
+    "total": 116,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw9",
+    "sha256": "953f13a696d0b77807e99d1f604e196ec568fa0c9f16de20c52037614a6ed3ac"
+  },
+  "7aac731f-29ed-5b48-88e2-313dad817502": {
+    "total": 75,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/neo2",
+    "sha256": "987f21405a42b041777b3029c7704fa7869673f8da38295805ef7b44e06d9186"
+  },
+  "15b998ca-c60c-5023-8ad1-f787b12504af": {
+    "total": 124,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw6",
+    "sha256": "59c05127aa0e461a69e1da68d677154916e420365e81a578ca4f5b3f35b9eb03"
+  },
+  "27b57e37-f286-549e-853b-a85bc18d23d4": {
+    "total": 102,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/hgss4",
+    "sha256": "5d817b3867f214f10a69a2e47865e7477fd98937201c51b99c28d69b8b011eee"
+  },
+  "d681f4dd-6770-575c-8346-1fc6e79645ab": {
+    "total": 130,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp1",
+    "sha256": "3120cb1d0f6c68f2e708313f3d14caef5998e1c7d10a12459772a1cd16b04a2d"
+  },
+  "3feddadf-10c4-5983-8e2c-6757d911b5d5": {
+    "total": 101,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex15",
+    "sha256": "8dc32f70844de389a95cad57e1b7cc228a225ff25ad08195fe00089adccb5bdb"
+  },
+  "c4a6e733-f24d-59c3-8149-40509687bb46": {
+    "total": 99,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pl4",
+    "sha256": "c8a54aae88954b51e6c83bfc17083cc4cb39543cfafadd8c37084d5b5740335c"
+  },
+  "b421cf3b-b054-5aeb-8216-c0d59dda1ec9": {
+    "total": 107,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex8",
+    "sha256": "e5dddc371ef57862730a4dcb550a26f2d9f2065b95eb13c9f7a0a263ca29eb86"
+  },
+  "31ccbd06-4f93-5eac-8ba6-f86601133590": {
+    "total": 86,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me04",
+    "sha256": "a748d3b5677802cd49d3a38dd990f136300b3076e8155e05729e279ed2d10539"
+  },
+  "2d90b64c-1138-540c-85c5-40215a77e369": {
+    "total": 127,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pl1",
+    "sha256": "7905876b1aea459a8bbaa6fe97b9d2cbc71d03ded5a16c540548d234639ac329"
+  },
+  "f816e627-925b-566b-8d09-8a70a0e3c039": {
+    "total": 112,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex6",
+    "sha256": "c6134cf24e8f1587e53b501a95eeb03ddc5b1e81ee4f897c820e17a7de575ee7"
+  },
+  "3264bd80-1516-5326-8288-b467a97f38bb": {
+    "total": 113,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw11",
+    "sha256": "f6eae344ac89b66a9f5cd5a7aaeb0376e9fc79f01ea48a91b2ae7c166cfa7312"
+  },
+  "9960ddf4-7ee0-52bf-8535-b436417fb817": {
+    "total": 182,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv10",
+    "sha256": "82dc5824fb3837a3eee97e97572250f5d18edb3911734029d1360f9d207c6537"
+  },
+  "b104f329-b84f-58c7-8881-37311c9b7251": {
+    "total": 110,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/lc",
+    "sha256": "6cb010fa2d83b0087044402d7eb3144c3cdda112794f66340d0aa2ec0f91d95d"
+  },
+  "6616ed89-c6ce-50f4-83d1-0ef8aef0b3dd": {
+    "total": 162,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv05",
+    "sha256": "80622999774b20980b70f0ab017a8a444194cfcf3f31d1d70731cbf37a80e077"
+  },
+  "c806fce1-2c0a-56d7-837a-5b8ee40fd123": {
+    "total": 113,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex11",
+    "sha256": "0d5528714308ca40385f0675732885a5adb09246c77230b03aaa2dce8aea6991"
+  },
+  "b578dece-2ba7-5a7f-8b74-4590a1f8eca8": {
+    "total": 102,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/base1",
+    "sha256": "fbf0c46daf1faa242732b4531cc2842c9b5018da67000dac879c7180fe4524dd"
+  },
+  "2d18b8bd-4f31-5e8c-86bc-60ec67a7fe3a": {
+    "total": 100,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex14",
+    "sha256": "de1700592eb68c89912da21060be8a7e038b33aa92d8cf0563c99a130f408e6a"
+  },
+  "aade44de-733a-5d27-8bd4-8dc5ca7e2ba5": {
+    "total": 159,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv09",
+    "sha256": "ea9fcf4c5cc0534b19117da9bd9cd7755fcf108ea6a9eca2d939265a2da5dce2"
+  },
+  "ad224ac1-9f54-5a58-8f1e-f60a4cc98b83": {
+    "total": 99,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw4",
+    "sha256": "8fa18fc05e81de5671e7b6a8c4545cceb7226b59300220daeb91c6c3e2c02ad7"
+  },
+  "e066615f-8c89-550a-8d61-90b4f0a50252": {
+    "total": 100,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex2",
+    "sha256": "f418e3028b309e97c53491ee5c4eb6457a6ec6e62e552376f85ea4516fd96422"
+  },
+  "c6a3d587-f650-5f7a-8010-08f35ba7f7cb": {
+    "total": 101,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex5",
+    "sha256": "3e6f9377c15a499f2115ef466ba6e816ec3474b640f069cb3e804b67d6398960"
+  },
+  "1550d924-bce8-5e06-8459-7113528dd154": {
+    "total": 111,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pl2",
+    "sha256": "1d4020998d5ea7f475e966e48944caf7cafaac4963d4133d927dd041d531be75"
+  },
+  "21733a2b-f419-5364-8e7f-ac2ed8561337": {
+    "total": 128,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/30th",
+    "sha256": "97174c210f6022d91bf23b7b646f227eeff3f31c6b67b43dbbd41b7f7c4c6b5a"
+  },
+  "a089561b-b10c-454f-836d-0cda78878461": {
+    "total": 197,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv03",
+    "sha256": "50a43a93aefa9f4a409c573a6523709306fe64c13675a11f39df21ccbc0842c8"
+  },
+  "956b9b4d-273c-5e3c-85e0-ebf338b82ab9": {
+    "total": 92,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex12",
+    "sha256": "441f1b1a640125db3772884dc1785cd139dfbdf518562c02fe2b16647e1c5b5e"
+  },
+  "b2130825-f572-520d-85f0-410d9bc31127": {
+    "total": 101,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw10",
+    "sha256": "76b6f3ac44927ddc600b37abb8950b2eae1c84aa3a7c0561bf5efa5143ac0857"
+  },
+  "a70e9d29-c500-508f-89c1-613c158a6ee1": {
+    "total": 101,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw3",
+    "sha256": "dd25033c5193376239c15aade5a27134743de98d679a304ec5e8d83b3068ce33"
+  },
+  "06c12cc9-2e7a-5641-86c8-af5a788449a4": {
+    "total": 106,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp4",
+    "sha256": "334b85cdd547be602a4eee604f52858ac3a8cc113c8034436fa2f4a9073976f7"
+  },
+  "c27c7832-4862-512e-8a16-fee0fa2341f3": {
+    "total": 114,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw1",
+    "sha256": "25d82b9f9747ec2d3241c4274bf85dd366a677d0ed256a400a0cc674f2f32628"
+  },
+  "c5ee35b3-ea5c-593b-8ee7-77cd2e5e3d76": {
+    "total": 198,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv01",
+    "sha256": "21352538283864a74d55673fe5f1721e38619fa2debaa0ff6ed606b577db8709"
+  },
+  "5af93beb-44ac-41cc-a0ab-522b9075def3": {
+    "total": 165,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv03.5",
+    "sha256": "c08470d9f287a71176ed0d5c8a32c719e1e247d4985ad9da9cc3e1d05f541364"
+  },
+  "d4601aac-cb5c-5280-8059-c033d2b39e66": {
+    "total": 100,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp7",
+    "sha256": "0a23c5ef7bf8010e3fb757f1ad509fbaef88614ae9bdb316a03a5adc5d5e102f"
+  },
+  "a8c0c2cb-2a42-5813-8e7c-c604daa81de7": {
+    "total": 111,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/neo1",
+    "sha256": "4b3fac212e3d5942af4e360834450490f551f6f6d7bdf30e94e0c9d551224e2a"
+  },
+  "00053595-1d12-5cc9-86e3-d9d7db93435f": {
+    "total": 108,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex16",
+    "sha256": "91119cc3785103b1a36928ac47cd45011f249d40bc06589bfe00b77e05b05fc3"
+  },
+  "35ae403f-5042-5832-8aaf-49c4a5d9a3ec": {
+    "total": 106,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex9",
+    "sha256": "638ebfe2bb2274be7bb1fab291973ab64182c1a3aea795e37c7c5f9b9953b807"
+  },
+  "4297e114-cc2b-57c9-87f5-ab879c9d355d": {
+    "total": 94,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me02",
+    "sha256": "712252be3da9bacc487bbe23da517ac1a4a1c77f697c92057c9dbe4da6bb82a5"
+  },
+  "12e90198-7818-5a09-812e-ced12b931bee": {
+    "total": 108,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw5",
+    "sha256": "8633c67abdcd3d6b6c974c787ff184c15eea334c18fc78431ee04b611435f206"
+  },
+  "f6012199-405a-54b6-8611-1de8ee19d398": {
+    "total": 123,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp2",
+    "sha256": "5d9a0060301f4e21f3534a9147d9d76c5c2c3930c9520c0fced4e4ed6f741021"
+  },
+  "05ee4340-83b5-56b4-8dc2-a5e9cf747fa3": {
+    "total": 15,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2023sv",
+    "sha256": "44a260029cfde67a31bdc8fd0fed2f9241b1c22fd0914975b690cff9a3e9f848"
+  },
+  "489d68ef-3663-596e-8ad3-86e2ff34ca2a": {
+    "total": 64,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv06.5",
+    "sha256": "1a88ae81aa461c475d14fdf480f3044f6dc72047fbbede3805addaf12317ff2c"
+  },
+  "70c19872-9477-5642-8d7b-08459d83ffcd": {
+    "total": 109,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex1",
+    "sha256": "c9fa960489259f3b5d58d2c2e3f98e57e33e474434df46fdab90cd53ea7c29c8"
+  },
+  "bac537be-a120-543b-8730-7437f8a84119": {
+    "total": 84,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me05",
+    "sha256": "6f5510ce498011f20e6a4b612c6932324e83b1c29251e3041822bb50de5e58f1"
+  },
+  "c29fa179-71d9-59da-8c20-020e63bc6ee0": {
+    "total": 82,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/base5",
+    "sha256": "d1a5c83f82a736895e311e9240273affbfc4a301e5ef6484358b021d4115ff5a"
+  },
+  "8bb810ba-2ac1-5df3-8755-4a30d755d94c": {
+    "total": 16,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ru1",
+    "sha256": "dbc0eb680903b02ecfc676ed2b5869f965817bf08806fc9994e1289bed704380"
+  },
+  "bc0e74c1-0039-5bd2-8624-58042a6bc4f9": {
+    "total": 149,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw7",
+    "sha256": "442f431419e03419de64b7dc00ab8271dd998535a7d0cdbd6dbd4316e72f91f8"
+  },
+  "210a4c78-be62-523a-8834-a2304eea79e5": {
+    "total": 193,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv02",
+    "sha256": "ed785a50d9f71605749b1ea8e4f74f55eabc1026a6301f7a7d366c9176dbaeb7"
+  },
+  "73d11906-cc93-58c7-872e-7a5f8b3d05c7": {
+    "total": 24,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sve",
+    "sha256": "abf3c98ee82265688d72da957769f757212d7194e14595f926ba09fa1de080ef"
+  },
+  "f33eab35-a301-5dd7-8a8e-0437d2abb184": {
+    "total": 115,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex10",
+    "sha256": "2ce9eb2a9a92cbaa73ddd6bcf8c73bafc662b93b8de4370d6c61ae2f4bd35220"
+  },
+  "6007a0bc-2d25-5647-8ea2-5fa3d832f003": {
+    "total": 95,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/hgss2",
+    "sha256": "88e0a4d999683ab78e74254df99aa208b8cbfcd4adedc33255a13d20cd9134d2"
+  },
+  "cb066139-8f36-5eca-8458-e2469315ef41": {
+    "total": 225,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/svp",
+    "sha256": "5438ba9c3073e944d847c235bc06a41a3f0b306816c62bfcecbcbdf7f451e71a"
+  },
+  "cb9613d1-96d3-5642-8534-0c302716f076": {
+    "total": 132,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/gym1",
+    "sha256": "9d19156dc3b163b94957f52fe1a9d18ab2c42aa1c12945ff8d0a9fbf0d56a7aa"
+  },
+  "7e87599f-f2a7-51a9-8407-3ede33fadb0d": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2017sm",
+    "sha256": "d7c415be68e0b1ceea7e0c82365e7e9c43931ca501a8dbbb4e46236fde77a9a6"
+  },
+  "d8fac458-7b7e-5cbe-8ed2-845639395392": {
+    "total": 131,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv08.5",
+    "sha256": "a0d846ea0026850e19da9c8416cf7e7eda3e5b0044d60fea9ab00abdec7aef6e"
+  },
+  "a26b6bb3-6c84-58b8-852f-25b919e10d36": {
+    "total": 109,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex7",
+    "sha256": "fcf19869875102e56f4b46ff069a98b034fbe14dc2790f8f031e2ecadb194b48"
+  },
+  "c6d3b4e3-8b70-5a7b-862e-cf9c434e6a79": {
+    "total": 147,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pl3",
+    "sha256": "593684590a9f8a6d9c972a55000a78d0d0fc56b521d822a39d6858a91a0309a6"
+  },
+  "9ce66429-5409-5284-8f75-05a1d1c4586e": {
+    "total": 105,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/neo4",
+    "sha256": "02c8218875ecba3ad911aaffe84118e2aaa7fc931ca6a6f765e4d6802fb9c5b2"
+  },
+  "af7fb51a-8a9d-5f99-8042-c86fd122d2f4": {
+    "total": 123,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/hgss1",
+    "sha256": "4a0ba0b9d8c68d2f356fd63cfc434417048a33d4da4092861e6b8dfe19dea370"
+  },
+  "7cd9d120-d4f4-5c27-8a3e-653a6647ae38": {
+    "total": 64,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/base2",
+    "sha256": "76a1f05e69eebc18fcd8cd6dacfe65dfe652c2f3d58b816b25e0d80e1a442525"
+  },
+  "0b79c53c-9cac-5a0a-8e26-2bbbcb94a001": {
+    "total": 88,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/me03",
+    "sha256": "845709512823044ca18dc9db0c6699a5b865c05fda452c349cf8f7b67861f21f"
+  },
+  "8f624cd7-65ef-5fc3-8974-b38de490f300": {
+    "total": 86,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv10.5b",
+    "sha256": "17609a14079d79434f13bfee8c67a336f26a9ca62ce01d208fea2f848b8f4c6f"
+  },
+  "47c8b96d-ff0a-5c48-8f0f-f0e32af530d1": {
+    "total": 110,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex13",
+    "sha256": "d7cba35d2d828801899b76c0ec5db2011e25bc421b2a8b8de4e574b0c922d6fd"
+  },
+  "a19615c8-5cbb-530c-8da1-4b650d51a425": {
+    "total": 135,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bw8",
+    "sha256": "c03430bbbb2c5968700093af81abd079d51ab5741f8b7ede7156fd0d0cc4605d"
+  },
+  "73e89a02-92bd-53d2-8737-50d9e702a651": {
+    "total": 15,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2022swsh",
+    "sha256": "0203c2e51e3d3f8abbe40eef2efc622d888b4b7d606d35ea8b0ce4daf9d25214"
+  },
+  "7d24383a-894d-5dfa-8ba4-59863cb48007": {
+    "total": 8,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/mee",
+    "sha256": "98850632194c5972c0ee2ae79ee4400defd66c5f1c92fa41da6512e8d16e5f46"
+  },
+  "32222efd-106f-57f9-8cb6-8ac03330f186": {
+    "total": 130,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/base4",
+    "sha256": "c9d3f074215b8dcae7986965c3e6ac329d1fc0f23ea13d39df973b4706a80a4f"
+  },
+  "1a98e52b-284f-52c9-8410-615662e88d79": {
+    "total": 91,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv04.5",
+    "sha256": "429f62604858881666a70d50375989bbf0ac68c5e69376c9076da4c4809ae868"
+  },
+  "5bd51774-23b5-570e-8232-cf6b1225f609": {
+    "total": 53,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/basep",
+    "sha256": "4ec8f811f9d76130064c36223a158207276fc7e4e5243155b43d75b9cf21c148"
+  },
+  "8c415526-e850-5c59-8f63-7626a1090a4c": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop4",
+    "sha256": "9cef1d47e96d6aa2b42850f5bde39bb67f9b7fac41cb70110803afb7828b9c96"
+  },
+  "f5880f0c-1d8b-5afa-897a-9b8319bfd978": {
+    "total": 15,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2024sv",
+    "sha256": "506c44e190de76d758d22b45d0592d42a51b8f8caf5d3319647f6af8e19a07b0"
+  },
+  "a6a6e6ad-0900-53d4-831f-15653d7476b9": {
+    "total": 97,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex3",
+    "sha256": "7d6687e3553d1870753e5d41e851f9b8bb00033341dc5eb0cfea0ede668717d4"
+  },
+  "aa820e43-67b3-58df-8542-ed1b6cafdfa0": {
+    "total": 132,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/gym2",
+    "sha256": "771ef9481d965306f11d06f3c0a8448261bb367dc5802205bedeb44bb69bdbee"
+  },
+  "b96d0ea9-f7b6-54db-8629-e5dd89f1b5bb": {
+    "total": 132,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp3",
+    "sha256": "7c4cefc43b23428ace26ff82fd78557fb2fed46c4159191ad3b397cdbfab47fd"
+  },
+  "47308c24-5a5f-5a29-8b48-28f0a214ebd8": {
+    "total": 95,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/col1",
+    "sha256": "aa713c61f0c83591dad90c47534aa475115e925ec377e0f0737372a4c8ae5ac7"
+  },
+  "db4b8669-09e3-550f-8a5a-4abeb40e5a19": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2014xy",
+    "sha256": "1ad0c04dc81e22922f68f0dbae3632bb3d85befe1ebb6e9f670e538a4deb5b37"
+  },
+  "15476efe-3fc6-5634-8044-671038cd7b7a": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop5",
+    "sha256": "3238e88521982d00ab5f5654bd83728fbf5343624655d4ff089bcadff18aa536"
+  },
+  "60579e95-570d-53c6-8333-3c3cbeb48aaf": {
+    "total": 100,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dp5",
+    "sha256": "ab079ed848434ee58590ef6034b478ab699c34b68983e4d79a983d8ef0a1432f"
+  },
+  "e91afd3a-7180-5dd9-89f6-8c4d192c9e73": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2015xy",
+    "sha256": "6f881a8398e0678d3d6378db6fc2173fd07f65e851754c3edf86bcf485de8faa"
+  },
+  "897380a3-ec24-536d-8aa3-1e411fb18b91": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop9",
+    "sha256": "2933d038737aff5fcbfba035cc7a1f31f6934a52773a880a3a0cb60ae694cc4b"
+  },
+  "99647a7f-16ec-5949-87ee-80c50c9aedd7": {
+    "total": 64,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/neo3",
+    "sha256": "20fb277d8518ad12c5133aac547b9b939d64a63233870104a304d32be575c534"
+  },
+  "5ba95c3e-c130-55b2-8adb-6f16edc53d74": {
+    "total": 101,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bwp",
+    "sha256": "c31758eaa76cc39b4ef82839ac24f5c9025b366fdc54c912ddf59d57c031bf8b"
+  },
+  "94a40c70-03a9-5810-8f8e-44c0983deeba": {
+    "total": 95,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex4",
+    "sha256": "41f563f1f8e085018b1e2038c02f067baa4eab0186648b516b5eb7db20c7fd86"
+  },
+  "0acbc9e2-3935-5f64-8daa-2d954d42af7b": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop1",
+    "sha256": "56c7b9b68ee3c3ba939e1e2ac8478bec7d19dde9dd434a09eb30f1687600ce9a"
+  },
+  "a2cce8a5-1e3d-59bd-80ec-9be202f84c01": {
+    "total": 18,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/si1",
+    "sha256": "90dfca1d0a6478d2e12ec3bc7da43a17f6f1a21bc2164c72badf91dc4e331dd3"
+  },
+  "03c67bc7-0979-5779-89ec-d54e5061dd2e": {
+    "total": 167,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/sv06",
+    "sha256": "491bd25eda1d3cba14a6d91802643744daf64a89eecde80ce7809cebe20e2523"
+  },
+  "072beae8-7288-597e-8be1-fda1f696c626": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop2",
+    "sha256": "315678fa85e16f9d8695a2fa42a7452bed7df6553fb638d8f9f63e4af0a62788"
+  },
+  "7ed3d202-eef8-520e-8133-fc975a41db06": {
+    "total": 90,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/hgss3",
+    "sha256": "665e64e6a110b448bcb4df669ac7a98551009e665d3bbf68867f0d3145ceaac7"
+  },
+  "b86d55c0-4d99-5928-8b2b-b23234d476ca": {
+    "total": 48,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/mfb",
+    "sha256": "c8dd53dbd178de8bdb41ca9201910e22b3596b4df6994618634d61bf9e7885a0"
+  },
+  "959e451e-aab0-55f0-85b1-0507b66df06d": {
+    "total": 25,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/hgssp",
+    "sha256": "7a4084a28d9970eb2685cb5836920f38db6bc4bc1fd737ab84b5d56ba8806bb8"
+  },
+  "8d67d03e-883b-5beb-89d2-feece1f503ed": {
+    "total": 62,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/base3",
+    "sha256": "c5a6339aac4b450168ad9788094d36f4e9bce0dd21089428f420cecf8a3e742a"
+  },
+  "652f686e-47b1-54d0-8fb6-e3523e8f9090": {
+    "total": 56,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dpp",
+    "sha256": "053b180291037998e9ec1b2ea4c73195f508b920efe28bef7fa71193376b7323"
+  },
+  "915d9c37-ee34-5267-8714-4e9e31d36b79": {
+    "total": 9,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/bog",
+    "sha256": "3b8ac97cd86a45a22397fd415006c4aef522cffc2bee4116db023f539e3ac67a"
+  },
+  "3ba91943-12bc-55e1-830d-8fe451c78478": {
+    "total": 20,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/dv1",
+    "sha256": "fa7fcd56fb66b2ae01da52997dd53c998f72d0e96f4b93e56d5ba87b46641b4c"
+  },
+  "ce385153-1ecf-5129-8b30-7facfd849e3b": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2018sm",
+    "sha256": "6382c6eab656b2ca91a1513c5495e54bc6c12a1c2a3517596b588b983b5c4b41"
+  },
+  "908e6f00-04df-5402-8d89-fb608360b1ca": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop7",
+    "sha256": "3fe6d63fcdb4249e63de28ef0513ee0f2f4c85908991622999ec5570b797873d"
+  },
+  "1e5a818a-0930-593c-8f09-c099898d0506": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2012bw",
+    "sha256": "ed6402534ba9f2f58e5fb82b1ecc5d54b6bac140791ca71d81284dbab037637b"
+  },
+  "9fc79d59-1373-5660-82f5-823524969c5f": {
+    "total": 40,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/np",
+    "sha256": "8e07a1d4bc5c8f3f58277d425c2334d732e2504279c6fe2e7fcac301ae3b3057"
+  },
+  "bf1b95ac-a691-53a8-8374-f20dfd4e606b": {
+    "total": 28,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/exu",
+    "sha256": "d8a69051a64f60e9cf1361a885b2c7f9d10d82c7f1073bf4fed899fb8a16a0cf"
+  },
+  "a4f69018-63eb-505c-8357-6a5efe3d6b4b": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop8",
+    "sha256": "2cc913296d99478b5c17da5eb9bfd0c457cead31238e053e40a21f71f15145fe"
+  },
+  "23bf57ad-2a5f-516e-8466-bf2fd69842ed": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop3",
+    "sha256": "d9966162d42cd6edb0d846fe8e52f8589a0ee1ea9810a8b43d3c5625a789dc0f"
+  },
+  "ebf287f6-5bb8-5a62-85a3-746f9ce491a9": {
+    "total": 25,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2021swsh",
+    "sha256": "0a9982aa10d7362d2f9fc064b99c0ff8ddf580a758a74a0341b6297db1ddff14"
+  },
+  "8ae6d651-c45b-5c8c-8f22-164b91c964a2": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2019sm",
+    "sha256": "78d86812cb4b1d28faac34c711c4a21b4f5e04d7126d11f028f4b598773642c0"
+  },
+  "ff793f4a-ff8c-5da5-81eb-c58aa565a27b": {
+    "total": 17,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/pop6",
+    "sha256": "fedb2b427515a709d2e6763cdfd5a53611087c9d3545952c155af2d83e076ee1"
+  },
+  "5d039be1-a0b2-56e9-8cf7-ddfca37df755": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2016xy",
+    "sha256": "3efc0b8a698b35a5a6f86f36f936c096b95378d3d37ce155038151568c00b168"
+  },
+  "3434ead8-e24d-575c-8797-8a1a74ab4b21": {
+    "total": 12,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/2011bw",
+    "sha256": "5441c3d3259318a71b974b1d2e1efc5177aa407d9cee582f0e52ad152698eefb"
+  },
+  "331a1f99-f438-569f-8153-9aac07dafa75": {
+    "total": 5,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/ex5.5",
+    "sha256": "e9a928cea5ed7b80d845818cefc278b8a0e056b6168dcb3915bf2d334a6b98ac"
+  },
+  "40ea43c8-868b-53e9-823f-0b21eeac8dd5": {
+    "total": 1,
+    "sourceUrl": "https://api.tcgdex.net/v2/en/sets/miscp",
+    "sha256": "b71c2fac94b7d3253176cf77252caad1c9ce42fd6064fcac8d71d1bbb7bde6e8"
+  }
+}

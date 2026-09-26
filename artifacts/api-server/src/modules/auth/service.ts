@@ -2,7 +2,9 @@ import { pool } from "@workspace/db";
 import type { User } from "@supabase/supabase-js";
 import { DomainError } from "../shared/domain";
 import type { GlobalRole, Principal, SellerRole } from "./permissions";
-export async function ensureBuyer(user: User): Promise<Principal> {
+export async function ensureBuyer(
+  user: Pick<User, "id" | "email" | "email_confirmed_at">,
+): Promise<Principal> {
   if (!user.email || !user.email_confirmed_at)
     throw new DomainError("unauthorized", 401);
   const client = await pool.connect();

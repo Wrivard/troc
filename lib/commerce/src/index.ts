@@ -11,6 +11,9 @@ export type OrderStatus =
   | "partially_refunded"
   | "refunded";
 export interface Promotion {
+  /** Explicit UTC instants: start inclusive, end exclusive. Both omitted means legacy unscheduled. */
+  startsAt?: string;
+  endsAt?: string;
   id: string;
   minimumCards?: number;
   minimumCents?: number;

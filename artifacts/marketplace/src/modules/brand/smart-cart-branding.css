@@ -1,0 +1,27 @@
+/* Decorative approved Pokémon artwork behind the comparison, never over its content. */
+.troc-smart-edit .troc-consolidation--panels {
+  position: relative;
+  isolation: isolate;
+}
+.troc-smart-edit .troc-consolidation--panels::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  top: -28px;
+  left: 50%;
+  width: min(76%, 370px);
+  aspect-ratio: 600 / 825;
+  background: url("/catalog-art/db8f75c795d94c530fdd-600.webp") center / contain no-repeat;
+  opacity: .18;
+  transform: translateX(-50%) rotate(14deg);
+  mask-image: linear-gradient(#000 65%, transparent 100%);
+}
+@media (max-width: 600px) {
+  .troc-smart-edit .troc-consolidation--panels::before {
+    width: 88%;
+    top: 16%;
+    opacity: .14;
+    transform: translateX(-50%) rotate(9deg);
+  }
+}

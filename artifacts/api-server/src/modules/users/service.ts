@@ -7,7 +7,11 @@ export async function account(principal: Principal) {
     `SELECT u.id,u.email,p.display_name AS "displayName",pr.locale,pr.theme FROM troc.users u JOIN troc.user_profiles p ON p.user_id=u.id JOIN troc.user_preferences pr ON pr.user_id=u.id WHERE u.id=$1`,
     [principal.userId],
   );
-  return result.rows[0];
+  return {
+    ...result.rows[0],
+    roles: principal.roles,
+    memberships: principal.memberships,
+  };
 }
 export async function savePreferences(principal: Principal, input: unknown) {
   authorize(principal, "account:write", principal.userId);

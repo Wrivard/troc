@@ -1,0 +1,48 @@
+{
+  "setTitle": {
+    "en": "Obsidian Flames",
+    "fr": "Obsidian Flames"
+  },
+  "cards": [
+    {
+      "id": "9bc69642-4786-4afc-aa91-17c98b12a1d4",
+      "name": {
+        "en": "Amoonguss",
+        "fr": "Amoonguss"
+      },
+      "number": "010",
+      "imageUrl": "/catalog-art/328a9b01881f0fc2158f-600.webp",
+      "exampleCents": 50
+    },
+    {
+      "id": "740199ec-5d8f-42e6-93a5-04f267a3ecf0",
+      "name": {
+        "en": "Bellossom",
+        "fr": "Bellossom"
+      },
+      "number": "003",
+      "imageUrl": "/catalog-art/0c791f1e400e0c733c36-600.webp",
+      "exampleCents": 10
+    },
+    {
+      "id": "12318117-bc09-44c0-9fbe-04701489774e",
+      "name": {
+        "en": "Bounsweet",
+        "fr": "Bounsweet"
+      },
+      "number": "016",
+      "imageUrl": "/catalog-art/51f2f8360830803b30f3-600.webp",
+      "exampleCents": 75
+    },
+    {
+      "id": "9d485d03-8e6e-4426-90ff-52a4f05a8d03",
+      "name": {
+        "en": "Combee",
+        "fr": "Combee"
+      },
+      "number": "008",
+      "imageUrl": "/catalog-art/6535b22ac50e0b6db46b-600.webp",
+      "exampleCents": 10
+    }
+  ]
+}

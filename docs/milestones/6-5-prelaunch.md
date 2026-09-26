@@ -1,5 +1,7 @@
 # Milestone 6.5 — isolated prelaunch growth
 
+> Current reconciliation — September24: Current account-last signup and admin waitlist are mounted in Troc-UX-Design4313. The unmounted/Agent C text below describes the original isolated handoff. Legacy anonymous lead/referral/cohort foundations remain separate from account-owned onboarding. Real provider/rollout/reward activation remains open. See build-pack CHECKLIST-AUDIT/REPORT.md.
+
 Status: **In development**. This is an unmounted implementation, not a live launch.
 No production database, hosting configuration, email delivery or marketplace
 entrypoint has been changed by this task. Owner: Agent C, `Troc-Growth`.

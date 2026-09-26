@@ -1,3 +1,4 @@
+import { promotionActiveAt } from "../artifacts/api-server/src/modules/commerce/promotion-time";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
@@ -78,6 +79,27 @@ const listing = (
 const line = (listingId = "1", quantity = 1): CartLine => ({
   listingId,
   quantity,
+});
+test("scheduled promotions use exact UTC boundaries and one optimizer instant", () => {
+  const startsAt = "2026-09-25T00:00:00.000Z", endsAt = "2026-09-26T00:00:00.000Z";
+  const start = Date.parse(startsAt), end = Date.parse(endsAt);
+  const rule = {id: "scheduled", basisPoints: 1000, startsAt, endsAt};
+  for (const [now, active] of [[start-1,false],[start,true],[end-1,true],[end,false]] as const) {
+    assert.equal(promotionActiveAt(rule, now), active);
+    const s = seller("a", {promotions: [rule]});
+    assert.equal(quoteCart([line()], [listing("1","a",{cents:100})], [s], {now}).discountCents, active ? 10 : 0);
+    const optimized = optimizeCart([line()], [listing("1","a",{cents:100})], [s], undefined, now);
+    for (const quote of [optimized.original, optimized.optimized, optimized.naive]) assert.equal(quote.discountCents, active ? 10 : 0);
+  }
+  for (const invalid of [{...rule,endsAt:undefined},{...rule,startsAt:"2026-02-30T00:00:00.000Z"},{...rule,endsAt:startsAt},{...rule,startsAt:"2026-09-25"}]) assert.equal(promotionActiveAt(invalid,start),false);
+  assert.equal(promotionActiveAt({id:"legacy",basisPoints:1000},start),true);
+});
+test("quantity and spend publication thresholds both apply at exact cents",()=>{
+ const s=seller("a",{promotions:[{id:"both",minimumCards:2,minimumCents:1250,basisPoints:1000}]});
+ assert.equal(quoteCart([line("1",1)],[listing("1","a",{cents:1250})],[s]).discountCents,0);
+ assert.equal(quoteCart([line("1",2)],[listing("1","a",{cents:624})],[s]).discountCents,0);
+ assert.equal(quoteCart([line("1",2)],[listing("1","a",{cents:625})],[s]).discountCents,125);
+ assert.equal(quoteCart([line("1",2)],[listing("1","a",{cents:700,saleCents:625})],[s]).discountCents,0);
 });
 test("low-value singles, minimums, promotions and sale stacking stay exact", () => {
   for (const cents of [5, 10, 25, 50])

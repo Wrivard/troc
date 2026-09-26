@@ -1,0 +1,8 @@
+# Analytics summary backend - local evidence
+2026-09-24. New GET /seller/platform/:seller/analytics-summary; UI not switched.
+
+Existing service.access plus server-side owner/manager/admin role requirement. Bounded7/30/90-day periods, explicit live/sample dataset and validated nonfuture asOf. UTC day boundaries match existing analytics model, including full current day and preceding equal period. Query excludes pending/cancelled, uses immutable demo provenance, aggregates daily count/gross order cents/refunds/refunded-order count/units. No message bodies, catalogue artwork or full orders returned. BigInt arithmetic refuses unsafe serialization; output zero-fills<=90daily points. Refunds remain attached to order creation period, not event-time financial accounting.
+
+420isolated order fixtures; >200current eligible live orders. Six dataset/period comparisons reproduce existing frontend analytics oracle exactly, including day series/previous period/units/refunds/cancellations. Empty period zeros, sample separation, invalid inputs, inventory/fulfillment/customer-service denial, manager access, foreign denial, overflow refusal, HTTP200sample and400invalid period pass. APItypes/scopedlint/build pass. No new dependencies/migrations. No preview restart/production changes.
+
+Partial aggregate contract: products/provinces and dataset-availability metadata remain next. Existing Analytics UI and truthful200scope remain unchanged until all panels and export scope are ready. No full-export capability silently replaced. NEXT: bounded product ranking and province aggregates, canonical variant grouping/stable ties, authoritative selected dataset, then UI integration with honest export behavior. Query scan cost still needs measured large-store evidence.

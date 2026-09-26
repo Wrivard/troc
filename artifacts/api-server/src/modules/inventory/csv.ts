@@ -15,6 +15,7 @@ export const fields = [
   "seller_sku",
   "external_sku",
   "external_listing_id",
+  "storage_location",
 ] as const;
 export type Field = (typeof fields)[number];
 export type Mapping = Partial<Record<Field, string>>;

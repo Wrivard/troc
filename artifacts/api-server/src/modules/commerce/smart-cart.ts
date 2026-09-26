@@ -46,8 +46,9 @@ export function optimizeCart(
   listings: CommerceListing[],
   sellers: CommerceSeller[],
   coupon?: string,
+  now = Date.now(),
 ): SmartResult {
-  const original = quoteCart(originalLines, listings, sellers, { coupon });
+  const original = quoteCart(originalLines, listings, sellers, { coupon, now });
   if (!originalLines.length) throw new DomainError("empty_cart");
   const byId = new Map(listings.map((l) => [l.id, l]));
   const eligibleSellers = new Set(
@@ -98,7 +99,7 @@ export function optimizeCart(
     try {
       return {
         lines: merge(lines),
-        quote: quoteCart(merge(lines), listings, sellers, { coupon }),
+        quote: quoteCart(merge(lines), listings, sellers, { coupon, now }),
       };
     } catch (error) {
       if (error instanceof DomainError) return null;
@@ -151,7 +152,7 @@ export function optimizeCart(
   consider(naive);
   for (const id of dominant) consider(construct(id));
   let beam: { lines: CartLine[]; quote: CartQuote }[] = [
-    { lines: [], quote: quoteCart([], listings, sellers, { coupon }) },
+    { lines: [], quote: quoteCart([], listings, sellers, { coupon, now }) },
   ];
   for (
     let i = 0;

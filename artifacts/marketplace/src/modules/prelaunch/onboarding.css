@@ -1,0 +1,1131 @@
+.wl-page .troc-signin-layout {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+.wl-page .troc-signin-form-content {
+  max-width: 580px;
+}
+.wl-page .troc-signin-form-side {
+  justify-content: flex-start;
+  padding-top: 42px;
+}
+.wl-page .troc-signin-art-side {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  align-self: start;
+}
+.wl-form,
+.wl-success {
+  display: grid;
+  gap: 22px;
+  margin-top: 30px;
+}
+.wl-form h2,
+.wl-success h2 {
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.wl-body {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 22px;
+}
+.wl-body p,
+.wl-success p,
+.wl-review p {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #bdbdc3;
+}
+.wl-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #bdbdc3;
+}
+.wl-progress progress {
+  width: 100%;
+  height: 4px;
+  border: 0;
+  appearance: none;
+  background: #343438;
+  border-radius: 4px;
+}
+.wl-progress progress::-webkit-progress-bar {
+  background: #343438;
+}
+.wl-progress progress::-webkit-progress-value {
+  background: #ed3444;
+}
+.wl-progress progress::-moz-progress-bar {
+  background: #ed3444;
+}
+.wl-intents {
+  display: grid;
+  gap: 12px;
+}
+.wl-intents label {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border: 1px solid #48484e;
+  border-radius: 12px;
+  background: #19191c;
+  cursor: pointer;
+  transition:
+    border-color 0.16s,
+    background 0.16s;
+}
+.wl-intents label.selected,
+.wl-choices label.selected {
+  border-color: #ed4554;
+  background: #2e191e;
+}
+.wl-intents strong {
+  display: block;
+  font-size: 1rem;
+}
+.wl-intents small {
+  display: block;
+  color: #c0bcc1;
+  line-height: 1.5;
+  margin-top: 5px;
+}
+.wl-intents label > span:last-child {
+  margin-left: auto;
+  color: #f07882;
+}
+.wl-form input[type="checkbox"],
+.wl-form input[type="radio"] {
+  accent-color: #eb3545;
+  min-width: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.wl-field {
+  display: grid;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.wl-field input,
+.wl-field select,
+.wl-field textarea {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid #55555e;
+  border-radius: 8px;
+  padding: 13px 14px;
+  background: #1b1b20;
+  color: #f5f5f5;
+  font: inherit;
+  min-height: 48px;
+  color-scheme: dark;
+}
+.wl-field textarea {
+  overflow-wrap: anywhere;
+  resize: vertical;
+}
+.wl-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+.wl-check input {
+  margin-top: 4px;
+}
+.wl-choices {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.wl-choices legend {
+  margin-bottom: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.wl-choices > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wl-choices label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 12px;
+  border: 1px solid #48484e;
+  border-radius: 9px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.wl-form details {
+  border-top: 1px solid #3c3c42;
+  padding-top: 15px;
+}
+.wl-form summary {
+  cursor: pointer;
+  font-size: 0.86rem;
+}
+.wl-form details[open] > :not(summary) {
+  margin-top: 18px;
+}
+.wl-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 10px;
+}
+.wl-form button,
+.wl-primary {
+  min-height: 48px;
+  border: 1px solid #55555e;
+  border-radius: 9px;
+  padding: 12px 20px;
+  color: #f5f5f5;
+  background: transparent;
+  font-weight: 650;
+  cursor: pointer;
+  text-align: center;
+}
+.wl-actions .wl-primary {
+  flex: 1;
+}
+.wl-form .wl-primary,
+.wl-success .wl-primary {
+  background: #bb2635;
+  border-color: #ef5663;
+  color: white;
+  text-decoration: none;
+}
+.wl-form button:disabled,
+.wl-body:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.wl-page :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #ff9ca5;
+  outline-offset: 4px;
+}
+.wl-error {
+  border-left: 3px solid #f56774;
+  padding: 14px;
+  background: #351b22;
+  color: #ffd9dc;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.wl-review {
+  border: 1px solid #414148;
+  border-radius: 10px;
+  padding: 16px;
+  overflow-wrap: anywhere;
+}
+.wl-review > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.wl-review h3 {
+  font-size: 0.85rem;
+  margin: 0;
+}
+.wl-review button {
+  padding: 5px 8px;
+  font-size: 0.8rem;
+  min-height: 40px;
+}
+.wl-review p {
+  margin-top: 10px;
+}
+.wl-footnote {
+  font-size: 0.75rem !important;
+  color: #b6b6be !important;
+  line-height: 1.6;
+}
+.wl-page a {
+  color: #ffa5ad;
+  text-underline-offset: 4px;
+}
+.wl-success-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid #e54b5b;
+  background: #361e25;
+  border-radius: 50%;
+  font-size: 1.8rem;
+}
+.wl-sr,
+.wl-honey {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 900px) {
+  .wl-page .troc-signin-layout {
+    grid-template-columns: 1fr;
+  }
+  .wl-page .troc-signin-art-side {
+    display: none;
+  }
+  .wl-page .troc-signin-form-side {
+    padding: 30px 24px 80px;
+  }
+  .wl-page .troc-signin-form-content {
+    max-width: 580px;
+  }
+}
+@media (max-width: 380px) {
+  .wl-page .troc-signin-form-side {
+    padding-inline: 18px;
+  }
+  .wl-intents label {
+    padding: 15px;
+  }
+  .wl-progress > span:nth-child(2) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wl-intents label {
+    transition: none;
+  }
+}
+/* Override generic sign-in label/input styling for adjacent choice controls. */
+.wl-page .troc-signin-form-slot .wl-check {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+}
+.wl-page .troc-signin-form-slot .wl-check input,
+.wl-page .troc-signin-form-slot .wl-choices input,
+.wl-page .troc-signin-form-slot .wl-intents input {
+  appearance: auto;
+  display: inline-block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  padding: 0;
+  margin: 3px 0 0;
+  border-radius: 3px;
+}
+.wl-page .troc-signin-form-slot .wl-check span {
+  flex: 1;
+  min-width: 0;
+}
+.wl-page .troc-signin-form-slot .wl-choices label {
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+  align-items: center;
+}
+.wl-page .troc-signin-form-slot .wl-intents label {
+  display: flex;
+  flex-direction: row;
+}
+.wl-scenario,
+.wl-next {
+  padding: 16px 18px;
+  border: 1px solid #554046;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #291b21, #19191d);
+}
+.wl-next {
+  display: grid;
+  gap: 8px;
+}
+.wl-next strong {
+  font-size: 0.9rem;
+}
+.wl-success {
+  gap: 24px;
+  animation: wl-arrive 0.5s ease-out both;
+}
+.wl-success-icon {
+  width: 76px;
+  height: 76px;
+  box-shadow: 0 0 36px #ec354522;
+}
+.wl-success-icon svg {
+  width: 52px;
+  height: 52px;
+  stroke: #ff8692;
+  stroke-width: 2.5;
+}
+.wl-success-icon path {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 0;
+  animation: wl-check-draw 0.7s ease-out both;
+}
+.wl-success-icon circle {
+  stroke: #8d424d;
+  stroke-width: 1;
+}
+.wl-body {
+  animation: wl-arrive 0.2s ease-out both;
+}
+.wl-success .wl-primary {
+  transition:
+    background 0.18s,
+    transform 0.18s;
+}
+.wl-success .wl-primary:hover {
+  background: #d32d3e;
+  transform: translateY(-1px);
+}
+@keyframes wl-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes wl-check-draw {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wl-success,
+  .wl-body,
+  .wl-success-icon path {
+    animation: none;
+  }
+  .wl-success .wl-primary {
+    transition: none;
+  }
+  .wl-success .wl-primary:hover {
+    transform: none;
+  }
+}
+/* Local brand palette also applies to the portalled shadcn menu. */
+.wl-page,
+.wl-select-menu {
+  --background: #121212;
+  --foreground: #f5f5f5;
+  --muted: #252525;
+  --muted-foreground: #b8b8b8;
+  --accent: #342023;
+  --accent-foreground: #fff;
+  --primary: #e4002b;
+  --primary-foreground: #fff;
+  --border: #464646;
+  --ring: #e4002b;
+  --input: #464646;
+  color-scheme: dark;
+}
+.wl-page .wl-field input,
+.wl-page .wl-field textarea,
+.wl-page .wl-select {
+  background: #191919 !important;
+  color: #f5f5f5 !important;
+  border-color: #454545 !important;
+  box-shadow: none !important;
+}
+.wl-page .wl-select {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 12px 14px;
+  border-radius: 9px;
+  white-space: normal;
+  gap: 12px;
+}
+.wl-page .wl-select[data-placeholder] {
+  color: #aaa !important;
+}
+.wl-page .wl-select:focus-visible {
+  outline: 2px solid #e4002b;
+  outline-offset: 3px;
+}
+.wl-select-menu {
+  z-index: 100;
+  min-width: var(--radix-select-trigger-width);
+  max-width: calc(100vw - 28px);
+  max-height: min(340px, var(--radix-select-content-available-height));
+  background: #191919 !important;
+  color: #f5f5f5 !important;
+  border: 1px solid #484848 !important;
+  border-radius: 12px;
+  padding: 5px;
+  box-shadow: 0 18px 45px #0008;
+}
+.wl-select-menu .troc-select-item {
+  background: transparent;
+  color: #eee;
+  border-radius: 7px;
+  min-height: 42px;
+  cursor: pointer;
+}
+.wl-select-menu .troc-select-item[data-highlighted] {
+  background: #362023 !important;
+  color: white !important;
+  outline: none;
+}
+.wl-select-menu .troc-select-item[data-state="checked"] {
+  color: #ff8a99;
+}
+.wl-select-menu svg {
+  width: 16px;
+  height: 16px;
+}
+.wl-page .wl-scenario,
+.wl-page .wl-next {
+  background: #1c1919;
+  border-color: #493436;
+  border-left: 3px solid #e4002b;
+  color: #d4cece;
+}
+.wl-page .wl-intents label,
+.wl-page .wl-choices label {
+  background: #191919;
+}
+.wl-page .wl-intents label.selected,
+.wl-page .wl-choices label.selected {
+  background: #29191c;
+  border-color: #e4002b;
+}
+.wl-page .wl-form .troc-checkbox,
+.wl-page .wl-form .troc-radio {
+  padding: 0;
+  min-height: 18px;
+  height: 18px;
+  width: 18px;
+  min-width: 18px;
+  flex: 0 0 18px;
+  margin: 2px 0 0;
+  border: 1px solid #888;
+  background: #202020;
+  color: #fff;
+  box-shadow: none;
+}
+.wl-page .wl-form .troc-checkbox {
+  border-radius: 4px;
+}
+.wl-page .wl-form .troc-radio {
+  border-radius: 50%;
+}
+.wl-page .wl-form .troc-checkbox[data-state="checked"],
+.wl-page .wl-form .troc-radio[data-state="checked"] {
+  background: #d50028;
+  border-color: #ef4967;
+}
+.wl-page .troc-radio-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+.wl-page .troc-checkbox svg {
+  width: 14px;
+  height: 14px;
+}
+.wl-page .wl-preview-control {
+  justify-self: start;
+  min-height: 32px;
+  padding: 5px 0;
+  border: 0;
+  border-radius: 0;
+  color: #bababa;
+  background: none;
+  font-size: 0.75rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.wl-preview-note {
+  padding: 12px;
+  border: 1px dashed #a85b65;
+  border-radius: 8px;
+  color: #e6b9bf;
+  font-size: 0.8rem;
+  display: grid;
+  gap: 10px;
+}
+.wl-preview-note button {
+  justify-self: start;
+}
+/* Keep later steps compact and make the final review easy to scan. */
+.wl-page .troc-signin-form-slot {
+  margin-top: 24px;
+}
+.wl-page .wl-form,
+.wl-page .wl-success {
+  margin-top: 0;
+}
+.wl-page:not([data-stage="intent"]) .troc-signin-layout h1 {
+  font-size: clamp(1.65rem, 2.8vw, 2.6rem);
+  margin-block: 18px 12px;
+}
+.wl-page:not([data-stage="intent"]) .troc-signin-support {
+  font-size: 0.9rem;
+}
+.wl-page .wl-progress > span:last-of-type {
+  max-width: 70%;
+  text-align: right;
+  letter-spacing: 0;
+}
+.wl-page .wl-summary {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 0;
+}
+.wl-summary > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #343434;
+}
+.wl-summary dt {
+  color: #a9a9a9;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+.wl-summary dd {
+  margin: 0;
+  color: #f0f0f0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.wl-page .wl-step-note {
+  padding: 12px 14px;
+  border-left: 2px solid #b53346;
+  background: #191919;
+  font-size: 0.83rem;
+}
+.wl-page .wl-copy {
+  justify-self: start;
+  min-height: 38px;
+  padding: 8px 12px;
+  background: transparent;
+}
+.wl-page .wl-preview-control {
+  font-size: 0.7rem;
+  color: #999;
+}
+.wl-page .wl-field:focus-within > label {
+  color: #ffb8c1;
+}
+.wl-page .wl-review button:hover {
+  background: #2e1c20;
+}
+.wl-page .wl-actions {
+  border-top: 1px solid #303030;
+  padding-top: 20px;
+  margin-top: 4px;
+}
+@media (max-width: 480px) {
+  .wl-page .troc-signin-form-slot {
+    margin-top: 20px;
+  }
+  .wl-page .wl-summary > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .wl-page .wl-form {
+    gap: 19px;
+  }
+  .wl-page .wl-body {
+    gap: 19px;
+  }
+  .wl-page .wl-review {
+    padding: 14px;
+  }
+}
+.wl-page .wl-review > div > button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.wl-page .wl-review > div > h3 {
+  min-width: 0;
+  overflow-wrap: normal;
+}
+/* Coherent waitlist palette: no mixed light canvas / dark answer cards. */
+.wl-page,
+.wl-select-menu {
+  --wl-bg: #121212;
+  --wl-surface: #1c1c1c;
+  --wl-text: #f5f5f5;
+  --wl-muted: #b8b8b8;
+  --wl-line: #494949;
+  --wl-selected: #341d22;
+  --wl-note: #241b1d;
+  --wl-red: #de1e30;
+  --wl-error: #ff9aa7;
+}
+html[data-theme="troc-light"] .wl-page,
+html[data-theme="troc-light"] .wl-select-menu {
+  --wl-bg: #f8f8f8;
+  --wl-surface: #fff;
+  --wl-text: #202022;
+  --wl-muted: #57575b;
+  --wl-line: #b9b9bd;
+  --wl-selected: #fff0f2;
+  --wl-note: #fff3f4;
+  --wl-red: #de1e30;
+  --wl-error: #ac1730;
+  color-scheme: light;
+}
+.wl-page {
+  background: var(--wl-bg);
+  color: var(--wl-text);
+}
+.wl-page .troc-signin-layout {
+  --signin-bg: var(--wl-bg);
+  --signin-text: var(--wl-text);
+  --signin-muted: var(--wl-muted);
+  --signin-border: var(--wl-line);
+  min-height: calc(100svh - 88px);
+}
+.wl-page .troc-signin-form-side {
+  padding-top: 22px;
+  padding-bottom: 58px;
+}
+.wl-page .troc-signin-form-content > header > .troc-signin-eyebrow {
+  display: none;
+}
+.wl-page .troc-signin-layout h1 {
+  font-size: clamp(1.7rem, 2.4vw, 2.7rem);
+  margin-block: 8px 12px;
+}
+.wl-page:not([data-stage="intent"]) .troc-signin-layout h1 {
+  font-size: clamp(1.35rem, 1.8vw, 1.9rem);
+  margin-block: 5px 8px;
+}
+.wl-page .troc-signin-form-slot {
+  margin-top: 18px;
+}
+.wl-page .wl-form {
+  gap: 16px;
+}
+.wl-page .wl-body {
+  gap: 18px;
+}
+.wl-page .wl-preview-control {
+  position: fixed;
+  bottom: 8px;
+  right: 10px;
+  z-index: 20;
+  background: var(--wl-bg);
+  border: 1px dashed var(--wl-line);
+  border-radius: 5px;
+  padding: 5px 8px;
+  color: var(--wl-muted);
+  font-size: 0.65rem;
+  opacity: 0.9;
+}
+.wl-page .wl-intents label {
+  padding: 16px;
+}
+.wl-page .troc-signin-art-side {
+  top: 0;
+}
+.wl-page .wl-progress {
+  color: var(--wl-muted);
+}
+.wl-page .wl-intents label,
+.wl-page .wl-choices label,
+.wl-page .wl-review {
+  background: var(--wl-surface);
+  color: var(--wl-text);
+  border-color: var(--wl-line);
+}
+.wl-page .wl-intents label.selected,
+.wl-page .wl-choices label.selected {
+  background: var(--wl-selected);
+  border-color: var(--wl-red);
+}
+.wl-page .wl-intents strong {
+  color: var(--wl-text);
+}
+.wl-page .wl-intents small,
+.wl-page .wl-body p,
+.wl-page .wl-success p,
+.wl-page .wl-review p,
+.wl-page .wl-footnote,
+.wl-page .wl-summary dt {
+  color: var(--wl-muted) !important;
+}
+.wl-page .wl-summary dd {
+  color: var(--wl-text);
+}
+.wl-page .wl-summary > div,
+.wl-page .wl-actions {
+  border-color: var(--wl-line);
+}
+.wl-page .wl-field input,
+.wl-page .wl-field textarea,
+.wl-page .wl-select {
+  background: var(--wl-surface) !important;
+  color: var(--wl-text) !important;
+  border-color: var(--wl-line) !important;
+  color-scheme: inherit;
+}
+.wl-page .wl-select[data-placeholder] {
+  color: var(--wl-muted) !important;
+}
+.wl-page .wl-scenario,
+.wl-page .wl-next,
+.wl-page .wl-step-note {
+  background: var(--wl-note);
+  color: var(--wl-text);
+  border-color: var(--wl-line);
+  border-left-color: var(--wl-red);
+}
+.wl-page .wl-form button:not(.wl-primary):not(.troc-checkbox):not(.troc-radio),
+.wl-page .wl-copy {
+  color: var(--wl-text);
+}
+.wl-page .wl-form .wl-primary,
+.wl-page .wl-success .wl-primary {
+  background: var(--wl-red);
+  color: white;
+  border-color: var(--wl-red);
+}
+.wl-page .wl-form .troc-checkbox,
+.wl-page .wl-form .troc-radio {
+  background: var(--wl-surface);
+  border-color: var(--wl-muted);
+}
+.wl-page .wl-form .troc-checkbox[data-state="checked"],
+.wl-page .wl-form .troc-radio[data-state="checked"] {
+  background: var(--wl-red);
+  border-color: var(--wl-red);
+  color: #fff;
+}
+.wl-page .wl-error {
+  background: var(--wl-note);
+  color: var(--wl-error);
+  border-color: var(--wl-red);
+}
+.wl-page .wl-field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--wl-error);
+  line-height: 1.5;
+}
+.wl-page [aria-invalid="true"] {
+  outline: 2px solid var(--wl-error);
+  outline-offset: 2px;
+}
+.wl-page .wl-field:focus-within > label {
+  color: var(--wl-text);
+}
+.wl-page a:not(.wl-primary) {
+  color: var(--wl-error);
+}
+.wl-page .wl-review button:hover {
+  background: var(--wl-selected);
+}
+.wl-select-menu {
+  background: var(--wl-surface) !important;
+  color: var(--wl-text) !important;
+  border-color: var(--wl-line) !important;
+}
+.wl-select-menu .troc-select-item {
+  color: var(--wl-text);
+}
+.wl-select-menu .troc-select-item[data-highlighted] {
+  background: var(--wl-selected) !important;
+  color: var(--wl-text) !important;
+}
+.wl-select-menu .troc-select-item[data-state="checked"] {
+  color: var(--wl-error);
+}
+.wl-page .wl-success {
+  gap: 18px;
+}
+.wl-page .wl-data-use {
+  font-size: 0.83rem;
+}
+.wl-page .wl-data-use summary {
+  color: var(--wl-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.wl-page .wl-preview-note {
+  color: var(--wl-muted);
+}
+@media (max-width: 480px) {
+  .wl-page .troc-signin-form-side {
+    padding-top: 18px;
+  }
+  .wl-page .troc-signin-support {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .wl-page .wl-intents label {
+    padding: 13px;
+  }
+  .wl-page .wl-progress > span:last-of-type {
+    display: none;
+  }
+}
+.wl-page .wl-preview-control {
+  position: static;
+  justify-self: start;
+  margin-top: 6px;
+  z-index: auto;
+}
+.wl-page .troc-signin-layout h2[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Compact review and secondary receipt management. */
+.wl-skipped {
+  margin-top: 12px;
+  color: var(--wl-muted);
+  font-size: 0.85rem;
+}
+.wl-skipped summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.wl-skipped ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+  line-height: 1.7;
+}
+.wl-receipt {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--wl-line);
+  border-radius: 14px;
+  background: var(--wl-surface);
+}
+.wl-receipt h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.wl-receipt .wl-field {
+  margin: 0;
+}
+.wl-copy-feedback {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--wl-error);
+}
+.wl-exit-dialog {
+  background: #191b20;
+  color: #f5f5f6;
+  border-color: #454750;
+  max-width: min(480px, calc(100vw - 32px));
+}
+.wl-exit-dialog .troc-dialog-description {
+  color: #b9bbc4;
+  line-height: 1.6;
+}
+.wl-exit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.wl-exit-actions button:first-child {
+  background: #de1e30;
+  color: white;
+  border-color: #de1e30;
+}
+html[data-theme="troc-light"] .wl-exit-dialog {
+  background: #fff;
+  color: #202127;
+  border-color: #d2d3d9;
+}
+html[data-theme="troc-light"] .wl-exit-dialog .troc-dialog-description {
+  color: #555966;
+}
+@media (max-width: 480px) {
+  .wl-receipt {
+    padding: 16px;
+  }
+  .wl-exit-actions {
+    flex-direction: column;
+  }
+  .wl-exit-actions button {
+    width: 100%;
+  }
+}
+.wl-account {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--wl-red);
+  border-radius: 16px;
+  background: var(--wl-surface);
+}
+.wl-account h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.wl-account-form {
+  display: grid;
+  gap: 10px;
+}
+.wl-account-form > label {
+  font-weight: 600;
+  margin-top: 8px;
+}
+.wl-password-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--wl-muted);
+}
+.wl-password-tools small {
+  flex: 1;
+  line-height: 1.5;
+}
+.wl-account input {
+  color: var(--wl-text);
+  background: var(--wl-bg);
+  border-color: var(--wl-line);
+}
+@media (max-width: 480px) {
+  .wl-account {
+    padding: 16px;
+  }
+  .wl-password-tools {
+    align-items: start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+/* The account entry is the first step of the same onboarding layout. */
+.wl-page .wl-account {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.wl-account > p {
+  color: var(--wl-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.wl-account .troc-google-signin {
+  margin: 0;
+}
+.wl-account .troc-google-signin-divider {
+  display: none;
+}
+.wl-account-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--wl-muted);
+  font-size: 0.8rem;
+}
+.wl-account-divider::before,
+.wl-account-divider::after {
+  content: "";
+  height: 1px;
+  background: var(--wl-line);
+  flex: 1;
+}
+.wl-account-form {
+  gap: 12px;
+}
+.wl-account-form > .wl-primary {
+  margin-top: 8px;
+  min-height: 48px;
+}
+.wl-account-form > a {
+  font-size: 0.83rem;
+  text-align: center;
+  padding: 8px;
+}
+.wl-account-form .wl-password-tools button {
+  flex-shrink: 0;
+}
+.wl-page .wl-account .troc-google-signin-button,
+.wl-page .wl-account .troc-google-signin-button span {
+  color: #1f1f1f !important;
+}
+/* Shared breathing room beneath the real navigation on signup and sign-in. */
+.wl-page .troc-signin-form-side {
+  padding-top: clamp(40px, 4.2vw, 64px);
+}
+.wl-page .troc-signin-form-slot {
+  padding-top: 24px;
+  margin-top: 12px;
+}
+.wl-page .wl-form {
+  margin-top: 18px;
+}
+.wl-page .wl-login {
+  gap: 22px;
+}
+.wl-page .wl-login .troc-google-signin-button,
+.wl-page .wl-login .troc-google-signin-button span {
+  color: #1f1f1f !important;
+}
+.wl-page .wl-login form > button[type="submit"] {
+  min-height: 48px;
+  background: var(--wl-red);
+  color: #fff;
+}
+.wl-page .wl-login form > a {
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 8px;
+}
+@media (max-width: 480px) {
+  .wl-page .troc-signin-form-side {
+    padding-top: 36px;
+  }
+  .wl-page .troc-signin-form-slot {
+    padding-top: 20px;
+    margin-top: 8px;
+  }
+}
+.wl-page .wl-login .troc-google-signin-divider { display: none; }
+
+/* Shared eligibility fields before either account-creation method. */
+.wl-address fieldset { border:0; padding:0; min-width:0; display:grid; gap:10px; }
+.wl-address legend { font-weight:650; margin-bottom:8px; }
+.wl-address p, .wl-address small { color:var(--wl-muted); font-size:13px; line-height:1.5; }
+.wl-address label { font-size:13px; font-weight:500; }
+.wl-address-pair { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:12px; }
+.wl-address-pair > div { min-width:0; display:grid; align-content:start; gap:8px; }
+.wl-address button[role="combobox"] { width:100%; min-width:0; min-height:44px; }
+@media(max-width:400px) { .wl-address-pair { grid-template-columns:1fr; } }
+
+.wl-save-state { display:grid; gap:6px; font-size:12px; line-height:1.5; color:var(--wl-muted); margin-bottom:24px; }
+.wl-save-state small {font-size:11px;}
+.wl-page .wl-save-state button {justify-self:start;}

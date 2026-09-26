@@ -1,4 +1,17 @@
 export const messages = {
+  googleSignIn: ["Continue with Google", "Continuer avec Google"],
+  googleUnavailable: [
+    "Google sign-in is currently unavailable.",
+    "La connexion Google n’est pas disponible actuellement.",
+  ],
+  google_auth_failed: [
+    "Google sign-in did not finish. Please try again or use your email and password.",
+    "La connexion Google n’a pas abouti. Réessayez ou utilisez votre courriel et votre mot de passe.",
+  ],
+  canada_confirmation_required: [
+    "Confirm that you live in Canada to continue.",
+    "Confirmez que vous résidez au Canada pour continuer.",
+  ],
   signIn: ["Sign in", "Se connecter"],
   signUp: ["Create an account", "Créer un compte"],
   account: ["Your account", "Votre compte"],

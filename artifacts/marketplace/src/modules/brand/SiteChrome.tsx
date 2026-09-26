@@ -1,3 +1,12 @@
+import { MarketplaceActivity } from "./MarketplaceActivity";
+import { usePreferences } from "@workspace/troc-design-system/hooks/use-preferences";
+import { LiveGlobalSearch } from "../global-search/LiveGlobalSearch";
+import {
+  WorkspaceNavigation,
+  useSession,
+  isSeller,
+} from "../account/Workspace";
+import { AccountMenu } from "../account/AccountMenu";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { Locale } from "@workspace/catalog";
 import { SiteHeader } from "@workspace/troc-design-system/components/ui/site-navigation";
@@ -13,6 +22,8 @@ export type ChromeProps = {
   onTheme?: (theme: "dark" | "light") => void;
   base?: string;
   searchDisabled?: boolean;
+  hideSearch?: boolean;
+  onNavigate?: (href: string) => void;
   cartBehavior?: "drawer" | "route";
 };
 
@@ -23,7 +34,9 @@ export function MarketplaceHeader({
   onTheme,
   base = "",
   searchDisabled = false,
+  hideSearch = false,
   cartBehavior = "drawer",
+  onNavigate,
 }: ChromeProps) {
   const fr = locale === "fr";
   const headerFrame = useRef<HTMLDivElement>(null);
@@ -52,7 +65,7 @@ export function MarketplaceHeader({
   useEffect(() => {
     if (!cartOpen && cartReturnFocus.current) cartReturnFocus.current.focus();
   }, [cartOpen]);
-  const [query, setQuery] = useState("");
+
   const [count, setCount] = useState(0);
   useEffect(() => {
     const update = () =>
@@ -62,7 +75,7 @@ export function MarketplaceHeader({
     return () => window.removeEventListener("troc:cart", update);
   }, []);
   const go = (path: string) =>
-    window.location.assign(
+    (onNavigate ?? ((href: string) => window.location.assign(href)))(
       `${base}${path}${path.includes("?") ? "&" : "?"}lang=${locale}`,
     );
   return (
@@ -70,9 +83,10 @@ export function MarketplaceHeader({
       ref={headerFrame}
       className="troc-marketplace-header-frame print:hidden"
     >
-      <a className="troc-skip" href="#main-content">
+      <nav aria-label={fr?"Accès rapide":"Skip links"}><a className="troc-skip" href="#main-content">
         {fr ? "Aller au contenu" : "Skip to content"}
-      </a>
+      </a></nav>
+
       <SiteHeader
         compactMobile
         homeHref={`${base}/?lang=${locale}`}
@@ -95,20 +109,7 @@ export function MarketplaceHeader({
             href: `${base}/collection?lang=${locale}`,
           },
         ]}
-        search={{
-          mode: "plain",
-          disabled: searchDisabled,
-          label: fr ? "Rechercher dans le catalogue" : "Search the catalog",
-          placeholder: fr ? "Cartes, extensions…" : "Cards, sets…",
-          value: query,
-          onValueChange: setQuery,
-          suggestions: [],
-          onSubmit: (q) => go(`/search?q=${encodeURIComponent(q)}`),
-          loadingLabel: fr ? "Chargement" : "Loading",
-          emptyLabel: fr ? "Rechercher" : "Search",
-          clearLabel: fr ? "Effacer" : "Clear",
-          submitLabel: fr ? "Rechercher" : "Search",
-        }}
+        searchSlot={hideSearch ? undefined : <LiveGlobalSearch locale={locale} base={base} disabled={searchDisabled} onNavigate={onNavigate} />}
         locale={{
           value: locale,
           onValueChange: (value) => onLocale?.(value),
@@ -137,10 +138,13 @@ export function MarketplaceHeader({
               : null;
           setCartOpen(true);
         }}
+        accountControl={<AccountMenu locale={locale} base={base} />}
         accountLabel={fr ? "Compte" : "Account"}
         signInLabel={fr ? "Connexion" : "Sign in"}
         onSignIn={() => go("/sign-in")}
       />
+      <MarketplaceActivity locale={locale} base={base} />
+      <WorkspaceNavigation locale={locale} />
       {cartOpen && (
         <Suspense
           fallback={
@@ -164,6 +168,8 @@ export function MarketplaceFooter({
   locale,
   base = "",
 }: Pick<ChromeProps, "locale" | "base">) {
+  const { user } = useSession();
+  const { theme } = usePreferences();
   const fr = locale === "fr";
   const groups = [
     {
@@ -201,6 +207,7 @@ export function MarketplaceFooter({
         ["/help", fr ? "Centre d’aide" : "Help centre"],
         ["/condition-guide", fr ? "Guide d’état" : "Condition guide"],
         ["/developers", fr ? "Développeurs" : "Developers"],
+        ["/docs", fr ? "Documentation" : "Documentation"],
       ],
     },
   ];
@@ -209,7 +216,7 @@ export function MarketplaceFooter({
       <div className="mx-auto grid max-w-screen-xl gap-10 px-4 py-16 md:px-8">
         <div className="troc-footer-masthead">
           <a href={`${base}/?lang=${locale}`} aria-label="TROC">
-            <TrocLogo height={44} />
+            <TrocLogo height={44} variant={theme} loading="lazy" />
           </a>
           <p>
             {fr
@@ -238,15 +245,17 @@ export function MarketplaceFooter({
                 className="grid content-start gap-3"
               >
                 <h2 className="text-sm font-bold">{group.title}</h2>
-                {group.links.map(([url, label]) => (
-                  <a
-                    className="text-sm text-muted-foreground hover:text-foreground hover:underline"
-                    key={url}
-                    href={`${base}${url}${url.includes("?") ? "&" : "?"}lang=${locale}`}
-                  >
-                    {label}
-                  </a>
-                ))}
+                {group.links
+                  .filter(([url]) => url !== "/seller/orders" || isSeller(user))
+                  .map(([url, label]) => (
+                    <a
+                      className="text-sm text-muted-foreground hover:text-foreground hover:underline"
+                      key={url}
+                      href={`${base}${url}${url.includes("?") ? "&" : "?"}lang=${locale}`}
+                    >
+                      {label}
+                    </a>
+                  ))}
               </nav>
             ))}
           </div>
@@ -266,3 +275,4 @@ export function MarketplaceFooter({
     </footer>
   );
 }
+

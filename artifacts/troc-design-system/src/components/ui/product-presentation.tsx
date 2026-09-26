@@ -111,6 +111,7 @@ const CardImage = React.forwardRef<HTMLSpanElement, CardImageProps>(
           height={height}
           alt={alt}
           loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : undefined}
           decoding="async"
           style={{ "--troc-card-art-ratio": artRatio } as React.CSSProperties}
           onLoad={(event) => {

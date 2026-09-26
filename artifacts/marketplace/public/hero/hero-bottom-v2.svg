@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2172" height="724" viewBox="0 0 2172 724" fill="none">
+<defs>
+ <linearGradient id="rear" x1="0" y1="496" x2="0" y2="680" gradientUnits="userSpaceOnUse"><stop stop-color="#282325"/><stop offset=".32" stop-color="#161415"/><stop offset="1" stop-color="#080809"/></linearGradient>
+ <linearGradient id="rim" x1="0" y1="496" x2="0" y2="635" gradientUnits="userSpaceOnUse"><stop stop-color="#cf2434" stop-opacity=".9"/><stop offset=".58" stop-color="#791723" stop-opacity=".45"/><stop offset="1" stop-color="#451119" stop-opacity="0"/></linearGradient>
+ <linearGradient id="front" x1="0" y1="600" x2="0" y2="724" gradientUnits="userSpaceOnUse"><stop stop-color="#1d1d1e"/><stop offset=".48" stop-color="#111112"/><stop offset="1" stop-color="#080809"/></linearGradient>
+ <linearGradient id="edge" x1="0" y1="600" x2="0" y2="690" gradientUnits="userSpaceOnUse"><stop stop-color="#565657" stop-opacity=".24"/><stop offset="1" stop-color="#5a5a5b" stop-opacity=".12"/></linearGradient>
+</defs>
+<path d="M0 496 C156 518 307 561 462 620 L0 724Z" fill="url(#rear)"/>
+<path d="M2172 496 C2016 518 1865 561 1710 620 L2172 724Z" fill="url(#rear)"/>
+<path d="M0 498 C156 520 307 563 462 622 M2172 498 C2016 520 1865 563 1710 622" stroke="url(#rim)" stroke-width="9" opacity=".16"/>
+<path d="M0 496 C156 518 307 561 462 620 M2172 496 C2016 518 1865 561 1710 620" stroke="url(#rim)" stroke-width="2"/>
+<path d="M0 620 C376 535 683 679 1086 678 C1489 679 1796 535 2172 620 L2172 724 H0Z" fill="url(#front)"/>
+<path d="M0 620 C376 535 683 679 1086 678 C1489 679 1796 535 2172 620" stroke="url(#edge)" stroke-width="1.5"/>
+</svg>

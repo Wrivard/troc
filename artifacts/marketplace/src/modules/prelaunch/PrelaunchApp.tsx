@@ -1,3 +1,4 @@
+import { WaitlistOnboarding } from "./WaitlistOnboarding";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
 import { Input } from "@workspace/troc-design-system/components/ui/input";
@@ -19,6 +20,10 @@ function pathLink(path: string, locale: string) {
   return link(path) + (out.size ? "?" + out.toString() : "");
 }
 export function PrelaunchApp({ path }: { path: string }) {
+ if (["/sign-up","/early-access","/early-access/collector","/early-access/seller"].includes(path)) return <WaitlistOnboarding path={path} />;
+ return <LegacyPrelaunchApp path={path} />;
+}
+function LegacyPrelaunchApp({ path }: { path: string }) {
   const { locale, setLocale } = usePreferences(),
     lang = locale === "fr" ? 1 : 0;
   const t = (key: CopyKey) => copy[key][lang];

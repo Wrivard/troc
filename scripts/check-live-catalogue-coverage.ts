@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import {retainedRecords} from './catalog/promote-local';
+import {sampleProducts} from '../artifacts/api-server/src/modules/catalog/sample/data';
+const {records,manifest}=retainedRecords(),expected=new Set([...records.map((r:any)=>r.product.id),...sampleProducts.map(p=>p.id)]),seen=new Set<string>();let cursor='',pages=0,illustrated=0;
+do{const params=new URLSearchParams({path:'/search',lang:'en',limit:'248',sort:'name',cursor});const response=await fetch('http://127.0.0.1:5313/api/catalog/page?'+params);assert.equal(response.status,200);const page=await response.json();assert.ok(page.results.length<=248);for(const {product} of page.results){assert.ok(expected.has(product.id),'unexpected product '+product.id);assert.ok(!seen.has(product.id),'duplicate cursor product');seen.add(product.id);if(product.images.length)illustrated++;for(const image of product.images)for(const source of image.sources)assert.ok(source.url.startsWith('/catalog-art/'),'external artwork');}cursor=page.nextCursor??'';pages++;assert.ok(pages<=100);}while(cursor);
+assert.equal(seen.size,expected.size);const result={revision:manifest.revision,products:seen.size,illustrated,missing:seen.size-illustrated,pages,noDuplicateCursorProducts:true,allExpectedIdentities:true,localArtworkOnly:true};writeFileSync('docs/evidence/catalog-scale/live-catalogue-coverage.json',JSON.stringify(result,null,2));console.log(result);

@@ -1,0 +1,8 @@
+/* Keep the final tile the same size while centering an odd two-column row. */
+@media (min-width: 360px) and (max-width: 767px) {
+  .troc-category-section .troc-game-edit > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 16px) / 2);
+    justify-self: center;
+  }
+}

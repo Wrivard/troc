@@ -1,3 +1,5 @@
+import {collectorQuery,collectorMatches} from "./collector-search";
+import { MAX_CATALOG_PAGE_SIZE } from "@workspace/catalog";
 import type {
   CatalogSnapshot,
   ProductResult,
@@ -28,7 +30,7 @@ export function filtersFrom(params: URLSearchParams): SearchFilters {
   if (!["name", "price", "newest"].includes(sort))
     throw new DomainError("invalid_search");
   const limit = Number(params.get("limit") || 12);
-  if (!Number.isInteger(limit) || limit < 1 || limit > 48)
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_CATALOG_PAGE_SIZE)
     throw new DomainError("invalid_search");
   const f = {
     q: text("q"),
@@ -104,9 +106,24 @@ export function summarize(
   };
 }
 export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
+  // Build request-local indexes: no stale cached stock or prices between searches.
+  const games = new Map(data.games.map(g => [g.id, g]));
+  const sets = new Map(data.sets.map(s => [s.id, s]));
+  const sellers = new Map(data.sellers.map(s => [s.id, s]));
+  const offersByVariant = new Map<string, Offer[]>();
+  const pricesByVariant = new Map<string, CatalogSnapshot["prices"]>();
+  for (const offer of data.offers) {
+    const group = offersByVariant.get(offer.variantId) ?? [];
+    group.push(offer); offersByVariant.set(offer.variantId, group);
+  }
+  for (const price of data.prices) {
+    const group = pricesByVariant.get(price.variantId) ?? [];
+    group.push(price); pricesByVariant.set(price.variantId, group);
+  }
+  const words = normalized(f.q).split(/\s+/);
   const items = data.products.flatMap((p) => {
-    const game = data.games.find((g) => g.id === p.gameId)!;
-    const set = data.sets.find((s) => s.id === p.setId)!;
+    const game = games.get(p.gameId)!;
+    const set = sets.get(p.setId)!;
     if (
       (f.game && f.game !== game.slug) ||
       (f.set && f.set !== set.slug) ||
@@ -115,6 +132,7 @@ export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
       return [];
     const variants = p.variants.filter(
       (v) =>
+        (!collectorQuery(f.q) || collectorMatches(v.number, p.setId, f.q)) &&
         (!f.language || v.language === f.language) &&
         (!f.variant || v.key === f.variant) &&
         (!f.rarity || v.rarity === f.rarity),
@@ -132,25 +150,20 @@ export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
       ].join(" "),
     );
     if (
-      f.q &&
-      !normalized(f.q)
-        .split(/\s+/)
-        .every(
+      f.q && !collectorQuery(f.q) &&
+      !words.every(
           (word) =>
             hay.includes(word) ||
             hay.split(/\W+/).some((token) => near(word, token)),
         )
     )
       return [];
-    const offers = data.offers.filter(
+    const offers = variants.flatMap(v => offersByVariant.get(v.id) ?? []).filter(
       (o) =>
         o.quantity > 0 &&
-        variants.some((v) => v.id === o.variantId) &&
         (!f.condition || o.condition === f.condition) &&
         (!f.seller ||
-          data.sellers.some(
-            (s) => s.id === o.sellerId && s.slug === f.seller,
-          )) &&
+          sellers.get(o.sellerId)?.slug === f.seller) &&
         (f.min === null || o.cents >= f.min) &&
         (f.max === null || o.cents <= f.max),
     );
@@ -163,9 +176,8 @@ export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
       summarize(
         { ...p, variants },
         offers,
-        data.prices.filter(
+        variants.flatMap(v => pricesByVariant.get(v.id) ?? []).filter(
           (price) =>
-            variants.some((v) => v.id === price.variantId) &&
             p.type !== "graded_card" &&
             (price.condition ?? null) ===
               (p.type === "raw_single" ? f.condition || "NM" : null) &&
@@ -180,9 +192,9 @@ export function searchSnapshot(data: CatalogSnapshot, f: SearchFilters) {
         ? (a.lowestCents ?? Infinity) - (b.lowestCents ?? Infinity)
         : f.sort === "newest"
           ? (
-              data.sets.find((s) => s.id === b.product.setId)?.releasedOn || ""
+              sets.get(b.product.setId)?.releasedOn || ""
             ).localeCompare(
-              data.sets.find((s) => s.id === a.product.setId)?.releasedOn || "",
+              sets.get(a.product.setId)?.releasedOn || "",
             )
           : a.product.name.en.localeCompare(b.product.name.en)) ||
       a.product.id.localeCompare(b.product.id),

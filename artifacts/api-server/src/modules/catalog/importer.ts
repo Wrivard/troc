@@ -1,3 +1,4 @@
+import { invalidateCatalogReferences } from "./reference-cache";
 import { importImages, validateImages } from "./image-import";
 import { randomUUID } from "node:crypto";
 import type { CatalogImportProvider, ImportRecord } from "@workspace/catalog";
@@ -237,18 +238,17 @@ async function importRecord(
         ).rows[0].id,
       ),
   );
-  await db.query(
-    "UPDATE troc.printings SET collector_number=$2,rarity=$3,artist=$4 WHERE id=$1",
+  const stablePrinting = await db.query(
+    "UPDATE troc.printings SET rarity=$3,artist=$4 WHERE id=$1 AND collector_number IS NOT DISTINCT FROM $2 RETURNING id",
     [printing, r.printing.number, r.printing.rarity, r.printing.artist],
   );
-  const variant = String(
-    (
-      await db.query(
-        "INSERT INTO troc.variants(printing_id,variant_key,attributes) VALUES($1,$2,$3) ON CONFLICT(printing_id,variant_key) DO UPDATE SET attributes=EXCLUDED.attributes RETURNING id",
-        [printing, r.variant.key, JSON.stringify(r.variant.attributes)],
-      )
-    ).rows[0].id,
-  );
+  if (!stablePrinting.rows.length) throw new DomainError("printing_identity_change_requires_review");
+  const variantRow = (await db.query(
+    "INSERT INTO troc.variants(printing_id,variant_key,attributes) VALUES($1,$2,$3) ON CONFLICT(printing_id,variant_key) DO UPDATE SET attributes=EXCLUDED.attributes WHERE troc.variants.attributes=EXCLUDED.attributes RETURNING id",
+    [printing, r.variant.key, JSON.stringify(r.variant.attributes)],
+  )).rows[0];
+  if (!variantRow) throw new DomainError("variant_identity_change_requires_review");
+  const variant = String(variantRow.id);
   const mapping = await db.query(
     "SELECT variant_id FROM troc.external_catalog_mappings WHERE provider=$1 AND external_id=$2",
     [provider, r.externalId],
@@ -413,6 +413,7 @@ export async function runImport(
           [runId, processed, succeeded, failed, batch.nextCursor ?? null],
         );
         await db.query("COMMIT");
+        invalidateCatalogReferences();
       } catch (error) {
         await db.query("ROLLBACK");
         throw error;

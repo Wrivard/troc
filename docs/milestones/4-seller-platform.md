@@ -1,5 +1,7 @@
 # Milestone 4 seller platform slice
 
+> Current reconciliation — September24: Seller UI/routes/services are now mounted in Troc-UX-Design4313. The isolated/unmounted descriptions below are historical handoff context. Overview/inventory/orders/messages/settings/storefront/team/analytics/promotions/payouts exist; hosted and advanced-function gaps remain. See build-pack CHECKLIST-AUDIT/REPORT.md.
+
 Status: **In development**. Isolated, unmounted implementation. Not Live; no production database migration, payment/KYC activation, email, rewards or deployment performed by this task.
 
 ## Existing implementation reused

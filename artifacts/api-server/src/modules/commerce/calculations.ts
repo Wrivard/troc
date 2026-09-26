@@ -1,3 +1,4 @@
+import { promotionActiveAt } from "./promotion-time";
 import type {
   CartLine,
   CartQuote,
@@ -93,12 +94,14 @@ export function quoteCart(
   sellers: CommerceSeller[],
   options: {
     coupon?: string;
+    now?: number;
     province?: string;
     creditCents?: number;
     config?: CommerceConfig;
   } = {},
 ): CartQuote {
   const config = options.config ?? commerceConfig;
+  const now = options.now ?? Date.now();
   if (lines.length > config.maxLines) throw new DomainError("cart_too_large");
   const listingMap = new Map(listings.map((l) => [l.id, l]));
   const sellerMap = new Map(sellers.map((s) => [s.id, s]));
@@ -146,7 +149,7 @@ export function quoteCart(
         .filter((l) => l.listing.saleCents === null)
         .reduce((n, l) => n + l.totalCents, 0);
       const rules = seller.promotions.filter(
-        (p) => !p.coupon || p.coupon === options.coupon,
+        (p) => promotionActiveAt(p, now) && (!p.coupon || p.coupon === options.coupon),
       );
       const eligible = rules
         .filter(

@@ -1,0 +1,6 @@
+# Conversation SQL-plan evidence
+2026-09-24. Disposable PGlite:10,000orders,210,000messages including one10,000-message hot thread;9,999eligible orders. Actual sellerConversationList SQL under backend role, ANALYZE after fixtures. Five EXPLAIN ANALYZE/BUFFERS JSON plans in plans.json. Default120.561ms,all119.534ms,rare latest-body114.148ms,absent82.034ms,broad Message97.217ms. Single embedded observations, not hosted/million-scale SLA.
+
+Existing order_messages_order(seller_order_id,created_at,id) supports reverse latest-row lookup; no duplicate DESCindex justified.9,999latest-message probes reveal O(order count) ranking cost. Exact unread subquery runs only21times for20+1rows, but the hot history entails10,210receipt index probes. Fixture verifies first thread unread10,010excluding own messages and respecting other-thread receipts. No conversation mutation in preview; database closed.
+
+Decision: keep current correct bounded read, no redundant index. Future large-store step is transactionally maintained latest-activity projection with private/rollback/concurrent-message/read-receipt semantics, plus measured unread strategy; do not claim current implementation scales constantly. Script measure-seller-conversation-plans.ts/scopedlint passes.

@@ -173,6 +173,60 @@ export class OrderService {
       }),
     };
   }
+  async messagePage(
+    db: Sql,
+    p: Principal,
+    id: string,
+    seller = false,
+    before?: string,
+  ) {
+    const view = await this.read(db, p, id, seller),
+      ids = view.groups.map((g) => g.id);
+    if (before) {
+      if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(before))
+        throw new DomainError("invalid_cursor");
+      if (
+        !(
+          await db.query(
+            "SELECT id FROM troc.order_messages WHERE id=$1 AND seller_order_id=ANY($2::uuid[])",
+            [before, ids],
+          )
+        ).rows.length
+      )
+        throw new DomainError("invalid_cursor");
+    }
+    const rows = (
+      await db.query<OrderView["messages"][number]>(
+        `SELECT id,seller_order_id AS "sellerOrderId",body,created_at AS "createdAt",author
+       FROM troc.order_messages WHERE seller_order_id=ANY($1::uuid[])
+       AND ($2::uuid IS NULL OR (created_at,id)<(SELECT created_at,id FROM troc.order_messages WHERE id=$2 AND seller_order_id=ANY($1::uuid[])))
+       ORDER BY created_at DESC,id DESC LIMIT 101`,
+        [ids, before ?? null],
+      )
+    ).rows;
+    const unread = (
+      await db.query<{ count: number }>(
+        "SELECT count(*)::int AS count FROM troc.order_messages m WHERE m.seller_order_id=ANY($1::uuid[]) AND m.actor_id<>$2 AND NOT EXISTS(SELECT 1 FROM troc.order_message_reads r WHERE r.user_id=$2 AND r.message_id=m.id)",
+        [ids, p.userId],
+      )
+    ).rows[0].count;
+    const messages = rows.slice(0, 100).reverse();
+    return {
+      messages,
+      nextBefore: rows.length > 100 ? messages[0].id : null,
+      unreadCount: unread,
+    };
+  }
+  async markMessagesRead(p: Principal, id: string, seller = false) {
+    return this.store.transaction(async (db) => {
+      const view = await this.read(db, p, id, seller);
+      await db.query(
+        "INSERT INTO troc.order_message_reads(user_id,message_id) SELECT $1,id FROM troc.order_messages WHERE seller_order_id=ANY($2::uuid[]) ON CONFLICT DO NOTHING",
+        [p.userId, view.groups.map((g) => g.id)],
+      );
+      return { ok: true };
+    });
+  }
   async action(
     p: Principal,
     id: string,

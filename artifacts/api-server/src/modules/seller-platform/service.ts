@@ -1,3 +1,10 @@
+import { commerceConfig } from "../commerce/config";
+import {
+  sellerSettingsWriteSchema,
+  sellerMemberWriteSchema,
+  promotionDraftSetSchema,
+  storefrontDescriptionWriteSchema,
+} from "@workspace/api-zod";
 import { randomUUID } from "node:crypto";
 import type { Principal } from "../auth/permissions";
 import type { Sql } from "../commerce/data";
@@ -43,7 +50,7 @@ export class SellerPlatformService {
     await this.actor(db, p);
     uuid(seller);
     const account = (
-      await db.query(
+      await db.query<{id:string;display_name:string;status:string;level_id:string;plan_id:string}>(
         "SELECT id,display_name,status,level_id,plan_id FROM troc.seller_accounts WHERE id=$1 AND status='active'" +
           (lock ? " FOR UPDATE" : ""),
         [seller],
@@ -55,9 +62,19 @@ export class SellerPlatformService {
         [seller, p.userId],
       )
     ).rows[0];
-    if (!account || !member || (owner && member.role !== "owner"))
+    const isAdmin =
+      (
+        await db.query(
+          "SELECT 1 FROM troc.user_roles WHERE user_id=$1 AND role='admin'",
+          [p.userId],
+        )
+      ).rows.length > 0;
+    if (
+      !account ||
+      (!isAdmin && (!member || (owner && member.role !== "owner")))
+    )
       throw new DomainError("forbidden", 403);
-    return { ...account, role: member.role };
+    return { ...account, role: isAdmin ? "admin" : member.role };
   }
   async audit(
     db: Sql,
@@ -196,7 +213,7 @@ export class SellerPlatformService {
     await this.actor(this.db, p);
     return (
       await this.db.query(
-        "SELECT s.id,s.display_name,s.status,m.role FROM troc.seller_accounts s JOIN troc.seller_members m ON m.seller_id=s.id WHERE m.user_id=$1 ORDER BY s.display_name,s.id LIMIT 50 OFFSET $2",
+        "SELECT s.id,s.display_name,s.status,CASE WHEN EXISTS(SELECT 1 FROM troc.user_roles WHERE user_id=$1 AND role='admin') THEN 'admin' ELSE m.role END AS role FROM troc.seller_accounts s LEFT JOIN troc.seller_members m ON m.seller_id=s.id AND m.user_id=$1 WHERE m.user_id=$1 OR EXISTS(SELECT 1 FROM troc.user_roles WHERE user_id=$1 AND role='admin') ORDER BY s.display_name,s.id LIMIT 50 OFFSET $2",
         [p.userId, offset],
       )
     ).rows;
@@ -212,20 +229,41 @@ export class SellerPlatformService {
     ).rows;
   }
   async member(p: Principal, seller: string, input: Record<string, unknown>) {
-    const user = uuid(input.userId),
-      role = input.role;
+    const role = input.role;
     if (role !== null && !roles.includes(role as (typeof roles)[number]))
       throw new DomainError("invalid_role");
+    const parsed = sellerMemberWriteSchema.safeParse(input);
+    if (!parsed.success) throw new DomainError("invalid_member");
+    input = parsed.data;
     return this.store.transaction(async (db) => {
       await this.access(db, p, seller, true, true);
+      let user: string;
+      if (input.userId) user = uuid(input.userId);
+      else {
+        if (
+          typeof input.email !== "string" ||
+          input.email.length > 254 ||
+          !input.email.includes("@")
+        )
+          throw new DomainError("invalid_email");
+        const account = (
+          await db.query<{ id: string }>(
+            "SELECT id FROM troc.users WHERE lower(email)=lower($1) AND status='active'",
+            [input.email.trim()],
+          )
+        ).rows[0];
+        if (!account) throw new DomainError("member_unavailable", 404);
+        user = account.id;
+      }
       const old = (
-        await db.query<{ role: string }>(
-          "SELECT role FROM troc.seller_members WHERE seller_id=$1 AND user_id=$2",
+        await db.query<{ role: string; status: string }>(
+          "SELECT m.role,u.status FROM troc.seller_members m JOIN troc.users u ON u.id=m.user_id WHERE m.seller_id=$1 AND m.user_id=$2",
           [seller, user],
         )
       ).rows[0];
       if (
         old?.role === "owner" &&
+        old.status === "active" &&
         role !== "owner" &&
         Number(
           (
@@ -264,6 +302,176 @@ export class SellerPlatformService {
         "seller_account",
         seller,
         { userId: user, previousRole: old?.role ?? null, role },
+      );
+      return { ok: true };
+    });
+  }
+  async promotionDrafts(p: Principal, seller: string) {
+    const access = await this.access(this.db, p, seller);
+    const row = (
+      await this.db.query<{ drafts: unknown[]; version: number }>(
+        "SELECT drafts,version FROM troc.seller_promotion_drafts WHERE seller_id=$1",
+        [seller],
+      )
+    ).rows[0];
+    return {
+      drafts: row?.drafts ?? [],
+      version: row?.version ?? 0,
+      canManage: ["owner", "admin"].includes(String(access.role)),
+    };
+  }
+  async savePromotionDrafts(p: Principal, seller: string, input: unknown) {
+    const parsed = promotionDraftSetSchema.safeParse(input);
+    if (!parsed.success) throw new DomainError("invalid_input");
+    const v = parsed.data;
+    return this.store.transaction(async (db) => {
+      await this.access(db, p, seller, true, true);
+      const row = (
+        await db.query<{
+          drafts: unknown[];
+          version: number;
+          last_key: string;
+        }>(
+          "SELECT drafts,version,last_key FROM troc.seller_promotion_drafts WHERE seller_id=$1 FOR UPDATE",
+          [seller],
+        )
+      ).rows[0];
+      if (row?.last_key === v.key) {
+        const canonical = (items: unknown[]) =>
+          JSON.stringify(
+            items.map((item) =>
+              Object.fromEntries(
+                Object.entries(item as Record<string, unknown>).sort(
+                  ([a], [b]) => a.localeCompare(b),
+                ),
+              ),
+            ),
+          );
+        if (canonical(row.drafts) !== canonical(v.drafts))
+          throw new DomainError("idempotency_conflict", 409);
+        return { drafts: row.drafts, version: row.version, canManage: true };
+      }
+      if ((row?.version ?? 0) !== v.version)
+        throw new DomainError("settings_changed", 409);
+      const saved = (
+        await db.query<{ version: number }>(
+          "INSERT INTO troc.seller_promotion_drafts(seller_id,drafts,version,last_key) VALUES($1,$2,1,$3) ON CONFLICT(seller_id) DO UPDATE SET drafts=excluded.drafts,version=seller_promotion_drafts.version+1,last_key=excluded.last_key,updated_at=clock_timestamp() RETURNING version",
+          [seller, JSON.stringify(v.drafts), v.key],
+        )
+      ).rows[0];
+      await this.audit(
+        db,
+        p,
+        "seller.promotion.drafts.saved",
+        "seller_account",
+        seller,
+        { draftCount: v.drafts.length },
+      );
+      return { drafts: v.drafts, version: saved.version, canManage: true };
+    });
+  }
+  async storefront(p: Principal, seller: string) {
+    const access = await this.access(this.db, p, seller);
+    const row = (
+      await this.db.query<{
+        storyEn: string;
+        storyFr: string;
+        version: string;
+      }>(
+        "SELECT coalesce(p.story_en,'') AS \"storyEn\",coalesce(p.story_fr,'') AS \"storyFr\",coalesce(p.updated_at::text,'new') AS version FROM troc.seller_accounts a LEFT JOIN troc.seller_public_profiles p ON p.seller_id=a.id WHERE a.id=$1",
+        [seller],
+      )
+    ).rows[0];
+    return {
+      ...row,
+      canManage: ["owner", "admin"].includes(String(access.role)),
+    };
+  }
+  async saveStorefront(p: Principal, seller: string, input: unknown) {
+    const parsed = storefrontDescriptionWriteSchema.safeParse(input);
+    if (!parsed.success) throw new DomainError("invalid_input");
+    return this.store.transaction(async (db) => {
+      await this.access(db, p, seller, true, true);
+      const current = (
+        await db.query<{ version: string }>(
+          "SELECT updated_at::text AS version FROM troc.seller_public_profiles WHERE seller_id=$1 FOR UPDATE",
+          [seller],
+        )
+      ).rows[0];
+      if ((current?.version ?? "new") !== parsed.data.version)
+        throw new DomainError("settings_changed", 409);
+      const row = (
+        await db.query<{ version: string }>(
+          `INSERT INTO troc.seller_public_profiles(seller_id,story_en,story_fr,updated_at) VALUES($1,$2,$3,clock_timestamp()) ON CONFLICT(seller_id) DO UPDATE SET story_en=excluded.story_en,story_fr=excluded.story_fr,updated_at=clock_timestamp() RETURNING updated_at::text AS version`,
+          [seller, parsed.data.storyEn, parsed.data.storyFr],
+        )
+      ).rows[0];
+      await this.audit(
+        db,
+        p,
+        "seller.storefront.description.updated",
+        "seller_account",
+        seller,
+        { fields: ["story_en", "story_fr"] },
+      );
+      return { ...parsed.data, version: row.version, canManage: true };
+    });
+  }
+  async settings(p: Principal, seller: string) {
+    const account = await this.access(this.db, p, seller);
+    const row = (
+      await this.db.query(
+        "SELECT a.display_name,a.slug,a.country,a.updated_at::text AS version,coalesce(s.minimum_order_cents,0) AS minimum_order_cents,coalesce(s.handling_days,2) AS handling_days,s.free_shipping_threshold_cents,coalesce(v.payout_status,'not_connected') AS payout_status FROM troc.seller_accounts a LEFT JOIN troc.seller_settings s ON s.seller_id=a.id LEFT JOIN troc.seller_verification_status v ON v.seller_id=a.id WHERE a.id=$1",
+        [seller],
+      )
+    ).rows[0];
+    return {
+      ...row,
+      canManage: ["owner", "admin"].includes(String(account.role)),
+      canSetFreeShipping: commerceConfig.freeShippingLevels.includes(String(account.level_id)),
+    };
+  }
+  async saveSettings(
+    p: Principal,
+    seller: string,
+    input: Record<string, unknown>,
+  ) {
+    const parsed = sellerSettingsWriteSchema.safeParse(input);
+    if (!parsed.success) throw new DomainError("invalid_input");
+    const {
+      displayName: name,
+      version,
+      minimumOrderCents: minimum,
+      handlingDays: days,
+      freeShippingCents,
+    } = parsed.data;
+    return this.store.transaction(async (db) => {
+      const account = await this.access(db, p, seller, true, true);
+      if (freeShippingCents !== undefined && freeShippingCents !== null && !commerceConfig.freeShippingLevels.includes(String(account.level_id))) throw new DomainError("free_shipping_level_required", 409);
+      const current = (
+        await db.query<{ version: string }>(
+          "SELECT updated_at::text AS version FROM troc.seller_accounts WHERE id=$1",
+          [seller],
+        )
+      ).rows[0];
+      if (current.version !== version)
+        throw new DomainError("settings_changed", 409);
+      await db.query(
+        "UPDATE troc.seller_accounts SET display_name=$2,updated_at=clock_timestamp() WHERE id=$1",
+        [seller, name],
+      );
+      await db.query(
+        "INSERT INTO troc.seller_settings(seller_id,minimum_order_cents,handling_days) VALUES($1,$2,$3) ON CONFLICT(seller_id) DO UPDATE SET minimum_order_cents=excluded.minimum_order_cents,handling_days=excluded.handling_days,updated_at=now()",
+        [seller, minimum, days],
+      );
+      if (freeShippingCents !== undefined) await db.query("UPDATE troc.seller_settings SET free_shipping_threshold_cents=$2 WHERE seller_id=$1",[seller,freeShippingCents]);
+      await this.audit(
+        db,
+        p,
+        "seller.settings.updated",
+        "seller_account",
+        seller,
+        { fields: ["display_name", "minimum_order_cents", "handling_days", ...(freeShippingCents !== undefined ? ["free_shipping_threshold_cents"] : [])] },
       );
       return { ok: true };
     });

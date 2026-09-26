@@ -1,0 +1,9 @@
+# Smart Cart local example proposal (UX47 / SC03)
+
+Scope requested from A: new brand/SmartCartDemo.tsx with pure local UI state, existing design-system compositions/styles/editorial guide, CommerceApp empty-state presentation entry only after exact handoff. No controller/storage/provider/contracts changes. Current commerce candidates remain frozen for B/UX review.
+
+Entry: empty Smart Cart keeps Browse cards and offers Explore an example. Demo disclosure appears before controls. Expand inline without replacing or populating the user's cart. One guided scenario reuses the already labelled/tested homepage basket: cards6.75+shipping7.50=14.25 versus cards7.22+shipping4.00=11.22 before tax; product cost increases0.47, shipping decreases3.50, total decreases3.03. Label illustrative scenario and assumptions, not guaranteed current offer or live optimization. Don't fabricate variant/condition metadata absent from scenario provenance; explain that condition/substitution must be reviewed in real proposals. A can supply a validated second condition scenario later.
+
+Interaction: select Original basket or Consolidated example, keep both complete cost columns visible on desktop and readable stacked mobile. Guided disclosures explain fewer sellers, card-vs-shipping tradeoff and review-before-apply. Reset returns original selection and closes explanatory steps. No Add/Apply/Buy button in the demo. Continue to catalog remains locale-preserving and deliberate.
+
+Acceptance: empty home->SmartCart->example works by keyboard; ENFR/lightdark390/1440+320, focus visible, disclosure/reset truthful, computed displayed arithmetic exact integer cents; localStorage cart before/after byte-identical, no POST except existing quote reads and analytics unrelated to demo. Existing filled-cart optimizer and fresh quote guards unchanged. UX47 independent review and B affected wiring review required.

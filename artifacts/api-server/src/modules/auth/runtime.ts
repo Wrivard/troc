@@ -1,3 +1,4 @@
+import { localTestIdentity, localTestMode } from "./local-test-context";
 import type { Request, Response } from "express";
 import { pool } from "@workspace/db";
 import { authClient } from "./supabase";
@@ -7,6 +8,9 @@ import type { TransactionStore } from "../commerce/checkout";
 
 /** Every protected request resolves verified identity and current database roles. */
 export async function principal(req: Request, res: Response) {
+  const local = localTestMode() ? localTestIdentity.getStore() : undefined;
+  if (local) return ensureBuyer(local);
+  if (localTestMode()) throw new DomainError("unauthorized", 401);
   const { data, error } = await authClient(req, res).auth.getUser();
   if (error || !data.user) throw new DomainError("unauthorized", 401);
   return ensureBuyer(data.user);

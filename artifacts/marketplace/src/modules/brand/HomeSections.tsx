@@ -1,3 +1,9 @@
+import "./smart-cart-branding.css";
+import "./home-category-layout.css";
+import "./hero-layers.css";
+import "./hero-signature.css";
+import { LiveGlobalSearch } from "../global-search/LiveGlobalSearch";
+import heroDemoArt from "./hero-demo-art.json";
 import { AboutTrocSection } from "./home-community/AboutTrocSection";
 import { SellerCommunitySection } from "./home-community/SellerCommunitySection";
 import { SellerCtaSection } from "./home-community/SellerCtaSection";
@@ -8,10 +14,9 @@ import {
   MarketplaceStats,
   SmartCartComparison,
 } from "@workspace/troc-design-system/components/ui/marketplace-compositions";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { PublicPage, ProductResult, Product } from "@workspace/catalog";
 import { Button } from "@workspace/troc-design-system/components/ui/button";
-import { Input } from "@workspace/troc-design-system/components/ui/input";
 import { CardImage } from "@workspace/troc-design-system/components/ui/product-presentation";
 import {
   EditorialIntro,
@@ -141,20 +146,16 @@ export function HomeSections({
       <section
         className="troc-home-hero troc-cinematic-hero dark"
         lang={page.locale}
-        style={
-          {
-            "--hero-image": `url("${import.meta.env.BASE_URL}hero/canadian-marketplace-v5.webp")`,
-          } as CSSProperties
-        }
       >
-        {page.demo && (
-          <p className="troc-hero-demo-note" role="note">
-            {c(
-              "Demo marketplace · Fictional sellers, prices and inventory. No purchases available.",
-              "Marché de démonstration · Vendeurs, prix et stocks fictifs. Aucun achat offert.",
-            )}
-          </p>
-        )}
+        <div className="troc-hero-rock-layer" aria-hidden="true">
+          <img
+            src={`${import.meta.env.BASE_URL}hero/hero-bottom-v2.svg`}
+            width="2172"
+            height="724"
+            alt=""
+            decoding="async"
+          />
+        </div>
         <div className="troc-hero-copy">
           <p className="troc-editorial-eyebrow">
             {c(
@@ -181,28 +182,11 @@ export function HomeSections({
             <br />
             {c("All in CAD.", "Tout en CAD.")}
           </p>
-          <form
-            role="search"
-            aria-label={c(
-              "Find your next card",
-              "Trouvez votre prochaine carte",
-            )}
-            action={href("/search").split("?")[0]}
-            className="troc-hero-search"
-          >
-            <input type="hidden" name="lang" value={page.locale} />
-            <EditorialIcon name="search" />
-            <Input
-              name="q"
-              maxLength={100}
-              aria-label={c("Card or set name", "Nom de carte ou d’extension")}
-              placeholder={c(
-                "Your next find starts here…",
-                "Votre prochaine trouvaille…",
-              )}
-            />
-            <Button type="submit">{c("Search", "Chercher")}</Button>
-          </form>
+          <LiveGlobalSearch
+            locale={page.locale}
+            base={href("/").split("?")[0].replace(/\/$/, "")}
+            hero
+          />
           <div className="troc-hero-actions">
             <Button asChild>
               <a href={href("/search")}>
@@ -220,17 +204,57 @@ export function HomeSections({
           </div>
         </div>
         <div className="troc-hero-display">
-          <span className="sr-only">
-            {c(
-              "Built for Canadians, by Canadians.",
-              "Pensé pour les Canadiens, par des Canadiens.",
-            )}
-          </span>
+          <img
+            className="troc-hero-leaf-layer"
+            src={`${import.meta.env.BASE_URL}hero/hero-leaf-v1.webp`}
+            width="1295"
+            height="1214"
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+          />
           <InteractiveCardStack
             label={c("Pokémon leads the collection", "Pokémon au premier plan")}
-            cards={heroes.map((r) => art(r.product, true))}
+            cards={
+              page.demo
+                ? heroDemoArt.map(({ name, image }) => (
+                    <CardImage
+                      key={image.id}
+                      src={image.url}
+                      width={image.width}
+                      height={image.height}
+                      eager
+                      alt={name[page.locale]}
+                      missingLabel={c("Artwork coming soon", "Visuel à venir")}
+                    />
+                  ))
+                : heroes.map((r) => art(r.product, true))
+            }
           />
         </div>
+        <p
+          className="troc-hero-script"
+          aria-label={c(
+            "Built for Canadians, by Canadians.",
+            "Créé pour les Canadiens, par des Canadiens.",
+          )}
+        >
+          <span aria-hidden="true">{c("Built for", "Créé pour")}</span>
+          <span aria-hidden="true">{c("Canadians,", "les Canadiens,")}</span>
+          <span aria-hidden="true">
+            {c("by Canadians.", "par des Canadiens.")}
+          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 240 26"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M4 21 C65 13 150 7 234 4 C175 11 83 20 4 23 Z"
+              fill="currentColor"
+            />
+          </svg>
+        </p>
         <div className="troc-hero-benefits">
           {(
             [
@@ -543,9 +567,9 @@ export function HomeSections({
                       <SellerAvatar name={seller.name} src={seller.logoUrl} />
                       <span>
                         {seller.name}
-                        <small>
-                          {seller.city}, {seller.province}
-                        </small>
+                        {(seller.city || seller.province) && (
+                          <small>{[seller.city, seller.province].filter(Boolean).join(", ")}</small>
+                        )}
                       </span>
                       <span>
                         {seller.handlingDays}{" "}
@@ -621,7 +645,7 @@ export function HomeSections({
             after: "SMART CART",
             cards: c("Cards", "Cartes"),
             shipping: c("Shipping", "Livraison"),
-            sellers: c("seller(s)", "vendeur(s)"),
+            sellers: (count) => count === 1 ? c("seller", "vendeur") : c("sellers", "vendeurs"),
             save: c("SAVE", "ÉCONOMISEZ"),
             explanation: c(
               "+$0.47 in cards. −$3.50 in shipping. The same 30-card list, a better total.",
@@ -678,3 +702,4 @@ export function HomeSections({
     </div>
   );
 }
+

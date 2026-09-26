@@ -1,7 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
-import type { Request, Response } from "express";
+import type { Request, CookieOptions } from "express";
+export interface AuthCookieTarget { cookie(name: string, value: string, options: CookieOptions): unknown; }
 import { DomainError } from "../shared/domain";
-export function authClient(req: Request, res: Response) {
+export function authClient(req: Request, res: AuthCookieTarget) {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key || !process.env.DATABASE_URL)

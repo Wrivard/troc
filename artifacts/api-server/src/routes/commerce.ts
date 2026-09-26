@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import { rateLimit } from "express-rate-limit";
+import { requestRateLimit } from "../modules/security/rate-limit";
 import type { Principal } from "../modules/auth/permissions";
 import { CartService, cartLines } from "../modules/commerce/service";
 import {
@@ -21,13 +21,7 @@ export function commerceQuoteRouter(db: Sql, demo = false, limit = 120) {
   );
   router.use(
     "/commerce",
-    rateLimit({
-      windowMs: 60_000,
-      limit,
-      standardHeaders: "draft-8",
-      legacyHeaders: false,
-      message: { code: "rate_limited" },
-    }),
+    requestRateLimit({namespace:"commerce-quotes",windowMs:60_000,limit,}),
   );
   const coupon = (value: unknown) =>
     typeof value === "string" && value.length <= 40 ? value : "";
@@ -63,13 +57,7 @@ export function commerceRouter(
     orders = new OrderService(store);
   router.use(
     "/commerce",
-    rateLimit({
-      windowMs: 60_000,
-      limit,
-      standardHeaders: "draft-8",
-      legacyHeaders: false,
-      message: { code: "rate_limited" },
-    }),
+    requestRateLimit({namespace:"commerce-account",windowMs:60_000,limit,}),
   );
   const coupon = (value: unknown) =>
     typeof value === "string" && value.length <= 40 ? value : "";
@@ -182,6 +170,8 @@ export function commerceRouter(
         ),
       ),
     );
+    router.get(path + "/:id/messages",async(req,res)=>res.json(await orders.messagePage(db,await principal(req,res),id(req.params.id),seller,req.query.before?id(req.query.before):undefined)));
+    router.post(path + "/:id/messages/read",async(req,res)=>res.json(await orders.markMessagesRead(await principal(req,res),id(req.params.id),seller)));
     router.get(path + "/:id", async (req, res) =>
       res.json(
         await orders.read(

@@ -11,11 +11,17 @@ test("approved demo sample is bounded, normalized and references correctly sized
     const products = sampleProducts.filter(
       (p) => p.images?.[0].provenance.provider === provider,
     );
-    assert.ok(products.length >= 40 && products.length <= 75);
+    assert.ok(products.length >= 40 && products.length <= (provider === "scryfall" ? 1100 : 75));
     const adapter = new BoundedSampleCatalogProvider(provider);
-    const page = await adapter.records({ limit: 200 });
-    page.items.forEach(validateImport);
-    assert.ok(page.items.length >= products.length);
+    let cursor: string | undefined;
+    let count = 0;
+    do {
+      const page = await adapter.records({ limit: 200, cursor });
+      page.items.forEach(validateImport);
+      count += page.items.length;
+      cursor = page.nextCursor;
+    } while (cursor);
+    assert.equal(count, products.reduce((n,p) => n+p.variants.length,0));
   }
   assert.ok(
     sampleProducts.some((p) => p.variants.some((v) => v.language === "ja")),

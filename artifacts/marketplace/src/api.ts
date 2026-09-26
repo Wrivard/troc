@@ -5,6 +5,7 @@ export async function api<T>(
 ): Promise<T> {
   const response = await fetch(`${import.meta.env.BASE_URL}api${path}`, {
     method,
+    signal: AbortSignal.timeout(15000),
     credentials: "same-origin",
     headers: body ? { "Content-Type": "application/json" } : undefined,
     body: body ? JSON.stringify(body) : undefined,

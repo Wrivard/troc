@@ -105,9 +105,16 @@ export function CartGroups({
             {g.nextPromotion && (
               <p>
                 {t("promotion")}:{" "}
-                {g.nextPromotion.minimumCards
-                  ? `${g.cards} / ${g.nextPromotion.minimumCards} ${t("cards")}`
-                  : `${money(g.merchandiseCents)} / ${money(g.nextPromotion.minimumCents ?? 0)}`}{" "}
+                {[
+                  g.nextPromotion.minimumCards != null
+                    ? `${g.cards} / ${g.nextPromotion.minimumCards} ${t("cards")}`
+                    : null,
+                  g.nextPromotion.minimumCents != null
+                    ? `${money(g.merchandiseCents)} / ${money(g.nextPromotion.minimumCents)}`
+                    : null,
+                ]
+                  .filter((value) => value !== null)
+                  .join(locale === "fr" ? " et " : " and ")}{" "}
                 → {g.nextPromotion.basisPoints / 100}%
               </p>
             )}
