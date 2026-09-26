@@ -1,4 +1,4 @@
-import process from "node:process";
+
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 
@@ -164,3 +164,4 @@ try {
 } finally {
   await browser.close();
 }
+

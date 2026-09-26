@@ -200,7 +200,13 @@ test("real local schema and data evidence detects restore drift; not a native re
       verifyRestore(plan(), source, target, migrations).status,
       "PASS",
     );
-    assert.equal(source.rows.length, 67);
+    // Compare actual relation names, so added tables cannot silently escape a snapshot.
+    const expectedTables = (await db.query<{ table_name: string }>(
+      "SELECT table_name FROM information_schema.tables WHERE table_schema='troc' AND table_type='BASE TABLE' ORDER BY table_name",
+    )).rows.map((row) => row.table_name);
+    assert.ok(expectedTables.includes("users"));
+    assert.ok(expectedTables.includes("seller_accounts"));
+    assert.deepEqual(source.rows.map((row) => row.table).sort(), expectedTables);
     for (const grant of [
       "GRANT troc_backend TO authenticated",
       "GRANT troc_backend TO recovery_bridge; GRANT recovery_bridge TO authenticated",
