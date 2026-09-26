@@ -48,6 +48,9 @@ jobs:
       - name: Test
         run: pnpm test
 
+      - name: Test staging harness contracts without hosted connections
+        run: node --test tests/staging-concurrency.test.mjs
+
       - name: Build API server
         run: pnpm --filter @workspace/api-server build
 

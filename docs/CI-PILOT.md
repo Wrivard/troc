@@ -30,13 +30,16 @@ pnpm install --frozen-lockfile --ignore-scripts
 pnpm typecheck
 pnpm lint
 pnpm test
+node --test tests/staging-concurrency.test.mjs
 pnpm --filter @workspace/api-server build
 pnpm --filter @workspace/marketplace build
 ```
 
 The install flags match the existing deployment install policy. Root scripts
 provide the existing workspace typecheck, ESLint, and `tsx --test tests/*.test.ts`
-suite. The API build invokes `node ./build.mjs`, producing the server and
+suite. The separate `.test.mjs` command covers the staging harness contracts
+with test doubles; it does not execute a hosted staging exercise. The API build
+invokes `node ./build.mjs`, producing the server and
 serverless bundles. The marketplace build invokes
 `vite build && vite build --ssr src/entry-server.tsx --outDir dist-server`, so both
 the client production build and configured SSR build are required.
