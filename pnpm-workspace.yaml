@@ -75,6 +75,9 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
+  # Keep one React type identity across workspace packages and UI peers.
+  '@types/react': 19.2.0
+  '@types/react-dom': 19.2.0
   # replit uses linux-x64 only, we can exclude all other platforms
   "esbuild>@esbuild/darwin-arm64": "-"
   "esbuild>@esbuild/darwin-x64": "-"

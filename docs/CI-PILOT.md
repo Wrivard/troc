@@ -1,6 +1,21 @@
 # TRO-5 CI pilot
 
-This bounded candidate adds only `.github/workflows/ci.yml` and this runbook.
+This candidate adds `.github/workflows/ci.yml` and this runbook.
+The integration also adds the pilot branch deployment exclusion and aligns
+React development types after the first clean CI run exposed the existing
+19.2.0/19.3.0 duplicate React type identity. Workspace overrides pin
+`@types/react` and `@types/react-dom` to the existing 19.2.0 baseline; the lockfile
+is regenerated with the declared pnpm 10.34.5. Runtime React stays unchanged.
+Two standalone presentation harness entrypoints also imported unpublished local
+`baseline/` copies. They now import the existing committed components directly,
+so a clean checkout can typecheck without reconstructing private local files.
+No application route or component implementation changes.
+
+The broader first local validation also exposed existing lint failures in
+standalone browser probes and two TypeScript test failures (catalog search
+fixture contract and recovery snapshot table-count assertion). These are not
+suppressed or excluded. This PR stays draft until all required checks pass;
+successful typechecking/builds alone do not close the gate.
 The workflow is named **CI**. It runs for pull requests targeting `main`, pushes
 to `main`, and manual `workflow_dispatch` events, without path filters.
 
