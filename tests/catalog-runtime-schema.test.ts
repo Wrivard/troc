@@ -43,6 +43,19 @@ test("catalog search resolves trigram operator after the full migration chain wi
     );
     assert.deepEqual(result.items, []);
     const repo = new PostgresCatalogRepository(db);
+    const numeratorOnly = await repo.search(
+      filtersFrom(new URLSearchParams({ q: "09999" })),
+    );
+    assert.deepEqual(
+      numeratorOnly.items.map((item) => item.product.slug).sort(),
+      ["beta-exact", "zed-exact"],
+    );
+    assert.equal(numeratorOnly.nextCursor, null);
+    const wrongDenominator = await repo.search(
+      filtersFrom(new URLSearchParams({ q: "09999/10001" })),
+    );
+    assert.deepEqual(wrongDenominator.items, []);
+    assert.equal(wrongDenominator.nextCursor, null);
     for (const sort of ["name", "newest", "price"]) {
       const first = await repo.search(
         filtersFrom(
